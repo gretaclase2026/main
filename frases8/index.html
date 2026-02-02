@@ -1,0 +1,237 @@
+ <!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vocabulari Neural B1 - Vibrant</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
+.card{max-width:720px;margin:20px auto;background:#fff;border-radius:24px;padding:24px;box-shadow:0 8px 18px rgba(0,0,0,.15);position:relative}
+
+.modes{display:flex;gap:10px;margin-bottom:10px;width:100%}
+.mode{flex:1;text-align:center;padding:14px;border-radius:24px;font-weight:bold;cursor:pointer;border:2px solid transparent}
+.mode.en{background:#d6e6f5}
+.mode.es{background:#f4d6e6}
+.mode.active{border-color:#999;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
+
+.blocks{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}
+.block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#fff4cc;cursor:pointer;transition:0.2s}
+.block.active{background:#ffcc00;transform:scale(1.1);box-shadow:inset 0 0 5px rgba(0,0,0,0.2)}
+
+.main-box-container{display:flex;align-items:center;justify-content:center;position:relative;margin:20px 0}
+.main-box{text-align:center;display:flex;flex-direction:column;justify-content:center;align-items:center}
+
+.audio-btn{font-size:60px;background:#dcfce7;border:none;cursor:pointer;width:140px;height:140px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
+.audio-btn.vibrate{animation:vibrate 0.25s linear 2}
+@keyframes vibrate{0%{transform:translate(0)}25%{transform:translate(2px,-2px)}50%{transform:translate(-2px,2px)}75%{transform:translate(2px,2px)}100%{transform:translate(0)}}
+
+.counter-side{position:absolute;right:10px;font-weight:bold;color:#2563eb;font-size:22px}
+
+#word{font-size:32px;font-weight:800;margin:20px 0;line-height:1.2;min-height:80px;text-align:center;display:flex;align-items:center;justify-content:center}
+.txt-es{color:#2563eb} 
+.txt-cat{color:#666}
+#answer{font-size:24px;font-weight:bold;margin-top:-10px;margin-bottom:20px;text-align:center;min-height:30px}
+
+.actions{display:flex;gap:12px}
+.btn{flex:1;padding:18px;border-radius:18px;border:none;font-weight:bold;font-size:18px;cursor:pointer}
+.btn-reveal{background:#e0f2fe}
+.btn-know{background:#dcfce7}
+.btn-next{background:#fbcfe8}
+
+#list{margin-top:20px;background:#f9f9f9;padding:15px;border-radius:15px;display:none;border:1px solid #ddd}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="modes">
+    <div id="modeEN" class="mode en active" onclick="setMode('EN')">ENG → ESP/CAT</div>
+    <div id="modeES" class="mode es" onclick="setMode('ES')">ESP/CAT → ENG</div>
+  </div>
+
+  <div class="blocks" id="blocksContainer"></div>
+
+  <div class="main-box-container">
+    <div class="main-box">
+      <button class="audio-btn" onclick="playAudio()">🔊</button>
+    </div>
+    <div class="counter-side">
+      <span id="pos">0</span> / <span id="total">0</span>
+    </div>
+  </div>
+
+  <div id="word"></div>
+  <div id="answer"></div>
+
+  <div class="actions">
+    <button class="btn btn-reveal" onclick="reveal()">Veure</button>
+    <button class="btn btn-know" onclick="know()">Ja la sé</button>
+    <button class="btn btn-next" onclick="next()">Següent</button>
+  </div>
+  
+  <button id="listBtn" onclick="toggleList()" style="width:100%;margin-top:20px;padding:12px;border-radius:12px;border:none;background:#e9d5ff;font-weight:bold;cursor:pointer">Mostrar llista del bloc</button>
+  <div id="list"></div>
+</div>
+
+<audio id="audio"></audio>
+
+<script>
+const data = [
+  {en: "I have a small pebble in my shoe", es: "Tengo una pequeña piedrecita en mi zapato", cat: "Tinc una petita pedreta a la sabata"},
+  {en: "Tie the package with a piece of string", es: "Ata el paquete con un trozo de cuerda", cat: "Lliga el paquet amb un tros de corda"},
+  {en: "This dress is made of white lace", es: "Este vestido está hecho de encaje blanco", cat: "Aquest vestit està fet d'encaix blanc"},
+  {en: "Put the plant on the window ledge", es: "Pon la planta en la repisa de la ventana", cat: "Posa la planta a la repisa de la finestra"},
+  {en: "Button the cuff of your shirt", es: "Abotona el puño de tu camisa", cat: "Abotona el puny de la teva camisa"},
+  {en: "The officer put the handcuffs on him", es: "El oficial le puso las esposas", cat: "L'oficial li va posar les esposes"},
+  {en: "Use the kitchen tongs to turn the meat", es: "Usa las pinzas de cocina para girar la carne", cat: "Utilitza les pinces de cuina per girar la carn"},
+  {en: "She uses tweezers for her eyebrows", es: "Ella usa pinzas de depilar para sus cejas", cat: "Ella fa servir pinces de depilar per a les celles"},
+  {en: "The sly fox escaped", es: "El zorro astuto escapó", cat: "La guineu astuta va escapar"},
+  {en: "He held her gaze for a moment", es: "Él mantuvo su mirada por un momento", cat: "Ell va mantenir la mirada per un moment"},
+  {en: "I've tidied up every room", es: "He ordenado cada habitación", cat: "He ordenat cada habitació"},
+  {en: "Each one is spotless now", es: "Cada una está impecable ahora", cat: "Cadascuna està impecable ara"},
+  {en: "You ought to go now", es: "Deberías irte ahora", cat: "Hauries de marxar ara"},
+  {en: "I need a hook for my keys", es: "Necesito un gancho para mis llaves", cat: "Necessito un ganxo per a les meves claus"},
+  {en: "Hook it up to the speaker", es: "Conéctalo al altavoz", cat: "Connecta-ho a l'altaveu"},
+  {en: "I have a fear of heights", es: "Tengo miedo a las alturas", cat: "Tinc por a les altures"},
+  {en: "The judge was very fair in his decision", es: "El juez fue muy justo en su decisión", cat: "El jutge va ser molt just en la seva decisió"},
+  {en: "That movie was awesome", es: "Esa película fue genial", cat: "Aquella pel·lícula va ser genial"},
+  {en: "Flip the pancake", es: "Dale la vuelta a la tortita", cat: "Dona-li la volta a la truita"},
+  {en: "The movie has a complex plot", es: "La película tiene una trama compleja", cat: "La pel·lícula té una trama complexa"},
+  {en: "The hearse led the procession", es: "El coche fúnebre encabezaba la procesión", cat: "El cotxe fúnebre encapçalava la processó"}
+];
+
+let currentBlockData = [];
+let pos = 0;
+let mode = "EN";
+let learnedCount = 0;
+let currentBlockID = 0;
+
+function initBlocks() {
+  const container = document.getElementById("blocksContainer");
+  const numBlocks = Math.ceil(data.length / 10);
+  container.innerHTML = "";
+  for (let i = 0; i < numBlocks; i++) {
+    const btn = document.createElement("button");
+    btn.className = "block";
+    btn.textContent = i + 1;
+    btn.onclick = () => loadBlock(i);
+    container.appendChild(btn);
+  }
+  const btnT = document.createElement("button");
+  btnT.className = "block"; btnT.textContent = "T";
+  btnT.onclick = () => loadBlock('T');
+  container.appendChild(btnT);
+  loadBlock(0);
+}
+
+function loadBlock(b) {
+  currentBlockID = b;
+  let temp = [];
+  if (b === 'T') {
+    temp = data.map((item, i) => ({...item, realIdx: i+1}));
+  } else {
+    let start = b * 10;
+    let end = Math.min(start + 10, data.length);
+    for (let i = start; i < end; i++) {
+      temp.push({...data[i], realIdx: i+1});
+    }
+  }
+  currentBlockData = temp.sort(() => Math.random() - 0.5);
+  
+  document.querySelectorAll(".block").forEach((btn) => {
+    btn.classList.toggle("active", (b === 'T' && btn.textContent === 'T') || (parseInt(btn.textContent)-1 === b));
+  });
+
+  pos = 0; learnedCount = 0;
+  document.getElementById("list").style.display = "none";
+  update(true); 
+}
+
+function setMode(m) {
+  mode = m;
+  document.getElementById("modeEN").classList.toggle("active", m === "EN");
+  document.getElementById("modeES").classList.toggle("active", m === "ES");
+  update(true);
+}
+
+function update(fromNextAction = false) {
+  if (currentBlockData.length === 0) {
+    document.getElementById("word").innerHTML = "¡Bloc Completat! 🎉";
+    document.getElementById("answer").innerHTML = "";
+    return;
+  }
+  const item = currentBlockData[pos];
+  const translation = `<span class="txt-es">${item.es}</span><br><span class="txt-cat">${item.cat}</span>`;
+  
+  const w = document.getElementById("word");
+  const a = document.getElementById("answer");
+
+  if (mode === "EN") {
+    // Mode ENG: No mostrem res escrit al principi (només l'àudio)
+    w.innerHTML = ``; 
+    a.innerHTML = translation;
+    if (fromNextAction) playAudio();
+  } else {
+    // Mode ESP: Mostrem la traducció i ocultem l'anglès
+    w.innerHTML = `<div style='font-size:22px; line-height:1.3'>${translation}</div>`;
+    a.innerHTML = `<span style="font-size:28px;">${item.en}</span>`;
+  }
+  
+  a.style.display = "none";
+  document.getElementById("pos").textContent = learnedCount;
+  document.getElementById("total").textContent = currentBlockData.length + learnedCount;
+}
+
+function reveal() {
+  if (currentBlockData.length > 0) {
+    const item = currentBlockData[pos];
+    // Al revelar en mode EN, mostrem el text en anglès al centre si estava buit
+    if (mode === "EN") {
+        document.getElementById("word").innerHTML = `<span style="color:#333;">${item.en}</span>`;
+    }
+    document.getElementById("answer").style.display = "block";
+    if (mode === "ES") playAudio(); 
+  }
+}
+
+function know() {
+  if (currentBlockData.length === 0) return;
+  learnedCount++;
+  currentBlockData.splice(pos, 1);
+  if (pos >= currentBlockData.length) pos = 0;
+  update(true);
+}
+
+function next() {
+  if (currentBlockData.length === 0) return;
+  pos = (pos + 1) % currentBlockData.length;
+  update(true);
+}
+
+function playAudio() {
+  if (currentBlockData.length === 0) return;
+  const num = currentBlockData[pos].realIdx.toString().padStart(3, "0");
+  const a = document.getElementById("audio");
+  a.src = "f" + num + ".mp3";
+  const btn=document.querySelector('.audio-btn');
+  btn.classList.remove('vibrate'); void btn.offsetWidth; btn.classList.add('vibrate');
+  a.play().catch(() => {});
+}
+
+function toggleList() {
+  const l = document.getElementById("list");
+  if (l.style.display === "block") { l.style.display = "none"; return; }
+  l.innerHTML = "<b>Llista del bloc:</b><br><br>";
+  let start = currentBlockID === 'T' ? 0 : currentBlockID * 10;
+  let end = currentBlockID === 'T' ? data.length : Math.min(start + 10, data.length);
+  let originalBlock = data.slice(start, end);
+  originalBlock.forEach((item) => {
+    l.innerHTML += `<div style="margin-bottom:8px"><b>${item.en}</b> - <span class="txt-es">${item.es}</span></div>`;
+  });
+  l.style.display = "block";
+}
+
+initBlocks();
+</script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Greta App - Frases Tema 4</title>
+<style>
+body{margin:0;font-family:sans-serif;background:#f9fafb;color:#0f172a}
+header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center}
+.mode-btns button{margin:0 6px;padding:8px 14px;border:none;border-radius:14px;font-weight:700;cursor:pointer}
+.mode-en{background:#dbeafe}
+.mode-es{background:#fde68a}
+main{display:flex;justify-content:center;padding:24px}
+.card{position:relative;width:100%;max-width:560px;background:#fff;border-radius:28px;padding:32px;box-shadow:0 12px 30px rgba(0,0,0,0.08);text-align:center}
+.counter{position:absolute;top:18px;right:22px;font-weight:800;color:#2563eb}
+.lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
+.audio-btn{width:120px;height:120px;border-radius:50%;border:none;background:#dbeafe;font-size:36px;cursor:pointer;margin:6px auto 10px;display:flex;align-items:center;justify-content:center}
+.hidden{display:none}
+.es{font-size:20px;color:#2563eb;margin-top:14px}
+.en{font-size:20px;color:#0f172a;margin-top:14px;font-weight:700}
+.buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:22px}
+button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;cursor:pointer}
+.reveal{background:#e0f2fe}
+.know{background:#dcfce7}
+.next{background:#fbcfe8}
+.list-btn{margin-top:16px;background:#e9d5ff;border:none;border-radius:16px;padding:14px;font-weight:800;cursor:pointer;width:100%}
+.list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
+.list-item{padding:10px 0;border-bottom:1px solid #e5e7eb}
+.list-item:last-child{border-bottom:none}
+.list-es{color:#2563eb;font-weight:700}
+.list-en{color:#0f172a;font-weight:800}
+.end{margin-top:16px;font-weight:800;color:#16a34a}
+</style>
+</head>
+<body>
+<header>
+ <div class="mode-btns">
+  <button class="mode-en" onclick="setMode('EN')">ANGLÈS → CASTELLÀ</button>
+  <button class="mode-es" onclick="setMode('ES')">CASTELLÀ → ANGLÈS</button>
+ </div>
+</header>
+<main>
+<div class="card">
+ <div class="counter" id="counter">0 / 12</div>
+ <div id="langLabel" class="lang">ANGLÈS</div>
+ <button class="audio-btn" onclick="play()">🔊</button>
+ <div id="es" class="es hidden"></div>
+ <div id="en" class="en hidden"></div>
+ <div class="buttons">
+  <button class="action reveal" onclick="reveal()">Veure</button>
+  <button class="action know" onclick="know()">Ja la sé</button>
+  <button class="action next" onclick="nextOne()">Següent</button>
+ </div>
+ <button class="list-btn" onclick="toggleList()">Veure tota la llista</button>
+ <div id="endMsg" class="end hidden">✔ Ja les saps totes</div>
+</div>
+</main>
+<div id="listBox" class="list-box hidden"></div>
+
+<script>
+const items = [
+    {"audio": "f001.mp3", "en": "I spent the whole morning looking for a specific ingredient for the cake I wanted to bake, only to find out that the small grocery store around the corner had it all along.", "es": "Pase toda la mañana buscando un ingrediente especifico para el pastel que queria hornear, solo para descubrir que la pequeña tienda de comestibles a la vuelta de la esquina lo tuvo todo el tiempo."},
+    {"audio": "f002.mp3", "en": "Every time I decide to clean out my closet, I end up trying on clothes that I haven't worn in years and looking at myself in the mirror instead of actually organizing anything.", "es": "Cada vez que decido limpiar mi armario, termino probandome ropa que no me he puesto en años y mirandome en el espejo en lugar de organizar algo realmente."},
+    {"audio": "f003.mp3", "en": "My cat has the strange habit of sleeping on top of the television, which is quite annoying because she blocks the screen right when I am watching the most interesting part of a movie.", "es": "Mi gata tiene la extraña costumbre de dormir encima del televisor, lo cual es bastante molesto porque bloquea la pantalla justo cuando estoy viendo la parte mas interesante de una pelicula."},
+    {"audio": "f004.mp3", "en": "It was so hot inside the house today that I had to open all the windows to let some fresh air in, but then a lot of mosquitoes entered and I spent the night trying to catch them.", "es": "Hacia tanto calor dentro de casa hoy que tuve que abrir todas las ventanas para dejar entrar un poco de aire fresco, pero luego entraron muchos mosquitos y pase la noche intentando atraparlos."},
+    {"audio": "f005.mp3", "en": "I went to the market to buy some fresh fruit and vegetables, but the smell of the bakery next door was so tempting that I ended up buying three chocolate croissants that I didn't need.", "es": "Fui al mercado a comprar algunas frutas y verduras frescas, pero el olor de la panaderia de al lado era tan tentador que termine comprando tres croissants de chocolate que no necesitaba."},
+    {"audio": "f006.mp3", "en": "I’ve been trying to learn how to play the guitar by watching videos on the internet, but my fingers hurt so much after ten minutes that I usually give up and go watch TV instead.", "es": "He estado intentando aprender a tocar la guitarra viendo videos en internet, pero me duelen tanto los dedos despues de diez minutos que normalmente me rindo y me voy a ver la tele en su lugar."},
+    {"audio": "f007.mp3", "en": "While I was taking a walk around the neighborhood this afternoon, I noticed that they are building a new park where the old parking lot used to be, and I think it will look beautiful.", "es": "Mientras daba un paseo por el barrio esta tarde, note que estan construyendo un parque nuevo donde solia estar el antiguo estacionamiento, y creo que se vera hermoso."},
+    {"audio": "f008.mp3", "en": "My old coffee machine broke down this morning, so I had to go to the kitchen and prepare my coffee the traditional way, which took much longer than I expected but tasted much better.", "es": "Mi vieja cafetera se estropeo esta mañana, asi que tuve que ir a la cocina y preparar mi cafe de la manera tradicional, lo que tomo mucho mas tiempo de lo que esperaba pero sabia mucho mejor."},
+    {"audio": "f009.mp3", "en": "I was going to take a short nap after lunch to recover some energy, but the neighbor started using a drill to hang some pictures and the noise made it impossible for me to sleep.", "es": "Iba a tomar una siesta corta despues de almorzar para recuperar algo de energia, pero el vecino empezo a usar un taladro para colgar unos cuadros y el ruido hizo que me fuera imposible dormir."},
+    {"audio": "f010.mp3", "en": "I forgot to water the plants on the balcony for a whole week because I was too busy reading a book, so now I have to hope that they don't dry out completely before tomorrow.", "es": "Olvide regar las plantas del balcon durante una semana entera porque estaba demasiado ocupado leyendo un libro, asi que ahora tengo que esperar que no se sequen por completo antes de mañana."},
+    {"audio": "f011.mp3", "en": "I haven't called my sister in a while, so I'm going to make some tea and sit on the sofa for an hour to have a long conversation with her about everything that has happened lately.", "es": "No he llamado a mi hermana en un tiempo, asi que voy a preparar un poco de te y sentarme en el sofa durante una hora para tener una conversacion larga con ella sobre todo lo que ha pasado ultimamente."},
+    {"audio": "f012.mp3", "en": "I finally decided to organize the kitchen drawers where I keep all the plastic containers, but it seems impossible to find the right lid for any of them no matter how hard I look.", "es": "Finalmente decidi organizar los cajones de la cocina donde guardo todos los recipientes de plastico, pero parece imposible encontrar la tapa adecuada para ninguno de ellos sin importar cuanto busque."}
+];
+
+let remaining=[...items], current=null, mode="EN", known=0;
+let audioPlayer = new Audio();
+
+function updateCounter(){ document.getElementById("counter").textContent = known + " / " + items.length; }
+
+function play(){ 
+    if(current) {
+        audioPlayer.src = current.audio;
+        audioPlayer.play().catch(e => console.log("Error audio"));
+    }
+}
+
+function load(){
+ if(remaining.length===0){
+   document.getElementById("endMsg").classList.remove("hidden");
+   return;
+ }
+ current=remaining[Math.floor(Math.random()*remaining.length)];
+ document.getElementById("es").classList.add("hidden");
+ document.getElementById("en").classList.add("hidden");
+ 
+ if(mode==="EN"){
+  document.getElementById("langLabel").textContent="INGLES";
+  play();
+ } else {
+  document.getElementById("langLabel").textContent="CASTELLANO";
+  document.getElementById("es").textContent=current.es;
+  document.getElementById("es").classList.remove("hidden");
+ }
+}
+
+function reveal(){
+ if(!current)return;
+ document.getElementById("es").textContent=current.es;
+ document.getElementById("en").textContent=current.en;
+ document.getElementById("es").classList.remove("hidden");
+ document.getElementById("en").classList.remove("hidden");
+ if(mode==="ES") play();
+}
+
+function know(){
+ if(!current||remaining.length===0)return;
+ remaining=remaining.filter(i=>i!==current);
+ known++;
+ updateCounter();
+ load();
+}
+
+function nextOne(){ load(); }
+function setMode(m){ mode=m; load(); }
+
+function toggleList(){
+ const lb = document.getElementById("listBox");
+ lb.innerHTML="";
+ items.forEach(i=>{
+  const d=document.createElement("div");
+  d.className="list-item";
+  d.innerHTML="<div class='list-es'>"+i.es+"</div><div class='list-en'>"+i.en+"</div>";
+  lb.appendChild(d);
+ });
+ lb.classList.toggle("hidden");
+}
+
+updateCounter();
+load();
+</script>
+</body>
+</html>

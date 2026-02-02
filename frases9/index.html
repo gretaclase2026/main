@@ -1,0 +1,306 @@
+ <!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vocabulari Neural B1 - Vibrant</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
+.card{max-width:720px;margin:20px auto;background:#fff;border-radius:24px;padding:24px;box-shadow:0 8px 18px rgba(0,0,0,.15);position:relative}
+
+.modes{display:flex;gap:10px;margin-bottom:10px;width:100%}
+.mode{flex:1;text-align:center;padding:14px;border-radius:24px;font-weight:bold;cursor:pointer;border:2px solid transparent}
+.mode.en{background:#d6e6f5}
+.mode.es{background:#f4d6e6}
+.mode.active{border-color:#999;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
+
+.blocks{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}
+.block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#fff4cc;cursor:pointer;transition:0.2s}
+.block.active{background:#ffcc00;transform:scale(1.1);box-shadow:inset 0 0 5px rgba(0,0,0,0.2)}
+
+.main-box-container{display:flex;align-items:center;justify-content:center;position:relative;margin:20px 0}
+.main-box{text-align:center;display:flex;flex-direction:column;justify-content:center;align-items:center}
+
+.audio-btn{font-size:60px;background:#dcfce7;border:none;cursor:pointer;width:140px;height:140px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
+.audio-btn.vibrate{animation:vibrate 0.25s linear 2}
+@keyframes vibrate{0%{transform:translate(0)}25%{transform:translate(2px,-2px)}50%{transform:translate(-2px,2px)}75%{transform:translate(2px,2px)}100%{transform:translate(0)}}
+
+.counter-side{position:absolute;right:10px;font-weight:bold;color:#2563eb;font-size:22px}
+
+#word{font-size:24px;font-weight:800;margin:20px 0;line-height:1.4;min-height:120px;text-align:center;display:flex;align-items:center;justify-content:center;padding:0 10px}
+.txt-es{color:#2563eb} 
+#answer{font-size:20px;font-weight:bold;margin-top:-10px;margin-bottom:20px;text-align:center;min-height:30px;color:#666}
+
+.actions{display:flex;gap:12px}
+.btn{flex:1;padding:18px;border-radius:18px;border:none;font-weight:bold;font-size:18px;cursor:pointer}
+.btn-reveal{background:#e0f2fe}
+.btn-know{background:#dcfce7}
+.btn-next{background:#fbcfe8}
+
+#list{margin-top:20px;background:#f9f9f9;padding:15px;border-radius:15px;display:none;border:1px solid #ddd}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="modes">
+    <div id="modeEN" class="mode en active" onclick="setMode('EN')">ENG → ESP</div>
+    <div id="modeES" class="mode es" onclick="setMode('ES')">ESP → ENG</div>
+  </div>
+
+  <div class="blocks" id="blocksContainer"></div>
+
+  <div class="main-box-container">
+    <div class="main-box">
+      <button class="audio-btn" onclick="playAudio()">🔊</button>
+    </div>
+    <div class="counter-side">
+      <span id="pos">0</span> / <span id="total">0</span>
+    </div>
+  </div>
+
+  <div id="word"></div>
+  <div id="answer"></div>
+
+  <div class="actions">
+    <button class="btn btn-reveal" onclick="reveal()">veure</button>
+    <button class="btn btn-know" onclick="know()">ja la se</button>
+    <button class="btn btn-next" onclick="next()">següent</button>
+  </div>
+  
+  <button id="listBtn" onclick="toggleList()" style="width:100%;margin-top:20px;padding:12px;border-radius:12px;border:none;background:#e9d5ff;font-weight:bold;cursor:pointer">mostrar llista del bloc</button>
+  <div id="list"></div>
+</div>
+
+<audio id="audio"></audio>
+
+<script>
+const data = [
+  {en: "We can go now or later; it's up to you.", es: "Podemos ir ahora o más tarde; depende de ti"},
+  {en: "The final decision is up to you.", es: "La decisión final depende de ti"},
+  {en: "What do you want for dinner? It's up to you.", es: "¿Qué quieres para cenar? Depende de ti"},
+  {en: "Hi! How's it going today?", es: "¡Hola! ¿Cómo va todo hoy?"},
+  {en: "How's it going with your new job?", es: "¿Cómo va todo con tu nuevo trabajo?"},
+  {en: "I haven't seen you in weeks! How's it going?", es: "¡No te he visto en semanas! ¿Cómo va todo?"},
+  {en: "Don't worry, I'm on my way.", es: "No te preocupes, estoy en camino"},
+  {en: "I'm on my way to the office.", es: "Estoy de camino a la oficina"},
+  {en: "I just left the house, I'm on my way.", es: "Acabo de salir de casa, estoy en camino"},
+  {en: "Take your time to finish the report.", es: "Tómate tu tiempo para terminar el informe"},
+  {en: "No rush, just take your time.", es: "Sin prisas, tómate tu tiempo"},
+  {en: "You don't have to decide now, take your time.", es: "No tienes que decidir ahora, tómate tu tiempo"},
+  {en: "Let's keep in touch over the summer.", es: "Mantengamos el contacto durante el verano"},
+  {en: "We should keep in touch more often.", es: "Deberíamos mantener el contacto más a menudo"},
+  {en: "Good luck with the move, keep in touch!", es: "¡Buena suerte con la mudanza, mantén el contacto!"},
+  {en: "I don't care what they say.", es: "No me importa lo que digan"},
+  {en: "Which one do you want? I don't care.", es: "¿Cuál quieres? Me da igual"},
+  {en: "It can be red or blue, I don't care.", es: "Puede ser rojo o azul, no me importa"},
+  {en: "Come in and make yourself at home.", es: "Entra y siéntete como en casa"},
+  {en: "Please, make yourself at home and have some coffee.", es: "Por favor, siéntete como en casa y toma un café"},
+  {en: "Sit down, relax, and make yourself at home.", es: "Siéntate, relájate y siéntete como en casa"},
+  {en: "The project is difficult, but so far, so good.", es: "El proyecto es difícil, pero por ahora todo bien"},
+  {en: "How is the course? So far, so good.", es: "¿Cómo va el curso? Por ahora todo bien"},
+  {en: "I started the diet yesterday and so far, so good.", es: "Empecé la dieta ayer y por ahora todo bien"},
+  {en: "I lost my pen, but it's not a big deal.", es: "He perdido mi bolígrafo, pero no es para tanto"},
+  {en: "Don't cry, it's not a big deal.", es: "No llores, no es gran cosa"},
+  {en: "We missed the bus, but it's not a big deal.", es: "Perdimos el autobús, pero no es para tanto"},
+  {en: "I'm looking forward to the weekend.", es: "Tengo muchas ganas de que llegue el fin de semana"},
+  {en: "I'm looking forward to meeting you.", es: "Tengo muchas ganas de conocerte"},
+  {en: "Your party sounds great, I'm looking forward to it.", es: "Tu fiesta suena genial, tengo muchas ganas de ir"},
+  {en: "Can you give me a hand with these boxes?", es: "¿Puedes echarme una mano con estas cajas?"},
+  {en: "Please, give me a hand in the kitchen.", es: "Por favor, échame una mano en la cocina"},
+  {en: "I can't do this alone, could you give me a hand?", es: "No puedo hacer esto solo, ¿podrías echarme una mano?"},
+  {en: "The car is being fixed; in the meantime, we can walk.", es: "Están arreglando el coche; mientras tanto, podemos caminar"},
+  {en: "Dinner will be ready soon; in the meantime, have a drink.", es: "La cena estará lista pronto; mientras tanto, toma algo"},
+  {en: "The flight is delayed; in the meantime, let's read.", es: "El vuelo está retrasado; mientras tanto, leamos"},
+  {en: "To make a long story short, we missed the train.", es: "Para resumir, perdimos el tren"},
+  {en: "To make a long story short, they got married.", es: "Para resumir, se casaron"},
+  {en: "It was a crazy trip, but to make a long story short, we're home.", es: "Fue un viaje loco, pero para resumir, estamos en casa"},
+  {en: "I'll let you know as soon as I arrive.", es: "Te avisaré en cuanto llegue"},
+  {en: "If I'm free tomorrow, I'll let you know.", es: "Si estoy libre mañana, te aviso"},
+  {en: "I'm still thinking about it, I'll let you know my decision.", es: "Todavía lo estoy pensando, te avisaré mi decisión"},
+  {en: "I forgot what I was saying, never mind.", es: "Olvidé lo que estaba diciendo, no importa"},
+  {en: "Never mind, I'll do it myself.", es: "Olvídalo, lo haré yo mismo"},
+  {en: "Is there a problem? No, never mind, it's fine.", es: "¿Hay algún problema? No, olvídalo, está bien"},
+  {en: "After months of exercise, I’m fit as a fiddle.", es: "Después de meses de ejercicio, estoy sano como una pera"},
+  {en: "My grandfather is 80, but he's fit as a fiddle.", es: "Mi abuelo tiene 80 años, pero está como un roble"},
+  {en: "I feel fit as a fiddle after my morning run.", es: "Me siento estupendamente después de mi carrera matutina"},
+  {en: "I've been working all day and I'm worn out.", es: "He estado trabajando todo el día y estoy agotado"},
+  {en: "The kids are finally asleep, but I'm worn out.", es: "Los niños por fin duermen, pero estoy reventado"},
+  {en: "I'm worn out after that long flight.", es: "Estoy agotado después de ese vuelo tan largo"},
+  {en: "Just follow the instructions; it’s not rocket science.", es: "Solo sigue las instrucciones; no es tan difícil"},
+  {en: "Cooking this pasta is easy, it's not rocket science.", es: "Cocinar esta pasta es fácil, no tiene ningún misterio"},
+  {en: "You can learn the code, it's not rocket science.", es: "Puedes aprender el código, no es tan complicado"},
+  {en: "I know you'll be great in the play, break a leg!", es: "Sé que estarás genial en la obra, ¡mucha suerte!"},
+  {en: "Break a leg at your presentation today!", es: "¡Mucha suerte en tu presentación de hoy!"},
+  {en: "Go out there and break a leg, everyone!", es: "¡Salid ahí fuera y mucha suerte a todos!"},
+  {en: "I'm exhausted from all this studying.", es: "Estoy agotado de tanto estudiar"},
+  {en: "She was exhausted after the marathon.", es: "Ella estaba exhausta después del maratón"},
+  {en: "I'm absolutely exhausted, I need to sleep.", es: "Estoy absolutamente exhausto, necesito dormir"},
+  {en: "She's over the moon about her new job.", es: "Está encantadísima con su nuevo trabajo"},
+  {en: "We’re over the moon with the news.", es: "Estamos locos de contentos con la noticia"},
+  {en: "I was over the moon when I passed the exam.", es: "Estaba feliz de la vida cuando aprobé el examen"},
+  {en: "What's for dinner? I'm starving!", es: "¿Qué hay para cenar? ¡Estoy muerto de hambre!"},
+  {en: "I skipped lunch today and now I'm starving.", es: "Me salté el almuerzo hoy y ahora estoy hambriento"},
+  {en: "Is the food ready? I'm absolutely starving.", es: "¿Está lista la comida? Estoy que me muero de hambre"},
+  {en: "I haven't seen you in ages, let's catch up today.", es: "No te he visto en siglos, pongámonos al día hoy"},
+  {en: "Are you free for coffee? Let's catch up today.", es: "¿Estás libre para un café? Pongámonos al día hoy"},
+  {en: "We have so much to talk about, let's catch up today.", es: "Tenemos tanto de qué hablar, pongámonos al día hoy"},
+  {en: "I’m really pissed off because they lied to me.", es: "Estoy muy cabreado porque me mintieron"},
+  {en: "Don't talk to him right now, he's pissed off.", es: "No hables con él ahora mismo, está cabreado"},
+  {en: "I was pissed off when the flight was cancelled.", es: "Estaba muy molesto cuando se canceló el vuelo"},
+  {en: "What a long day, I'm absolutely beat.", es: "Vaya día más largo, estoy para el arrastre"},
+  {en: "I can't go to the gym tonight, I'm beat.", es: "No puedo ir al gimnasio esta noche, estoy reventado"},
+  {en: "After the hike, we were all beat.", es: "Después de la caminata, todos estábamos agotados"},
+  {en: "How are you? I'm great, thanks!", es: "¿Cómo estás? ¡Estoy genial, gracias!"},
+  {en: "I just got a promotion, so I'm great.", es: "Acabo de conseguir un ascenso, así que estoy de maravilla"},
+  {en: "I'm great today, the weather is perfect.", es: "Estoy genial hoy, el tiempo es perfecto"},
+  {en: "Can we talk later? I'm a bit busy now.", es: "¿Podemos hablar luego? Ahora estoy algo ocupado"},
+  {en: "I've been busy all morning with meetings.", es: "He estado ocupado toda la mañana con reuniones"},
+  {en: "I’m too busy to go out tonight.", es: "Estoy demasiado ocupado para salir esta noche"},
+  {en: "I'm tied up at the office until 7 PM.", es: "Estoy liado en la oficina hasta las 7 de la tarde"},
+  {en: "She’s tied up with the new project right now.", es: "Ella está liada con el nuevo proyecto ahora mismo"},
+  {en: "I'd love to help, but I'm tied up all afternoon.", es: "Me encantaría ayudar, pero estoy pillado toda la tarde"},
+  {en: "I can't take on more work, I'm swamped.", es: "No puedo aceptar más trabajo, estoy desbordado"},
+  {en: "Sorry for the late reply, I've been swamped.", es: "Perdón por tardar en responder, he estado a tope"},
+  {en: "We are absolutely swamped with orders this week.", es: "Estamos absolutamente desbordados de pedidos esta semana"},
+  {en: "That was a delicious dinner, but I'm stuffed.", es: "Fue una cena deliciosa, pero estoy llenísimo"},
+  {en: "No more cake for me, I'm stuffed.", es: "No más tarta para mí, estoy a tope"},
+  {en: "I'm stuffed! I shouldn't have eaten that last taco.", es: "¡Estoy a reventar! No debí comer ese último taco"},
+  {en: "He was so pissed he didn't even say goodbye.", es: "Estaba tan mosqueado que ni siquiera se despidió"},
+  {en: "I'm pissed because I lost my wallet.", es: "Estoy de mala leche porque perdí mi cartera"},
+  {en: "Don't get pissed, it was just a joke.", es: "No te cabrees, solo era una broma"}
+];
+
+let currentBlockData = [];
+let pos = 0;
+let mode = "EN";
+let learnedCount = 0;
+let currentBlockID = 0;
+
+function initBlocks() {
+  const container = document.getElementById("blocksContainer");
+  const numBlocks = Math.ceil(data.length / 10);
+  container.innerHTML = "";
+  for (let i = 0; i < numBlocks; i++) {
+    const btn = document.createElement("button");
+    btn.className = "block";
+    btn.textContent = i + 1;
+    btn.onclick = () => loadBlock(i);
+    container.appendChild(btn);
+  }
+  const btnT = document.createElement("button");
+  btnT.className = "block"; btnT.textContent = "T";
+  btnT.onclick = () => loadBlock('T');
+  container.appendChild(btnT);
+  loadBlock(0);
+}
+
+function loadBlock(b) {
+  currentBlockID = b;
+  let temp = [];
+  if (b === 'T') {
+    temp = data.map((item, i) => ({...item, realIdx: i+1}));
+  } else {
+    let start = b * 10;
+    let end = Math.min(start + 10, data.length);
+    for (let i = start; i < end; i++) {
+      temp.push({...data[i], realIdx: i+1});
+    }
+  }
+  currentBlockData = temp.sort(() => Math.random() - 0.5);
+  
+  document.querySelectorAll(".block").forEach((btn) => {
+    btn.classList.toggle("active", (b === 'T' && btn.textContent === 'T') || (parseInt(btn.textContent)-1 === b));
+  });
+
+  pos = 0; learnedCount = 0;
+  document.getElementById("list").style.display = "none";
+  update(true); 
+}
+
+function setMode(m) {
+  mode = m;
+  document.getElementById("modeEN").classList.toggle("active", m === "EN");
+  document.getElementById("modeES").classList.toggle("active", m === "ES");
+  update(true);
+}
+
+function update(fromNextAction = false) {
+  if (currentBlockData.length === 0) {
+    document.getElementById("word").innerHTML = "¡Bloque Completado! 🎉";
+    document.getElementById("answer").innerHTML = "";
+    return;
+  }
+  const item = currentBlockData[pos];
+  const translation = `<span class="txt-es">${item.es}</span>`;
+  
+  const w = document.getElementById("word");
+  const a = document.getElementById("answer");
+
+  if (mode === "EN") {
+    w.innerHTML = ``; 
+    a.innerHTML = translation;
+    if (fromNextAction) playAudio();
+  } else {
+    w.innerHTML = `<div style='font-size:22px;'>${translation}</div>`;
+    a.innerHTML = `<span style="font-size:24px;">${item.en}</span>`;
+  }
+  
+  a.style.display = "none";
+  document.getElementById("pos").textContent = learnedCount;
+  document.getElementById("total").textContent = currentBlockData.length + learnedCount;
+}
+
+function reveal() {
+  if (currentBlockData.length > 0) {
+    const item = currentBlockData[pos];
+    if (mode === "EN") {
+        document.getElementById("word").innerHTML = `<span style="color:#333;">${item.en}</span>`;
+    }
+    document.getElementById("answer").style.display = "block";
+    if (mode === "ES") playAudio(); 
+  }
+}
+
+function know() {
+  if (currentBlockData.length === 0) return;
+  learnedCount++;
+  currentBlockData.splice(pos, 1);
+  if (pos >= currentBlockData.length) pos = 0;
+  update(true);
+}
+
+function next() {
+  if (currentBlockData.length === 0) return;
+  pos = (pos + 1) % currentBlockData.length;
+  update(true);
+}
+
+function playAudio() {
+  if (currentBlockData.length === 0) return;
+  const num = currentBlockData[pos].realIdx;
+  const a = document.getElementById("audio");
+  // Ajustado a los audios: frase1.mp3, frase2.mp3...
+  a.src = "frase" + num + ".mp3";
+  const btn=document.querySelector('.audio-btn');
+  btn.classList.remove('vibrate'); void btn.offsetWidth; btn.classList.add('vibrate');
+  a.play().catch(() => {});
+}
+
+function toggleList() {
+  const l = document.getElementById("list");
+  if (l.style.display === "block") { l.style.display = "none"; return; }
+  l.innerHTML = "<b>Llista del bloc:</b><br><br>";
+  let start = currentBlockID === 'T' ? 0 : currentBlockID * 10;
+  let end = currentBlockID === 'T' ? data.length : Math.min(start + 10, data.length);
+  let originalBlock = data.slice(start, end);
+  originalBlock.forEach((item) => {
+    l.innerHTML += `<div style="margin-bottom:8px"><b>${item.en}</b> - <span class="txt-es">${item.es}</span></div>`;
+  });
+  l.style.display = "block";
+}
+
+initBlocks();
+</script>
+</body>
+</html>

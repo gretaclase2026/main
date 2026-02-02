@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Greta App - Frases Tema 5</title>
+<style>
+body{margin:0;font-family:sans-serif;background:#f9fafb;color:#0f172a}
+header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center}
+.mode-btns button{margin:0 6px;padding:8px 14px;border:none;border-radius:14px;font-weight:700;cursor:pointer}
+.mode-en{background:#dbeafe}
+.mode-es{background:#fde68a}
+main{display:flex;justify-content:center;padding:24px}
+.card{position:relative;width:100%;max-width:560px;background:#fff;border-radius:28px;padding:32px;box-shadow:0 12px 30px rgba(0,0,0,0.08);text-align:center}
+.counter{position:absolute;top:18px;right:22px;font-weight:800;color:#2563eb}
+.lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
+.audio-btn{width:120px;height:120px;border-radius:50%;border:none;background:#dbeafe;font-size:36px;cursor:pointer;margin:6px auto 10px;display:flex;align-items:center;justify-content:center}
+.hidden{display:none}
+.es{font-size:20px;color:#2563eb;margin-top:14px}
+.en{font-size:20px;color:#0f172a;margin-top:14px;font-weight:700}
+.buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:22px}
+button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;cursor:pointer}
+.reveal{background:#e0f2fe}
+.know{background:#dcfce7}
+.next{background:#fbcfe8}
+.list-btn{margin-top:16px;background:#e9d5ff;border:none;border-radius:16px;padding:14px;font-weight:800;cursor:pointer;width:100%}
+.list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
+.list-item{padding:10px 0;border-bottom:1px solid #e5e7eb}
+.list-item:last-child{border-bottom:none}
+.list-es{color:#2563eb;font-weight:700}
+.list-en{color:#0f172a;font-weight:800}
+.end{margin-top:16px;font-weight:800;color:#16a34a}
+</style>
+</head>
+<body>
+<header>
+ <div class="mode-btns">
+  <button class="mode-en" onclick="setMode('EN')">ANGLÈS → CASTELLÀ</button>
+  <button class="mode-es" onclick="setMode('ES')">CASTELLÀ → ANGLÈS</button>
+ </div>
+</header>
+<main>
+<div class="card">
+ <div class="counter" id="counter">0 / 12</div>
+ <div id="langLabel" class="lang">INGLES</div>
+ <button class="audio-btn" onclick="play()">🔊</button>
+ <div id="es" class="es hidden"></div>
+ <div id="en" class="en hidden"></div>
+ <div class="buttons">
+  <button class="action reveal" onclick="reveal()">Veure</button>
+  <button class="action know" onclick="know()">Ja la sé</button>
+  <button class="action next" onclick="nextOne()">Següent</button>
+ </div>
+ <button class="list-btn" onclick="toggleList()">Veure tota la llista</button>
+ <div id="endMsg" class="end hidden">✔ Ja les saps totes</div>
+</div>
+</main>
+<div id="listBox" class="list-box hidden"></div>
+
+<script>
+const items = [
+    {"audio": "f001.mp3", "en": "Every time I try to organize my desk before starting to work, I end up finding old photographs and letters that distract me for hours, making me realize how much I miss the old days when everything was simpler.", "es": "Cada vez que intento organizar mi escritorio antes de empezar a trabajar, acabo encontrando fotografias y cartas viejas que me distraen durante horas, haciendome darme cuenta de cuanto extraño los viejos tiempos cuando todo era mas sencillo."},
+    {"audio": "f002.mp3", "en": "I was planning to cook a sophisticated dinner for my friends tonight, but since I burned the main course while I was talking on the phone, we had to order some pizza from the place across the street instead.", "es": "Tenia planeado cocinar una cena sofisticada para mis amigos esta noche, pero como queme el plato principal mientras hablaba por telefono, tuvimos que pedir pizza del local de enfrente en su lugar."},
+    {"audio": "f003.mp3", "en": "Even though I left the house ten minutes earlier than usual to avoid the traffic jam, the heavy rain caused a major delay on the subway, which meant that I arrived late for my most important meeting of the week.", "es": "Aunque sali de casa diez minutos antes de lo habitual para evitar el atasco, la fuerte lluvia causo un gran retraso en el metro, lo que significo que llegue tarde a mi reunion mas importante de la semana."},
+    {"audio": "f004.mp3", "en": "I promised myself that I would go to the gym at least four times a week to stay healthy, but sometimes it is extremely difficult to find the motivation after a long and stressful day at the office.", "es": "Me prometi a mi mismo que iria al gimnasio al menos cuatro veces por semana para mantenerme saludable, pero a veces es extremadamente dificil encontrar la motivacion despues de un dia largo y estresante en la oficina."},
+    {"audio": "f005.mp3", "en": "The laundry has been piling up since last Monday, so I will have to spend my entire Saturday washing, drying, and folding clothes if I want to have something clean to wear for the rest of the month.", "es": "La ropa sucia se ha estado acumulando desde el lunes pasado, asi que tendre que pasar todo mi sabado lavando, secando y doblando ropa si quiero tener algo limpio que ponerme durante el resto del mes."},
+    {"audio": "f006.mp3", "en": "While I was scrolling through social media yesterday, I found a tutorial on how to repair my broken laptop, but I think it might be too complicated for me to fix it without professional help.", "es": "Mientras navegaba por las redes sociales ayer, encontre un tutorial sobre como reparar mi portatil roto, pero creo que podria ser demasiado complicado para mi arreglarlo sin ayuda profesional."},
+    {"audio": "f007.mp3", "en": "I went to the shopping mall just to buy a pair of socks, but I ended up spending way more money than I intended because there were so many discounts that I simply couldn't resist buying a new jacket.", "es": "Fui al centro comercial solo para comprar un par de calcetines, pero termine gastando mucho mas dinero de lo que pretendia porque habia tantos descuentos que simplemente no pude resistirme a comprar una chaqueta nueva."},
+    {"audio": "f008.mp3", "en": "If I had known that caffeine would keep me awake until three in the morning, I would never have ordered that double espresso after dinner while I was out with my coworkers last night.", "es": "Si hubiera sabido que la cafeina me mantendria despierto hasta las tres de la mañana, nunca habria pedido ese espresso doble despues de cenar mientras estaba fuera con mis compañeros anoche."},
+    {"audio": "f009.mp3", "en": "I noticed that the plants on my balcony were starting to turn yellow, so I decided to look for some advice online to find out if I was watering them too much or if they needed more sunlight.", "es": "Note que las plantas de mi balcon estaban empezando a ponerse amarillas, asi que decidi buscar algunos consejos en internet para averiguar si las estaba regando demasiado o si necesitaban mas luz solar."},
+    {"audio": "f010.mp3", "en": "We were thinking about going to the beach this weekend, but since the car is making a strange noise, we might have to take it to the mechanic and stay in the city to explore the new museum instead.", "es": "Estabamos pensando en ir a la playa este fin de semana, pero como el coche esta haciendo un ruido extraño, puede que tengamos que llevarlo al mecanico y quedarnos en la ciudad para explorar el nuevo museo en su lugar."},
+    {"audio": "f011.mp3", "en": "My dog always gets extremely excited when it rains, running through the mud and then entering the house before I can clean his paws, which means I have to mop the entire floor twice a day.", "es": "Mi perro siempre se emociona muchisimo cuando llueve, corriendo por el barro y luego entrando en casa antes de que pueda limpiarle las patas, lo que significa que tengo que fregar todo el suelo dos veces al dia."},
+    {"audio": "f012.mp3", "en": "The reason why I am practicing these long sentences is that I want to improve my fluency so that I can talk to native speakers without having to stop every two seconds to think about grammar.", "es": "La razon por la que estoy practicando estas frases largas es que quiero mejorar mi fluidez para poder hablar con hablantes nativos sin tener que parar cada dos segundos para pensar en la gramatica."}
+];
+
+let remaining=[...items], current=null, mode="EN", known=0;
+let audioPlayer = new Audio();
+
+function updateCounter(){ document.getElementById("counter").textContent = known + " / " + items.length; }
+
+function play(){ 
+    if(current) {
+        audioPlayer.src = current.audio;
+        audioPlayer.play().catch(e => console.log("Error audio"));
+    }
+}
+
+function load(){
+ if(remaining.length===0){
+   document.getElementById("endMsg").classList.remove("hidden");
+   return;
+ }
+ current=remaining[Math.floor(Math.random()*remaining.length)];
+ document.getElementById("es").classList.add("hidden");
+ document.getElementById("en").classList.add("hidden");
+ 
+ if(mode==="EN"){
+  document.getElementById("langLabel").textContent="INGLES";
+  play();
+ } else {
+  document.getElementById("langLabel").textContent="CASTELLANO";
+  document.getElementById("es").textContent=current.es;
+  document.getElementById("es").classList.remove("hidden");
+ }
+}
+
+function reveal(){
+ if(!current)return;
+ document.getElementById("es").textContent=current.es;
+ document.getElementById("en").textContent=current.en;
+ document.getElementById("es").classList.remove("hidden");
+ document.getElementById("en").classList.remove("hidden");
+ if(mode==="ES") play();
+}
+
+function know(){
+ if(!current||remaining.length===0)return;
+ remaining=remaining.filter(i=>i!==current);
+ known++;
+ updateCounter();
+ load();
+}
+
+function nextOne(){ load(); }
+function setMode(m){ mode=m; load(); }
+
+function toggleList(){
+ const lb = document.getElementById("listBox");
+ lb.innerHTML="";
+ items.forEach(i=>{
+  const d=document.createElement("div");
+  d.className="list-item";
+  d.innerHTML="<div class='list-es'>"+i.es+"</div><div class='list-en'>"+i.en+"</div>";
+  lb.appendChild(d);
+ });
+ lb.classList.toggle("hidden");
+}
+
+updateCounter();
+load();
+</script>
+</body>
+</html>

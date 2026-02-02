@@ -1,0 +1,372 @@
+ <!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estudi 150 Verbs Irregulars</title>
+<style>
+body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
+header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center}
+.mode-btns button{margin:0 6px;padding:8px 14px;border:none;border-radius:14px;font-weight:700;cursor:pointer}
+.mode-en{background:#dbeafe}
+.mode-es{background:#fde68a}
+main{display:flex;justify-content:center;padding:24px}
+.card{position:relative;width:100%;max-width:560px;background:#ffffff;border-radius:28px;padding:32px;box-shadow:0 10px 24px rgba(0,0,0,0.06);text-align:center}
+.counter{position:absolute;top:18px;right:22px;font-weight:800;color:#2563eb}
+.lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
+.audio-btn{width:140px;height:140px;border-radius:50%;border:none;background:#dcfce7;font-size:60px;cursor:pointer;margin:12px auto;transition:0.2s}
+.audio-btn.vibrate{animation:vibrate 0.25s linear 2}
+@keyframes vibrate{0%{transform:translate(0)}25%{transform:translate(2px,-2px)}50%{transform:translate(-2px,2px)}75%{transform:translate(2px,2px)}100%{transform:translate(0)}}
+.hidden{display:none}
+/* CAMBIO: Texto en Castellano en AZUL */
+.es{font-size:19px;color:#2563eb;margin-top:-6px;margin-bottom:10px;font-weight:600}
+.en{font-size:21px;color:#0f172a;margin-top:6px;margin-bottom:14px;font-weight:800}
+.buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:20px}
+button.action{padding:14px 0;border:none;border-radius:14px;font-weight:800;cursor:pointer}
+.reveal{background:#e0f2fe}
+.know{background:#dcfce7}
+.next{background:#fbcfe8}
+.list-btn{margin-top:15px;background:#e9d5ff;border:none;border-radius:14px;padding:12px;font-weight:800;cursor:pointer;width:100%}
+.list-box{max-width:560px;margin:15px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:15px;text-align:left}
+.list-item{padding:8px 0;border-bottom:1px solid #eee;font-size:14px}
+/* Color azul también en la lista */
+.list-es{color:#2563eb;font-weight:500}
+
+/* BLOCS – botons grocs com el model estàndard */
+.block{
+  background:#fff4cc !important;
+}
+.block.active{
+  background:#ffcc00 !important;
+}
+
+
+.blocks{
+ display:flex;
+ justify-content:center;
+ gap:10px;
+ padding:10px 0;
+}
+.block{
+ width:44px;
+ height:44px;
+ border-radius:50%;
+ border:none;
+ background:#fff4cc;
+ font-weight:800;
+ cursor:pointer;
+}
+.block.active{
+ background:#ffcc00;
+}
+
+</style>
+</head>
+<body>
+
+<header>
+ <div class="mode-btns">
+  <button class="mode-en" onclick="setMode('EN')">ANGLÈS → CASTELLÀ</button>
+  <button class="mode-es" onclick="setMode('ES')">CASTELLÀ → ANGLÈS</button>
+ </div>
+</header>
+
+<div class="blocks">
+  <button class="block active" onclick="selectTotal()">T</button>
+  <button class="block" onclick="selectBlock(0)">1</button>
+  <button class="block" onclick="selectBlock(1)">2</button>
+  <button class="block" onclick="selectBlock(2)">3</button>
+  <button class="block" onclick="selectBlock(3)">4</button>
+  <button class="block" onclick="selectBlock(4)">5</button>
+  <button class="block" onclick="selectBlock(5)">6</button>
+  <button class="block" onclick="selectBlock(6)">7</button>
+  <button class="block" onclick="selectBlock(7)">8</button>
+  <button class="block" onclick="selectBlock(8)">9</button>
+</div>
+
+
+<main>
+<div class="card">
+ <div class="counter" id="counter">0 / 450</div>
+ <div id="langLabel" class="lang">ANGLÈS</div>
+ <button class="audio-btn" onclick="play()">🔊</button>
+ <div id="es" class="es hidden"></div>
+ <div id="en" class="en hidden"></div>
+ <div class="buttons">
+  <button class="action reveal" onclick="reveal(); if(mode==='ES'){ play(); }">Veure</button>
+  <button class="action know" onclick="know()">Ja la sé</button>
+  <button class="action next" onclick="nextOne()">Següent</button>
+ </div>
+ <button class="list-btn" onclick="toggleList()">Veure tota la llista</button>
+ <div id="endMsg" style="margin-top:20px;font-weight:800;color:green" class="hidden">✔ ¡Completat!</div>
+</div>
+</main>
+<div id="listBox" class="list-box hidden"></div>
+
+<script>
+const data = [
+ ["I am tired today.","Hoy estoy cansado."],["She was late yesterday.","Ella llegó tarde ayer."],["They have been here before.","Ellos han estado aquí antes."],
+ ["He wants to become a teacher.","Él quiere llegar a ser profesor."],["She became famous quickly.","Ella se hizo famosa rápidamente."],["He has become more confident.","Él se ha vuelto más seguro."],
+ ["We begin at nine.","Empezamos a las nueve."],["The concert began late.","El concierto empezó tarde."],["The meeting has begun.","La reunión ha comenzado."],
+ ["Don’t break the glass.","No rompas el vaso."],["He broke his phone.","Él rompió su teléfono."],["The window has broken.","La ventana se ha roto."],
+ ["I bring my lunch.","Traigo mi almuerzo."],["She brought a gift.","Ella trajo un regalo."],["He has brought his keys.","Él ha traído sus llaves."],
+ ["They build houses here.","Ellos construyen casas aquí."],["They built a bridge.","Ellos construyeron un puente."],["The bridge was built quickly.","El puente fue construido rápidamente."],
+ ["I buy books online.","Compro libros por internet."],["She bought a dress.","Ella compró un vestido."],["He has bought a car.","Él ha comprado un coche."],
+ ["Try to catch the ball.","Intenta atrapar la pelota."],["He caught a cold.","Él se resfrió."],["She has caught the bus.","Ella ha cogido el autobús."],
+ ["I choose carefully.","Elijo cuidadosamente."],["She chose blue.","Ella eligió el azul."],["He has chosen well.","Él ha elegido bien."],
+ ["Please come here.","Ven aquí, por favor."],["She came early.","Ella vino temprano."],["They have come home.","Ellos han venido a casa."],
+ ["This costs a lot.","Esto cuesta mucho."],["It cost too much.","Costó demasiado."],["It has cost thousands.","Ha costado miles."],
+ ["Be careful when you cut paper.","Ten cuidado cuando cortes papel."],["He cut his finger.","Él se cortó el dedo."],["She has cut her hair.","Ella se ha cortado el pelo."],
+ ["I do my homework.","Hago mis deberes."],["She did her best.","Ella hizo lo mejor que pudo."],["He has done enough.","Él ha hecho suficiente."],
+ ["I draw every day.","Dibujo cada día."],["She drew a cat.","Ella dibujó un gato."],["He has drawn a map.","Él ha dibujado un mapa."],
+ ["I drink water.","Bebo agua."],["He drank coffee.","Él bebió café."],["She has drunk too much.","Ella ha bebido demasiado."],
+ ["I drive to work.","Conduzco al trabajo."],["She drove fast.","Ella condujo rápido."],["He has driven all night.","Él ha conducido toda la noche."],
+ ["We eat at noon.","Comemos al mediodía."],["They ate pizza.","Ellos comieron pizza."],["I have eaten already.","Ya he comido."],
+ ["Leaves fall in autumn.","Las hojas caen en otoño."],["He fell down.","Él se cayó."],["She has fallen asleep.","Ella se ha dormido."],
+ ["I feel tired.","Me siento cansado."],["She felt sick.","Ella se sintió mal."],["He has felt better.","Él se ha sentido mejor."],
+ ["I find it useful.","Lo encuentro útil."],["She found her keys.","Ella encontró sus llaves."],["They have found a solution.","Ellos han encontrado una solución."],
+ ["Birds fly high.","Los pájaros vuelan alto."],["We flew to Rome.","Volamos a Roma."],["They have flown home.","Ellos han volado a casa."],
+ ["Don’t forget me.","No me olvides."],["He forgot his wallet.","Él olvidó su cartera."],["She has forgotten again.","Ella se ha olvidado otra vez."],
+ ["I get nervous.","Me pongo nervioso."],["She got angry.","Ella se enfadó."],["He has got better.","Él ha mejorado."],
+ ["I give advice.","Doy consejos."],["She gave me help.","Ella me ayudó."],["He has given up.","Él se ha rendido."],
+ ["I go home.","Voy a casa."],["She went out.","Ella salió."],["They have gone already.","Ellos ya se han ido."],
+ ["Plants grow fast here.","Las plantas crecen rápido aquí."],["The company grew quickly.","La empresa creció rápido."],["He has grown a lot.","Él ha crecido mucho."],
+ ["I have time now.","Tengo tiempo ahora."],["She had a problem.","Ella tuvo un problema."],["They have had enough.","Ellos han tenido suficiente."],
+ ["I hear a noise.","Oigo un ruido."],["She heard the news.","Ella oyó las noticias."],["He has heard that before.","Él ha oído eso antes."],
+ ["They hide the truth.","Ellos esconden la verdad."],["He hid the letter.","Él escondió la carta."],["She has hidden the keys.","Ella ha escondido las llaves."],
+ ["Don’t hit the table.","No golpees la mesa."],["He hit the ball.","Él golpeó la pelota."],["She has hit the target.","Ella ha dado en el blanco."],
+ ["I hold the door.","Sujeto la puerta."],["She held his hand.","Ella le cogió la mano."],["They have held talks.","Ellos han mantenido conversaciones."],
+ ["This hurts a lot.","Esto duele mucho."],["He hurt his knee.","Él se lastimó la rodilla."],["She has hurt her back.","Ella se ha lastimado la espalda."],
+ ["I keep calm.","Mantengo la calma."],["She kept quiet.","Ella se quedó callada."],["He has kept the secret.","Él ha guardado el secreto."],
+ ["I know the answer.","Sé la respuesta."],["She knew the truth.","Ella sabía la verdad."],["It has known better days.","Ha conocido tiempos mejores."],
+ ["I leave early.","Me voy temprano."],["They left yesterday.","Ellos se fueron ayer."],["She has left already.","Ella ya se ha ido."],
+ ["I lend books.","Presto libros."],["He lent me money.","Él me prestó dinero."],["She has lent her car.","Ella ha prestado su coche."],
+ ["Please let me speak.","Por favor, déjame hablar."],["He let them go.","Él los dejó ir."],["They have let it happen.","Ellos han dejado que pase."],
+ ["I lose focus easily.","Pierdo el enfoque fácilmente."],["She lost her phone.","Ella perdió su teléfono."],["He has lost weight.","Él ha perdido peso."],
+ ["I make mistakes.","Cometo errores."],["She made a cake.","Ella hizo un pastel."],["They have made progress.","Ellos han progresado."],
+ ["What does this mean?","¿Qué significa esto?"],["He meant no harm.","Él no quiso hacer daño."],["She has meant that.","Ella ha querido decir eso."],
+ ["I meet clients daily.","Me reúno con clientes a diario."],["She met him there.","Ella lo conoció allí."],["They have met before.","Ellos se han conocido antes."],
+ ["I pay by card.","Pago con tarjeta."],["He paid the bill.","Él pagó la cuenta."],["She has paid already.","Ella ya ha pagado."],
+ ["I put it here.","Lo pongo aquí."],["She put it away.","Ella lo guardó."],["He has put effort in.","Él se ha esforzado."],
+ ["I read every night.","Leo cada noche."],["She read the email.","Ella leyó el email."],["He has read the report.","Él ha leído el informe."],
+ ["I ride a bike.","Monto en bici."],["She rode home.","Ella fue a casa en bici."],["He has ridden horses.","Él ha montado a caballo."],
+ ["I ring the bell.","Toco el timbre."],["She rang him.","Ella le llamó."],["The phone has rung.","El teléfono ha sonado."],
+ ["Prices rise fast.","Los precios suben rápido."],["The sun rose early.","El sol salió temprano."],["Costs have risen again.","Los costes han subido otra vez."],
+ ["I run daily.","Corro a diario."],["She ran away.","Ella huyó."],["He has run out.","Él se ha quedado sin."],
+ ["I say nothing.","No digo nada."],["She said yes.","Ella dijo que sí."],["He has said enough.","Él ha dicho suficiente."],
+ ["I see the problem.","Veo el problema."],["She saw him.","Ella lo vio."],["They have seen it.","Ellos lo han visto."],
+ ["They sell books online.","Venden libros por internet."],["She sold her car.","Ella vendió su coche."],["He has sold everything.","Él lo ha vendido todo."],
+ ["I send emails daily.","Envío emails a diario."],["She sent the file.","Ella envió el archivo."],["He has sent the message.","Él ha enviado el mensaje."],
+ ["I set goals.","Me marco metas."],["She set the alarm.","Ella puso la alarma."],["They have set a date.","Ellos han fijado una fecha."],
+ ["I shake hands.","Doy la mano."],["He shook my hand.","Él me dio la mano."],["She has shaken the bottle.","Ella ha agitado la botella."],
+ ["The sun shines brightly.","El sol brilla intensamente."],["It shone all day.","Brilló todo el día."],["The light has shone again.","La luz ha brillado de nuevo."],
+ ["He shoots well.","Él dispara bien."],["She shot the target.","Ella disparó al blanco."],["They have shot a video.","Ellos han grabado un vídeo."],
+ ["I show the way.","Muestro el camino."],["She showed me around.","Ella me enseñó el lugar."],["He has shown interest.","Él ha mostrado interés."],
+ ["Please shut the door.","Por favor, cierra la puerta."],["He shut the window.","Él cerró la ventana."],["She has shut it already.","Ella ya la ha cerrado."],
+ ["I sing in the shower.","Canto en la ducha."],["She sang loudly.","Ella cantó fuerte."],["He has sung before.","Él ha cantado antes."],
+ ["I sit here.","Me siento aquí."],["She sat down.","Ella se sentó."],["They have sat quietly.","Ellos se han sentado tranquilos."],
+ ["I sleep well.","Duermo bien."],["He slept badly.","Él durmió mal."],["She has slept enough.","Ella ha dormido suficiente."],
+ ["I speak English.","Hablo inglés."],["She spoke clearly.","Ella habló claro."],["He has spoken already.","Él ya ha hablado."],
+ ["I spend time wisely.","Gasto el tiempo con sabiduría."],["She spent too much.","Ella gastó demasiado."],["They have spent hours.","Ellos han pasado horas."],
+ ["I stand here.","Me quedo aquí de pie."],["He stood still.","Él se quedó quieto."],["She has stood firm.","Ella se ha mantenido firme."],
+ ["People steal sometimes.","La gente roba a veces."],["He stole the bag.","Él robó el bolso."],["The bike has been stolen.","La bici ha sido robada."],
+ ["I stick to rules.","Me ciño a las reglas."],["She stuck the label.","Ella pegó la etiqueta."],["It has stuck there.","Se ha quedado pegado allí."],
+ ["I swim weekly.","Nado semanalmente."],["He swam far.","Él nadó lejos."],["She has swum already.","Ella ya ha nadado."],
+ ["I take notes.","Tomo notas."],["She took a photo.","Ella hizo una foto."],["He has taken action.","Él ha tomado medidas."],
+ ["I teach languages.","Enseño idiomas."],["She taught English.","Ella enseñó inglés."],["He has taught for years.","Él ha enseñado durante años."],
+ ["I tell the truth.","Digo la verdad."],["She told me everything.","Ella me lo contó todo."],["He has told you already.","Él ya te lo ha dicho."],
+ ["I think so.","Eso creo."],["She thought about it.","Ella lo pensó."],["He has thought carefully.","Él lo ha pensado bien."],
+ ["I throw the ball.","Tiro la pelota."],["She threw it away.","Ella la tiró."],["He has thrown it out.","Él la ha echado fuera."],
+ ["I understand now.","Ahora lo entiendo."],["She understood late.","Ella lo entendió tarde."],["He has understood everything.","El lo ha entendido todo."],
+ ["I wake early.","Me despierto temprano."],["She woke suddenly.","Ella despertó de repente."],["He has woken up.","Él se ha despertado."],
+ ["I wear glasses.","Llevo gafas."],["She wore black.","Ella vestía de negro."],["He has worn it often.","Él lo ha llevado a menudo."],
+ ["I win easily.","Gano fácilmente."],["She won the prize.","Ella ganó el premio."],["He has won before.","Él ha ganado antes."],
+ ["I write emails daily.","Escribo emails a diario."],["She wrote a letter.","Ella escribió una carta."],["He has written a book.","Él ha escrito un libro."],
+ ["Dogs sometimes bite.","Los perros muerden a veces."],["He bit his lip.","Él se mordió el labio."],["She has bitten her tongue.","Ella se ha mordido la lengua."],
+ ["The wind blows hard.","El viento sopla fuerte."],["It blew yesterday.","Sopló ayer."],["The storm has blown away.","La tormenta se ha ido."],
+ ["I burn calories.","Quemo calorías."],["She burnt the toast.","Ella quemó la tostada."],["The house has burned down.","La casa se ha quemado."],
+ ["I deal with clients.","Trato con clientes."],["She dealt with it.","Ella se encargó de ello."],["He has dealt fairly.","Él ha tratado de forma justa."],
+ ["They dig holes.","Cavan hoyos."],["He dug the ground.","Él cavó la tierra."],["They have dug deeply.","Ellos han cavado hondo."],
+ ["I feed the cat.","Alimento al gato."],["She fed the baby.","Ella alimentó al bebé."],["He has fed everyone.","Él ha alimentado a todos."],
+ ["They fight often.","Pelean a menudo."],["He fought bravely.","Él luchó con valentía."],["She has fought hard.","Ella ha luchado duro."],
+ ["I hang pictures.","Cuelgo cuadros."],["She hung the coat.","Ella colgó el abrigo."],["He has hung it up.","Él lo ha colgado."],
+ ["She leads the team.","Ella lidera el equipo."],["He led the group.","Él guió al grupo."],["She has led well.","Ella ha liderado bien."],
+ ["I light candles.","Enciendo velas."],["She lit the fire.","Ella encendió el fuego."],["The room has lit up.","La habitación se ha iluminado."],
+ ["I prove my point.","Demuestro mi punto."],["She proved it wrong.","Ella demostró que era falso."],["He has proven his case.","Él ha demostrado su caso."],
+ ["I seek help.","Busco ayuda."],["She sought advice.","Ella buscó consejo."],["He has sought answers.","Él ha buscado respuestas."],
+ ["I sew clothes.","Coso ropa."],["She sewed a dress.","Ella cosió un vestido."],["She has sewn it.","Ella lo ha cosido."],
+ ["Ships sink fast.","Los barcos se hunden rápido."],["The boat sank.","El barco se hundió."],["It has sunk already.","Ya se ha hundido."],
+ ["Kids slide here.","Los niños se deslizan aquí."],["He slid on ice.","Él resbaló en el hielo."],["She has slid down.","Ella se ha deslizado hacia abajo."],
+ ["I spin around.","Doy vueltas."],["She spun quickly.","Ella giró rápido."],["The wheel has spun.","La rueda ha girado."],
+ ["Problems spring up.","Los problemas surgen."],["He sprang forward.","Él saltó hacia adelante."],["Trouble has sprung up.","Han surgido problemas."],
+ ["It stinks here.","Huele mal aquí."],["The place stank.","El lugar olía fatal."],["It has stunk all day.","Ha olido mal todo el día."],
+ ["Workers strike often.","Los trabajadores hacen huelga a menudo."],["Lightning struck nearby.","Un rayo cayó cerca."],["It has struck again.","Ha golpeado de nuevo."],
+ ["I swear nothing.","No juro nada."],["He swore loudly.","Él juró en voz alta."],["She has sworn secrecy.","Ella ha jurado secreto."],
+ ["I sweep floors.","Barro los suelos."],["She swept the room.","Ella barrió el cuarto."],["He has swept everything.","Él lo ha barrido todo."],
+ ["Babies weep sometimes.","Los bebés lloran a veces."],["She wept quietly.","Ella lloró en silencio."],["He has wept before.","Él ha llorado antes."],
+ ["Analysts forecast growth.","Los analistas pronostican crecimiento."],["They forecast rain.","Pronostican lluvia."],["Experts have forecast changes.","Los expertos han pronosticado cambios."],
+ ["I input the data.","Introduzco los datos."],["She input the numbers.","Ella introdujo los números."],["He has input everything.","Él lo ha introducido todo."],
+ ["Problems arise suddenly.","Los problemas surgen de repente."],["A question arose.","Surgió una pregunta."],["Issues have arisen.","Han surgido problemas."],
+ ["I awake early.","Me despierto temprano."],["She awoke suddenly.","Ella despertó de repente."],["He has awoken late.","Él ha despertado tarde."],
+ ["I bear responsibility.","Asumo la responsabilidad."],["She bore the pain.","Ella soportó el dolor."],["He has borne the cost.","Él ha asumido el coste."],
+ ["I bind the papers.","Encuaderno los papeles."],["She bound the book.","Ella encuadernó el libro."],["They have bound it well.","Ellos lo han encuadernado bien."],
+ ["They breed dogs.","Crían perros."],["She bred horses.","Ella crió caballos."],["He has bred animals.","Él ha criado animales."],
+ ["They cast actors.","Eligen actores."],["She cast a vote.","Ella votó."],["He has cast doubt.","Él ha sembrado la duda."],
+ ["Kids cling to parents.","Los niños se aferran a los padres."],["She clung to hope.","Ella se aferró a la esperanza."],["He has clung tightly.","Él se ha aferrado fuerte."],
+ ["Fear creeps in.","El miedo se cuela."],["He crept closer.","Él se acercó sigilosamente."],["It has crept up.","Se ha acercado sin avisar."],
+ ["People flee danger.","La gente huye del peligro."],["She fled the area.","Ella huyó de la zona."],["They have fled already.","Ellos ya han huido."],
+ ["I forbid this.","Prohíbo esto."],["He forbade entry.","Él prohibió la entrada."],["It has forbidden access.","Se ha prohibido el acceso."],
+ ["I forgive mistakes.","Perdono los errores."],["She forgave him.","Ella le perdonó."],["He has forgiven her.","Él la ha perdonada."],
+ ["Water freezes fast.","El agua se congela rápido."],["The lake froze.","El lago se congeló."],["It has frozen solid.","Se ha congelado por completo."],
+ ["I grind coffee.","Muelo café."],["She ground pepper.","Ella molió pimienta."],["He has ground beans.","Él ha molido granos."],
+ ["I kneel briefly.","Me arrodillo un momento."],["She knelt down.","Ella se arrodilló."],["He has knelt before.","Él se ha arrodillado antes."],
+ ["I lay the table.","Pongo la mesa."],["She laid the cloth.","Ella puso el mantel."],["He has laid it out.","Él lo ha dispuesto."],
+ ["Kids leap around.","Los niños saltan."],["He leapt forward.","Él saltó hacia adelante."],["She has leaped high.","Ella ha saltado alto."],
+ ["Ice melts quickly.","El hielo se derrite rápido."],["It melted fast.","Se derritió rápido."],["It has melted away.","Se ha derretido."],
+ ["I owe you money.","Te debo dinero."],["She owed him help.","Ella le debía ayuda."],["He has owed taxes.","Él ha debido impuestos."],
+ ["I rid myself of fear.","Me libro del miedo."],["He rid the room of bugs.","Él libró el cuarto de bichos."],["She has rid herself of doubt.","Ella se ha librado de la duda."],
+ ["I saw wood.","Sierro madera."],["He sawed the plank.","Él serró el tablón."],["It has sawn cleanly.","Se ha serrado limpiamente."],
+ ["Clothes shrink easily.","La ropa encoge fácilmente."],["It shrank in size.","Encogió de tamaño."],["It has shrunk again.","Ha encogido otra vez."],
+ ["People spit sometimes.","La gente escupe a veces."],["He spat on the ground.","Él escupió en el suelo."],["He has spat outside.","Él ha escupido fuera."],
+ ["They split costs.","Dividen gastos."],["She split the bill.","Ella dividió la cuenta."],["They have split already.","Ellos ya se han dividido."],
+ ["News spreads fast.","Las noticias se propagan rápido."],["The fire spread quickly.","El fuego se propagó rápido."],["It has spread everywhere.","Se ha extendido por todas partes."],
+ ["My heart beats fast.","Mi corazón late rápido."],["He beat the record.","Él batió el récord."],["She has beaten the game.","Ella se ha pasado el juego."],
+ ["Don’t bend the wire.","No dobles el alambre."],["He bent the rules.","Él se saltó las normas."],["She has bent the metal.","Ella ha doblado el metal."],
+ ["Cuts bleed easily.","Los cortes sangran fácilmente."],["He bled a lot.","Él sangró mucho."],["She has bled before.","Ella ha sangrado antes."],
+ ["Balloons burst suddenly.","Los globos explotan de repente."],["The pipe burst last night.","La tubería estalló anoche."],["It has burst again.","Ha estallado de nuevo."],
+ ["I quit easily.","Lo dejo fácilmente."],["She quit her job.","Ella dejó su trabajo."],["He has quit smoking.","Él ha dejado de fumar."],
+ ["I rewind tapes.","Rebobino cintas."],["She rewound the video.","Ella rebobinó el vídeo."],["He has rewound it.","Él lo ha rebobinado."],
+ ["Trees shed leaves.","Los árboles pierden las hojas."],["He shed some weight.","Él perdió algo de peso."],["She has shed tears.","Ella ha derramado lágrimas."],
+ ["Cars speed here.","Los coches corren aquí."],["He sped away.","Él se alejó a toda prisa."],["She has speeded up.","Ella ha acelerado."],
+ ["I spell it wrong.","Lo deletreo mal."],["She spelt my name.","Ella deletreó mi nombre."],["He has spelled it correctly.","Él lo ha deletreado bien."],
+ ["Don’t spill water.","No derrames agua."],["She spilled coffee.","Ella derramó café."],["He has spilt everything.","Él lo ha derramado todo."],
+ ["Kids spoil food.","Los niños estropean la comida."],["The heat spoilt it.","El calor lo estropeó."],["It has spoiled completely.","Se ha estropeado por completo."],
+ ["Bees sting hard.","Las abejas pican fuerte."],["He stung his hand.","Se picó la mano."],["She has stung herself.","Ella se ha picado."],
+ ["We strive for quality.","Luchamos por la calidad."],["She strove to improve.","Ella se esforzó por mejorar."],["He has striven hard.","Él se ha esforzado mucho."],
+ ["Please tread carefully.","Por favor, pisa con cuidado."],["He trod lightly.","Él pisó suavemente."],["She has trodden here.","Ella ha pisado aquí."],
+ ["I undergo training.","Me someto a entrenamiento."],["She underwent surgery.","Ella se sometió a cirugía."],["He has undergone changes.","Él ha pasado por cambios."],
+ ["We uphold standards.","Mantenemos los estándares."],["She upheld the law.","Ella defendió la ley."],["He has upheld his promise.","Él ha cumplido su promesa."],
+ ["They weave baskets.","Tejen cestas."],["She wove a scarf.","Ella tejió una bufanda."],["He has woven cloth.","Él ha tejido tela."],
+ ["I wind the clock.","Doy cuerda al reloj."],["She wound it slowly.","Ella le dio cuerda lentamente."],["He has wound it again.","Él le ha dado cuerda de nuevo."],
+ ["We overcome fear.","Superamos el miedo."],["She overcame obstacles.","Ella superó obstáculos."],["He has overcome doubts.","Él ha superado las dudas."],
+ ["I overeat sometimes.","Como demasiado a veces."],["He overate last night.","Él comió demasiado anoche."],["She has overeaten again.","Ella ha vuelto a comer de más."],
+ ["I withdraw money.","Retiro dinero."],["She withdrew early.","Ella se retiró temprano."],["He has withdrawn support.","Él ha retirado su apoyo."],
+ ["Walls withstand pressure.","Las paredes resisten la presión."],["The bridge withstood the storm.","El puente resistió la tormenta."],["It has withstood years.","Ha resistido años."]
+];
+
+let remaining = [...data], current = null, mode = "EN", knownCount = 0;
+let audio = new Audio();
+
+function updateCounter(){ document.getElementById("counter").textContent = knownCount + " / 450"; }
+
+function load(){
+ if(remaining.length === 0){
+  document.getElementById("endMsg").classList.remove("hidden");
+  return;
+ }
+ current = remaining[Math.floor(Math.random()*remaining.length)];
+ document.getElementById("es").classList.add("hidden");
+ document.getElementById("en").classList.add("hidden");
+ if(mode === "EN"){
+  document.getElementById("langLabel").textContent = "ANGLÈS";
+ } else {
+  document.getElementById("langLabel").textContent = "CASTELLÀ";
+  document.getElementById("es").textContent = current[1];
+  document.getElementById("es").classList.remove("hidden");
+ }
+}
+
+function reveal(){
+ document.getElementById("es").textContent=current[1];
+ document.getElementById("en").textContent=current[0];
+ document.getElementById("es").classList.remove("hidden");
+ document.getElementById("en").classList.remove("hidden");
+ if(mode==="ES"){
+   setTimeout(()=>{ play(); }, 0);
+ }
+}
+
+function play(){
+ const idx = data.indexOf(current);
+ const fileName = "f" + (idx + 1).toString().padStart(3, '0') + ".mp3";
+ audio.src = fileName;
+ const btn=document.querySelector('.audio-btn');btn.classList.remove('vibrate');void btn.offsetWidth;btn.classList.add('vibrate');audio.play().catch(e => console.log("Audio no trobat:", fileName));
+}
+
+function know(){
+ remaining = remaining.filter(i => i !== current);
+ knownCount++; 
+// ===== BLOCS =====
+const BLOCK_SIZE = 50;
+const BLOCKS = [];
+for(let i=0;i<9;i++){
+ BLOCKS.push(data.slice(i*BLOCK_SIZE,(i+1)*BLOCK_SIZE));
+}
+
+function setActive(btn){
+ document.querySelectorAll('.block').forEach(b=>b.classList.remove('active'));
+ btn.classList.add('active');
+}
+
+function selectTotal(){
+ remaining = [...data];
+ setActive(document.querySelectorAll('.block')[0]);
+ load();
+}
+
+function selectBlock(i){
+ remaining = [...BLOCKS[i]];
+ setActive(document.querySelectorAll('.block')[i+1]);
+ load();
+}
+// ==================
+
+updateCounter(); selectTotal();
+}
+
+function nextOne(){ load(); if(mode==="EN"){ play(); } }
+function setMode(m){ mode = m; load(); }
+
+function toggleList(){
+ const box = document.getElementById("listBox");
+ box.innerHTML = "";
+ data.forEach((i, idx) => {
+  const d = document.createElement("div");
+  d.className = "list-item";
+  // CAMBIO: Se ha eliminado el nombre del archivo f001 etc. de la lista
+  d.innerHTML = "<strong>" + i[0] + "</strong><br><span class='list-es'>" + i[1] + "</span>";
+  box.appendChild(d);
+ });
+ box.classList.toggle("hidden");
+}
+
+
+// ===== BLOCS =====
+const BLOCK_SIZE = 50;
+const BLOCKS = [];
+for(let i=0;i<9;i++){
+ BLOCKS.push(data.slice(i*BLOCK_SIZE,(i+1)*BLOCK_SIZE));
+}
+
+function setActive(btn){
+ document.querySelectorAll('.block').forEach(b=>b.classList.remove('active'));
+ btn.classList.add('active');
+}
+
+function selectTotal(){
+ remaining = [...data];
+ setActive(document.querySelectorAll('.block')[0]);
+ load();
+}
+
+function selectBlock(i){
+ remaining = [...BLOCKS[i]];
+ setActive(document.querySelectorAll('.block')[i+1]);
+ load();
+}
+// ==================
+
+updateCounter(); selectTotal();
+</script>
+</body>
+</html>

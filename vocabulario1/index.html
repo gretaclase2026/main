@@ -1,0 +1,213 @@
+ <!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vocabulari Definitiu - Verificat</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
+.card{max-width:720px;margin:20px auto;background:#fff;border-radius:24px;padding:24px;box-shadow:0 8px 18px rgba(0,0,0,.15);position:relative}
+
+.modes{display:flex;gap:10px;margin-bottom:10px;width:100%}
+.mode{flex:1;text-align:center;padding:14px;border-radius:24px;font-weight:bold;cursor:pointer;border:2px solid transparent}
+.mode.en{background:#d6e6f5}
+.mode.es{background:#f4d6e6}
+.mode.active{border-color:#999;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
+
+.blocks{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}
+.block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#fff4cc;cursor:pointer;transition:0.2s}
+.block.active{background:#ffcc00;transform:scale(1.1);box-shadow:inset 0 0 5px rgba(0,0,0,0.2)}
+
+.main-box-container{display:flex;align-items:center;justify-content:center;position:relative;margin:20px 0}
+.main-box{text-align:center;display:flex;flex-direction:column;justify-content:center;align-items:center}
+
+.audio-btn{font-size:60px;background:#dcfce7;border:none;cursor:pointer;width:140px;height:140px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
+.audio-btn.vibrate{animation:vibrate 0.25s linear 2}
+@keyframes vibrate{0%{transform:translate(0)}25%{transform:translate(2px,-2px)}50%{transform:translate(-2px,2px)}75%{transform:translate(2px,2px)}100%{transform:translate(0)}}
+.audio-btn:active{transform:scale(0.95)}
+
+.counter-side{position:absolute;right:10px;font-weight:bold;color:#2563eb;font-size:22px}
+
+#word{font-size:32px;font-weight:800;margin:20px 0;line-height:1.2;min-height:40px;text-align:center}
+.txt-es{color:#2563eb} 
+.txt-cat{color:#666}
+#answer{font-size:24px;font-weight:bold;margin-top:-10px;margin-bottom:20px;text-align:center}
+
+.actions{display:flex;gap:12px}
+.btn{flex:1;padding:18px;border-radius:18px;border:none;font-weight:bold;font-size:18px;cursor:pointer}
+.btn-reveal{background:#e0f2fe}
+.btn-know{background:#dcfce7}
+.btn-next{background:#fbcfe8}
+
+#list{margin-top:20px;background:#f9f9f9;padding:15px;border-radius:15px;display:none;border:1px solid #ddd}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="modes">
+    <div id="modeEN" class="mode en active" onclick="setMode('EN')">ENG → ESP/CAT</div>
+    <div id="modeES" class="mode es" onclick="setMode('ES')">ESP/CAT → ENG</div>
+  </div>
+
+  <div class="blocks" id="blocksContainer"></div>
+
+  <div class="main-box-container">
+    <div class="main-box">
+      <button class="audio-btn" onclick="playAudio()">🔊</button>
+    </div>
+    <div class="counter-side">
+      <span id="pos">0</span> / <span id="total">0</span>
+    </div>
+  </div>
+
+  <div id="word"></div>
+  <div id="answer"></div>
+
+  <div class="actions">
+    <button class="btn btn-reveal" onclick="reveal()">Veure</button>
+    <button class="btn btn-know" onclick="know()">Ja la sé</button>
+    <button class="btn btn-next" onclick="next()">Següent</button>
+  </div>
+  
+  <button id="listBtn" onclick="toggleList()" style="width:100%;margin-top:20px;padding:12px;border-radius:12px;border:none;background:#e9d5ff;font-weight:bold;cursor:pointer">Mostrar llista del bloc</button>
+  <div id="list"></div>
+</div>
+
+<audio id="audio"></audio>
+
+<script>
+const data = [
+  {en:"Shallow",es:"Poc profundo",cat:"Poc profund"},{en:"Wholesale",es:"Al engros",cat:"A l'engròs"},{en:"Retail",es:"Al detall",cat:"Al detall"},{en:"Lid",es:"Tapa",cat:"Tapa"},{en:"Pattern",es:"Patron",cat:"Patró"},{en:"Policy",es:"Politica / normes",cat:"Política"},{en:"Whether",es:"Si (opcion)",cat:"Si"},{en:"Handle",es:"Nansa / gestionar",cat:"Pega / Gestionar"},{en:"Hinge",es:"Frontissa",cat:"Bisagra"},{en:"Spill",es:"Vessar",cat:"Vessar"},
+  {en:"Stain",es:"Taca",cat:"Taca"},{en:"Thread",es:"Fil",cat:"Fil"},{en:"Tame",es:"Docil",cat:"Dòcil"},{en:"Raw",es:"Cru",cat:"Cru"},{en:"Stale",es:"Ressec",cat:"Ressec"},{en:"Shrug",es:"Encongir espatlles",cat:"Encongir espatlles"},{en:"Wander",es:"Vagarejar",cat:"Vagar"},{en:"Fetch",es:"Anar a buscar",cat:"Anar a buscar"},{en:"Lean",es:"Recolzar-se",cat:"Recolzar-se"},{en:"Gaze",es:"Mirar fixament",cat:"Mirar fixament"},
+  {en:"Frown",es:"Arrufar el front",cat:"Frunzir el cellat"},{en:"Odd",es:"Estrany",cat:"Estrany"},{en:"Tough",es:"Dur",cat:"Dur / Difícil"},{en:"Harsh",es:"Dur / sever",cat:"Sever"},{en:"Broad",es:"Ample",cat:"Ampli"},{en:"Tight",es:"Estret",cat:"Apretat"},{en:"Loose",es:"Fluix",cat:"Fluix"},{en:"Hardly",es:"Amb prou feines",cat:"Gairebé no"},{en:"Barely",es:"Gairebe no",cat:"Amb prou feines"},{en:"Nonetheless",es:"Tanmateix",cat:"No obstant"},
+  {en:"Overall",es:"En general",cat:"En general"},{en:"Disgust",es:"Fastic",cat:"Fàstic"},{en:"Sensible",es:"Assenyat",cat:"Sensat"},{en:"Plug",es:"Endoll",cat:"Endoll"},{en:"Socket",es:"Presa",cat:"Sòcol"},{en:"Aisle",es:"Passadis",cat:"Passadís"},{en:"Sweat",es:"Suar",cat:"Suar"},{en:"Sigh",es:"Sospirar",cat:"Sospirar"},{en:"Chew",es:"Mastegar",cat:"Mastegar"},{en:"Stubborn",es:"Tossut",cat:"Tossut"},
+  {en:"Clumsy",es:"Maldestre",cat:"Maldestre"},{en:"Dull",es:"Avorrit",cat:"Sopifer / Avorrit"},{en:"Slippery",es:"Relliscos",cat:"Relliscos"},{en:"Sour",es:"Acid",cat:"Àcid"},{en:"Sibling",es:"Germa / germana",cat:"Germà / Germana"},{en:"Fate",es:"Desti",cat:"Destí"},{en:"Grief",es:"Dol",cat:"Dol / Pena"},{en:"Burden",es:"Carrega",cat:"Càrrega"},{en:"Support",es:"Donar suport",cat:"Suport"},{en:"Somewhat",es:"Una mica",cat:"Una mica"},
+  {en:"Layout",es:"Disposicio",cat:"Disseny / Disposició"},{en:"Thigh",es:"Cuixa",cat:"Cuixa"},{en:"Tummy",es:"Panxa",cat:"Panxa"},{en:"Itch",es:"Picor",cat:"Picor"},{en:"Bruise",es:"Blau",cat:"Morat"},{en:"Blister",es:"Butllofa",cat:"Butllofa"},{en:"Scar",es:"Cicatriu",cat:"Cicatriu"},{en:"Wrench",es:"Clau anglesa",cat:"Clau anglesa"},{en:"Screwdriver",es:"Tornavis",cat:"Tornavís"},{en:"Tape",es:"Cinta",cat:"Cinta"},
+  {en:"Driveway",es:"Entrada cotxe",cat:"Entrada cotxes"},{en:"Tiles",es:"Rajoles",cat:"Rajoles"},{en:"Greedy",es:"Avar",cat:"Llepafils / Avar"},{en:"Grumpy",es:"Malcarat",cat:"Malcarat"},{en:"Narrow",es:"Estret",cat:"Estret"},{en:"Plain",es:"Senzill",cat:"Senzill / Pla"},{en:"Mend",es:"Apedaçar",cat:"Adobar"},{en:"Fortnight",es:"Quinzena",cat:"Quinzena"},{en:"Constipated",es:"Restrenyit",cat:"Estrenyit"},{en:"Fabric",es:"Teixit",cat:"Teixit"},
+  {en:"Tray",es:"Safata",cat:"Safata"},{en:"Ripe",es:"Madur",cat:"Madur"},{en:"Rotten",es:"Podrit",cat:"Podrit"},{en:"Bland",es:"Insipid",cat:"Insípid"},{en:"Mist",es:"Boirina",cat:"Boirina"},{en:"Fog",es:"Boira",cat:"Boira"},{en:"Puddle",es:"Bassal",cat:"Bassal"},{en:"Tide",es:"Marea",cat:"Marea"},{en:"Thunder",es:"Tro",cat:"Tro"},{en:"Sleeve",es:"Maniga",cat:"Mànega"},
+  {en:"Laces",es:"Cordons",cat:"Cordons"},{en:"Dizzy",es:"Marejat",cat:"Marejat"},{en:"Numb",es:"Entumit",cat:"Entumit"}
+];
+
+let currentBlockData = [];
+let pos = 0;
+let mode = "EN";
+let learnedCount = 0;
+let currentBlockID = 0;
+
+function initBlocks() {
+  const container = document.getElementById("blocksContainer");
+  const numBlocks = Math.ceil(data.length / 10);
+  for (let i = 0; i < numBlocks; i++) {
+    const btn = document.createElement("button");
+    btn.className = "block";
+    btn.textContent = i + 1;
+    btn.onclick = () => loadBlock(i);
+    container.appendChild(btn);
+  }
+  const btnT = document.createElement("button");
+  btnT.className = "block"; btnT.textContent = "T";
+  btnT.onclick = () => loadBlock('T');
+  container.appendChild(btnT);
+  loadBlock(0);
+}
+
+function loadBlock(b) {
+  currentBlockID = b;
+  let temp = [];
+  if (b === 'T') {
+    temp = data.map((item, i) => ({...item, realIdx: i+1}));
+  } else {
+    let start = b * 10;
+    let end = Math.min(start + 10, data.length);
+    for (let i = start; i < end; i++) {
+      temp.push({...data[i], realIdx: i+1});
+    }
+  }
+  currentBlockData = temp.sort(() => Math.random() - 0.5);
+  
+  document.querySelectorAll(".block").forEach((btn, idx) => {
+    btn.classList.toggle("active", (b === 'T' && btn.textContent === 'T') || (idx === b));
+  });
+
+  pos = 0; learnedCount = 0;
+  document.getElementById("list").style.display = "none";
+  update(true); 
+}
+
+function setMode(m) {
+  mode = m;
+  document.getElementById("modeEN").classList.toggle("active", m === "EN");
+  document.getElementById("modeES").classList.toggle("active", m === "ES");
+  update(true);
+}
+
+function update(fromNextAction = false) {
+  if (currentBlockData.length === 0) {
+    document.getElementById("word").innerHTML = "¡Bloc Completat!";
+    document.getElementById("answer").innerHTML = "";
+    return;
+  }
+  const item = currentBlockData[pos];
+  const translation = `<span class="txt-es">${item.es}</span> / <span class="txt-cat">${item.cat}</span>`;
+  
+  if (mode === "EN") {
+    document.getElementById("word").textContent = ""; 
+    document.getElementById("answer").innerHTML = `<div style="color:#999; font-size:18px; margin-bottom:5px;">${item.en}</div>` + translation;
+    if (fromNextAction) playAudio();
+  } else {
+    document.getElementById("word").innerHTML = translation;
+    document.getElementById("answer").textContent = item.en;
+  }
+  
+  document.getElementById("answer").style.display = "none";
+  document.getElementById("pos").textContent = learnedCount;
+  document.getElementById("total").textContent = currentBlockData.length + learnedCount;
+}
+
+function reveal() {
+  if (currentBlockData.length > 0) {
+    document.getElementById("answer").style.display = "block";
+    if (mode === "ES") playAudio(); 
+  }
+}
+
+function know() {
+  if (currentBlockData.length === 0) return;
+  learnedCount++;
+  currentBlockData.splice(pos, 1);
+  if (pos >= currentBlockData.length) pos = 0;
+  update(true);
+}
+
+function next() {
+  if (currentBlockData.length === 0) return;
+  pos = (pos + 1) % currentBlockData.length;
+  update(true);
+}
+
+function playAudio() {
+  if (currentBlockData.length === 0) return;
+  const num = currentBlockData[pos].realIdx.toString().padStart(3, "0");
+  const a = document.getElementById("audio");
+  a.src = "f" + num + ".mp3";
+  const btn=document.querySelector('.audio-btn');btn.classList.remove('vibrate');void btn.offsetWidth;btn.classList.add('vibrate');a.play().catch(() => {});
+}
+
+function toggleList() {
+  const l = document.getElementById("list");
+  if (l.style.display === "block") { l.style.display = "none"; return; }
+  l.innerHTML = "<b>Llista del bloc:</b><br><br>";
+  let start = currentBlockID === 'T' ? 0 : currentBlockID * 10;
+  let end = currentBlockID === 'T' ? data.length : Math.min(start + 10, data.length);
+  let originalBlock = data.slice(start, end);
+  originalBlock.forEach((item) => {
+    l.innerHTML += `<div style="margin-bottom:8px"><b>${item.en}</b> - <span class="txt-es">${item.es}</span> / <span class="txt-cat">${item.cat}</span></div>`;
+  });
+  l.style.display = "block";
+}
+
+initBlocks();
+</script>
+</body>
+</html>

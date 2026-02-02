@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Model estudi definitiu amb blocs</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#ececec}
+.card{max-width:720px;margin:20px auto;background:#ffffff;border-radius:24px;padding:24px;box-shadow:0 8px 18px rgba(0,0,0,.15)}
+.modes{display:flex;gap:10px;margin-bottom:10px}
+.mode{flex:1;text-align:center;padding:14px;border-radius:24px;font-weight:bold;cursor:pointer}
+.mode.en{background:#d6e6f5}
+.mode.es{background:#f4d6e6}
+.mode.active{outline:3px solid #999}
+.blocks{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.block{
+  width:38px;
+  height:38px;
+  padding:0;
+  border-radius:50%;
+  border:none;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  background:#fff4cc;
+}
+.pblock{background:#fff4cc;}
+.block.active{
+  background:#ffe39a;
+}
+.counter{text-align:right;font-weight:bold;color:#2563eb;font-size:22px}
+.audio-btn{width:140px;height:140px;margin:16px auto;border-radius:50%;background:#dcfce7;font-size:60px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:0.2s}
+.audio-btn.vibrate{animation:vibrate 0.25s linear 2}
+@keyframes vibrate{0%{transform:translate(0)}25%{transform:translate(2px,-2px)}50%{transform:translate(-2px,2px)}75%{transform:translate(2px,2px)}100%{transform:translate(0)}}
+.word{text-align:center;font-size:32px;margin-bottom:10px}
+.answer{text-align:center;font-size:26px;color:#2563eb;display:none;margin-top:-10px;margin-bottom:20px;font-weight:bold}
+.controls{display:flex;gap:10px;margin-top:14px}
+.controls button{flex:1;padding:14px;border-radius:20px;border:none;font-size:16px;font-weight:bold;cursor:pointer}
+.list-btn{margin-top:16px;width:100%;padding:14px;border-radius:20px;border:none;background:#e0d8f5;font-weight:bold}
+.list{display:none;margin-top:14px}
+.list-item{border-bottom:1px solid #ddd;padding:6px 0}
+
+.veure{background:#cfe3ff}
+.jase{background:#d7f2e3}
+.seguent{background:#f4d6e6}
+.block{
+  width:38px;
+  height:38px;
+  padding:0;
+  border-radius:50%;
+  border:none;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  background:#fff4cc;
+}
+.pblock{background:#fff4cc;}
+.block.active{
+  background:#ffe39a;
+}
+</style>
+
+</head>
+<body>
+
+<div class="card">
+  <div class="modes">
+    <div id="modeEN" class="mode en active" onclick="setMode('EN')">anglès → castellà</div>
+    <div id="modeES" class="mode es" onclick="setMode('ES')">castellà → anglès</div>
+  </div>
+
+  <div class="blocks" id="blocks"><button class="block pblock active" onclick="selectAll()">T</button></div>
+
+  <div class="counter"><span id="pos">1</span> / <span id="total">0</span></div>
+
+  <div class="audio-btn" onclick="playAudio()">🔊</div>
+  <audio id="audio"></audio>
+
+  <div id="word" class="word"></div>
+  <div id="answer" class="answer"></div>
+
+  <div class="controls">
+    <button class="veure" onclick="reveal()">Veure</button>
+    <button class="jase" onclick="know()">Ja la sé</button>
+    <button class="seguent" onclick="next()">Següent</button>
+  </div>
+
+  <button class="list-btn" onclick="toggleList()">Veure tota la llista</button>
+  <div id="list" class="list"></div>
+</div>
+
+<script>
+// ---- DATA (replace with real content) ----
+const data = [{"audio":"f001.mp3","en":"needle","es":"aguja","ex":""},{"audio":"f002.mp3","en":"pin","es":"alfiler","ex":""},{"audio":"f003.mp3","en":"buttonhole","es":"ojal","ex":""},{"audio":"f004.mp3","en":"zip","es":"cremallera","ex":""},{"audio":"f005.mp3","en":"seam","es":"costura","ex":""},{"audio":"f006.mp3","en":"hem","es":"dobladillo","ex":""},{"audio":"f007.mp3","en":"cloth","es":"paño","ex":""},{"audio":"f008.mp3","en":"wool","es":"lana","ex":""},{"audio":"f009.mp3","en":"silk","es":"seda","ex":""},{"audio":"f010.mp3","en":"lace","es":"encaje","ex":""},{"audio":"f011.mp3","en":"lining","es":"forro","ex":""},{"audio":"f012.mp3","en":"collar","es":"cuello","ex":""},{"audio":"f013.mp3","en":"cuff","es":"puño","ex":""},{"audio":"f014.mp3","en":"pocket","es":"bolsillo","ex":""},{"audio":"f015.mp3","en":"drawer","es":"cajón","ex":""},{"audio":"f016.mp3","en":"cupboard","es":"armario (cocina)","ex":""},{"audio":"f017.mp3","en":"wardrobe","es":"armario (ropa)","ex":""},{"audio":"f018.mp3","en":"hook","es":"gancho","ex":""},{"audio":"f019.mp3","en":"hinge","es":"bisagra","ex":""},{"audio":"f020.mp3","en":"doorknob","es":"pomo","ex":""},{"audio":"f021.mp3","en":"handle","es":"asa","ex":""},{"audio":"f022.mp3","en":"keyhole","es":"cerradura","ex":""},{"audio":"f023.mp3","en":"light switch","es":"interruptor","ex":""},{"audio":"f024.mp3","en":"plug","es":"enchufe","ex":""},{"audio":"f025.mp3","en":"socket","es":"toma de corriente","ex":""},{"audio":"f026.mp3","en":"cable","es":"cable","ex":""},{"audio":"f027.mp3","en":"extension lead","es":"alargador","ex":""},{"audio":"f028.mp3","en":"fuse","es":"fusible","ex":""},{"audio":"f029.mp3","en":"napkin","es":"servilleta","ex":""},{"audio":"f030.mp3","en":"tablecloth","es":"mantel","ex":""},{"audio":"f031.mp3","en":"tray","es":"bandeja","ex":""},{"audio":"f032.mp3","en":"ladle","es":"cucharón","ex":""},{"audio":"f033.mp3","en":"spatula","es":"espátula","ex":""},{"audio":"f034.mp3","en":"whisk","es":"varillas","ex":""},{"audio":"f035.mp3","en":"frying pan","es":"sartén","ex":""},{"audio":"f036.mp3","en":"saucepan","es":"cazo","ex":""},{"audio":"f037.mp3","en":"pot","es":"olla","ex":""},{"audio":"f038.mp3","en":"chopping board","es":"tabla de cortar","ex":""},{"audio":"f039.mp3","en":"strainer","es":"colador","ex":""},{"audio":"f040.mp3","en":"sieve","es":"tamiz","ex":""},{"audio":"f041.mp3","en":"tin can","es":"lata","ex":""},{"audio":"f042.mp3","en":"jar","es":"tarro","ex":""},{"audio":"f043.mp3","en":"bottle opener","es":"abrebotellas","ex":""},{"audio":"f044.mp3","en":"corkscrew","es":"sacacorchos","ex":""},{"audio":"f045.mp3","en":"broom","es":"escoba","ex":""},{"audio":"f046.mp3","en":"mop","es":"fregona","ex":""},{"audio":"f047.mp3","en":"bucket","es":"cubo","ex":""},{"audio":"f048.mp3","en":"dust","es":"polvo","ex":""},{"audio":"f049.mp3","en":"dirt","es":"suciedad","ex":""},{"audio":"f050.mp3","en":"rag","es":"trapo","ex":""},{"audio":"f051.mp3","en":"sponge","es":"esponja","ex":""},{"audio":"f052.mp3","en":"detergent","es":"detergente","ex":""},{"audio":"f053.mp3","en":"bleach","es":"lejía","ex":""},{"audio":"f054.mp3","en":"vacuum cleaner","es":"aspiradora","ex":""},{"audio":"f055.mp3","en":"rubbish","es":"basura","ex":""},{"audio":"f056.mp3","en":"bin","es":"papelera","ex":""},{"audio":"f057.mp3","en":"stapler","es":"grapadora","ex":""},{"audio":"f058.mp3","en":"staple","es":"grapa","ex":""},{"audio":"f059.mp3","en":"tape","es":"cinta adhesiva","ex":""},{"audio":"f060.mp3","en":"eraser","es":"goma","ex":""},{"audio":"f061.mp3","en":"string","es":"cordel","ex":""},{"audio":"f062.mp3","en":"rope","es":"cuerda","ex":""},{"audio":"f063.mp3","en":"knot","es":"nudo","ex":""},{"audio":"f064.mp3","en":"pebble","es":"piedrecita","ex":""},{"audio":"f065.mp3","en":"crack","es":"grieta","ex":""},{"audio":"f066.mp3","en":"cap","es":"tapón","ex":""},{"audio":"f067.mp3","en":"tag","es":"etiqueta","ex":""},{"audio":"f068.mp3","en":"screw","es":"tornillo","ex":""},{"audio":"f069.mp3","en":"screwdriver","es":"destornillador","ex":""},{"audio":"f070.mp3","en":"pliers","es":"alicates","ex":""},{"audio":"f071.mp3","en":"wrench","es":"llave inglesa","ex":""},{"audio":"f072.mp3","en":"tape measure","es":"cinta métrica","ex":""},{"audio":"f073.mp3","en":"ladder","es":"escalera de mano","ex":""},{"audio":"f074.mp3","en":"ledge","es":"repisa","ex":""},{"audio":"f075.mp3","en":"shutter","es":"contraventana","ex":""},{"audio":"f076.mp3","en":"rail","es":"riel","ex":""},{"audio":"f077.mp3","en":"beam","es":"viga","ex":""},{"audio":"f078.mp3","en":"flooring","es":"suelo","ex":""},{"audio":"f079.mp3","en":"grater","es":"rallador","ex":""},{"audio":"f080.mp3","en":"peeler","es":"pelador","ex":""},{"audio":"f081.mp3","en":"tongs","es":"pinzas","ex":""},{"audio":"f082.mp3","en":"rolling pin","es":"rodillo","ex":""},{"audio":"f083.mp3","en":"oven tray","es":"bandeja del horno","ex":""},{"audio":"f084.mp3","en":"baking paper","es":"papel de horno","ex":""},{"audio":"f085.mp3","en":"foil","es":"papel de aluminio","ex":""},{"audio":"f086.mp3","en":"measuring cup","es":"taza medidora","ex":""},{"audio":"f087.mp3","en":"dustpan","es":"recogedor","ex":""},{"audio":"f088.mp3","en":"scrub","es":"estropajo","ex":""},{"audio":"f089.mp3","en":"stain","es":"mancha","ex":""},{"audio":"f090.mp3","en":"bleach stain","es":"mancha de lejía","ex":""},{"audio":"f091.mp3","en":"clog","es":"atasco","ex":""},{"audio":"f092.mp3","en":"drain","es":"desagüe","ex":""},{"audio":"f093.mp3","en":"lint","es":"pelusa","ex":""},{"audio":"f094.mp3","en":"form","es":"formulario","ex":""},{"audio":"f095.mp3","en":"stamp","es":"sello","ex":""},{"audio":"f096.mp3","en":"receipt","es":"recibo","ex":""},{"audio":"f097.mp3","en":"refund","es":"reembolso","ex":""}];
+
+let mode="EN";
+let activeIndices=data.map((_,i)=>i);
+let pos=0;
+let learnedCount=0;
+let initialTotal=activeIndices.length;
+
+// ---- BLOCK BUTTONS ----
+const blocksDiv=document.getElementById("blocks");
+const blockCount=Math.ceil(data.length/10);
+for(let i=0;i<blockCount;i++){
+  const b=document.createElement("button");
+  b.className="block";
+  b.textContent=i;
+  b.onclick=()=>selectBlock(i);
+  blocksDiv.appendChild(b);
+}
+
+function selectAll(){
+  document.querySelectorAll(".block").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".block")[0].classList.add("active");
+  activeIndices = data.map((_,i)=>i);
+  pos=0;
+  learnedCount=0;
+  initialTotal=activeIndices.length;
+  update();
+}
+
+function selectBlock(b){
+  document.querySelectorAll(".block").forEach(x=>x.classList.remove("active"));
+  const btns = document.querySelectorAll(".block");
+  btns[b+1].classList.add("active"); // +1 because first is T
+  activeIndices=[];
+  const start=b*10;
+  const end=Math.min(start+9,data.length-1);
+  for(let i=start;i<=end;i++) activeIndices.push(i);
+  pos=0;
+  learnedCount=0;
+  initialTotal=activeIndices.length;
+  update();
+}
+
+// ---- MODE ----
+function setMode(m){
+  mode=m;
+  document.getElementById("modeEN").classList.toggle("active",m==="EN");
+  document.getElementById("modeES").classList.toggle("active",m==="ES");
+  update();
+}
+
+// ---- STUDY FLOW ----
+function update(){
+  const idx=activeIndices[pos];
+  document.getElementById("word").textContent= mode==="EN" ? "" : data[idx].es;
+  document.getElementById("answer").textContent= mode==="EN" ? data[idx].es : data[idx].en;
+  document.getElementById("answer").style.display="none";
+  document.getElementById("pos").textContent=learnedCount;
+  document.getElementById("total").textContent=initialTotal;
+
+  if(mode==="EN"){
+    playAudio();
+  }
+}
+
+function reveal(){
+  document.getElementById("answer").style.display="block";
+  if(mode==="EN"){ document.getElementById("word").textContent=data[activeIndices[pos]].en; }
+}
+
+
+function know(){
+  learnedCount++;
+  activeIndices.splice(pos,1);
+  if(pos>=activeIndices.length) pos=0;
+  update();
+}
+function next(){
+
+  pos=(pos+1)%activeIndices.length;
+  update();
+}
+
+function playAudio(){
+  const realIdx=activeIndices[pos];
+  const num=(realIdx+1).toString().padStart(3,"0");
+  const a=document.getElementById("audio");
+  a.src="f"+num+".mp3";
+  a.currentTime=0;
+  const btn=document.querySelector('.audio-btn');btn.classList.remove('vibrate');void btn.offsetWidth;btn.classList.add('vibrate');a.play();
+}
+
+// ---- LIST ----
+function toggleList(){
+  const l=document.getElementById("list");
+  if(l.style.display==="block"){l.style.display="none";return;}
+  l.innerHTML="";
+  activeIndices.forEach(i=>{
+    const d=document.createElement("div");
+    d.className="list-item";
+    d.innerHTML="<strong>"+data[i].en+"</strong> — "+data[i].es;
+    l.appendChild(d);
+  });
+  l.style.display="block";
+}
+
+update();
+</script>
+
+</body>
+</html>

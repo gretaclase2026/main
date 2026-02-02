@@ -1,0 +1,211 @@
+ <!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estudi Vocabulari - Control d'Audio</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
+.card{max-width:720px;margin:20px auto;background:#fff;border-radius:24px;padding:24px;box-shadow:0 8px 18px rgba(0,0,0,.15);position:relative}
+
+.modes{display:flex;gap:10px;margin-bottom:10px;width:100%}
+.mode{flex:1;text-align:center;padding:14px;border-radius:24px;font-weight:bold;cursor:pointer;border:2px solid transparent}
+.mode.en{background:#d6e6f5}
+.mode.es{background:#f4d6e6}
+.mode.active{border-color:#999;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
+
+.blocks{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}
+.block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#fff4cc;cursor:pointer;transition:0.2s}
+.block.active{background:#ffcc00;transform:scale(1.1);box-shadow:inset 0 0 5px rgba(0,0,0,0.2)}
+
+.main-box-container{display:flex;align-items:center;justify-content:center;position:relative;margin:20px 0}
+.main-box{text-align:center;display:flex;flex-direction:column;justify-content:center;align-items:center}
+
+.audio-btn{font-size:60px;background:#dcfce7;border:none;cursor:pointer;width:140px;height:140px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
+.audio-btn.vibrate{animation:vibrate 0.25s linear 2}
+@keyframes vibrate{0%{transform:translate(0)}25%{transform:translate(2px,-2px)}50%{transform:translate(-2px,2px)}75%{transform:translate(2px,2px)}100%{transform:translate(0)}}
+.audio-btn:active{transform:scale(0.95)}
+
+.counter-side{position:absolute;right:10px;font-weight:bold;color:#2563eb;font-size:22px}
+
+#word{font-size:32px;font-weight:800;margin:20px 0;line-height:1.2;min-height:40px;text-align:center}
+.txt-es{color:#2563eb} /* Blau */
+.txt-cat{color:#666}
+#answer{font-size:24px;font-weight:bold;margin-top:-10px;margin-bottom:20px;text-align:center}
+
+.actions{display:flex;gap:12px}
+.btn{flex:1;padding:18px;border-radius:18px;border:none;font-weight:bold;font-size:18px;cursor:pointer}
+.btn-reveal{background:#e0f2fe}
+.btn-know{background:#dcfce7}
+.btn-next{background:#fbcfe8} /* Rosa */
+
+#list{margin-top:20px;background:#f9f9f9;padding:15px;border-radius:15px;display:none;border:1px solid #ddd}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="modes">
+    <div id="modeEN" class="mode en active" onclick="setMode('EN')">ENG → ESP/CAT</div>
+    <div id="modeES" class="mode es" onclick="setMode('ES')">ESP/CAT → ENG</div>
+  </div>
+
+  <div class="blocks" id="blocksContainer"></div>
+
+  <div class="main-box-container">
+    <div class="main-box">
+      <button class="audio-btn" onclick="playAudio()">🔊</button>
+    </div>
+    <div class="counter-side">
+      <span id="pos">0</span> / <span id="total">0</span>
+    </div>
+  </div>
+
+  <div id="word"></div>
+  <div id="answer"></div>
+
+  <div class="actions">
+    <button class="btn btn-reveal" onclick="reveal()">Veure</button>
+    <button class="btn btn-know" onclick="know()">Ja la sé</button>
+    <button class="btn btn-next" onclick="next()">Següent</button>
+  </div>
+  
+  <button id="listBtn" onclick="toggleList()" style="width:100%;margin-top:20px;padding:12px;border-radius:12px;border:none;background:#e9d5ff;font-weight:bold;cursor:pointer">Mostrar llista del bloc</button>
+  <div id="list"></div>
+</div>
+
+<audio id="audio"></audio>
+
+<script>
+const data = [
+  {en:"Basement",es:"Sótano",cat:"Soterrani"},{en:"Attic",es:"Desván",cat:"Golfes"},{en:"Pantry",es:"Despensa",cat:"Despensa"},{en:"Driveway",es:"Entrada coche",cat:"Entrada cotxes"},{en:"Hallway",es:"Pasillo",cat:"Passadís"},{en:"Landing",es:"Rellano",cat:"Replà"},{en:"Backyard",es:"Patio trasero",cat:"Pati darrere"},{en:"Porch",es:"Porche",cat:"Porxo"},{en:"Utility room",es:"Lavadero",cat:"Safareig"},{en:"Roof",es:"Tejado",cat:"Teulada"},
+  {en:"Pine",es:"Pino",cat:"Pi"},{en:"Oak",es:"Roble",cat:"Roure"},{en:"Olive tree",es:"Olivo",cat:"Olivera"},{en:"Palm tree",es:"Palmera",cat:"Palmera"},{en:"Cypress",es:"Ciprés",cat:"Xiprer"},{en:"Fig tree",es:"Higuera",cat:"Figuera"},{en:"Almond tree",es:"Almendro",cat:"Ametller"},{en:"Lemon tree",es:"Limonero",cat:"Llimoner"},{en:"Orange tree",es:"Naranjo",cat:"Taronger"},{en:"Poplar",es:"Álamo",cat:"Pollancre"},
+  {en:"Dog / Puppy",es:"Perro / Cachorro",cat:"Gos / Gosset"},{en:"Cat / Kitten",es:"Gato / Gatito",cat:"Gat / Gatet"},{en:"Cow / Calf",es:"Vaca / Ternero",cat:"Vaca / Vedell"},{en:"Horse / Foal",es:"Caballo / Potro",cat:"Cavall / Poltre"},{en:"Hen / Chick",es:"Gallina / Pollito",cat:"Gallina / Pollet"},{en:"Sheep / Lamb",es:"Oveja / Cordero",cat:"Ovelha / Xai"},{en:"Pig / Piglet",es:"Cerdo / Lechón",cat:"Porc / Porquet"},{en:"Lion / Cub",es:"León / Cachorro",cat:"Lleó / Cadell"},{en:"Goat / Kid",es:"Cabra / Cabrito",cat:"Cabra / Cabrit"},{en:"Duck / Duckling",es:"Pato / Patito",cat:"Ànec / Ànec petit"},
+  {en:"Blueberry",es:"Arándano",cat:"Nabiu"},{en:"Raspberry",es:"Frambuesa",cat:"Gerd"},{en:"Blackberry",es:"Mora",cat:"Mora"},{en:"Strawberry",es:"Fresa",cat:"Maduixa"},{en:"Currant",es:"Grosella",cat:"Grosella"},{en:"Mango",es:"Mango",cat:"Mango"},{en:"Papaya",es:"Papaya",cat:"Papaya"},{en:"Avocado",es:"Aguacate",cat:"Alvocat"},{en:"Pomegranate",es:"Granada",cat:"Magrana"},{en:"Dragon fruit",es:"Fruta dragón",cat:"Pitahaya"},
+  {en:"Get to the point",es:"Ve al grano",cat:"Ves al gra"},{en:"Cut to the chase",es:"Ir directo",cat:"Anar directe"},{en:"Stop beating around the bush",es:"No des rodeos",cat:"No donis voltes"},{en:"Get down to business",es:"Ir por faena",cat:"Anar per feina"},{en:"The bottom line is...",es:"La conclusión es",cat:"La conclusió és"},{en:"Let's stay on track",es:"No nos desviemos",cat:"No ens desviem"},{en:"Cut the crap",es:"Déjate de tonterías",cat:"Fora conyàries"},{en:"In a nutshell",es:"En pocas palabras",cat:"En resum"},{en:"To make a long story short",es:"En resumen",cat:"Per no allargar"},{en:"Straight away",es:"De inmediato",cat:"De seguida"},
+  {en:"Acquaintance",es:"Conocido",cat:"Conegut"},{en:"Engagement",es:"Compromiso",cat:"Compromís"},{en:"Wedding",es:"Boda",cat:"Casament"},{en:"Pregnancy",es:"Embarazo",cat:"Embaràs"},{en:"Honeymoon",es:"Luna de miel",cat:"Lluna de mel"},{en:"Childbirth",es:"Parto",cat:"Part"},{en:"Quarrel",es:"Pelea",cat:"Baralla"},{en:"Adultery",es:"Adulterio",cat:"Adulteri"},{en:"Divorce",es:"Divorcio",cat:"Divorci"},{en:"Fling",es:"Aventura",cat:"Aventura"},
+  {en:"Syringe",es:"Jeringuilla",cat:"Xeringa"},{en:"Patch",es:"Tirita",cat:"Tirita"},{en:"Bandage",es:"Venda",cat:"Venda"},{en:"Thermometer",es:"Termómetro",cat:"Termòmetre"},{en:"Pill",es:"Pastilla",cat:"Píndola"},{en:"Glucose meter",es:"Glucómetro",cat:"Glucòmetre"},{en:"Spray",es:"Espray",cat:"Esprai"},{en:"Eye drops",es:"Colirio",cat:"Col·liri"},{en:"Cough syrup",es:"Jarabe tos",cat:"Jarop tos"},{en:"Ointment",es:"Pomada",cat:"Pomada"},
+  {en:"Curly",es:"Rizado",cat:"Arrissat"},{en:"Dreadlocks",es:"Rastas",cat:"Rastes"},{en:"Bob",es:"Corte Bob",cat:"Tall Bob"},{en:"Wavy",es:"Ondulado",cat:"Ondulat"},{en:"Pigtails",es:"Coletas",cat:"Cues"},{en:"Ponytail",es:"Coleta única",cat:"Cua"},{en:"Bun",es:"Moño",cat:"Moixó"},{en:"Braid",es:"Trenza",cat:"Trena"},{en:"Shoulder-length",es:"Media melena",cat:"Cabell espatlles"},{en:"Bald",es:"Calvo",cat:"Calb"},
+  {en:"Plant trees",es:"Plantar árboles",cat:"Plantar arbres"},{en:"Oil spill",es:"Derrame petróleo",cat:"Vessament petroli"},{en:"Landfill",es:"Vertedero",cat:"Abocador"},{en:"Separate garbage",es:"Separar basura",cat:"Separar escombraria"},{en:"Pollution",es:"Contaminación",cat:"Contaminació"},{en:"Reusable bag",es:"Bolsa reutilizable",cat:"Bossa reutilitzable"},{en:"Recycle",es:"Reciclar",cat:"Reciclar"},{en:"Exhaust fumes",es:"Humo escape",cat:"Fums escapament"},{en:"Solar panel",es:"Panel solar",cat:"Panell solar"},{en:"Wind turbine",es:"Aerogenerador",cat:"Aerogenerador"},
+  {en:"Bulletproof vest",es:"Chaleco antibalas",cat:"Armilla antibales"},{en:"Warrant card",es:"Placa policía",cat:"Placa policia"},{en:"Handcuffs",es:"Esposas",cat:"Esposes"},{en:"Prison",es:"Prisión",cat:"Presó"},{en:"Bullhorn",es:"Megáfono",cat:"Megàfon"},{en:"Gun",es:"Pistola",cat:"Pistola"},{en:"Bullet",es:"Bala",cat:"Bala"},{en:"Walkie-talkie",es:"Walkie",cat:"Walkie"},{en:"Magnifying glass",es:"Lupa",cat:"Lupa"},{en:"Police car",es:"Coche policía",cat:"Cotxe policia"},
+  {en:"Around",es:"Alrededor",cat:"Al voltant"},{en:"Under",es:"Debajo",cat:"Sota"},{en:"Through",es:"A través",cat:"A través"},{en:"Behind",es:"Detrás",cat:"Darrere"},{en:"Among",es:"Entre (varios)",cat:"Entre"},{en:"Opposite",es:"Enfrente",cat:"Davant per davant"},{en:"Towards",es:"Hacia",cat:"Cap a"},{en:"Across",es:"Cruzando",cat:"A través de"},{en:"Into",es:"Hacia dentro",cat:"Cap a dins"},{en:"Between",es:"Entre (dos)",cat:"Entre"},
+  {en:"Over",es:"Por encima",cat:"Per sobre"},{en:"In front of",es:"Delante",cat:"Davant de"},{en:"Next to",es:"Al lado",cat:"Al costat"},{en:"Above",es:"Arriba",cat:"Per damunt"},{en:"Below",es:"Abajo",cat:"Per sota"},{en:"Out of",es:"Fuera de",cat:"Fora de"},{en:"Up",es:"Hacia arriba",cat:"Cap amunt"},{en:"Down",es:"Hacia abajo",cat:"Cap avall"},{en:"Off",es:"Fuera",cat:"Fora de"},{en:"On",es:"Encima (tocando)",cat:"Sobre"},
+  {en:"Ant",es:"Hormiga",cat:"Formiga"},{en:"Bee",es:"Abeja",cat:"Abella"},{en:"Butterfly",es:"Mariposa",cat:"Papallona"},{en:"Caterpillar",es:"Oruga",cat:"Eruga"},{en:"Cockroach",es:"Cucaracha",cat:"Cucaracha"},{en:"Dragonfly",es:"Libélula",cat:"Espiadimonis"},{en:"Fly",es:"Mosca",cat:"Mosca"},{en:"Grasshopper",es:"Saltamontes",cat:"Saltamartí"},{en:"Ladybug",es:"Mariquita",cat:"Marieta"},{en:"Mosquito",es:"Mosquito",cat:"Mosquit"},
+  {en:"Crab",es:"Cangrejo",cat:"Cranc"},{en:"Lobster",es:"Langosta",cat:"Llagosta"},{en:"Shrimp",es:"Gamba",cat:"Gamba"},{en:"Mussels",es:"Musclos",cat:"Musclos"},{en:"Oyster",es:"Ostra",cat:"Ostra"},{en:"Squid",es:"Calamar",cat:"Calamar"},{en:"Octopus",es:"Pop",cat:"Pop"},{en:"Salmon",es:"Salmón",cat:"Salmó"},{en:"Tuna",es:"Atún",cat:"Tonyina"},{en:"Cod",es:"Bacalao",cat:"Bacallà"},
+  {en:"Earthquake",es:"Terremoto",cat:"Terratrèmol"},{en:"Flood",es:"Inundación",cat:"Inundació"},{en:"Tsunami",es:"Tsunami",cat:"Tsunami"},{en:"Wildfire",es:"Incendio",cat:"Incendi"},{en:"Drought",es:"Sequía",cat:"Sequera"},{en:"Tornado",es:"Tornado",cat:"Tornado"},{en:"Hurricane",es:"Huracán",cat:"Huracà"},{en:"Volcanic eruption",es:"Erupción",cat:"Erupció"},{en:"Avalanche",es:"Alud",cat:"Allau"},{en:"Landslide",es:"Desprendimiento",cat:"Despreniment"},
+  {en:"Chop",es:"Picar",cat:"Trinxar"},{en:"Peel",es:"Pelar",cat:"Pelar"},{en:"Slice",es:"Rodajas",cat:"Rodanxes"},{en:"Squeeze",es:"Exprimir",cat:"Exprèmer"},{en:"Squish",es:"Aixafar",cat:"Aixafar"},{en:"Grate",es:"Rallar",cat:"Ratllar"},{en:"Simmer",es:"Fuego lento",cat:"Fer xup-xup"},{en:"Season",es:"Sazonar",cat:"Salpebrar"},{en:"Bake",es:"Hornear",cat:"Forn"},{en:"Stir",es:"Remover",cat:"Remenar"}
+];
+
+let currentBlockData = [];
+let pos = 0;
+let mode = "EN";
+let learnedCount = 0;
+let currentBlockID = 0;
+
+function initBlocks() {
+  const container = document.getElementById("blocksContainer");
+  for (let i = 0; i < 16; i++) {
+    const btn = document.createElement("button");
+    btn.className = "block";
+    btn.textContent = i + 1;
+    btn.onclick = () => loadBlock(i);
+    container.appendChild(btn);
+  }
+  const btnT = document.createElement("button");
+  btnT.className = "block"; btnT.textContent = "T";
+  btnT.onclick = () => loadBlock('T');
+  container.appendChild(btnT);
+  loadBlock(0);
+}
+
+function loadBlock(b) {
+  currentBlockID = b;
+  let temp = [];
+  if (b === 'T') {
+    temp = data.map((item, i) => ({...item, realIdx: i+1}));
+  } else {
+    for (let i = b * 10; i < (b * 10) + 10; i++) {
+      temp.push({...data[i], realIdx: i+1});
+    }
+  }
+  currentBlockData = temp.sort(() => Math.random() - 0.5);
+  pos = 0; learnedCount = 0;
+  document.getElementById("list").style.display = "none";
+  update(true); // Al carregar bloc nou, deixem que soni l'audio segons el mode
+}
+
+function setMode(m) {
+  mode = m;
+  document.getElementById("modeEN").classList.toggle("active", m === "EN");
+  document.getElementById("modeES").classList.toggle("active", m === "ES");
+  update(true);
+}
+
+function update(fromNextAction = false) {
+  if (currentBlockData.length === 0) {
+    document.getElementById("word").innerHTML = "¡Bloc Completat!";
+    document.getElementById("answer").innerHTML = "";
+    return;
+  }
+  const item = currentBlockData[pos];
+  const translation = `<span class="txt-es">${item.es}</span> / <span class="txt-cat">${item.cat}</span>`;
+  
+  if (mode === "EN") {
+    document.getElementById("word").textContent = ""; 
+    document.getElementById("answer").innerHTML = `<div style="color:#999; font-size:18px; margin-bottom:5px;">${item.en}</div>` + translation;
+    if (fromNextAction) playAudio(); // Mode escolta: sona sempre en passar paraula
+  } else {
+    document.getElementById("word").innerHTML = translation;
+    document.getElementById("answer").textContent = item.en;
+    // Mode traducció: NO sona automàticament en passar paraula
+  }
+  
+  document.getElementById("answer").style.display = "none";
+  document.getElementById("pos").textContent = learnedCount;
+  document.getElementById("total").textContent = currentBlockData.length + learnedCount;
+}
+
+function reveal() {
+  if (currentBlockData.length > 0) {
+    document.getElementById("answer").style.display = "block";
+    if (mode === "ES") playAudio(); // Sona en mode ESP->ENG només en revelar
+  }
+}
+
+function know() {
+  if (currentBlockData.length === 0) return;
+  learnedCount++;
+  currentBlockData.splice(pos, 1);
+  if (pos >= currentBlockData.length) pos = 0;
+  update(true);
+}
+
+function next() {
+  if (currentBlockData.length === 0) return;
+  pos = (pos + 1) % currentBlockData.length;
+  update(true);
+}
+
+function playAudio() {
+  if (currentBlockData.length === 0) return;
+  const num = currentBlockData[pos].realIdx.toString().padStart(3, "0");
+  const a = document.getElementById("audio");
+  a.src = "f" + num + ".mp3";
+  const btn=document.querySelector('.audio-btn');btn.classList.remove('vibrate');void btn.offsetWidth;btn.classList.add('vibrate');a.play().catch(() => {});
+}
+
+function toggleList() {
+  const l = document.getElementById("list");
+  if (l.style.display === "block") { l.style.display = "none"; return; }
+  l.innerHTML = "<b>Llista del bloc:</b><br><br>";
+  let originalBlock = (currentBlockID === 'T') ? data : data.slice(currentBlockID * 10, (currentBlockID * 10) + 10);
+  originalBlock.forEach((item) => {
+    l.innerHTML += `<div style="margin-bottom:8px"><b>${item.en}</b> - <span class="txt-es">${item.es}</span></div>`;
+  });
+  l.style.display = "block";
+}
+
+initBlocks();
+</script>
+</body>
+</html>

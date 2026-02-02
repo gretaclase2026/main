@@ -1,0 +1,140 @@
+ 
+ <!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Greta App - Frases Tema 5</title>
+<style>
+body{margin:0;font-family:sans-serif;background:#f9fafb;color:#0f172a}
+header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center}
+.mode-btns button{margin:0 6px;padding:8px 14px;border:none;border-radius:14px;font-weight:700;cursor:pointer}
+.mode-en{background:#dbeafe}
+.mode-es{background:#fde68a}
+main{display:flex;justify-content:center;padding:24px}
+.card{position:relative;width:100%;max-width:560px;background:#fff;border-radius:28px;padding:32px;box-shadow:0 12px 30px rgba(0,0,0,0.08);text-align:center}
+.counter{position:absolute;top:18px;right:22px;font-weight:800;color:#2563eb}
+.lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
+.audio-btn{width:120px;height:120px;border-radius:50%;border:none;background:#dbeafe;font-size:36px;cursor:pointer;margin:6px auto 10px;display:flex;align-items:center;justify-content:center}
+.hidden{display:none}
+.es{font-size:20px;color:#2563eb;margin-top:14px}
+.en{font-size:20px;color:#0f172a;margin-top:14px;font-weight:700}
+.buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:22px}
+button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;cursor:pointer}
+.reveal{background:#e0f2fe}
+.know{background:#dcfce7}
+.next{background:#fbcfe8}
+.list-btn{margin-top:16px;background:#e9d5ff;border:none;border-radius:16px;padding:14px;font-weight:800;cursor:pointer;width:100%}
+.list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
+.list-item{padding:10px 0;border-bottom:1px solid #e5e7eb}
+.list-item:last-child{border-bottom:none}
+.list-es{color:#2563eb;font-weight:700}
+.list-en{color:#0f172a;font-weight:800}
+.end{margin-top:16px;font-weight:800;color:#16a34a}
+</style>
+</head>
+<body>
+<header>
+ <div class="mode-btns">
+  <button class="mode-en" onclick="setMode('EN')">ANGLÈS → CASTELLÀ</button>
+  <button class="mode-es" onclick="setMode('ES')">CASTELLÀ → ANGLÈS</button>
+ </div>
+</header>
+<main>
+<div class="card">
+ <div class="counter" id="counter">0 / 8</div>
+ <div id="langLabel" class="lang">INGLES</div>
+ <button class="audio-btn" onclick="play()">🔊</button>
+ <div id="es" class="es hidden"></div>
+ <div id="en" class="en hidden"></div>
+ <div class="buttons">
+  <button class="action reveal" onclick="reveal()">Veure</button>
+  <button class="action know" onclick="know()">Ja la sé</button>
+  <button class="action next" onclick="nextOne()">Següent</button>
+ </div>
+ <button class="list-btn" onclick="toggleList()">Veure tota la llista</button>
+ <div id="endMsg" class="end hidden">✔ Ja les saps totes</div>
+</div>
+</main>
+<div id="listBox" class="list-box hidden"></div>
+
+<script>
+const items = [
+    {"audio": "f001.mp3", "en": "Even though the weather forecast predicted heavy rain all weekend, we decided to go hiking because we had already packed our gear and didn't want to waste the opportunity.", "es": "Aunque el pronostico del tiempo predecia lluvia intensa todo el fin de semana, decidimos ir de excursion porque ya habiamos empacado nuestro equipo y no queriamos desperdiciar la oportunidad."},
+    {"audio": "f002.mp3", "en": "The company that I told you about yesterday is looking for a professional who has extensive experience in digital marketing and who is also willing to travel abroad.", "es": "La empresa de la que te hable ayer esta buscando a un profesional que tenga amplia experiencia en marketing digital y que tambien este dispuesto a viajar al extranjero."},
+    {"audio": "f003.mp3", "en": "While I was walking through the park listening to my favorite podcast, I realized that I had forgotten to lock the front door, so I had to run back home as fast as I could.", "es": "Mientras caminaba por el parque escuchando mi podcast favorito, me di cuenta de que habia olvidado cerrar la puerta principal, asi que tuve que volver corriendo a casa lo mas rapido que pude."},
+    {"audio": "f004.mp3", "en": "If you had told me that the meeting was going to be postponed until next Monday, I wouldn't have spent the entire night preparing the presentation that you requested.", "es": "Si me hubieras dicho que la reunion se iba a posponer hasta el proximo lunes, no habria pasado la noche entera preparando la presentacion que me pediste."},
+    {"audio": "f005.mp3", "en": "I usually try to wake up early to exercise before going to work, but this morning I was so tired that I decided to hit the snooze button and sleep for another thirty minutes.", "es": "Normalmente trato de despertarme temprano para hacer ejercicio antes de ir a trabajar, pero esta mañana estaba tan cansado que decidi posponer la alarma y dormir otros treinta minutos."},
+    {"audio": "f006.mp3", "en": "Since the fridge was almost empty, I went to the supermarket to buy some groceries, only to realize when I got to the checkout that I had left my wallet inside my other jacket.", "es": "Como la nevera estaba casi vacia, fui al supermercado a comprar comida, solo para darme cuenta al llegar a la caja de que habia dejado mi cartera dentro de mi otra chaqueta."},
+    {"audio": "f007.mp3", "en": "I was planning to spend the afternoon cleaning the house, but I ended up watching a new series on Netflix that was so addictive that I couldn't stop until I finished the whole season.", "es": "Tenia planeado pasar la tarde limpiando la casa, pero termine viendo una serie nueva en Netflix que era tan adictiva que no pude parar hasta que termine la temporada completa."},
+    {"audio": "f008.mp3", "en": "While I was waiting for the bus to go downtown, I ran into an old friend from high school whom I hadn't seen in years, so we decided to grab a quick coffee and catch up.", "es": "Mientras esperaba el autobus para ir al centro, me encontre con un viejo amigo de la secundaria a quien no habia visto en años, asi que decidimos tomar un cafe rapido y ponernos al dia."}
+];
+
+let remaining=[...items], current=null, mode="EN", known=0;
+let audioPlayer = new Audio();
+
+function updateCounter(){ document.getElementById("counter").textContent = known + " / " + items.length; }
+
+function play(){ 
+    if(current) {
+        audioPlayer.src = current.audio;
+        audioPlayer.play().catch(e => console.log("Error audio"));
+    }
+}
+
+function load(){
+ if(remaining.length===0){
+   document.getElementById("endMsg").classList.remove("hidden");
+   return;
+ }
+ current=remaining[Math.floor(Math.random()*remaining.length)];
+ document.getElementById("es").classList.add("hidden");
+ document.getElementById("en").classList.add("hidden");
+ 
+ if(mode==="EN"){
+  document.getElementById("langLabel").textContent="INGLES";
+  play();
+ } else {
+  document.getElementById("langLabel").textContent="CASTELLANO";
+  document.getElementById("es").textContent=current.es;
+  document.getElementById("es").classList.remove("hidden");
+ }
+}
+
+function reveal(){
+ if(!current)return;
+ document.getElementById("es").textContent=current.es;
+ document.getElementById("en").textContent=current.en;
+ document.getElementById("es").classList.remove("hidden");
+ document.getElementById("en").classList.remove("hidden");
+ if(mode==="ES") play();
+}
+
+function know(){
+ if(!current||remaining.length===0)return;
+ remaining=remaining.filter(i=>i!==current);
+ known++;
+ updateCounter();
+ load();
+}
+
+function nextOne(){ load(); }
+function setMode(m){ mode=m; load(); }
+
+function toggleList(){
+ const lb = document.getElementById("listBox");
+ lb.innerHTML="";
+ items.forEach(i=>{
+  const d=document.createElement("div");
+  d.className="list-item";
+  d.innerHTML="<div class='list-es'>"+i.es+"</div><div class='list-en'>"+i.en+"</div>";
+  lb.appendChild(d);
+ });
+ lb.classList.toggle("hidden");
+}
+
+updateCounter();
+load();
+</script>
+</body>
+</html>
