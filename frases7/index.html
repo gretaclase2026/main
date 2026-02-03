@@ -133,6 +133,59 @@ function toggleList(){
 
 updateCounter();
 load();
+ // --- CÓDIGO INTELIGENTE PARA EL CUADRITO DE MARCADO ---
+
+const style = document.createElement('style');
+style.innerHTML = `
+    .check-box-manual {
+        position: absolute;
+        top: 85px; 
+        right: 22px;
+        width: 24px;
+        height: 24px;
+        background: #fff !important;
+        border: 1.5px solid #22c55e !important;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+        transition: all 0.2s;
+        font-size: 14px;
+    }
+    .check-box-manual.marked { 
+        background: #22c55e !important; 
+        color: white; 
+    }
+`;
+document.head.appendChild(style);
+
+function getFolderName() {
+    const path = window.location.pathname;
+    return path.split('/').filter(Boolean).slice(-2, -1)[0] || "unknown";
+}
+
+function markAsDone(element) {
+    localStorage.setItem(getFolderName(), new Date().toISOString());
+    element.innerHTML = "✓";
+    element.classList.add('marked');
+    alert("Lliçó marcada ✅");
+}
+
+// 1. Crear el cuadrito
+const card = document.querySelector(".card");
+const box = document.createElement("div");
+box.className = "check-box-manual";
+
+// 2. Comprobar si ya estaba marcada antes de pintarla
+if (localStorage.getItem(getFolderName())) {
+    box.innerHTML = "✓";
+    box.classList.add('marked');
+}
+
+box.onclick = function() { markAsDone(this); };
+card.appendChild(box);
 </script>
 </body>
 </html>

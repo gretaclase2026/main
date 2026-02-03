@@ -1,22 +1,22 @@
- <!DOCTYPE html>
-<html lang="es">
+<!DOCTYPE html>
+<html lang="ca">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nevertheless - Men� Premium</title>
+    <title>Nevertheless - Menú Principal</title>
     <style>
         :root { 
             --blue-past: #e0f2fe; --blue-text: #0369a1;
             --purple-past: #f3e8ff; --purple-text: #7e22ce;
             --green-past: #dcfce7; --green-text: #15803d;
             --bg: #ffffff; 
+            --done-color: #22c55e;
+            --review-color: #f59e0b;
         }
         body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); margin: 0; padding: 15px; color: #1e293b; }
-        
         h1 { text-align: center; font-size: 24px; font-weight: 800; margin: 10px 0 25px; color: #0f172a; }
         
         .section { margin-bottom: 30px; padding: 10px; border-radius: 20px; }
-        
         .sec-frases { background-color: #f8fafc; }
         .sec-verbos { background-color: #fafaf9; }
         .sec-vocab { background-color: #f0fdf4; }
@@ -28,20 +28,32 @@
         }
         .section-title::after { content: ""; height: 1px; background: #e2e8f0; flex: 1; }
 
-        .grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); 
-            gap: 12px; 
-        }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(65px, 1fr)); gap: 12px; }
 
         .card {
-            text-decoration: none; height: 62px; border-radius: 15px;
+            text-decoration: none; height: 65px; border-radius: 15px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.03);
-            border: 1px solid rgba(255,255,255,0.8);
+            border: 2px solid transparent; position: relative;
         }
 
-        .card:active { transform: scale(0.9); }
+        .card:active { transform: scale(0.95); }
+
+        /* Estados con borde de color */
+        .card.completed { border-color: var(--done-color); background: #f0fdf4; }
+        .card.needs-review { border-color: var(--review-color); background: #fffbeb; animation: pulse 2s infinite; }
+
+        /* Emoji flotante arriba a la derecha */
+        .status-emoji { 
+            position: absolute; top: -10px; right: -8px; 
+            font-size: 18px; background: white; border-radius: 50%; padding: 2px;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+        }
 
         .num { font-size: 19px; font-weight: 800; line-height: 1; margin-bottom: 2px; }
         .label { font-size: 7px; font-weight: 700; text-transform: uppercase; opacity: 0.7; }
@@ -49,6 +61,14 @@
         .btn-frases { background: var(--blue-past); color: var(--blue-text); }
         .btn-verbos { background: var(--purple-past); color: var(--purple-text); }
         .btn-vocab { background: var(--green-past); color: var(--green-text); }
+
+        /* Botón de reinicio */
+        .reset-container { margin-top: 40px; text-align: center; padding: 20px; }
+        .reset-btn { 
+            background: #fee2e2; color: #991b1b; border: none; padding: 12px 24px; 
+            border-radius: 12px; font-weight: 700; cursor: pointer; font-size: 12px;
+            width: 100%; max-width: 300px;
+        }
     </style>
 </head>
 <body>
@@ -56,37 +76,73 @@
     <h1>Nevertheless</h1>
 
     <div class="section sec-frases">
-        <div class="section-title">Frases - 15 Unidades</div>
+        <div class="section-title">Frases</div>
         <div class="grid" id="grid-frases"></div>
     </div>
 
     <div class="section sec-verbos">
-        <div class="section-title">Verbos - 15 Unidades</div>
+        <div class="section-title">Verbos</div>
         <div class="grid" id="grid-verbos"></div>
     </div>
 
     <div class="section sec-vocab">
-        <div class="section-title">Vocabulario - 15 Unidades</div>
+        <div class="section-title">Vocabulari</div>
         <div class="grid" id="grid-vocab"></div>
     </div>
 
+    <div class="reset-container">
+        <button class="reset-btn" onclick="resetProgress()">ESBORRAR TOT EL PROGRÉS 🗑️</button>
+    </div>
+
     <script>
+        // Intervalos de repetición: 1, 3, 7, 15, 30, 60, 90 días
+        const intervals = [1, 3, 7, 15, 30, 60, 90];
+
+        function checkStatus(id) {
+            const data = localStorage.getItem(id);
+            if (!data) return null;
+            
+            const completionDate = new Date(data);
+            const today = new Date();
+            const diffDays = Math.floor((today - completionDate) / (1000 * 60 * 60 * 24));
+            
+            // Si el día de hoy coincide con un intervalo de repaso
+            if (intervals.includes(diffDays)) return 'review';
+            return 'done';
+        }
+
         function createGrid(containerId, count, folderPrefix, labelText, extraClass) {
             const container = document.getElementById(containerId);
             for (let i = 1; i <= count; i++) {
+                const lessonId = `${folderPrefix}${i}`;
+                const status = checkStatus(lessonId);
+                
                 const a = document.createElement('a');
-                // Genera rutas como frases1/index.html, verbos1/index.html, etc.
                 a.href = `${folderPrefix}${i}/index.html`;
                 a.className = `card ${extraClass}`;
-                a.innerHTML = `
-                    <span class="num">${i}</span>
-                    <span class="label">${labelText}</span>
-                `;
+                
+                let emoji = '';
+                if (status === 'done') {
+                    a.classList.add('completed');
+                    emoji = '<span class="status-emoji">✅</span>';
+                } else if (status === 'review') {
+                    a.classList.add('needs-review');
+                    emoji = '<span class="status-emoji">🔔</span>';
+                }
+
+                a.innerHTML = `${emoji}<span class="num">${i}</span><span class="label">${labelText}</span>`;
                 container.appendChild(a);
             }
         }
 
-        // Configuraci�n de rutas corregida a min�sculas y plural
+        function resetProgress() {
+            if(confirm("Segur que vols esborrar totes les marques de progrés?")) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+
+        // Configuración de las secciones
         createGrid('grid-frases', 15, 'frases', 'Unit', 'btn-frases');
         createGrid('grid-verbos', 15, 'verbos', 'Verb', 'btn-verbos');
         createGrid('grid-vocab', 15, 'vocabulario', 'Word', 'btn-vocab');

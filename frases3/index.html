@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="ca">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,24 +36,24 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 <body>
 <header>
  <div class="mode-btns">
-  <button class="mode-en" onclick="setMode('EN')">Modo INGLES → CASTELLANO</button>
-  <button class="mode-es" onclick="setMode('ES')">Modo CASTELLANO → INGLES</button>
+  <button class="mode-en" onclick="setMode('EN')">ANGLÈS → CASTELLÀ</button>
+  <button class="mode-es" onclick="setMode('ES')">CASTELLÀ → ANGLÈS</button>
  </div>
 </header>
 <main>
 <div class="card">
  <div class="counter" id="counter">0 / 7</div>
- <div id="langLabel" class="lang">INGLES</div>
+ <div id="langLabel" class="lang">ANGLÈS</div>
  <button class="audio-btn" onclick="play()">🔊</button>
  <div id="target" class="target hidden"></div>
  <div id="es" class="es hidden"></div>
  <div id="en" class="en hidden"></div>
  <div class="buttons">
-  <button class="action reveal" onclick="reveal()">Ver</button>
-  <button class="action know" onclick="know()">Ya la se</button>
-  <button class="action next" onclick="nextOne()">Siguiente</button>
+  <button class="action reveal" onclick="reveal()">Veure</button>
+  <button class="action know" onclick="know()">Ja la sé</button>
+  <button class="action next" onclick="nextOne()">Següent</button>
  </div>
- <button class="list-btn" onclick="toggleList()">Ver toda la lista</button>
+ <button class="list-btn" onclick="toggleList()">Veure tota la llista</button>
  <div id="endMsg" class="end hidden">✔ Ja les saps totes</div>
 </div>
 </main>
@@ -138,6 +138,59 @@ function toggleList(){
 
 updateCounter();
 load();
+ // --- CÓDIGO INTELIGENTE PARA EL CUADRITO DE MARCADO ---
+
+const style = document.createElement('style');
+style.innerHTML = `
+    .check-box-manual {
+        position: absolute;
+        top: 85px; 
+        right: 22px;
+        width: 24px;
+        height: 24px;
+        background: #fff !important;
+        border: 1.5px solid #22c55e !important;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+        transition: all 0.2s;
+        font-size: 14px;
+    }
+    .check-box-manual.marked { 
+        background: #22c55e !important; 
+        color: white; 
+    }
+`;
+document.head.appendChild(style);
+
+function getFolderName() {
+    const path = window.location.pathname;
+    return path.split('/').filter(Boolean).slice(-2, -1)[0] || "unknown";
+}
+
+function markAsDone(element) {
+    localStorage.setItem(getFolderName(), new Date().toISOString());
+    element.innerHTML = "✓";
+    element.classList.add('marked');
+    alert("Lliçó marcada ✅");
+}
+
+// 1. Crear el cuadrito
+const card = document.querySelector(".card");
+const box = document.createElement("div");
+box.className = "check-box-manual";
+
+// 2. Comprobar si ya estaba marcada antes de pintarla
+if (localStorage.getItem(getFolderName())) {
+    box.innerHTML = "✓";
+    box.classList.add('marked');
+}
+
+box.onclick = function() { markAsDone(this); };
+card.appendChild(box);
 </script>
 </body>
 </html>
