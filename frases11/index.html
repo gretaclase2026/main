@@ -1,153 +1,304 @@
-<!DOCTYPE html>
-<html lang="es">
+ <!DOCTYPE html>
+<html lang="ca">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Greta App - Frases Tema 5 (Modo Voz)</title>
+<title>Vocabulari Neural B1 - Vibrant</title>
 <style>
-body{margin:0;font-family:sans-serif;background:#f9fafb;color:#0f172a}
-header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center}
-.mode-btns button{margin:0 6px;padding:8px 14px;border:none;border-radius:14px;font-weight:700;cursor:pointer}
-.mode-en{background:#dbeafe}
-.mode-es{background:#fde68a}
-main{display:flex;justify-content:center;padding:24px}
-.card{position:relative;width:100%;max-width:560px;background:#fff;border-radius:28px;padding:32px;box-shadow:0 12px 30px rgba(0,0,0,0.08);text-align:center}
-.counter{position:absolute;top:18px;right:22px;font-weight:800;color:#2563eb}
-.lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
-.audio-btn{width:120px;height:120px;border-radius:50%;border:none;background:#dbeafe;font-size:36px;cursor:pointer;margin:6px auto 10px;display:flex;align-items:center;justify-content:center}
-.hidden{display:none}
-.es{font-size:20px;color:#2563eb;margin-top:14px}
-.en{font-size:20px;color:#0f172a;margin-top:14px;font-weight:700}
-.buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:22px}
-button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;cursor:pointer}
-.reveal{background:#e0f2fe}
-.know{background:#dcfce7}
-.next{background:#fbcfe8}
-.voice-btn{margin-top:12px;background:#e2e8f0;border:none;padding:10px 14px;border-radius:14px;font-weight:800;cursor:pointer}
-.result-box{margin-top:14px;font-weight:800}
-.correct{color:#16a34a}
-.almost{color:#f59e0b}
-.incorrect{color:#dc2626}
+body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
+.card{max-width:720px;margin:20px auto;background:#fff;border-radius:24px;padding:24px;box-shadow:0 8px 18px rgba(0,0,0,.15);position:relative}
+.modes{display:flex;gap:10px;margin-bottom:10px;width:100%}
+.mode{flex:1;text-align:center;padding:14px;border-radius:24px;font-weight:bold;cursor:pointer;border:2px solid transparent}
+.mode.en{background:#d6e6f5}
+.mode.es{background:#f4d6e6}
+.mode.active{border-color:#999;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
+.blocks{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}
+.block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#fff4cc;cursor:pointer;transition:0.2s}
+.block.active{background:#ffcc00;transform:scale(1.1);box-shadow:inset 0 0 5px rgba(0,0,0,0.2)}
+.main-box-container{display:flex;align-items:center;justify-content:center;position:relative;margin:20px 0}
+.main-box{text-align:center;display:flex;flex-direction:column;justify-content:center;align-items:center}
+.audio-btn{font-size:60px;background:#dcfce7;border:none;cursor:pointer;width:140px;height:140px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
+.audio-btn.vibrate{animation:vibrate 0.25s linear 2}
+@keyframes vibrate{0%{transform:translate(0)}25%{transform:translate(2px,-2px)}50%{transform:translate(-2px,2px)}75%{transform:translate(2px,2px)}100%{transform:translate(0)}}
+.counter-side{position:absolute;right:10px;font-weight:bold;color:#2563eb;font-size:22px}
+#word{font-size:24px;font-weight:800;margin:20px 0;line-height:1.4;min-height:120px;text-align:center;display:flex;align-items:center;justify-content:center;padding:0 10px}
+.txt-es{color:#2563eb} 
+#answer{font-size:20px;font-weight:bold;margin-top:-10px;margin-bottom:20px;text-align:center;min-height:30px;color:#666}
+.actions{display:flex;gap:12px}
+.btn{flex:1;padding:18px;border-radius:18px;border:none;font-weight:bold;font-size:18px;cursor:pointer}
+.btn-reveal{background:#e0f2fe}
+.btn-know{background:#dcfce7}
+.btn-next{background:#fbcfe8}
+#list{margin-top:20px;background:#f9f9f9;padding:15px;border-radius:15px;display:none;border:1px solid #ddd}
 </style>
 </head>
 <body>
 
-<header>
- <div class="mode-btns">
-  <button class="mode-en" onclick="setMode('EN')">ANGLÈS → CASTELLÀ</button>
-  <button class="mode-es" onclick="setMode('ES')">CASTELLÀ → ANGLÈS</button>
- </div>
-</header>
-
-<main>
 <div class="card">
- <div class="counter" id="counter">0 / 12</div>
- <div id="langLabel" class="lang">INGLES</div>
- <button class="audio-btn" onclick="play()">🔊</button>
- <button class="voice-btn" onclick="toggleVoice()">🎤 Mode veu</button>
+  <div class="modes">
+    <div id="modeEN" class="mode en active" onclick="setMode('EN')">ENG → ESP</div>
+    <div id="modeES" class="mode es" onclick="setMode('ES')">ESP → ENG</div>
+  </div>
 
- <div id="es" class="es hidden"></div>
- <div id="en" class="en hidden"></div>
+  <div class="blocks" id="blocksContainer"></div>
 
- <div class="buttons">
-  <button class="action reveal" onclick="reveal()">Veure</button>
-  <button class="action know" onclick="know()">Ja la sé</button>
-  <button class="action next" onclick="nextOne()">Següent</button>
- </div>
+  <div class="main-box-container">
+    <div class="main-box">
+      <button class="audio-btn" onclick="playAudio()">🔊</button>
+    </div>
+    <div class="counter-side">
+      <span id="pos">0</span> / <span id="total">0</span>
+    </div>
+  </div>
 
- <div id="result" class="result-box hidden"></div>
+  <div id="word"></div>
+  <div id="answer"></div>
+
+  <div class="actions">
+    <button class="btn btn-reveal" onclick="reveal()">veure</button>
+    <button class="btn btn-know" onclick="know()">ja la se</button>
+    <button class="btn btn-next" onclick="next()">següent</button>
+  </div>
+  
+  <button id="listBtn" onclick="toggleList()" style="width:100%;margin-top:20px;padding:12px;border-radius:12px;border:none;background:#e9d5ff;font-weight:bold;cursor:pointer">mostrar llista del bloc</button>
+  <div id="list"></div>
 </div>
-</main>
+
+<audio id="audio"></audio>
 
 <script>
-
-const items = [
-{audio:"f001.mp3",en:"Every time I try to organize my desk before starting to work, I end up finding old photographs and letters that distract me for hours, making me realize how much I miss the old days when everything was simpler.",es:"Cada vez que intento organizar mi escritorio antes de empezar a trabajar, acabo encontrando fotografias y cartas viejas que me distraen durante horas, haciendome darme cuenta de cuanto extraño los viejos tiempos cuando todo era mas sencillo."}
+const data = [
+  {en: "Don't forget to check the pressure on the boiler before winter starts, because if it's too low, the heating won't turn on when you need it most.", es: "No olvides revisar la presión de la caldera antes de que empiece el invierno, porque si está muy baja, la calefacción no se encenderá cuando más la necesites"},
+  {en: "You should back up all your photos to the cloud tonight, since your phone's storage is almost full and you might lose them if the system crashes.", es: "Deberías hacer una copia de seguridad de todas tus fotos en la nube esta noche, ya que el almacenamiento de tu móvil está casi lleno y podrías perderlas si el sistema falla"},
+  {en: "Make sure you stretch your back for at least five minutes after sitting at the computer all day, otherwise you'll wake up with a terrible ache tomorrow morning.", es: "Asegúrate de estirar la espalda al menos cinco minutos después de estar sentado al ordenador todo el día; de lo contrario, te despertarás con un dolor terrible mañana por la mañana"},
+  {en: "I'd rather go to the supermarket early on Tuesday morning to avoid the crowds, even though I have to wake up an hour earlier than usual.", es: "Preferiría ir al supermercado temprano el martes por la mañana para evitar las aglomeraciones, aunque tenga que despertarme una hora antes de lo habitual"},
+  {en: "Be careful not to leave the pan unattended while you're frying the onions, as they can burn in a matter of seconds if the heat is too high.", es: "Ten cuidado de no dejar la sartén desatendida mientras fríes las cebollas, ya que pueden quemarse en cuestión de segundos si el fuego está demasiado alto"},
+  {en: "Check the tire pressure before we leave for our road trip, since the car might handle differently if they're not properly inflated.", es: "Revisa la presión de los neumáticos antes de que nos vayamos de viaje, ya que el coche podría responder de forma distinta si no están bien infados"},
+  {en: "You should water the plants late in the evening instead of at noon, because the sun is too strong and the water will evaporate before it reaches the roots.", es: "Deberías regar las plantas a última hora de la tarde en lugar de a mediodía, porque el sol es demasiado fuerte y el agua se evaporará antes de llegar a las raíces"},
+  {en: "Make sure you turn off the main water valve before you try to fix that leaky faucet, otherwise you'll end up flooding the entire kitchen floor.", es: "Asegúrate de cerrar la llave de paso del agua antes de intentar arreglar ese grifo que gotea; de lo contrario, acabarás inundando todo el suelo de la cocina"},
+  {en: "Don't put that hot soup directly into the fridge, as it will raise the temperature inside and could spoil the rest of the food.", es: "No metas esa sopa caliente directamente en la nevera, ya que subirá la temperatura interior y podría estropear el resto de la comida"},
+  {en: "I need to go to the post office before they close at five, since I've been waiting for this package all week and I don't want to wait until Monday.", es: "Tengo que ir a la oficina de correos antes de que cierren a las cinco, ya que he estado esperando este paquete toda la semana y no quiero esperar hasta el lunes"},
+  {en: "Try to keep the windows closed while the air conditioning is on, because if the cold air escapes, the electricity bill will be much higher this month.", es: "Intenta mantener las ventanas cerradas mientras el aire acondicionado esté encendido, porque si el aire frío se escapa, la factura de la luz será mucho más alta este mes"},
+  {en: "Separate the dark clothes from the white ones before you start the laundry, as the black shirt might bleed and ruin your favorite white t-shirts.", es: "Separa la ropa oscura de la blanca antes de poner la lavadora, ya que la camisa negra podría desteñir y arruinar tus camisetas blancas favoritas"},
+  {en: "Your phone battery is draining quite fast lately, so you might want to check which apps are running in the background all the time.", es: "La batería de tu móvil se está agotando bastante rápido últimamente, así que quizás quieras revisar qué aplicaciones se están ejecutando en segundo plano todo el tiempo"},
+  {en: "Preheat the oven for at least ten minutes before putting the roast inside, so that the meat cooks evenly and doesn't stay raw in the middle.", es: "Precalienta el horno al menos diez minutos antes de meter el asado, para que la carne se cocine de forma uniforme y no se quede cruda por el medio"},
+  {en: "I'd better call the doctor's office to confirm my appointment for tomorrow morning, just in case they've changed the time without telling me.", es: "Será mejor que llame a la consulta del médico para confirmar mi cita de mañana por la mañana, por si acaso han cambiado la hora sin decírmelo"},
+  {en: "Don't clean the windows while the sun is shining directly on them, because the glass will dry too fast and leave ugly streaks everywhere.", es: "No limpies los cristales mientras el sol les dé directamente, porque el vidrio se secará demasiado rápido y dejará marcas feas por todas partes"},
+  {en: "Be careful when you use the power drill, as it can jump back if it hits a metal pipe inside the wall that you didn't know was there.", es: "Ten cuidado al usar el taladro eléctrico, ya que puede dar un salto hacia atrás si golpea una tubería de metal dentro de la pared que no sabías que estaba ahí"},
+  {en: "I think I'll wear my heavy coat today since the weather forecast says the temperature will drop significantly in the afternoon.", es: "Creo que me pondré el abrigo grueso hoy, ya que el pronóstico del tiempo dice que la temperatura bajará significativamente por la tarde"},
+  {en: "Remember to descale the coffee machine once a month, otherwise the lime will build up and it'll stop working properly sooner than you think.", es: "Recuerda descalcificar la cafetera una vez al mes; de lo contrario, la cal se acumulará y dejará de funcionar correctamente antes de lo que crees"},
+  {en: "You shouldn't use the same password for every website you visit, because if one account gets hacked, all your personal information will be at risk.", es: "No deberías usar la misma contraseña para cada sitio web que visites, porque si hackean una cuenta, toda tu información personal estará en riesgo"},
+  {en: "I'll set two different alarms on my phone just to be safe, because I'm so tired that I might sleep through the first one.", es: "Pondré dos alarmas diferentes en mi móvil solo por seguridad, porque estoy tan cansado que podría no enterarme de la primera"},
+  {en: "Check the expiration date on the milk before you buy it, since sometimes the bottles at the front of the shelf are about to expire.", es: "Revisa la fecha de caducidad de la leche antes de comprarla, ya que a veces las botellas de la parte delantera del estante están a punto de caducar"},
+  {en: "We should leave at least twenty minutes earlier than usual to avoid the heavy traffic that builds up near the city center during rush hour.", es: "Deberíamos salir al menos veinte minutos antes de lo habitual para evitar el tráfico intenso que se forma cerca del centro de la ciudad en hora punta"},
+  {en: "Don't overload the dishwasher with too many plates, because the water won't be able to reach everything and you'll have to wash them by hand later.", es: "No sobrecargues el lavavajillas con demasiados platos, porque el agua no podrá llegar a todo y tendrás que lavarlos a mano después"},
+  {en: "I always keep a spare set of keys at my neighbor's house in case I accidentally lock myself out while I'm taking out the trash.", es: "Siempre guardo un juego de llaves de repuesto en casa de mi vecino por si accidentalmente me quedo fuera mientras saco la basura"},
+  {en: "Make sure you heat up the leftovers until they're steaming hot, as eating cold chicken that's been in the fridge for three days might be dangerous.", es: "Asegúrate de calentar las sobras hasta que estén humeantes, ya que comer pollo frío que ha estado en la nevera tres días podría ser peligroso"},
+  {en: "You'd better wear your waterproof boots if you're going for a walk in the forest, because it rained last night and the ground will be very muddy.", es: "Será mejor que lleves tus botas impermeables si vas a dar un paseo por el bosque, porque llovió anoche y el suelo estará muy embarrado"},
+  {en: "We should tell the neighbors that we're having a small party on Saturday, so they don't get annoyed if there's a bit of noise until midnight.", es: "Deberíamos decirles a los vecinos que vamos a dar una pequeña fiesta el sábado, para que no se molesten si hay un poco de ruido hasta medianoche"},
+  {en: "Don't push yourself too hard during your first workout after the holidays, or you'll end up with sore muscles that will last for a week.", es: "No te esfuerces demasiado en tu primer entrenamiento después de las vacaciones, o acabarás con agujetas que te durarán una semana"},
+  {en: "Watch your step while you're going down the stairs because the light bulb on the second floor has burnt out and it's completely dark.", es: "Ten cuidado por dónde pisas mientras bajas las escaleras porque la bombilla del segundo piso se ha fundido y está completamente a oscuras"},
+  {en: "You can borrow my car to go to the supermarket as long as you promise to drive carefully and refill the tank before you bring it back tonight.", es: "Puedes tomar prestado mi coche para ir al supermercado siempre y cuando prometas conducir con cuidado y rellenar el depósito antes de traerlo esta noche"},
+  {en: "We had to call off the outdoor barbecue because the weather forecast predicted a heavy storm, so we decided to order some pizzas instead.", es: "Tuvimos que suspender la barbacoa al aire libre porque el pronóstico del tiempo predecía una fuerte tormenta, así que decidimos pedir unas pizzas en su lugar"},
+  {en: "It was a really tough decision to sell the old house where I grew up, but I knew it was the right thing to do to start a new life in the city.", es: "Fue una decisión realmente difícil vender la vieja casa donde crecí, pero sabía que era lo correcto para empezar una nueva vida en la ciudad"},
+  {en: "Assembling this new bookshelf is quite tricky because the instructions are not very clear, so we should take our time to avoid making any mistakes.", es: "Montar esta nueva estantería es bastante complicado porque las instrucciones no son muy claras, así que deberíamos tomarnos nuestro tiempo para evitar cometer errores"},
+  {en: "There was an awkward silence during dinner when nobody knew what to say after John mentioned the problem with the neighbors.", es: "Hubo un silencio incómodo durante la cena cuando nadie sabía qué decir después de que John mencionara el problema con los vecinos"},
+  {en: "It's definitely worth paying a little bit more for a high-quality mattress, since you'll be spending a third of your life sleeping on it.", es: "Definitivamente vale la pena pagar un poco más por un colchón de alta calidad, ya que pasarás un tercio de tu vida durmiendo en él"},
+  {en: "Keep this multi-tool in your kitchen drawer because it's very handy for opening jars or fixing small things around the house without calling a professional.", es: "Guarda esta multiherramienta en el cajón de la cocina porque es muy práctica para abrir botes o arreglar cosas pequeñas en casa sin llamar a un profesional"},
+  {en: "The renovation of the kitchen will take roughly three weeks to finish, provided that the workers arrive on time every morning and we have all the materials.", es: "La reforma de la cocina tardará aproximadamente tres semanas en terminarse, siempre que los trabajadores lleguen a tiempo cada mañana y tengamos todos los materiales"},
+  {en: "I can hardly hear what you're saying because the volume of the television is too high, so please turn it down for a moment.", es: "Apenas puedo oír lo que estás diciendo porque el volumen de la televisión está demasiado alto, así que por favor bájalo un momento"},
+  {en: "Make sure you set your alarm clock tonight, otherwise you'll oversleep and miss the most important meeting of the month.", es: "Asegúrate de poner el despertador esta noche, de lo contrario se te pegarán las sábanas y te perderás la reunión más importante del mes"},
+  {en: "Be careful when you lift the lid off the pot, because the steam is very hot; then, use the strainer to drain the pasta before it gets too soft.", es: "Ten cuidado cuando levantes la tapa de la olla, porque el vapor está muy caliente; luego, usa el colador para escurrir la pasta antes de que se ablande demasiado"},
+  {en: "Don't leave the frying pan on the heat without any oil, otherwise the non-stick surface will be ruined and everything you cook will start to stick.", es: "No dejes la sartén al fuego sin nada de aceite, de lo contrario la superficie antiadherente se arruinará y todo lo que cocines se empezará a pegar"},
+  {en: "If you want to heat up the leftovers in the microwave, make sure you use a proper lid so the food doesn't splash and mess up the whole interior.", es: "Si quieres calentar las sobras en el microondas, asegúrate de usar una tapa adecuada para que la comida no salpique y ensucie todo el interior"},
+  {en: "I need a bigger ladle to serve the soup, because this one is too small and I'll end up spilling everything on the clean tablecloth.", es: "Necesito un cucharón más grande para servir la sopa, porque este es demasiado pequeño y acabaré derramándolo todo sobre el mantel limpio"},
+  {en: "I can't find the can opener anywhere, and I really need it to open this tin of crushed tomatoes if I want to finish the sauce on time.", es: "No encuentro el abrelatas por ninguna parte, y realmente lo necesito para abrir esta lata de tomate triturado si quiero terminar la salsa a tiempo"},
+  {en: "We should buy a new corkscrew soon, since the old one is getting rusty and I'm afraid the cork will break inside the bottle next time.", es: "Deberíamos comprar un sacacorchos nuevo pronto, ya que el viejo se está oxidando y me temo que el corcho se romperá dentro de la botella la próxima vez"},
+  {en: "Wrap the rest of the roast chicken in aluminum foil before putting it in the oven to keep it warm, but make sure you don't put it in the microwave by mistake.", es: "Envuelve el resto del pollo asado en papel de aluminio antes de meterlo en el horno para que se mantenga caliente, pero asegúrate de no meterlo en el microondas por error"},
+  {en: "You'd better cover the salad bowl with plastic wrap so the lettuce stays fresh and crunchy, otherwise it will wilt because of the air in the fridge.", es: "Será mejor que cubras el bol de la ensalada con papel film para que la lechuga se mantenga fresca y crujiente, de lo contrario se marchitará por el aire de la nevera"},
+  {en: "Watch your fingers while you're using the cheese grater, because it's extremely sharp and you could easily cut yourself if you're not paying attention.", es: "Cuidado con los dedos mientras usas el rallador de queso, porque está extremadamente afilado y podrías cortarte fácilmente si no estás prestando atención"},
+  {en: "Don't leave the dirty dishes in the sink overnight; use the scrubber to clean them now so the grease doesn't dry up and become impossible to remove.", es: "No dejes los platos sucios en el fregadero toda la noche; usa el estropajo para limpiarlos ahora para que la grasa no se seque y se vuelva imposible de quitar"}
 ];
 
-let remaining=[...items],current=null,mode="EN",known=0;
-let audioPlayer=new Audio();
+let currentBlockData = [];
+let pos = 0;
+let mode = "EN";
+let learnedCount = 0;
+let currentBlockID = 0;
 
-function updateCounter(){document.getElementById("counter").textContent=known+" / "+items.length;}
-function play(){if(current){audioPlayer.src=current.audio;audioPlayer.play();}}
-
-function load(){
- document.getElementById("result").classList.add("hidden");
- current=remaining[Math.floor(Math.random()*remaining.length)];
- document.getElementById("es").classList.add("hidden");
- document.getElementById("en").classList.add("hidden");
- if(mode==="EN"){document.getElementById("langLabel").textContent="INGLES";play();}
- else{document.getElementById("langLabel").textContent="CASTELLANO";
- document.getElementById("es").textContent=current.es;
- document.getElementById("es").classList.remove("hidden");}
-}
-
-function reveal(){
- document.getElementById("es").textContent=current.es;
- document.getElementById("en").textContent=current.en;
- document.getElementById("es").classList.remove("hidden");
- document.getElementById("en").classList.remove("hidden");
- if(mode==="ES") play();
-}
-
-function know(){remaining=[];known++;updateCounter();load();}
-function nextOne(){load();}
-function setMode(m){mode=m;load();}
-
-function normalize(t){return t.toLowerCase().replace(/[.,!?]/g,"").replace(/\s+/g," ").trim();}
-
-function similarity(a,b){
- a=normalize(a);b=normalize(b);
- let wa=a.split(" "),wb=b.split(" ");
- let matches=0;
- wa.forEach(w=>{if(wb.includes(w))matches++;});
- return matches/wa.length;
-}
-
-const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
-let recognition=new SpeechRecognition();
-recognition.continuous=true;
-recognition.lang="es-ES";
-
-let voiceActive=false;
-let waitingAnswer=false;
-
-recognition.onresult=function(e){
- const text=e.results[e.results.length-1][0].transcript.toLowerCase().trim();
-
- if(!waitingAnswer){
-  if(text.includes("contestar")){
-   waitingAnswer=true;
-   recognition.lang="en-US";
-   return;
+function initBlocks() {
+  const container = document.getElementById("blocksContainer");
+  const numBlocks = Math.ceil(data.length / 10);
+  container.innerHTML = "";
+  for (let i = 0; i < numBlocks; i++) {
+    const btn = document.createElement("button");
+    btn.className = "block";
+    btn.textContent = i + 1;
+    btn.onclick = () => loadBlock(i);
+    container.appendChild(btn);
   }
-  if(text.includes("siguiente")){nextOne();}
-  if(text.includes("repetir")){play();}
- }else{
-  recognition.lang="es-ES";
-  waitingAnswer=false;
-  evaluate(text);
- }
-};
-
-function evaluate(answer){
- const score=similarity(answer,current.en);
- const box=document.getElementById("result");
- box.classList.remove("hidden","correct","almost","incorrect");
-
- if(score>0.85){box.textContent="✔ Correcte";box.classList.add("correct");}
- else if(score>0.6){box.innerHTML="⚠ Quasi correcta<br>"+answer;box.classList.add("almost");}
- else{box.innerHTML="✘ Incorrecta<br>"+answer;box.classList.add("incorrect");}
+  const btnT = document.createElement("button");
+  btnT.className = "block"; btnT.textContent = "T";
+  btnT.onclick = () => loadBlock('T');
+  container.appendChild(btnT);
+  loadBlock(0);
 }
 
-function toggleVoice(){
- if(!voiceActive){recognition.start();voiceActive=true;alert("Mode veu activat");}
- else{recognition.stop();voiceActive=false;alert("Mode veu desactivat");}
+function loadBlock(b) {
+  currentBlockID = b;
+  let temp = [];
+  if (b === 'T') {
+    temp = data.map((item, i) => ({...item, realIdx: i+1}));
+  } else {
+    let start = b * 10;
+    let end = Math.min(start + 10, data.length);
+    for (let i = start; i < end; i++) {
+      temp.push({...data[i], realIdx: i+1});
+    }
+  }
+  currentBlockData = temp.sort(() => Math.random() - 0.5);
+  
+  document.querySelectorAll(".block").forEach((btn) => {
+    btn.classList.toggle("active", (b === 'T' && btn.textContent === 'T') || (parseInt(btn.textContent)-1 === b));
+  });
+
+  pos = 0; learnedCount = 0;
+  document.getElementById("list").style.display = "none";
+  update(true); 
 }
 
-updateCounter();
-load();
+function setMode(m) {
+  mode = m;
+  document.getElementById("modeEN").classList.toggle("active", m === "EN");
+  document.getElementById("modeES").classList.toggle("active", m === "ES");
+  update(true);
+}
 
+function update(fromNextAction = false) {
+  if (currentBlockData.length === 0) {
+    document.getElementById("word").innerHTML = "¡Bloque Completado! 🎉";
+    document.getElementById("answer").innerHTML = "";
+    return;
+  }
+  const item = currentBlockData[pos];
+  const translation = `<span class="txt-es">${item.es}</span>`;
+  
+  const w = document.getElementById("word");
+  const a = document.getElementById("answer");
+
+  if (mode === "EN") {
+    w.innerHTML = ``; 
+    a.innerHTML = translation;
+    if (fromNextAction) playAudio();
+  } else {
+    w.innerHTML = `<div style='font-size:22px;'>${translation}</div>`;
+    a.innerHTML = `<span style="font-size:24px;">${item.en}</span>`;
+  }
+  
+  a.style.display = "none";
+  document.getElementById("pos").textContent = learnedCount;
+  document.getElementById("total").textContent = currentBlockData.length + learnedCount;
+}
+
+function reveal() {
+  if (currentBlockData.length > 0) {
+    const item = currentBlockData[pos];
+    if (mode === "EN") {
+        document.getElementById("word").innerHTML = `<span style="color:#333;">${item.en}</span>`;
+    }
+    document.getElementById("answer").style.display = "block";
+    if (mode === "ES") playAudio(); 
+  }
+}
+
+function know() {
+  if (currentBlockData.length === 0) return;
+  learnedCount++;
+  currentBlockData.splice(pos, 1);
+  if (pos >= currentBlockData.length) pos = 0;
+  update(true);
+}
+
+function next() {
+  if (currentBlockData.length === 0) return;
+  pos = (pos + 1) % currentBlockData.length;
+  update(true);
+}
+
+function playAudio() {
+  if (currentBlockData.length === 0) return;
+  const num = currentBlockData[pos].realIdx;
+  const a = document.getElementById("audio");
+  a.src = "frase" + num + ".mp3";
+  const btn=document.querySelector('.audio-btn');
+  btn.classList.remove('vibrate'); void btn.offsetWidth; btn.classList.add('vibrate');
+  a.play().catch(() => {});
+}
+
+function toggleList() {
+  const l = document.getElementById("list");
+  if (l.style.display === "block") { l.style.display = "none"; return; }
+  l.innerHTML = "<b>Llista del bloc:</b><br><br>";
+  let start = currentBlockID === 'T' ? 0 : currentBlockID * 10;
+  let end = currentBlockID === 'T' ? data.length : Math.min(start + 10, data.length);
+  let originalBlock = data.slice(start, end);
+  originalBlock.forEach((item) => {
+    l.innerHTML += `<div style="margin-bottom:8px"><b>${item.en}</b> - <span class="txt-es">${item.es}</span></div>`;
+  });
+  l.style.display = "block";
+}
+
+initBlocks();
+
+const style = document.createElement('style');
+style.innerHTML = `
+    .check-box-manual {
+        position: absolute;
+        top: 85px; 
+        right: 22px;
+        width: 24px;
+        height: 24px;
+        background: #fff !important;
+        border: 1.5px solid #22c55e !important;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+        transition: all 0.2s;
+        font-size: 14px;
+    }
+    .check-box-manual.marked { 
+        background: #22c55e !important; 
+        color: white; 
+    }
+`;
+document.head.appendChild(style);
+
+function getFolderName() {
+    const path = window.location.pathname;
+    return path.split('/').filter(Boolean).slice(-2, -1)[0] || "unknown";
+}
+
+function markAsDone(element) {
+    localStorage.setItem(getFolderName(), new Date().toISOString());
+    element.innerHTML = "✓";
+    element.classList.add('marked');
+    alert("Lliçó marcada ✅");
+}
+
+const card = document.querySelector(".card");
+const box = document.createElement("div");
+box.className = "check-box-manual";
+
+if (localStorage.getItem(getFolderName())) {
+    box.innerHTML = "✓";
+    box.classList.add('marked');
+}
+
+box.onclick = function() { markAsDone(this); };
+card.appendChild(box);
 </script>
 </body>
 </html>
