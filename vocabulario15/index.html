@@ -1,150 +1,147 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>-ING vs TO + VERB</title>
+<title>Mi Libreta Digital</title>
 <style>
 body {
+    margin: 0;
     font-family: Arial, sans-serif;
-    background: #f2f4f7;
+    background: #eef1f5;
     padding: 40px;
 }
-.card {
-    background: white;
-    max-width: 1000px;
-    margin: auto;
-    padding: 40px;
-    border-radius: 18px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-}
+
 h1 {
     text-align: center;
     margin-bottom: 30px;
 }
-.audio-section {
-    text-align: center;
-    margin-bottom: 35px;
-    padding: 20px;
-    background: #e8f0fe;
-    border-radius: 14px;
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
 }
+
+.gallery img {
+    width: 100%;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.gallery img:hover {
+    transform: scale(1.05);
+}
+
+.viewer {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.viewer img {
+    max-width: 90%;
+    max-height: 80%;
+    border-radius: 15px;
+    transition: transform 0.3s ease;
+    cursor: zoom-in;
+}
+
+.viewer img.zoomed {
+    transform: scale(1.5);
+    cursor: zoom-out;
+}
+
+.controls {
+    margin-top: 20px;
+}
+
 button {
-    padding: 12px 20px;
+    padding: 10px 18px;
+    margin: 5px;
     border: none;
-    border-radius: 10px;
+    border-radius: 8px;
     background: #4CAF50;
     color: white;
-    font-size: 16px;
     cursor: pointer;
-    margin: 8px;
 }
+
 button:hover {
     background: #45a049;
-}
-.columns {
-    display: flex;
-    gap: 30px;
-}
-.box {
-    flex: 1;
-    padding: 25px;
-    border-radius: 16px;
-}
-.ing {
-    background: #d9f2d9;
-}
-.to {
-    background: #d9e8ff;
-}
-.separator {
-    margin: 40px 0;
-    text-align: center;
-    font-size: 20px;
-}
-.exceptions {
-    background: #ffe5cc;
-    padding: 25px;
-    border-radius: 16px;
-}
-.rule {
-    margin-top: 30px;
-    padding: 25px;
-    background: #fff4b3;
-    border-radius: 16px;
-    font-weight: bold;
-    text-align: center;
-    font-size: 18px;
-}
-ul {
-    line-height: 1.6;
 }
 </style>
 </head>
 <body>
 
-<div class="card">
+<h1>📒 Mi Libreta Digital</h1>
 
-<h1>-ING vs TO + VERB</h1>
-
-<div class="audio-section">
-<h2>🎧 Listen to the Explanation</h2>
-
-<audio id="audioPlayer" src="ING_vs_TO_rules.mp3"></audio>
-
-<button onclick="document.getElementById('audioPlayer').play()">▶ Play</button>
-<button onclick="document.getElementById('audioPlayer').pause()">⏸ Pause</button>
-
-<a href="ING_vs_TO_rules.mp3" download>
-<button>⬇ Download Audio</button>
-</a>
-
-<p><small>*ING_vs_TO_rules.mp3 must be in the same folder.</small></p>
+<div class="gallery">
+    <img src="foto1.jpg" onclick="openViewer(0)">
+    <img src="foto2.jpg" onclick="openViewer(1)">
+    <img src="foto3.jpg" onclick="openViewer(2)">
+    <img src="foto4.jpg" onclick="openViewer(3)">
+    <img src="foto5.jpg" onclick="openViewer(4)">
+    <img src="foto6.jpg" onclick="openViewer(5)">
+    <img src="foto7.jpg" onclick="openViewer(6)">
+    <img src="foto8.jpg" onclick="openViewer(7)">
+    <img src="foto9.jpg" onclick="openViewer(8)">
+    <img src="foto10.jpg" onclick="openViewer(9)">
 </div>
 
-<div class="columns">
-
-<div class="box ing">
-<h2>🟢 -ING (Gerund)</h2>
-<ul>
-<li><b>Subject:</b> Swimming is good for you.</li>
-<li><b>After prepositions:</b> about buying, without saying, before leaving.</li>
-<li><b>Verbs of preference:</b> enjoy, dislike, finish, keep, mind, suggest.</li>
-<li>Example: I enjoy dancing.</li>
-<li>⚠ “To swim is good…” sounds archaic.</li>
-</ul>
+<div class="viewer" id="viewer">
+    <img id="viewerImage">
+    <div class="controls">
+        <button onclick="prevImage()">◀</button>
+        <button onclick="nextImage()">▶</button>
+        <button onclick="closeViewer()">Cerrar</button>
+    </div>
 </div>
 
-<div class="box to">
-<h2>🔵 TO + VERB (Infinitive)</h2>
-<ul>
-<li><b>Purpose:</b> I went to buy milk.</li>
-<li><b>Intention / future meaning:</b> agree, decide, hope, plan, promise, want.</li>
-<li>Example: I hope to see you soon.</li>
-</ul>
-</div>
+<script>
+const images = [
+"foto1.jpg",
+"foto2.jpg",
+"foto3.jpg",
+"foto4.jpg",
+"foto5.jpg",
+"foto6.jpg",
+"foto7.jpg",
+"foto8.jpg",
+"foto9.jpg",
+"foto10.jpg"
+];
 
-</div>
+let currentIndex = 0;
 
-<div class="separator">
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-</div>
+function openViewer(index) {
+    currentIndex = index;
+    document.getElementById("viewerImage").src = images[index];
+    document.getElementById("viewer").style.display = "flex";
+}
 
-<div class="exceptions">
-<h2>⚠ Verbs That Change Meaning</h2>
-<ul>
-<li><b>STOP</b> → stop + ing (quit an activity) / stop + to (pause to do something)</li>
-<li><b>REMEMBER</b> → + ing (past memory) / + to (future obligation)</li>
-<li><b>FORGET</b> → + ing (already done) / + to (something pending)</li>
-</ul>
-</div>
+function closeViewer() {
+    document.getElementById("viewer").style.display = "none";
+}
 
-<div class="rule">
-General or abstract action → 🟢 -ING<br>
-Specific goal or intention → 🔵 TO
-</div>
+function nextImage() {
+    currentIndex = (currentIndex + 1) % images.length;
+    document.getElementById("viewerImage").src = images[currentIndex];
+}
 
-</div>
+function prevImage() {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    document.getElementById("viewerImage").src = images[currentIndex];
+}
+
+document.getElementById("viewerImage").addEventListener("click", function() {
+    this.classList.toggle("zoomed");
+});
+</script>
 
 </body>
 </html>
