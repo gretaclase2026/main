@@ -1,5 +1,4 @@
-
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ca">
 <head>
 <meta charset="UTF-8">
@@ -69,6 +68,7 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 
 <script>
 const data = [
+  // --- FRASES 1-40 (Tus frases originales) ---
   {en: "I did it this way so she wouldn't have to walk back and forth all the time.", es: "Lo hice así para que ella no tuviera que ir y venir caminando todo el tiempo"},
   {en: "You ought to try and embrace new challenges if you want to improve your fluency.", es: "Deberías intentar aceptar nuevos retos si quieres mejorar tu fluidez"},
   {en: "The weather has been perfect so far, knock on wood it stays like this.", es: "El tiempo ha sido perfecto hasta ahora, toquemos madera para que siga así"},
@@ -82,13 +82,55 @@ const data = [
   {en: "We saw each other yesterday and ate at that new place which is spotless.", es: "Nos vimos ayer y comimos en ese sitio nuevo que está impecable"},
   {en: "I bought these flowers to thank you for giving us further directions.", es: "Compré estas flores para agradecerte que nos dieras indicaciones adicionales"},
   {en: "I knew it was the right way back as soon as I saw the park.", es: "Supe que era el camino de vuelta correcto en cuanto vi el parque"},
-  {en: "I understood I ought to have embraced the challenge when I spoke to them.", es: "Entendí que debería haber aceptado el reto cuando hablé con ellos"},
+  {en: "I understood I ought to have embraced the challenge when I spoke to them.", es: "Entendí que debería haber aceptado el resto cuando hablé con ellos"},
   {en: "I felt the weather was perfect, so we sat outside all night.", es: "Sentí que el tiempo era perfecto, así que nos quedamos fuera toda la noche"},
   {en: "You ought to try this wine, it's the best I've had in a long time.", es: "Deberías probar este vino, es lo mejor que he probado en mucho tiempo"},
   {en: "Could you give me some further details about what you did yesterday?", es: "¿Podrías darme más detalles sobre lo que hicisteis ayer?"},
   {en: "We should be at the restaurant within fifteen minutes if there's no traffic.", es: "Deberíamos estar en el restaurante en quince minutos si no hay tráfico"},
   {en: "I've just tidied up the living room so everything looks spotless for the guests.", es: "Acabo de ordenar el salón para que todo se vea impecable para los invitados"},
-  {en: "They told me they got along with the neighbors right from the start.", es: "Me dijeron que se llevaron bien con los vecinos desde el principio"}
+  {en: "They told me they got along with the neighbors right from the start.", es: "Me dijeron que se llevaron bien con los vecinos desde el principio"},
+  {en: "By the way, I brought some wine so you wouldn't have to walk back and forth to the store.", es: "Por cierto, traje un poco de vino para que no tuvieras que ir y venir a la tienda"},
+  {en: "To be honest, I thought we would be there within ten minutes, but we got lost.", es: "Para ser sincera, pensé que estaríamos allí en diez minutos, pero nos perdimos"},
+  {en: "Actually, we saw each other yesterday and ate at that new place which is spotless.", es: "De hecho, nos vimos ayer y comimos en ese sitio nuevo que está impecable"},
+  {en: "If you ask me, you should receive an answer from them within three days.", es: "Si me preguntas a mí, deberías recibir una respuesta por su parte en tres días"},
+  {en: "By the way, my sister and I have got along really well since we were kids.", es: "Por cierto, mi hermana y yo nos llevamos muy bien desde que somos pequeñas"},
+  {en: "Truth be told, I knew it was the right way back as soon as I saw the park.", es: "A decir verdad, supe que era el camino de vuelta en cuanto vi el parque"},
+  {en: "By the way, I bought these flowers to thank you for giving us further details.", es: "Por cierto, compré estas flores para agradecerte que nos dieras más detalles"},
+  {en: "To be honest, I understood I ought to have embraced the challenge when I spoke to them.", es: "Para ser sincera, entendí que debía aceptar el reto cuando hablé con ellos"},
+  {en: "As I was saying, the weather was perfect, so we sat outside all night.", es: "Como decía, el tiempo fue perfecto, así que nos quedamos fuera toda la noche"},
+  {en: "By the way, you don't have to walk back and forth; I'll bring the plates.", es: "Por cierto, no hace falta que vayas y vuelvas; yo traeré los platos"},
+  {en: "Truth be told, you ought to try this wine, it's the best I've had in years.", es: "A decir verdad, deberías probar este vino, es lo mejor que he tomado en años"},
+  {en: "Actually, I got lost and I couldn't find my way back without the GPS.", es: "De hecho, me perdí y no pude encontrar el camino de vuelta sin el GPS"},
+  {en: "By the way, could you give me some further details about what you did yesterday?", es: "Por cierto, ¿podrías darme más detalles sobre lo que hicisteis ayer?"},
+  {en: "To be honest, the restaurant is very close, we'll be there within ten minutes.", es: "Para ser sincera, el restaurante está muy cerca, estaremos allí en diez minutos"},
+  {en: "Actually, I've tidied up the terrace and it's spotless for the dinner.", es: "De hecho, he limpiado la terraza y ha quedado impecable para la cena"},
+  {en: "By the way, I hope the weather is perfect tomorrow, knock on wood.", es: "Por cierto, espero que el tiempo sea perfecto mañana, toquemos madera"},
+  {en: "As I was saying, we get along really well because we have very similar tastes.", es: "Como decía, nos llevamos muy bien porque tenemos gustos muy parecidos"},
+  {en: "If you ask me, you ought to embrace new challenges to improve your fluency.", es: "Si me preguntas a mí, deberías aceptar nuevos retos para mejorar tu fluidez"},
+  {en: "By the way, did you bring the dessert we bought at that spotless bakery?", es: "Por cierto, ¿trajiste el postre que compramos en esa pastelería tan limpia?"},
+  {en: "Truth be told, I'm glad you didn't have to walk back and forth so much.", es: "A decir verdad, me alegra que no tuvieras que caminar tanto de un lado a otro"},
+
+  // --- FRASES 41-60 (Nuevas expresiones naturales) ---
+  {en: "It's been ages since we last caught up, we have so much to talk about!", es: "Hace siglos que no nos ponemos al día, ¡tenemos tanto de qué hablar!"},
+  {en: "I'm a bit tied up at the moment, but I'll call you back as soon as I'm free.", es: "Estoy un poco liada en este momento, pero te devuelvo la llamada en cuanto esté libre"},
+  {en: "To be fair, he's been under a lot of pressure lately so he's a bit stressed.", es: "Para ser justos, él ha estado bajo mucha presión últimamente, así que está un poco estresado"},
+  {en: "I'm in two minds about going out tonight; part of me just wants to stay in.", es: "Estoy indecisa sobre si salir esta noche; una parte de mí solo quiere quedarse en casa"},
+  {en: "Better safe than sorry, so I'll bring a jacket just in case it gets chilly.", es: "Más vale prevenir que curar, así que llevaré una chaqueta por si refresca"},
+  {en: "I can't quite put my finger on it, but something feels different in this room.", es: "No sabría decir exactamente qué es, pero algo se siente diferente en esta habitación"},
+  {en: "We ended up staying at that café for hours because the coffee was so good.", es: "Acabamos quedándonos en esa cafetería durante horas porque el café estaba muy bueno"},
+  {en: "It's not really my cup of tea, but I'm willing to give it a try if you like it.", es: "No es mucho de mi agrado, pero estoy dispuesta a probarlo si a ti te gusta"},
+  {en: "I need to figure out how to set up this new app before the meeting starts.", es: "Necesito averiguar cómo configurar esta nueva aplicación antes de que empiece la reunión"},
+  {en: "Long story short, we missed the train and had to take a very expensive taxi.", es: "Resumiendo, perdimos el tren y tuvimos que coger un taxi carísimo"},
+  {en: "As far as I'm concerned, this is the best restaurant in the whole city.", es: "Por lo que a mí respecta, este es el mejor restaurante de toda la ciudad"},
+  {en: "I'm really looking forward to seeing everyone at the dinner next weekend.", es: "Tengo muchísimas ganas de ver a todo el mundo en la cena del próximo fin de semana"},
+  {en: "Don't worry, it's not the end of the world if we don't finish everything today.", es: "No te preocupes, no es el fin del mundo si no lo terminamos todo hoy"},
+  {en: "I've been feeling a bit under the weather lately, so I've been resting a lot.", es: "Me he estado sintiendo un poco pachucha últimamente, así que he estado descansando mucho"},
+  {en: "You've hit the nail on the head; that's exactly what I was trying to say.", es: "Has dado en el clavo; eso es exactamente lo que estaba intentando decir"},
+  {en: "I'll keep my fingers crossed that you get the job, you really deserve it.", es: "Cruzaré los dedos para que consigas el trabajo, realmente te lo mereces"},
+  {en: "It's on the tip of my tongue, but I just can't remember the name of that place.", es: "Lo tengo en la punta de la lengua, pero no consigo recordar el nombre de ese sitio"},
+  {en: "I'm swamped with work this week, so I won't be able to join you for lunch.", es: "Estoy inundada de trabajo esta semana, así que no podré ir contigo a comer"},
+  {en: "It's up to you; I don't mind which movie we watch as long as there's popcorn.", es: "Tú decides; no me importa qué película veamos mientras haya palomitas"},
+  {en: "I'll get round to fixing that leaky faucet as soon as I have a spare moment.", es: "Sacaré tiempo para arreglar ese grifo que gotea en cuanto tenga un momento libre"}
 ];
 
 let currentBlockData = [];
