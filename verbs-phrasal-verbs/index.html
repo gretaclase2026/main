@@ -1,0 +1,316 @@
+ <!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estudi Phrasal Verbs (1-120)</title>
+<style>
+body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
+header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center}
+.mode-btns button{margin:0 6px;padding:8px 14px;border:none;border-radius:14px;font-weight:700;cursor:pointer}
+.mode-en{background:#dbeafe}
+.mode-es{background:#fde68a}
+main{display:flex;justify-content:center;padding:24px}
+.card{position:relative;width:100%;max-width:560px;background:#ffffff;border-radius:28px;padding:32px;box-shadow:0 10px 24px rgba(0,0,0,0.06);text-align:center}
+.counter{position:absolute;top:18px;left:22px;font-weight:800;color:#2563eb}
+.lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
+.blocks{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:15px 0 20px}
+.block{width:32px;height:32px;border-radius:50%;border:none;background:#f1f5f9;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.2s}
+.block.active{background:#2563eb !important;color:#fff !important}
+.audio-container { display: flex; justify-content: center; gap: 15px; margin: 10px 0 20px; }
+.audio-btn{width:85px;height:85px;border-radius:50%;border:none;background:#dbeafe;font-size:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
+.audio-btn.slow{background:#fef08a; font-size:26px;}
+.audio-btn:active{transform:scale(0.9)}
+.hidden{display:none}
+.es{font-size:19px;color:#2563eb;margin-top:14px;line-height:1.4}
+.en{font-size:19px;color:#0f172a;margin-top:14px;font-weight:700;line-height:1.4}
+.keyword { color: #9333ea; font-weight: 800; }
+.buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:22px}
+button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;cursor:pointer}
+.reveal{background:#e0f2fe}
+.know{background:#dcfce7}
+.next{background:#fbcfe8}
+.list-btn{margin-top:16px;background:#e9d5ff;border:none;border-radius:16px;padding:14px;font-weight:800;cursor:pointer;width:100%}
+.list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
+.check-box-manual { position: absolute; top: 18px; right: 22px; width: 24px; height: 24px; background: #fff; border: 1.5px solid #22c55e; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 14px; }
+.check-box-manual.marked { background: #22c55e !important; color: white !important; }
+</style>
+</head>
+<body>
+<header>
+ <div class="mode-btns">
+  <button class="mode-en" onclick="setMode('EN')">Mode anglès → castellà</button>
+  <button class="mode-es" onclick="setMode('ES')">Mode castellà → anglès</button>
+ </div>
+</header>
+<main>
+<div class="card">
+ <div class="counter" id="counter">0 / 0</div>
+ <div class="check-box-manual" id="mainCheck" onclick="markAsDone(this)"></div>
+ <div id="langLabel" class="lang">ANGLÈS</div>
+ <div id="blockContainer" class="blocks"></div>
+ <div class="audio-container">
+  <button class="audio-btn" onclick="play(1.0)">🔊</button>
+  <button class="audio-btn slow" onclick="play(0.75)">🐢</button>
+ </div>
+ <div id="es" class="es hidden"></div>
+ <div id="en" class="en hidden"></div>
+ <div class="buttons">
+  <button class="action reveal" onclick="reveal()">Veure</button>
+  <button class="action know" onclick="know()">Ja la sé</button>
+  <button class="action next" onclick="nextOne()">Següent</button>
+ </div>
+ <button class="list-btn" onclick="toggleList()">Veure toda la llista</button>
+</div>
+</main>
+<div id="listBox" class="list-box hidden"></div>
+<script>
+const items = [
+    {audio:"f001.mp3", en:"I always <span class='keyword'>get up</span> at seven o'clock because I like to exercise.", es:"Siempre me <span class='keyword'>levanto</span> a las siete porque me gusta hacer ejercicio."},
+    {audio:"f002.mp3", en:"Please, <span class='keyword'>turn off</span> the lights before you leave the house.", es:"Por favor, <span class='keyword'>apaga</span> las luces antes de salir de casa."},
+    {audio:"f003.mp3", en:"Don't forget to <span class='keyword'>put on</span> your coat; it's very cold today.", es:"No olvides <span class='keyword'>ponerte</span> el abrigo; hace mucho frío hoy."},
+    {audio:"f004.mp3", en:"I need to <span class='keyword'>look for</span> my keys; I can't find them anywhere.", es:"Necesito <span class='keyword'>buscar</span> mis llaves; no las encuentro por ninguna parte."},
+    {audio:"f005.mp3", en:"Can you <span class='keyword'>pick up</span> the kids from school this afternoon?", es:"¿Puedes <span class='keyword'>recoger</span> a los niños del colegio esta tarde?"},
+    {audio:"f006.mp3", en:"We should <span class='keyword'>go out</span> for dinner on Friday to celebrate.", es:"Deberíamos <span class='keyword'>salir</span> a cenar el viernes para celebrar."},
+    {audio:"f007.mp3", en:"Please <span class='keyword'>write down</span> your phone number on this piece of paper.", es:"Por favor, <span class='keyword'>anota</span> tu número de teléfono en este trozo de papel."},
+    {audio:"f008.mp3", en:"I have to <span class='keyword'>clean up</span> the kitchen after I cook dinner.", es:"Tengo que <span class='keyword'>limpiar</span> la cocina después de cocinar la cena."},
+    {audio:"f009.mp3", en:"You should <span class='keyword'>take off</span> your shoes when you enter the house.", es:"Deberías <span class='keyword'>quitarte</span> los zapatos cuando entres en casa."},
+    {audio:"f010.mp3", en:"I <span class='keyword'>get along</span> very well with my new neighbors.", es:"Me <span class='keyword'>llevo</span> muy bien con mis nuevos vecinos."},
+    {audio:"f011.mp3", en:"Let's <span class='keyword'>look up</span> the meaning of this word in the dictionary.", es:"Vamos a <span class='keyword'>buscar</span> el significado de esta palabra en el diccionario."},
+    {audio:"f012.mp3", en:"I need to <span class='keyword'>fill out</span> this form to get a new passport.", es:"Necesito <span class='keyword'>rellenar</span> este formulario para obtener un pasaporte nuevo."},
+    {audio:"f013.mp3", en:"Don't <span class='keyword'>give up</span> learning English; you are doing great!", es:"No <span class='keyword'>te rindas</span> con el inglés; ¡lo estás haciendo genial!"},
+    {audio:"f014.mp3", en:"My car <span class='keyword'>broke down</span> on the way to work this morning.", es:"Mi coche <span class='keyword'>se averió</span> de camino al trabajo esta mañana."},
+    {audio:"f015.mp3", en:"I'll <span class='keyword'>call</span> you <span class='keyword'>back</span> as soon as I finish this meeting.", es:"Te <span class='keyword'>devolveré la llamada</span> tan pronto como termine esta reunión."},
+    {audio:"f016.mp3", en:"We need to <span class='keyword'>set up</span> the table for twelve people.", es:"Necesitamos <span class='keyword'>preparar</span> la mesa para doce personas."},
+    {audio:"f017.mp3", en:"I'm <span class='keyword'>looking forward to</span> seeing you at the party.", es:"Tengo <span class='keyword'>muchas ganas de</span> verte en la fiesta."},
+    {audio:"f018.mp3", en:"Can you <span class='keyword'>turn up</span> the volume? I can't hear the news.", es:"¿Puedes <span class='keyword'>subir</span> el volumen? No oigo las noticias."},
+    {audio:"f019.mp3", en:"Please <span class='keyword'>sit down</span> and make yourself comfortable.", es:"Por favor, <span class='keyword'>siéntate</span> y ponte cómodo."},
+    {audio:"f020.mp3", en:"I want to <span class='keyword'>try on</span> this blue shirt in a medium size.", es:"Quiero <span class='keyword'>probarme</span> esta camisa azul en una talla mediana."},
+    {audio:"f021.mp3", en:"My brother <span class='keyword'>wakes up</span> early but stays in bed for an hour.", es:"Mi hermano se <span class='keyword'>despierta</span> temprano pero se queda en la cama una hora."},
+    {audio:"f022.mp3", en:"I need to <span class='keyword'>find out</span> what time the train leaves.", es:"Necesito <span class='keyword'>averiguar</span> a qué hora sale el tren."},
+    {audio:"f023.mp3", en:"He decided to <span class='keyword'>give away</span> his old clothes to charity.", es:"Decidió <span class='keyword'>regalar</span> su ropa vieja a la caridad."},
+    {audio:"f024.mp3", en:"Please <span class='keyword'>put away</span> your toys before you go to sleep.", es:"Por favor, <span class='keyword'>guarda</span> tus juguetes antes de irte a dormir."},
+    {audio:"f025.mp3", en:"We <span class='keyword'>ran out of</span> milk, so I need to go to the shop.", es:"Nos <span class='keyword'>quedamos sin</span> leche, así que necesito ir a la tienda."},
+    {audio:"f026.mp3", en:"I have to <span class='keyword'>look after</span> my sister's cat this weekend.", es:"Tengo que <span class='keyword'>cuidar</span> al gato de mi hermana este fin de semana."},
+    {audio:"f027.mp3", en:"The plane will <span class='keyword'>take off</span> in about twenty minutes.", es:"El avión <span class='keyword'>despegará</span> en unos veinte minutos."},
+    {audio:"f028.mp3", en:"You can <span class='keyword'>throw away</span> those old newspapers; I read them.", es:"Puedes <span class='keyword'>tirar</span> esos periódicos viejos; ya los leí."},
+    {audio:"f029.mp3", en:"I need to <span class='keyword'>brush up</span> on my French before my trip to Paris.", es:"Necesito <span class='keyword'>repasar</span> mi francés antes de mi viaje a París."},
+    {audio:"f030.mp3", en:"Don't <span class='keyword'>hang up</span> the phone yet; I have one more thing to say.", es:"No <span class='keyword'>cuelgues</span> el teléfono todavía; tengo una cosa más que decir."},
+    {audio:"f031.mp3", en:"I'm trying to <span class='keyword'>cut down on</span> sugar to be healthier.", es:"Estoy intentando <span class='keyword'>reducir</span> el azúcar para estar más sano."},
+    {audio:"f032.mp3", en:"My daughter wants to <span class='keyword'>grow up</span> to be a famous doctor.", es:"Mi hija quiere <span class='keyword'>crecer</span> para ser una doctora famosa."},
+    {audio:"f033.mp3", en:"Can you <span class='keyword'>help</span> me <span class='keyword'>out</span> with this heavy suitcase?", es:"¿Puedes <span class='keyword'>ayudarme</span> con esta maleta pesada?"},
+    {audio:"f034.mp3", en:"We should <span class='keyword'>hurry up</span> or we will miss the bus.", es:"Deberíamos <span class='keyword'>darnos prisa</span> o perderemos el autobús."},
+    {audio:"f035.mp3", en:"I <span class='keyword'>ran into</span> an old friend at the supermarket yesterday.", es:"Me <span class='keyword'>encontré con</span> un viejo amigo en el supermercado ayer."},
+    {audio:"f036.mp3", en:"Please <span class='keyword'>keep on</span> working until the bell rings.", es:"Por favor, <span class='keyword'>continúa</span> trabajando hasta que suene la campana."},
+    {audio:"f037.mp3", en:"I need to <span class='keyword'>log in</span> to my email to check the message.", es:"Necesito <span class='keyword'>iniciar sesión</span> en mi correo para revisar el mensaje."},
+    {audio:"f038.mp3", en:"My son <span class='keyword'>made up</span> a funny story about a green dragon.", es:"Mi hijo <span class='keyword'>se inventó</span> una historia divertida sobre un dragón verde."},
+    {audio:"f039.mp3", en:"You should <span class='keyword'>pay back</span> the money I lent you last week.", es:"Deberías <span class='keyword'>devolverme</span> el dinero que te presté la semana pasada."},
+    {audio:"f040.mp3", en:"I'll <span class='keyword'>show</span> you <span class='keyword'>around</span> the office on your first day.", es:"Te <span class='keyword'>mostraré</span> la oficina en tu primer día."},
+    {audio:"f041.mp3", en:"We decided to <span class='keyword'>take up</span> tennis to stay active.", es:"Decidimos <span class='keyword'>empezar</span> a practicar tenis para mantenernos activos."},
+    {audio:"f042.mp3", en:"I'm going to <span class='keyword'>think</span> it <span class='keyword'>over</span> before I make a decision.", es:"Voy a <span class='keyword'>pensarlo bien</span> antes de tomar una decisión."},
+    {audio:"f043.mp3", en:"Please <span class='keyword'>turn down</span> the music; it's too loud for the baby.", es:"Por favor, <span class='keyword'>baja</span> la música; está muy fuerte para el bebé."},
+    {audio:"f044.mp3", en:"I want to <span class='keyword'>work out</span> at the gym three times a week.", es:"Quiero <span class='keyword'>hacer ejercicio</span> en el gimnasio tres veces por semana."},
+    {audio:"f045.mp3", en:"Don't <span class='keyword'>back out</span> of the deal at the last minute.", es:"No <span class='keyword'>te eches atrás</span> en el trato a último momento."},
+    {audio:"f046.mp3", en:"I need to <span class='keyword'>check out</span> of the hotel before noon.", es:"Necesito <span class='keyword'>dejar</span> la habitación del hotel antes del mediodía."},
+    {audio:"f047.mp3", en:"He <span class='keyword'>came up with</span> a great idea for the new project.", es:"Él <span class='keyword'>propuso</span> una gran idea para el nuevo proyecto."},
+    {audio:"f048.mp3", en:"You can <span class='keyword'>rely on</span> me if you need any help.", es:"Puedes <span class='keyword'>confiar en</span> mí si necesitas ayuda."},
+    {audio:"f049.mp3", en:"I have to <span class='keyword'>deal with</span> a lot of emails every morning.", es:"Tengo que <span class='keyword'>lidiar con</span> muchos correos cada mañana."},
+    {audio:"f050.mp3", en:"Let's <span class='keyword'>get together</span> for a coffee sometime next week.", es:"Vamos a <span class='keyword'>reunirnos</span> para tomar un café la semana que viene."},
+    {audio:"f051.mp3", en:"I <span class='keyword'>dropped off</span> the package at the post office today.", es:"<span class='keyword'>Dejé</span> el paquete en la oficina de correos hoy."},
+    {audio:"f052.mp3", en:"The fire alarm <span class='keyword'>went off</span> in the middle of the night.", es:"La alarma de incendios <span class='keyword'>sonó</span> en mitad de la noche."},
+    {audio:"f053.mp3", en:"Please <span class='keyword'>hand out</span> these photocopies to the students.", es:"Por favor, <span class='keyword'>reparte</span> estas fotocopias a los estudiantes."},
+    {audio:"f054.mp3", en:"I need to <span class='keyword'>hold on</span> for a second while I find a pen.", es:"Necesito <span class='keyword'>esperar</span> un segundo mientras encuentro un bolígrafo."},
+    {audio:"f055.mp3", en:"Don't <span class='keyword'>let</span> me <span class='keyword'>down</span>; I'm counting on your help.", es:"No me <span class='keyword'>decepciones</span>; cuento con tu ayuda."},
+    {audio:"f056.mp3", en:"I'll <span class='keyword'>point out</span> the mistakes in your homework.", es:"Te <span class='keyword'>señalaré</span> los errores en tus deberes."},
+    {audio:"f057.mp3", en:"We had to <span class='keyword'>put off</span> the meeting until next Tuesday.", es:"Tuvimos que <span class='keyword'>posponer</span> la reunión hasta el próximo martes."},
+    {audio:"f058.mp3", en:"I <span class='keyword'>used up</span> all the ink in the printer yesterday.", es:"<span class='keyword'>Gasté</span> toda la tinta de la impresora ayer."},
+    {audio:"f059.mp3", en:"You should <span class='keyword'>watch out</span> for cars when you cross the street.", es:"Deberías <span class='keyword'>tener cuidado</span> con los coches cuando cruces la calle."},
+    {audio:"f060.mp3", en:"I'm going to <span class='keyword'>wrap up</span> the gift for my mother's birthday.", es:"Voy a <span class='keyword'>envolver</span> el regalo para el cumpleaños de mi madre."},
+    {audio:"f061.mp3", en:"I need to <span class='keyword'>go over</span> my notes before the exam.", es:"Necesito <span class='keyword'>revisar</span> mis notas antes del examen."},
+    {audio:"f062.mp3", en:"Could you <span class='keyword'>speak up</span>? I can't hear you well.", es:"¿Podrías <span class='keyword'>hablar más alto</span>? No te oigo bien."},
+    {audio:"f063.mp3", en:"We had to <span class='keyword'>call off</span> the wedding due to the rain.", es:"Tuvimos que <span class='keyword'>cancelar</span> la boda debido a la lluvia."},
+    {audio:"f064.mp3", en:"I <span class='keyword'>stayed up</span> late to finish reading this book.", es:"Me <span class='keyword'>quedé despierto</span> hasta tarde para terminar de leer este libro."},
+    {audio:"f065.mp3", en:"It's hard to <span class='keyword'>keep up with</span> all the new technology.", es:"Es difícil <span class='keyword'>mantenerse al día con</span> toda la nueva tecnología."},
+    {audio:"f066.mp3", en:"He's going to <span class='keyword'>take over</span> the company next month.", es:"Él va a <span class='keyword'>hacerse cargo de</span> la empresa el mes que viene."},
+    {audio:"f067.mp3", en:"I hope everything <span class='keyword'>turns out</span> fine in the end.", es:"Espero que todo <span class='keyword'>salga</span> bien al final."},
+    {audio:"f068.mp3", en:"She <span class='keyword'>takes after</span> her mother in many ways.", es:"Ella <span class='keyword'>se parece a</span> su madre en muchos aspectos."},
+    {audio:"f069.mp3", en:"I'll <span class='keyword'>pick</span> you <span class='keyword'>up</span> at the airport at eight.", es:"Te <span class='keyword'>recogeré</span> en el aeropuerto a las ocho."},
+    {audio:"f070.mp3", en:"Don't <span class='keyword'>show off</span>; nobody likes a person who brags.", es:"No <span class='keyword'>presumas</span>; a nadie le gusta una persona que alardea."},
+    {audio:"f071.mp3", en:"I need to <span class='keyword'>sort out</span> this problem as soon as possible.", es:"Necesito <span class='keyword'>solucionar</span> este problema lo antes posible."},
+    {audio:"f072.mp3", en:"The thief <span class='keyword'>got away</span> with the stolen jewelry.", es:"El ladrón <span class='keyword'>escapó</span> con las joyas robadas."},
+    {audio:"f073.mp3", en:"We should <span class='keyword'>carry on</span> despite the difficulties.", es:"Deberíamos <span class='keyword'>continuar</span> a pesar de las dificultades."},
+    {audio:"f074.mp3", en:"I <span class='keyword'>came across</span> an old photo in the attic.", es:"Me <span class='keyword'>encontré con</span> una foto antigua en el desván."},
+    {audio:"f075.mp3", en:"Please <span class='keyword'>pass on</span> this information to your colleagues.", es:"Por favor, <span class='keyword'>transmite</span> esta información a tus colegas."},
+    {audio:"f076.mp3", en:"He <span class='keyword'>passed out</span> because it was too hot in the room.", es:"Él <span class='keyword'>se desmayó</span> porque hacía demasiado calor en la habitación."},
+    {audio:"f077.mp3", en:"I <span class='keyword'>gave in</span> and bought the expensive shoes.", es:"Cedí y compré los zapatos caros."},
+    {audio:"f078.mp3", en:"The teacher <span class='keyword'>handed out</span> the exam papers.", es:"El profesor repartió las hojas del examen."},
+    {audio:"f079.mp3", en:"I need to <span class='keyword'>look into</span> the causes of the accident.", es:"Necesito investigar las causas del accidente."},
+    {audio:"f080.mp3", en:"They <span class='keyword'>broke up</span> after three years of dating.", es:"Ellos rompieron después de tres años de noviazgo."},
+    {audio:"f081.mp3", en:"Can you <span class='keyword'>fill</span> me <span class='keyword'>in</span> on what happened yesterday?", es:"¿Puedes ponerme al tanto de lo que pasó ayer?"},
+    {audio:"f082.mp3", en:"I need to <span class='keyword'>cheer</span> her <span class='keyword'>up</span>; she's very sad today.", es:"Necesito animarla; está muy triste hoy."},
+    {audio:"f083.mp3", en:"The meeting <span class='keyword'>dragged on</span> for hours without a break.", es:"La reunión se prolongó durante horas sin un descanso."},
+    {audio:"f084.mp3", en:"I <span class='keyword'>ended up</span> going home early because I was tired.", es:"Terminé yéndome a casa temprano porque estaba cansado."},
+    {audio:"f085.mp3", en:"Try to <span class='keyword'>get through</span> the work before lunch.", es:"Intenta terminar el trabajo antes del almuerzo."},
+    {audio:"f086.mp3", en:"He <span class='keyword'>blew out</span> the candles on his birthday cake.", es:"Él sopló las velas de su pastel de cumpleaños."},
+    {audio:"f087.mp3", en:"We need to <span class='keyword'>bring up</span> this topic at the meeting.", es:"Necesitamos sacar este tema en la reunión."},
+    {audio:"f088.mp3", en:"I <span class='keyword'>fell for</span> his lies and lost all my money.", es:"Caí en sus mentiras y perdí todo mi dinero."},
+    {audio:"f089.mp3", en:"Please <span class='keyword'>turn on</span> the heater; it's freezing in here.", es:"Por favor, enciende la calefacción; hace un frío glacial aquí."},
+    {audio:"f090.mp3", en:"I need to <span class='keyword'>work on</span> my pronunciation to be understood.", es:"Necesito trabajar en mi pronunciación para que me entiendan."},
+    {audio:"f091.mp3", en:"The car <span class='keyword'>pulled over</span> to let the ambulance pass.", es:"El coche se detuvo a un lado para dejar pasar a la ambulancia."},
+    {audio:"f092.mp3", en:"I <span class='keyword'>ran out</span> to buy some bread before the shop closed.", es:"Salí corriendo a comprar pan antes de que cerrara la tienda."},
+    {audio:"f093.mp3", en:"She <span class='keyword'>showed up</span> two hours late for the party.", es:"Ella apareció dos horas tarde a la fiesta."},
+    {audio:"f094.mp3", en:"I need to <span class='keyword'>stand up</span> for what I believe is right.", es:"Necesito defender lo que creo que es correcto."},
+    {audio:"f095.mp3", en:"He <span class='keyword'>takes back</span> everything he said about you.", es:"Él se retracta de todo lo que dijo sobre ti."},
+    {audio:"f096.mp3", en:"I <span class='keyword'>thought up</span> a new way to solve the puzzle.", es:"Se me ocurrió una nueva forma de resolver el acertijo."},
+    {audio:"f097.mp3", en:"Please <span class='keyword'>use up</span> the milk before it goes bad.", es:"Por favor, consume toda la leche antes de que se estropee."},
+    {audio:"f098.mp3", en:"I <span class='keyword'>went through</span> a lot of trouble to get these tickets.", es:"Pasé por muchos problemas para conseguir estas entradas."},
+    {audio:"f099.mp3", en:"The medicine will <span class='keyword'>wear off</span> in a couple of hours.", es:"La medicina perderá su efecto en un par de horas."},
+    {audio:"f100.mp3", en:"I need to <span class='keyword'>write up</span> the report by tomorrow morning.", es:"Necesito redactar el informe para mañana por la mañana."},
+    {audio:"f101.mp3", en:"Don't <span class='keyword'>back down</span> now; you're very close to winning.", es:"No te eches atrás ahora; estás muy cerca de ganar."},
+    {audio:"f102.mp3", en:"I <span class='keyword'>blew up</span> the balloons for the party.", es:"Inflé los globos para la fiesta."},
+    {audio:"f103.mp3", en:"The factory <span class='keyword'>brings in</span> a lot of money for the town.", es:"La fábrica genera mucho dinero para el pueblo."},
+    {audio:"f104.mp3", en:"I <span class='keyword'>checked in</span> at the airport dos horas antes.", es:"Facturé en el aeropuerto con dos horas de antelación."},
+    {audio:"f105.mp3", en:"The clouds <span class='keyword'>cleared up</span> and the sun came out.", es:"Las nubes se despejaron y salió el sol."},
+    {audio:"f106.mp3", en:"I <span class='keyword'>cut out</span> sugar from my diet entirely.", es:"Eliminé el azúcar de mi dieta por completo."},
+    {audio:"f107.mp3", en:"The kids <span class='keyword'>messed up</span> the living room in minutes.", es:"Los niños desordenaron el salón en cuestión de minutos."},
+    {audio:"f108.mp3", en:"I need to <span class='keyword'>get back to</span> work after my break.", es:"Necesito volver al trabajo después de mi descanso."},
+    {audio:"f109.mp3", en:"He <span class='keyword'>gave back</span> the book he borrowed from me.", es:"Él devolvió el libro que me pidió prestado."},
+    {audio:"f110.mp3", en:"I <span class='keyword'>look up to</span> my grandfather; he is very wise.", es:"Admiro a mi abuelo; es muy sabio."},
+    {audio:"f111.mp3", en:"We <span class='keyword'>moved in</span> to our new apartment last week.", es:"Nos mudamos a nuestro nuevo apartamento la semana pasada."},
+    {audio:"f112.mp3", en:"I <span class='keyword'>put off</span> going to the dentist for too long.", es:"Pospuse ir al dentista durante demasiado tiempo."},
+    {audio:"f113.mp3", en:"The bus <span class='keyword'>pulled away</span> just as I reached the stop.", es:"El autobús se fue justo cuando llegué a la parada."},
+    {audio:"f114.mp3", en:"I <span class='keyword'>ran after</span> the bus but I couldn't catch it.", es:"Corrí tras el autobús pero no pude alcanzarlo."},
+    {audio:"f115.mp3", en:"She <span class='keyword'>set off</span> on a journey around the world.", es:"Ella partió en un viaje alrededor del mundo."},
+    {audio:"f116.mp3", en:"I <span class='keyword'>started up</span> the car and drove away.", es:"Arranqué el coche y me fui conduciendo."},
+    {audio:"f117.mp3", en:"I need to <span class='keyword'>take out</span> the trash before it smells.", es:"Necesito sacar la basura antes de que huela."},
+    {audio:"f118.mp3", en:"He <span class='keyword'>turned into</span> a completely different person.", es:"Él se convirtió en una persona completamente diferente."},
+    {audio:"f119.mp3", en:"I <span class='keyword'>watch over</span> my little brother on Saturdays.", es:"Cuido de mi hermano pequeño los sábados."},
+    {audio:"f120.mp3", en:"I <span class='keyword'>work out</span> every morning to stay in shape.", es:"Hago ejercicio cada mañana para mantenerme en forma."}
+];
+
+let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0;
+const audioObj = new Audio();
+
+function initBlocks() {
+  const container = document.getElementById("blockContainer");
+  const numBlocks = Math.ceil(items.length / 10);
+  container.innerHTML = "";
+  for (let i = 0; i < numBlocks; i++) {
+    const btn = document.createElement("button");
+    btn.className = "block"; btn.textContent = i + 1;
+    btn.onclick = () => loadBlock(i);
+    container.appendChild(btn);
+  }
+  const btnT = document.createElement("button");
+  btnT.className = "block"; btnT.textContent = "T";
+  btnT.onclick = () => loadBlock('T');
+  container.appendChild(btnT);
+  loadBlock(0);
+}
+
+function loadBlock(b) {
+  currentBlockID = b;
+  let temp = [];
+  if (b === 'T') { temp = items.map((item, i) => ({...item, realIdx: i+1})); }
+  else {
+    let start = b * 10;
+    let end = Math.min(start + 10, items.length);
+    for (let i = start; i < end; i++) { temp.push({...items[i], realIdx: i+1}); }
+  }
+  currentBlockData = temp.sort(() => Math.random() - 0.5);
+  document.querySelectorAll(".block").forEach((btn) => {
+    btn.classList.toggle("active", (b === 'T' && btn.textContent === 'T') || (parseInt(btn.textContent)-1 === b));
+  });
+  pos = 0; learnedCount = 0;
+  update(true);
+}
+
+function update(fromAction = false) {
+  if (currentBlockData.length === 0) {
+    document.getElementById("en").innerHTML = "🎉 Bloc completat!";
+    document.getElementById("es").innerHTML = "";
+    document.getElementById("en").classList.remove("hidden");
+    return;
+  }
+  const item = currentBlockData[pos];
+  document.getElementById("es").classList.add("hidden");
+  document.getElementById("en").classList.add("hidden");
+  if (mode === "EN") {
+    document.getElementById("langLabel").textContent = "ANGLÈS";
+    if (fromAction) play(1.0);
+  } else {
+    document.getElementById("langLabel").textContent = "CASTELLÀ";
+    document.getElementById("es").innerHTML = item.es;
+    document.getElementById("es").classList.remove("hidden");
+  }
+  document.getElementById("counter").textContent = `${learnedCount} / ${currentBlockData.length + learnedCount}`;
+}
+
+function play(speed) {
+  if (currentBlockData.length === 0) return;
+  const item = currentBlockData[pos];
+  
+  if (audioObj.src.endsWith(item.audio) && !audioObj.paused) {
+    audioObj.pause();
+  } else {
+    if (!audioObj.src.endsWith(item.audio)) {
+      audioObj.src = item.audio;
+    }
+    audioObj.playbackRate = speed;
+    audioObj.play().catch(() => {});
+  }
+}
+
+function reveal() {
+  if (currentBlockData.length === 0) return;
+  const item = currentBlockData[pos];
+  document.getElementById("es").innerHTML = item.es;
+  document.getElementById("en").innerHTML = item.en;
+  document.getElementById("es").classList.remove("hidden");
+  document.getElementById("en").classList.remove("hidden");
+  if (mode === "ES") play(1.0);
+}
+
+function know() {
+  if (currentBlockData.length === 0) return;
+  learnedCount++;
+  currentBlockData.splice(pos, 1);
+  if (pos >= currentBlockData.length) pos = 0;
+  update(true);
+}
+
+function nextOne() {
+  if (currentBlockData.length === 0) return;
+  pos = (pos + 1) % currentBlockData.length;
+  update(true);
+}
+
+function setMode(m) { mode = m; update(true); }
+
+function toggleList() {
+  const box = document.getElementById("listBox");
+  if (!box.classList.contains("hidden")) { box.classList.add("hidden"); return; }
+  box.innerHTML = "";
+  let start = currentBlockID === 'T' ? 0 : currentBlockID * 10;
+  let end = currentBlockID === 'T' ? items.length : Math.min(start + 10, items.length);
+  items.slice(start, end).forEach(i => {
+    const d = document.createElement("div");
+    d.style.padding = "10px 0"; d.style.borderBottom = "1px solid #eee";
+    d.innerHTML = `<div style="color:#0f172a; font-weight:800;">${i.en}</div><div style="color:#2563eb; font-weight:700;">${i.es}</div>`;
+    box.appendChild(d);
+  });
+  box.classList.remove("hidden");
+}
+
+function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "unknown"; }
+function markAsDone(el) {
+    localStorage.setItem(getFolderName(), new Date().toISOString());
+    el.innerHTML = "✓"; el.classList.add('marked');
+    alert("Lliçó marcada ✅");
+}
+const mainCheck = document.getElementById("mainCheck");
+if (localStorage.getItem(getFolderName())) { mainCheck.innerHTML = "✓"; mainCheck.classList.add('marked'); }
+initBlocks();
+</script>
+</body>
+</html>

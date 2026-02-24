@@ -1,0 +1,200 @@
+ <!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Train Journey - Practice</title>
+<style>
+body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
+header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center}
+.mode-btns button{margin:0 6px;padding:8px 14px;border:none;border-radius:14px;font-weight:700;cursor:pointer}
+.mode-en{background:#dbeafe}
+.mode-es{background:#fde68a}
+main{display:flex;justify-content:center;padding:24px}
+.card{position:relative;width:100%;max-width:560px;background:#ffffff;border-radius:28px;padding:32px;box-shadow:0 10px 24px rgba(0,0,0,0.06);text-align:center}
+.counter{position:absolute;top:18px;left:22px;font-weight:800;color:#2563eb}
+.lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
+.audio-container { display: flex; justify-content: center; gap: 12px; margin: 10px 0 20px; align-items: center; }
+.audio-btn{width:75px;height:75px;border-radius:50%;border:none;background:#dbeafe;font-size:30px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
+.audio-btn.slow{background:#fef08a; font-size:24px;}
+.audio-btn.auto{width: auto; height: 45px; border-radius: 20px; padding: 0 20px; font-size: 16px; font-weight: 800; background: #ffedd5; color: #9a3412; border: 1px solid #fed7aa;}
+.hidden{display:none}
+.es{font-size:19px;color:#2563eb;margin-top:14px;line-height:1.4}
+.en{font-size:19px;color:#0f172a;margin-top:14px;font-weight:700;line-height:1.4}
+.keyword { color: #9333ea; font-weight: 800; }
+.buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:22px}
+button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;cursor:pointer}
+.reveal{background:#e0f2fe}
+.know{background:#dcfce7}
+.next{background:#fbcfe8}
+.list-btn{margin-top:16px;background:#e9d5ff;border:none;border-radius:16px;padding:14px;font-weight:800;cursor:pointer;width:100%}
+.list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
+</style>
+</head>
+<body>
+<header>
+ <div class="mode-btns">
+  <button class="mode-en" onclick="setMode('EN')">Mode anglès → castellà</button>
+  <button class="mode-es" onclick="setMode('ES')">Mode castellà → anglès</button>
+ </div>
+</header>
+<main>
+<div class="card">
+ <div class="counter" id="counter">1 / 40</div>
+ <div id="langLabel" class="lang">LISTENING MODE</div>
+ <div class="audio-container">
+  <button class="audio-btn" onclick="play(1.0)">🔊</button>
+  <button class="audio-btn slow" onclick="play(0.75)">🐢</button>
+  <button id="btnAuto" class="audio-btn auto" onclick="toggleAutoPlay()">▶️ Auto</button>
+ </div>
+ <div id="es" class="es hidden"></div>
+ <div id="en" class="en hidden"></div>
+ <div class="buttons">
+  <button class="action reveal" onclick="reveal()">Veure</button>
+  <button class="action know" onclick="nextOne()">Entès</button>
+  <button class="action next" onclick="nextOne()">Següent</button>
+ </div>
+ <button class="list-btn" onclick="toggleList()">Veure tot el diàleg</button>
+</div>
+</main>
+<div id="listBox" class="list-box hidden"></div>
+
+<script>
+const items = [
+    {audio:"tr01.mp3", en:"<span class='keyword'>Emily:</span> Hurry up! The train is about to leave in five minutes!", es:"<span class='keyword'>Emily:</span> ¡Date prisa! ¡El tren está a punto de salir en cinco minutos!"},
+    {audio:"tr02.mp3", en:"<span class='keyword'>James:</span> I'm running as fast as I can, but these suitcases are heavy.", es:"<span class='keyword'>James:</span> Estoy corriendo tan rápido como puedo, pero estas maletas pesan mucho."},
+    {audio:"tr03.mp3", en:"<span class='keyword'>Emily:</span> I told you not to pack so many things for a weekend trip.", es:"<span class='keyword'>Emily:</span> Te dije que no metieras tantas cosas para un viaje de fin de semana."},
+    {audio:"tr04.mp3", en:"<span class='keyword'>James:</span> Wait! I can't find my ticket. I think I left it at the cafe.", es:"<span class='keyword'>James:</span> ¡Espera! No encuentro mi billete. Creo que me lo dejé en la cafetería."},
+    {audio:"tr05.mp3", en:"<span class='keyword'>Emily:</span> You must be joking! Check your jacket pockets right now.", es:"<span class='keyword'>Emily:</span> ¡Tienes que estar bromeando! Revisa los bolsillos de tu chaqueta ahora mismo."},
+    {audio:"tr06.mp3", en:"<span class='keyword'>James:</span> It's not here! Oh, wait... I found it. It was in my back pocket.", es:"<span class='keyword'>James:</span> ¡No está aquí! Oh, espera... lo encontré. Estaba en mi bolsillo trasero."},
+    {audio:"tr07.mp3", en:"<span class='keyword'>Emily:</span> Thank goodness. Look, the platform is just around the corner.", es:"<span class='keyword'>Emily:</span> Menos mal. Mira, el andén está justo a la vuelta de la esquina."},
+    {audio:"tr08.mp3", en:"<span class='keyword'>James:</span> Is that our train? The doors are starting to close!", es:"<span class='keyword'>James:</span> ¿Es ese nuestro tren? ¡Las puertas están empezando a cerrarse!"},
+    {audio:"tr09.mp3", en:"<span class='keyword'>Emily:</span> Jump in! We made it just in time.", es:"<span class='keyword'>Emily:</span> ¡Salta dentro! Lo logramos justo a tiempo."},
+    {audio:"tr10.mp3", en:"<span class='keyword'>James:</span> That was way too close. I'm completely out of breath.", es:"<span class='keyword'>James:</span> Eso ha estado demasiado cerca. Estoy completamente sin aliento."},
+    {audio:"tr11.mp3", en:"<span class='keyword'>Emily:</span> Let's find our seats. We are in coach B, seats 21 and 22.", es:"<span class='keyword'>Emily:</span> Busquemos nuestros asientos. Estamos en el vagón B, asientos 21 y 22."},
+    {audio:"tr12.mp3", en:"<span class='keyword'>James:</span> Here they are. Can you help me put the luggage on the rack?", es:"<span class='keyword'>James:</span> Aquí están. ¿Puedes ayudarme a poner el equipaje en el portaequipajes?"},
+    {audio:"tr13.mp3", en:"<span class='keyword'>Emily:</span> Of course. Watch out, don't hit that man's head.", es:"<span class='keyword'>Emily:</span> Por supuesto. Cuidado, no le des en la cabeza a ese hombre."},
+    {audio:"tr14.mp3", en:"<span class='keyword'>James:</span> Sorry about that, sir. It's a bit crowded today.", es:"<span class='keyword'>James:</span> Perdón por eso, señor. Está un poco lleno hoy."},
+    {audio:"tr15.mp3", en:"<span class='keyword'>Conductor:</span> No problem. Everyone is traveling for the holidays, I suppose.", es:"<span class='keyword'>Revisor:</span> No hay problema. Supongo que todo el mundo viaja por las vacaciones."},
+    {audio:"tr16.mp3", en:"<span class='keyword'>Emily:</span> Finally, we can sit down and relax for a couple of hours.", es:"<span class='keyword'>Emily:</span> Por fin podemos sentarnos y relajarnos por un par de horas."},
+    {audio:"tr17.mp3", en:"<span class='keyword'>James:</span> I'm going to check the trolley for some coffee and snacks.", es:"<span class='keyword'>James:</span> Voy a ver si en el carrito hay algo de café y aperitivos."},
+    {audio:"tr18.mp3", en:"<span class='keyword'>Emily:</span> Good idea. I'm starving because we didn't have breakfast.", es:"<span class='keyword'>Emily:</span> Buena idea. Estoy hambrienta porque no hemos desayunado."},
+    {audio:"tr19.mp3", en:"<span class='keyword'>Conductor:</span> Tickets and railcards, please. Good morning to everyone.", es:"<span class='keyword'>Revisor:</span> Billetes y tarjetas de transporte, por favor. Buenos días a todos."},
+    {audio:"tr20.mp3", en:"<span class='keyword'>James:</span> Here are our tickets, sir. Does this train stop at Reading?", es:"<span class='keyword'>James:</span> Aquí están nuestros billetes, señor. ¿Para este tren en Reading?"},
+    {audio:"tr21.mp3", en:"<span class='keyword'>Conductor:</span> Yes, it's the next stop. We should arrive there in twenty minutes.", es:"<span class='keyword'>Revisor:</span> Sí, es la próxima parada. Deberíamos llegar allí en veinte minutos."},
+    {audio:"tr22.mp3", en:"<span class='keyword'>Emily:</span> Excuse me, is the Wi-Fi working on this carriage?", es:"<span class='keyword'>Emily:</span> Disculpe, ¿funciona el Wi-Fi en este vagón?"},
+    {audio:"tr23.mp3", en:"<span class='keyword'>Conductor:</span> It should be. You just need to log in through our website.", es:"<span class='keyword'>Revisor:</span> Debería. Solo tiene que iniciar sesión a través de nuestra web."},
+    {audio:"tr24.mp3", en:"<span class='keyword'>Emily:</span> Thanks. I need to send a quick email before we arrive.", es:"<span class='keyword'>Emily:</span> Gracias. Necesito enviar un correo rápido antes de que lleguemos."},
+    {audio:"tr25.mp3", en:"<span class='keyword'>James:</span> Look at the view! The English countryside is beautiful today.", es:"<span class='keyword'>James:</span> ¡Mira las vistas! El campo inglés está precioso hoy."},
+    {audio:"tr26.mp3", en:"<span class='keyword'>Emily:</span> It really is. The sheep look so small from the window.", es:"<span class='keyword'>Emily:</span> Realmente lo está. Las ovejas se ven tan pequeñas desde la ventana."},
+    {audio:"tr27.mp3", en:"<span class='keyword'>Passenger:</span> Pardon me, but is anyone sitting in this seat next to you?", es:"<span class='keyword'>Pasajero:</span> Perdone, ¿hay alguien sentado en este asiento a su lado?"},
+    {audio:"tr28.mp3", en:"<span class='keyword'>James:</span> No, it's free. Please, make yourself comfortable.", es:"<span class='keyword'>James:</span> No, está libre. Por favor, póngase cómodo."},
+    {audio:"tr29.mp3", en:"<span class='keyword'>Passenger:</span> Thank you. Are you heading all the way to London?", es:"<span class='keyword'>Pasajero:</span> Gracias. ¿Van ustedes hasta Londres?"},
+    {audio:"tr30.mp3", en:"<span class='keyword'>Emily:</span> Yes, we are going to see a play in the West End.", es:"<span class='keyword'>Emily:</span> Sí, vamos a ver una obra en el West End."},
+    {audio:"tr31.mp3", en:"<span class='keyword'>Passenger:</span> That sounds lovely. London is wonderful this time of year.", es:"<span class='keyword'>Pasajero:</span> Eso suena encantador. Londres es maravilloso en esta época del año."},
+    {audio:"tr32.mp3", en:"<span class='keyword'>James:</span> Do you live there or are you just visiting like us?", es:"<span class='keyword'>James:</span> ¿Vive allí o solo está de visita como nosotros?"},
+    {audio:"tr33.mp3", en:"<span class='keyword'>Passenger:</span> I live there. I'm returning from a business trip in Bristol.", es:"<span class='keyword'>Pasajero:</span> Vivo allí. Vuelvo de un viaje de negocios en Bristol."},
+    {audio:"tr34.mp3", en:"<span class='keyword'>Emily:</span> I've heard Bristol is a very artistic and vibrant city.", es:"<span class='keyword'>Emily:</span> He oído que Bristol es una ciudad muy artística y vibrante."},
+    {audio:"tr35.mp3", en:"<span class='keyword'>Passenger:</span> It is. The street art there is quite famous worldwide.", es:"<span class='keyword'>Pasajero:</span> Lo es. El arte callejero de allí es bastante famoso en todo el mundo."},
+    {audio:"tr36.mp3", en:"<span class='keyword'>James:</span> I think I hear the announcement. Are we approaching Reading?", es:"<span class='keyword'>James:</span> Creo que oigo el anuncio. ¿Nos estamos acercando a Reading?"},
+    {audio:"tr37.mp3", en:"<span class='keyword'>Passenger:</span> Yes, the train is slowing down. It was nice talking to you.", es:"<span class='keyword'>Pasajero:</span> Sí, el tren está frenando. Ha sido un gusto hablar con vosotros."},
+    {audio:"tr38.mp3", en:"<span class='keyword'>Emily:</span> Same here. Have a safe journey back home to London.", es:"<span class='keyword'>Emily:</span> Igualmente. Tenga un buen viaje de vuelta a casa a Londres."},
+    {audio:"tr39.mp3", en:"<span class='keyword'>James:</span> I'm going to try to sleep a bit now that it's quiet.", es:"<span class='keyword'>James:</span> Voy a intentar dormir un poco ahora que hay silencio."},
+    {audio:"tr40.mp3", en:"<span class='keyword'>Emily:</span> Wake me up when we are ten minutes away from our destination.", es:"<span class='keyword'>Emily:</span> Despiértame cuando estemos a diez minutos de nuestro destino."}
+];
+
+let pos = 0, mode = "EN", isAutoPlaying = false;
+const audioObj = new Audio();
+
+function update(fromAction = false) {
+  const item = items[pos];
+  document.getElementById("es").classList.add("hidden");
+  document.getElementById("en").classList.add("hidden");
+  
+  if (mode === "EN") {
+    document.getElementById("langLabel").textContent = "LISTENING MODE";
+    if (fromAction && !isAutoPlaying) play(1.0); 
+  } else {
+    document.getElementById("langLabel").textContent = "CASTELLÀ";
+    document.getElementById("es").innerHTML = item.es;
+    document.getElementById("es").classList.remove("hidden");
+  }
+  document.getElementById("counter").textContent = `${pos + 1} / ${items.length}`;
+}
+
+function play(speed) {
+  const item = items[pos];
+  audioObj.src = item.audio;
+  audioObj.playbackRate = speed;
+  audioObj.play().catch(() => {});
+}
+
+function toggleAutoPlay() {
+  isAutoPlaying = !isAutoPlaying;
+  const btn = document.getElementById("btnAuto");
+  if (isAutoPlaying) {
+    btn.innerHTML = "⏹️ Stop";
+    playNextAuto();
+  } else {
+    btn.innerHTML = "▶️ Auto";
+    audioObj.pause();
+    update();
+  }
+}
+
+function playNextAuto() {
+  if (!isAutoPlaying) return;
+  document.getElementById("es").classList.add("hidden");
+  document.getElementById("en").classList.add("hidden");
+  play(1.0);
+  
+  audioObj.onended = () => {
+    setTimeout(() => {
+      if (isAutoPlaying) {
+        if (pos < items.length - 1) {
+          pos++;
+          update();
+          playNextAuto();
+        } else {
+          toggleAutoPlay();
+          pos = 0;
+          update();
+        }
+      }
+    }, 1200);
+  };
+}
+
+function reveal() {
+  const item = items[pos];
+  document.getElementById("es").innerHTML = item.es;
+  document.getElementById("en").innerHTML = item.en;
+  document.getElementById("es").classList.remove("hidden");
+  document.getElementById("en").classList.remove("hidden");
+}
+
+function nextOne() {
+  if (isAutoPlaying) toggleAutoPlay();
+  pos = (pos + 1) % items.length;
+  update(true);
+}
+
+function setMode(m) { mode = m; update(true); }
+
+function toggleList() {
+  const box = document.getElementById("listBox");
+  if (!box.classList.contains("hidden")) { box.classList.add("hidden"); return; }
+  box.innerHTML = "";
+  items.forEach(i => {
+    const d = document.createElement("div");
+    d.style.padding = "10px 0"; d.style.borderBottom = "1px solid #eee";
+    d.innerHTML = `<div style="color:#0f172a; font-weight:800;">${i.en}</div><div style="color:#2563eb; font-weight:700;">${i.es}</div>`;
+    box.appendChild(d);
+  });
+  box.classList.remove("hidden");
+}
+
+update();
+</script>
+</body>
+</html>
