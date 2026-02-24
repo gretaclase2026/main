@@ -157,12 +157,23 @@ function update(fromAction = false) {
   document.getElementById("counter").textContent = `${learnedCount} / ${currentBlockData.length + learnedCount}`;
 }
 
+// FUNCIÓN ACTUALIZADA CON PAUSA
 function play(speed) {
   if (currentBlockData.length === 0) return;
   const item = currentBlockData[pos];
-  audioObj.src = item.audio;
-  audioObj.playbackRate = speed;
-  audioObj.play().catch(() => {});
+  const newSrc = item.audio;
+
+  // Si es la misma frase y está sonando, pausamos
+  if (audioObj.src.includes(newSrc) && !audioObj.paused) {
+    audioObj.pause();
+  } else {
+    // Si es otra frase o está pausado, reproducimos
+    if (!audioObj.src.includes(newSrc)) {
+      audioObj.src = newSrc;
+    }
+    audioObj.playbackRate = speed;
+    audioObj.play().catch(() => {});
+  }
 }
 
 function reveal() {
