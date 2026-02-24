@@ -16,9 +16,8 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#fff4cc;cursor:pointer;box-shadow:0 2px 4px rgba(0,0,0,0.1)}
 .block.active{background:#ffcc00;box-shadow:inset 0 2px 4px rgba(0,0,0,0.2)}
 .lang-label{text-align:center;font-weight:bold;color:#888;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px}
-.audio-section{display:flex;align-items:center;justify-content:center;position:relative;margin:30px 0;gap:20px}
-.audio-btn{width:100px;height:100px;background:#d1e7dd;border:6px solid #f0f0f0;border-radius:50%;font-size:45px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform 0.1s}
-.audio-btn.slow{background:#fef08a; font-size:35px;}
+.audio-section{display:flex;align-items:center;justify-content:center;position:relative;margin:30px 0}
+.audio-btn{width:130px;height:130px;background:#d1e7dd;border:8px solid #f0f0f0;border-radius:50%;font-size:60px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform 0.1s}
 .audio-btn:active{transform:scale(0.9)}
 .counter{position:absolute;right:10px;font-weight:bold;color:#2563eb;font-size:24px}
 .word{text-align:center;font-size:28px;font-weight:bold;margin:20px 0;min-height:35px}
@@ -44,8 +43,7 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
   <div class="blocks" id="blockContainer"></div>
   <div class="lang-label" id="langLabel">INGLÉS RÁPIDO</div>
   <div class="audio-section">
-    <button class="audio-btn" id="btnNormal" onclick="playAudio(1.0)">🔊</button>
-    <button class="audio-btn slow" id="btnSlow" onclick="playAudio(0.75)">🐢</button>
+    <button class="audio-btn" onclick="playAudio()">🔊</button>
     <div class="counter" id="counterDisplay">0 / 10</div>
   </div>
   <div class="word" id="word"></div>
@@ -157,7 +155,7 @@ function update(newWord){
   const item=currentBlockData[pos];
   if(mode==="EN"){
     lb.innerText="INGLÉS RÁPIDO"; w.innerText="";
-    if(newWord) playAudio(1.0);
+    if(newWord) playAudio();
   }else{
     lb.innerText="CASTELLÀ / CATALÀ";
     w.innerHTML=`<span style="color:#2563eb;">${item.es} / ${item.ca}</span>`;
@@ -171,7 +169,7 @@ function reveal(){
     document.getElementById("word").innerText=item.en;
     a.innerHTML=`<div class="pron">Suena como: ${item.fast}</div><span style="color:#2563eb;">${item.es} / ${item.ca}</span>`;
     a.style.display="block";
-    if(mode==="ES") playAudio(1.0);
+    if(mode==="ES") playAudio();
   }
 }
 function know(){
@@ -186,20 +184,15 @@ function next(){
   pos=(pos+1)%currentBlockData.length;
   update(true);
 }
-
-function playAudio(speed) {
-  if (currentBlockData.length === 0) return;
-  const num = currentBlockData[pos].realIdx.toString().padStart(3, "0");
-  const a = document.getElementById("audio");
-  a.src = "f" + num + ".mp3";
-  a.playbackRate = speed;
-  
-  const btn = speed === 1.0 ? document.getElementById('btnNormal') : document.getElementById('btnSlow');
+function playAudio(){
+  if(currentBlockData.length===0) return;
+  const num=currentBlockData[pos].realIdx.toString().padStart(3,"0");
+  const a=document.getElementById("audio");
+  a.src="f"+num+".mp3";
+  const btn=document.querySelector('.audio-btn');
   btn.classList.remove('vibrate'); void btn.offsetWidth; btn.classList.add('vibrate');
-  
-  a.play().catch(() => {});
+  a.play().catch(()=>{});
 }
-
 function toggleList(){
   const l=document.getElementById("list");
   if(l.style.display==="block"){l.style.display="none"; return;}
@@ -210,6 +203,7 @@ function toggleList(){
   });
 }
 initBlocks();
+ // --- CÓDIGO INTELIGENTE PARA EL CUADRITO DE MARCADO ---
 
 const style = document.createElement('style');
 style.innerHTML = `
@@ -249,10 +243,12 @@ function markAsDone(element) {
     alert("Lliçó marcada ✅");
 }
 
+// 1. Crear el cuadrito
 const card = document.querySelector(".card");
 const box = document.createElement("div");
 box.className = "check-box-manual";
 
+// 2. Comprobar si ya estaba marcada antes de pintarla
 if (localStorage.getItem(getFolderName())) {
     box.innerHTML = "✓";
     box.classList.add('marked');

@@ -16,9 +16,8 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#fff4cc;cursor:pointer;transition:0.2s}
 .block.active{background:#ffcc00;transform:scale(1.1);box-shadow:inset 0 0 5px rgba(0,0,0,0.2)}
 .main-box-container{display:flex;align-items:center;justify-content:center;position:relative;margin:20px 0}
-.main-box{text-align:center;display:flex;flex-direction:row;justify-content:center;align-items:center;gap:15px}
-.audio-btn{font-size:45px;background:#dcfce7;border:none;cursor:pointer;width:100px;height:100px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
-.audio-btn.slow{background:#fef08a; font-size: 35px;}
+.main-box{text-align:center;display:flex;flex-direction:column;justify-content:center;align-items:center}
+.audio-btn{font-size:60px;background:#dcfce7;border:none;cursor:pointer;width:140px;height:140px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
 .audio-btn.vibrate{animation:vibrate 0.25s linear 2}
 @keyframes vibrate{0%{transform:translate(0)}25%{transform:translate(2px,-2px)}50%{transform:translate(-2px,2px)}75%{transform:translate(2px,2px)}100%{transform:translate(0)}}
 .counter-side{position:absolute;right:10px;font-weight:bold;color:#2563eb;font-size:22px}
@@ -45,8 +44,7 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 
   <div class="main-box-container">
     <div class="main-box">
-      <button class="audio-btn" id="btnNormal" onclick="playAudio(1.0)" title="Velocitat Normal">🔊</button>
-      <button class="audio-btn slow" id="btnSlow" onclick="playAudio(0.75)" title="Velocitat Lenta">🐢</button>
+      <button class="audio-btn" onclick="playAudio()">🔊</button>
     </div>
     <div class="counter-side">
       <span id="pos">0</span> / <span id="total">0</span>
@@ -70,6 +68,7 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 
 <script>
 const data = [
+  // --- FRASES 1-40 (Tus frases originales) ---
   {en: "I did it this way so she wouldn't have to walk back and forth all the time.", es: "Lo hice así para que ella no tuviera que ir y venir caminando todo el tiempo"},
   {en: "You ought to try and embrace new challenges if you want to improve your fluency.", es: "Deberías intentar aceptar nuevos retos si quieres mejorar tu fluidez"},
   {en: "The weather has been perfect so far, knock on wood it stays like this.", es: "El tiempo ha sido perfecto hasta ahora, toquemos madera para que siga así"},
@@ -110,6 +109,8 @@ const data = [
   {en: "If you ask me, you ought to embrace new challenges to improve your fluency.", es: "Si me preguntas a mí, deberías aceptar nuevos retos para mejorar tu fluidez"},
   {en: "By the way, did you bring the dessert we bought at that spotless bakery?", es: "Por cierto, ¿trajiste el postre que compramos en esa pastelería tan limpia?"},
   {en: "Truth be told, I'm glad you didn't have to walk back and forth so much.", es: "A decir verdad, me alegra que no tuvieras que caminar tanto de un lado a otro"},
+
+  // --- FRASES 41-60 (Nuevas expresiones naturales) ---
   {en: "It's been ages since we last caught up, we have so much to talk about!", es: "Hace siglos que no nos ponemos al día, ¡tenemos tanto de qué hablar!"},
   {en: "I'm a bit tied up at the moment, but I'll call you back as soon as I'm free.", es: "Estoy un poco liada en este momento, pero te devuelvo la llamada en cuanto esté libre"},
   {en: "To be fair, he's been under a lot of pressure lately so he's a bit stressed.", es: "Para ser justos, él ha estado bajo mucha presión últimamente, así que está un poco estresado"},
@@ -201,7 +202,7 @@ function update(fromNextAction = false) {
   if (mode === "EN") {
     w.innerHTML = ``; 
     a.innerHTML = translation;
-    if (fromNextAction) playAudio(1.0);
+    if (fromNextAction) playAudio();
   } else {
     w.innerHTML = `<div style='font-size:22px;'>${translation}</div>`;
     a.innerHTML = `<span style="font-size:24px;">${item.en}</span>`;
@@ -219,7 +220,7 @@ function reveal() {
         document.getElementById("word").innerHTML = `<span style="color:#333;">${item.en}</span>`;
     }
     document.getElementById("answer").style.display = "block";
-    if (mode === "ES") playAudio(1.0); 
+    if (mode === "ES") playAudio(); 
   }
 }
 
@@ -237,16 +238,13 @@ function next() {
   update(true);
 }
 
-function playAudio(speed) {
+function playAudio() {
   if (currentBlockData.length === 0) return;
   const num = currentBlockData[pos].realIdx;
   const a = document.getElementById("audio");
   a.src = "frase" + num + ".mp3";
-  a.playbackRate = speed; // Ajustar la velocidad
-  
-  const btn = speed === 1.0 ? document.getElementById('btnNormal') : document.getElementById('btnSlow');
+  const btn=document.querySelector('.audio-btn');
   btn.classList.remove('vibrate'); void btn.offsetWidth; btn.classList.add('vibrate');
-  
   a.play().catch(() => {});
 }
 
@@ -265,7 +263,6 @@ function toggleList() {
 
 initBlocks();
 
-// Mantener tu estilo de la caja de check y lógica de guardado
 const style = document.createElement('style');
 style.innerHTML = `
     .check-box-manual {
