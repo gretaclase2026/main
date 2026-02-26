@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vocabulari de Casa</title>
+<title>Vocabulari de Casa - Pro</title>
 <style>
 body{margin:0;font-family:-apple-system, system-ui, sans-serif;background:#fcfcfc;color:#475569;padding:20px}
 .menu-container, .game-container { max-width: 500px; margin: 0 auto; text-align: center; }
@@ -21,8 +21,8 @@ h1 { color: #64748b; font-size: 18px; margin-bottom: 20px; font-weight: 700; tex
     justify-content: center; border-radius: 18px; background: #f8fafc; border: 1px solid #f1f5f9; position: relative;
     overflow: hidden;
 }
-.img-container img { max-width: 100%; max-height: 100%; object-fit: contain; position: relative; z-index: 2; }
-.no-photo-text { position: absolute; z-index: 1; font-weight: 800; color: #e2e8f0; font-size: 20px; text-transform: uppercase; }
+.img-container img { max-width: 100%; max-height: 100%; object-fit: contain; position: relative; z-index: 2; transition: opacity 0.3s;}
+.ca-fallback-text { position: absolute; z-index: 1; font-weight: 800; color: #1e3a8a; font-size: 24px; text-transform: uppercase; padding: 10px; }
 .en-word{font-size:22px;color:#334155;margin-top:10px;font-weight:800;text-transform: uppercase; min-height: 28px;}
 .action-btns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:15px}
 button.action{padding:12px 0;border:none;border-radius:12px;font-weight:700;cursor:pointer; font-size: 13px;}
@@ -33,7 +33,6 @@ button.action{padding:12px 0;border:none;border-radius:12px;font-weight:700;curs
 .footer-btns { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
 .btn-list { background: #fdf2f8; color: #f472b6; border: none; padding: 14px; border-radius: 12px; font-weight: 600; font-size: 14px; cursor: pointer; }
 .btn-final { background: #f5f3ff; color: #7c3aed; border: none; padding: 14px; border-radius: 12px; font-weight: 600; font-size: 15px; cursor: pointer; }
-.btn-final.checked { background: #ddd6fe; color: #5b21b6; }
 .list-box { margin-top: 20px; text-align: left; background: #fff; border-top: 1px solid #eee; padding-top: 15px; }
 .list-item { display: flex; justify-content: space-between; padding: 10px 5px; border-bottom: 1px solid #fafafa; font-size: 15px; }
 .list-ca { color: #f472b6; font-weight: 800; } 
@@ -58,7 +57,7 @@ button.action{padding:12px 0;border:none;border-radius:12px;font-weight:700;curs
         <div id="counter" class="counter">0 / 0</div>
         <div class="pregunta-text">QUÈ ÉS AIXÒ?</div>
         <div class="img-container">
-            <span id="altText" class="no-photo-text"></span>
+            <span id="caText" class="ca-fallback-text"></span>
             <img id="mainImg" src="">
         </div>
         <button class="audio-btn" onclick="playAudio()">🔊</button>
@@ -80,7 +79,7 @@ button.action{padding:12px 0;border:none;border-radius:12px;font-weight:700;curs
 <script>
 const blocs = [
     [{"en": "aluminum foil", "ca": "paper d'alumini"}, {"en": "cling film", "ca": "film transparent"}, {"en": "kitchen roll", "ca": "paper de cuina"}, {"en": "ladle", "ca": "cullerot"}, {"en": "strainer", "ca": "colador"}, {"en": "peeler", "ca": "pelador"}, {"en": "grater", "ca": "ratllador"}, {"en": "whisk", "ca": "batedor de varilles"}, {"en": "spatula", "ca": "espàtula"}, {"en": "corkscrew", "ca": "llevataps"}, {"en": "can opener", "ca": "obrellates"}, {"en": "rolling pin", "ca": "corró de cuina"}, {"en": "juicer", "ca": "exprimidor"}, {"en": "chopping board", "ca": "taula de tallar"}, {"en": "tongs", "ca": "pinces de cuina"}],
-    [{"en": "mortar and pestle", "ca": "morter i mà de morter"}, {"en": "kitchen scales", "ca": "bàscula de cuina"}, {"en": "oven mitt", "ca": "manopla de forn"}, {"en": "funnel", "ca": "embut"}, {"en": "saucepan", "ca": "cassó"}, {"en": "frying pan", "ca": "paella"}, {"en": "pot lid", "ca": "tapa de l'olla"}, {"en": "apron", "ca": "davantal"}, {"en": "trivet", "ca": "estalvis"}, {"en": "kitchen scissors", "ca": "tisores de cuina"}, {"en": "shopping trolley", "ca": "carret de comprar"}, {"en": "microwave", "ca": "microones"}, {"en": "kettle", "ca": "bullidor"}, {"en": "toaster", "ca": "torradora"}],
+    [{"en": "mortar and pestle", "ca": "morter i mà de morter"}, {"en": "kitchen scales", "ca": "bàscula de cuina"}, {"en": "oven mitt", "ca": "manopla de forn"}, {"en": "funnel", "ca": "embut"}, {"en": "saucepan", "ca": "cassó"}, {"en": "frying pan", "ca": "paella"}, {"en": "pot lid", "ca": "tapa de l'olla"}, {"en": "apron", "ca": "davantal"}, {"en": "trivet", "ca": "estalvis"}, {"en": "kitchen scissors", "ca": "tisores de cuina"}, {"en": "shopping trolley", "ca": "carret de comprar"}, {"en": "microwave", "ca": "microones"}, {"en": "kettle", "ca": "bullidor"}, {"en": "toaster", "ca": "torradora"}, {"en": "salt shaker", "ca": "saler"}, {"en": "induction hob", "ca": "placa d'inducció"}],
     [{"en": "stepladder", "ca": "escala de mà"}, {"en": "hammer", "ca": "martell"}, {"en": "screwdriver", "ca": "tornavís"}, {"en": "pliers", "ca": "alacants"}, {"en": "tape measure", "ca": "cinta mètrica"}, {"en": "wrench", "ca": "clau anglesa"}, {"en": "saw", "ca": "serra"}, {"en": "drill", "ca": "trepant"}, {"en": "flashlight", "ca": "llanterna"}, {"en": "wheelbarrow", "ca": "carretó"}, {"en": "rake", "ca": "rasclet"}, {"en": "screw", "ca": "cargol"}, {"en": "nut", "ca": "femella"}, {"en": "key", "ca": "clau"}, {"en": "padlock", "ca": "candau"}, {"en": "level", "ca": "nivell"}],
     [{"en": "broom", "ca": "escombra"}, {"en": "dustpan", "ca": "recollidor"}, {"en": "bucket", "ca": "galleda"}, {"en": "mop", "ca": "fregadora"}, {"en": "hanger", "ca": "penjador"}, {"en": "dustbin", "ca": "cubell de la brossa"}, {"en": "iron", "ca": "planxa"}, {"en": "ironing board", "ca": "taula de planxar"}, {"en": "clothespins", "ca": "pinces d'estendre"}, {"en": "clothes horse", "ca": "estenedor"}, {"en": "vacuum cleaner", "ca": "aspiradora"}, {"en": "dusting cloth", "ca": "draps de la pols"}],
     [{"en": "mirror", "ca": "mirall"}, {"en": "rug", "ca": "catifa"}, {"en": "cushion", "ca": "coixí"}, {"en": "toothbrush", "ca": "raspall de dents"}, {"en": "comb", "ca": "pinta"}, {"en": "hairdryer", "ca": "secador de cabells"}, {"en": "razor", "ca": "maquineta d'afaitar"}, {"en": "sponge", "ca": "esponja"}, {"en": "towel", "ca": "tovallola"}, {"en": "bathrobe", "ca": "barnús"}, {"en": "tweezers", "ca": "pinces de depilar"}, {"en": "nail clippers", "ca": "tallaungles"}, {"en": "bathroom scales", "ca": "bàscula de bany"}, {"en": "soap", "ca": "sabó"}, {"en": "hairbrush", "ca": "raspall del cabell"}, {"en": "toothpaste", "ca": "pasta de dents"}, {"en": "shampoo", "ca": "xampú"}, {"en": "nail polish", "ca": "esmalt d'ungles"}, {"en": "hair claw", "ca": "pinça de cabell"}, {"en": "acetone", "ca": "acetona"}, {"en": "hair dye", "ca": "tinte"}]
@@ -109,20 +108,35 @@ function loadWord() {
     }
     current = remaining[Math.floor(Math.random() * remaining.length)];
     const fileName = current.en.toLowerCase().trim().replace(/\s+/g, "-");
+    
+    const wordDisplay = document.getElementById("enWord");
+    wordDisplay.classList.add("hidden");
+    wordDisplay.textContent = current.en;
+
+    const caText = document.getElementById("caText");
+    caText.textContent = current.ca.toUpperCase();
+    caText.style.display = "block";
+
     const imgElement = document.getElementById("mainImg");
     imgElement.style.opacity = "0";
     imgElement.src = fileName + ".jpg";
-    imgElement.onload = () => imgElement.style.opacity = "1";
-    document.getElementById("altText").textContent = current.en;
-    document.getElementById("enWord").classList.add("hidden");
-    document.getElementById("enWord").textContent = current.en;
+    
+    imgElement.onload = () => {
+        imgElement.style.opacity = "1";
+        caText.style.display = "none";
+    };
+    
+    imgElement.onerror = () => {
+        imgElement.style.opacity = "0";
+        caText.style.display = "block";
+    };
 }
 
 function playAudio() {
     if(!current) return;
     const fileName = current.en.toLowerCase().trim().replace(/\s+/g, "-");
     audioObj.src = fileName + ".mp3";
-    audioObj.play().catch(e => console.log("Falta audio"));
+    audioObj.play().catch(e => console.log("Audio no trobat"));
 }
 
 function reveal() {
@@ -154,7 +168,6 @@ function marcarHecho() {
     btn.innerHTML = "Finalitzar la lliçó [X]";
     btn.classList.add("checked");
     localStorage.setItem("bloque_fet_" + currentBlockIdx, "true");
-    alert("Bloc marcat com a completat!");
 }
 
 function updateMenuVisuals() {
