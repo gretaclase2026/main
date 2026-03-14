@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Estudi FRASES · Format Blanc</title>
+<title>Estudi FRASES · 76 Frases</title>
 <style>
 body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
 header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center}
@@ -15,12 +15,10 @@ main{display:flex;justify-content:center;padding:24px}
 .counter{position:absolute;top:18px;left:22px;font-weight:800;color:#2563eb}
 .lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
 
-/* Bloques */
 .blocks{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:15px 0 20px}
 .block{width:32px;height:32px;border-radius:50%;border:none;background:#f1f5f9;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.2s}
 .block.active{background:#2563eb !important;color:#fff !important}
 
-/* Audio, Estrella y Progreso */
 .audio-container { display: flex; justify-content: center; gap: 15px; margin: 10px 0 10px; align-items: center; }
 .audio-btn{width:75px;height:75px;border-radius:50%;border:none;background:#dbeafe;font-size:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
 .audio-btn.slow{background:#fef08a; font-size:22px;}
@@ -40,19 +38,15 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 .know{background:#dcfce7}
 .next{background:#fbcfe8}
 
-/* Listas y Repaso */
 .list-controls { display: flex; gap: 10px; margin-top: 16px; }
 .list-btn{ flex:1; background:#e9d5ff; border:none; border-radius:16px; padding:14px; font-weight:800; cursor:pointer }
 .review-btn { background: #fef3c7; color: #92400e; }
 .list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
 
 .check-box-manual {
-    position: absolute; top: 18px; right: 22px;
-    width: 24px; height: 24px;
-    background: #fff; border: 1.5px solid #22c55e;
-    border-radius: 6px; display: flex;
-    align-items: center; justify-content: center;
-    cursor: pointer; z-index: 10; font-size: 14px;
+    position: absolute; top: 18px; right: 22px; width: 24px; height: 24px;
+    background: #fff; border: 1.5px solid #22c55e; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 14px;
 }
 .check-box-manual.marked { background: #22c55e !important; color: white !important; }
 </style>
@@ -114,7 +108,73 @@ const items = [
     {audio:"f007.mp3",en:"It's <b>the first time</b> I've seen such a beautiful sunset <b>since</b> I moved to this city.",es:"És <b>la primera vegada</b> que veig una posta de sol tan bonica <b>des que</b> em vaig mudar a aquesta ciutat."},
     {audio:"f008.mp3",en:"I'm <b>not used to</b> waking up so early, so I'm <b>a bit sleepy</b> during the first few hours of work.",es:"<b>No estic acostumat a</b> despertar-me tan d'hora, així que estic <b>una mica adormit</b> durant les primeres hores de feina."},
     {audio:"f009.mp3",en:"The doctor told me I should <b>take it easy</b> and <b>avoid</b> stressful situations for a while.",es:"El metge em va dir que m'ho hauria de <b>prendre amb calma</b> i <b>evitar</b> situacions d'estrès durant un temps."},
-    {audio:"f010.mp3",en:"<b>As soon as</b> I get home, I'm going to take off my shoes and <b>lie down</b> on the sofa to watch a movie.",es:"<b>Tan bon punt</b> arribi a casa, em trauré les sabates i em <b>peratallaré</b> al sofà per veure una pel·lícula."}
+    {audio:"f010.mp3",en:"<b>As soon as</b> I get home, I'm going to take off my shoes and <b>lie down</b> on the sofa to watch a movie.",es:"<b>Tan bon punt</b> arribi a casa, em trauré les sabates i em <b>peratallaré</b> al sofà per veure una pel·lícula."},
+    {audio:"f011.mp3",en:"I was <b>surprised to hear</b> that they had decided to move to another country <b>without</b> telling anyone.",es:"Em va <b>sorprendre sentir</b> que havien decidit mudar-se a un altre país <b>sense</b> dir-ho a ningú."},
+    {audio:"f012.mp3",en:"The concert was <b>so loud</b> that I could hardly hear what my friends were <b>saying</b> to me.",es:"El concert <b>estava tan fort</b> que gairebé no podia sentir el que els meus amics em <b>deien</b>."},
+    {audio:"f013.mp3",en:"I've been <b>trying to reach</b> you all morning, but your phone <b>must have been</b> turned off.",es:"He estat <b>intentant localitzar-te</b> tot el matí, però el teu telèfon <b>devia estar</b> apagat."},
+    {audio:"f014.mp3",en:"It <b>doesn't matter</b> if you don't have enough money now; you can <b>pay me back</b> whenever you can.",es:"<b>No importa</b> si ara no tens prou diners; ja <b>m'ho tornaràs</b> quan puguis."},
+    {audio:"f015.mp3",en:"The <b>best thing about</b> living here is that everything is <b>within walking distance</b>.",es:"El <b>millor de</b> viure aquí és que tot està <b>a prop caminant</b>."},
+    {audio:"f016.mp3",en:"I'm <b>looking forward to</b> the weekend because I really need to <b>disconnect from</b> work.",es:"Tinc <b>moltes ganes que</b> arribi el cap de setmana perquè realment necessito <b>desconnectar de</b> la feina."},
+    {audio:"f017.mp3",en:"I <b>accidentally</b> deleted the file I had been working on <b>all afternoon</b>.",es:"Vaig esborrar <b>sense voler</b> l'arxiu en el qual havia estat treballant <b>tota la tarda</b>."},
+    {audio:"f018.mp3",en:"Could you <b>keep an eye on</b> my suitcase for a moment while I go to the <b>restroom</b>?",es:"Podries <b>fer un cop d'ull a</b> la meva maleta un moment mentre vaig al <b>lavabo</b>?"},
+    {audio:"f019.mp3",en:"He <b>pretended not to</b> see me when he passed by, but I'm sure he <b>did</b>.",es:"Va <b>fer veure que no</b> em veia quan va passar pel costat, però estic segur que <b>sí</b>."},
+    {audio:"f020.mp3",en:"The cake <b>turned out to be</b> much better than I expected, <b>considering</b> it was my first time making it.",es:"El pastís <b>va resultar estar</b> molt millor del que esperava, <b>tenint en compte</b> que era la primera vegada que el feia."},
+    {audio:"f021.mp3",en:"I'm <b>thinking of</b> buying a new laptop because the one I have is <b>starting to</b> be very slow.",es:"Estic <b>pensant en</b> comprar-me un portàtil nou perquè el que tinc <b>comença a</b> anar molt lent."},
+    {audio:"f022.mp3",en:"It's <b>worth visiting</b> the museum on Sundays because <b>the entrance</b> is free for everyone.",es:"<b>Val la pena visitar</b> el museu els diumenges perquè <b>l'entrada</b> és gratuïta per a tothom."},
+    {audio:"f023.mp3",en:"I <b>hardly ever</b> go to the cinema anymore because it's <b>become</b> quite expensive lately.",es:"<b>Gairebé mai</b> ja no vaig al cinema perquè s'ha <b>tornat</b> força car últimament."},
+    {audio:"f024.mp3",en:"I <b>ran into</b> an old friend from high school while I was <b>doing the shopping</b>.",es:"Em vaig <b>trobar de casualitat</b> amb un antic amic de l'institut mentre <b>anava a comprar</b>."},
+    {audio:"f025.mp3",en:"The movie was <b>so boring</b> that I <b>fell asleep</b> before the end.",es:"La pel·lícula era <b>tan avorrida</b> que em vaig <b>quedar adormit</b> abans del final."},
+    {audio:"f026.mp3",en:"I <b>should have</b> listened to your advice <b>instead of</b> doing what I wanted.",es:"T'<b>hauria d'haver</b> fet cas <b>en lloc de</b> fer el que jo volia."},
+    {audio:"f027.mp3",en:"It's <b>likely to</b> rain this afternoon, so you'd <b>better</b> take an umbrella with you.",es:"És <b>probable que</b> plogui aquesta tarda, així que <b>més val que</b> agafis un paraigua."},
+    {audio:"f028.mp3",en:"I <b>can't stand</b> it when people talk loudly on their phones <b>on the train</b>.",es:"<b>No suporto</b> quan la gent parla fort pel mòbil <b>al tren</b>."},
+    {audio:"f029.mp3",en:"We <b>had trouble</b> finding the house because the GPS <b>wasn't working</b> properly.",es:"Ens va <b>costar</b> trobar la casa perquè el GPS <b>no funcionava</b> bé."},
+    {audio:"f030.mp3",en:"I'll <b>let you know</b> as soon as I <b>have</b> any news about the project.",es:"<b>T'ho faré saber</b> tan bon punt <b>tingui</b> alguna notícia sobre el projecte."},
+    {audio:"f031.mp3",en:"I'm <b>not in the mood</b> to go out tonight; I'd <b>rather</b> stay home and read.",es:"<b>No estic d'humor per</b> sortir aquesta nit; <b>prefereixo</b> quedar-me a casa i llegir."},
+    {audio:"f032.mp3",en:"The <b>more</b> I study English, the <b>more</b> I realize how much I still have to learn.",es:"<b>Com més</b> estudio anglès, <b>més</b> m'adono de tot el que em queda per aprendre."},
+    {audio:"f033.mp3",en:"I <b>haven't been able to</b> sleep well lately <b>due to</b> the noise from the street.",es:"<b>No he pogut</b> dormir bé últimament <b>a causa del</b> soroll del carrer."},
+    {audio:"f034.mp3",en:"It's <b>none of your business</b> what I do with my free time, <b>is it</b>?",es:"<b>No és assumpte teu</b> el que faig amb el meu temps lliure, <b>oi</b>?"},
+    {audio:"f035.mp3",en:"I <b>used to be</b> very shy, but <b>over time</b> I've become more confident.",es:"<b>Solia ser</b> molt tímid, però <b>amb el temps</b> m'he tornat més segur de mi mateix."},
+    {audio:"f036.mp3",en:"The <b>reason why</b> I'm late is that my car <b>broke down</b> on the way here.",es:"El <b>motiu pel qual</b> arribo tard és que el cotxe se m'ha <b>espatllat</b> venint cap aquí."},
+    {audio:"f037.mp3",en:"I'll <b>make sure</b> that everything is ready <b>by the time</b> you get back.",es:"M'<b>asseguraré</b> que tot estigui llest <b>quan</b> tornis."},
+    {audio:"f038.mp3",en:"I <b>don't feel like</b> cooking tonight, so let's <b>order</b> some pizza.",es:"<b>No em ve de gust</b> cuinar aquesta nit, així que <b>demanem</b> una pizza."},
+    {audio:"f039.mp3",en:"It's <b>not as easy as</b> it looks; you have to <b>practice</b> a lot to get it right.",es:"<b>No és tan fàcil com</b> sembla; has de <b>practicar</b> molt per fer-ho bé."},
+    {audio:"f040.mp3",en:"I'm <b>exhausted</b> after working <b>ten hours straight</b> without a break.",es:"Estic <b>esgotat</b> després de treballar <b>deu hores seguides</b> sense descans."},
+    {audio:"f041.mp3",en:"I <b>can't believe</b> it's already been a year since we <b>last</b> saw each other.",es:"<b>No em puc creure</b> que ja hagi passat un any des de l'<b>última vegada</b> que ens vam veure."},
+    {audio:"f042.mp3",en:"It <b>turned out</b> that the keys were <b>in my pocket</b> the whole time.",es:"<b>Va resultar</b> que les claus eren <b>a la meva butxaca</b> tot el temps."},
+    {audio:"f043.mp3",en:"I'm <b>sorry for</b> the inconvenience, but we <b>have to</b> postpone the meeting.",es:"<b>Sento</b> les molèsties, però <b>hem de</b> posposar la reunió."},
+    {audio:"f044.mp3",en:"He's <b>the kind of person</b> who always <b>tells the truth</b>, even if it's difficult.",es:"És <b>el tipus de persona</b> que sempre <b>diu la veritat</b>, encara que sigui difícil."},
+    {audio:"f045.mp3",en:"I <b>would rather</b> you didn't tell anyone what I've <b>just</b> told you.",es:"<b>Preferiria</b> que no diguessis a ningú el que <b>t'acabo</b> de dir."},
+    {audio:"f046.mp3",en:"It's <b>getting dark</b>, so we'd <b>better</b> start heading back home.",es:"S'està <b>fent fosc</b>, així que <b>més val que</b> comencem a tornar cap a casa."},
+    {audio:"f047.mp3",en:"I <b>wonder if</b> they'll ever <b>find out</b> the truth about what happened.",es:"<b>Em pregunto si</b> algun dia <b>esbrinaran</b> la veritat sobre el que va passar."},
+    {audio:"f048.mp3",en:"I <b>don't mind</b> waiting for a few minutes <b>as long as</b> I'm not in a hurry.",es:"<b>No m'importa</b> esperar uns minuts <b>mentre</b> no tingui pressa."},
+    {audio:"f049.mp3",en:"He <b>always complains about</b> his job, but he <b>never</b> does anything to change it.",es:"<b>Sempre es queixa de</b> la seva feina, però <b>mai</b> fa res per canviar-la."},
+    {audio:"f050.mp3",en:"The <b>best way to</b> learn a language is <b>by speaking</b> it every day.",es:"La <b>millor manera de</b> aprendre un idioma és <b>parlant-lo</b> cada dia."},
+    {audio:"f051.mp3",en:"I <b>was about to</b> leave when the phone <b>rang</b>.",es:"<b>Estava a punt de</b> marxar quan el telèfon <b>va sonar</b>."},
+    {audio:"f052.mp3",en:"I <b>forgot to</b> buy milk, so I'll <b>have to</b> go back to the store.",es:"Vaig <b>oblidar</b> comprar llet, així que <b>hauré de</b> tornar a la botiga."},
+    {audio:"f053.mp3",en:"It's <b>too late to</b> change your mind now; the tickets <b>are already</b> bought.",es:"És <b>massa tard per</b> canviar d'opinió ara; els bitllets <b>ja estan</b> comprats."},
+    {audio:"f054.mp3",en:"I <b>wish I had</b> more time to <b>spend with</b> my family.",es:"<b>M'agradaria tenir</b> més temps per <b>passar amb</b> la meva família."},
+    {audio:"f055.mp3",en:"She's <b>been working</b> for that company <b>for</b> over ten years.",es:"Fa <b>més de deu anys que treballa</b> per a aquella empresa."},
+    {audio:"f056.mp3",en:"I'm <b>not sure if</b> I'll <b>be able to</b> come to the party on Saturday.",es:"<b>No estic segur de si</b> podré <b>venir</b> a la festa dissabte."},
+    {audio:"f057.mp3",en:"It <b>seems like</b> it's going to be a <b>beautiful day</b> today.",es:"<b>Sembla que</b> avui farà un <b>dia bonic</b>."},
+    {audio:"f058.mp3",en:"I <b>can't afford</b> to buy a new car <b>at the moment</b>.",es:"<b>No em puc permetre</b> comprar un cotxe nou <b>en aquest moment</b>."},
+    {audio:"f059.mp3",en:"We <b>should have</b> left earlier <b>to avoid</b> the traffic.",es:"Hauríem d'haver <b>marxat abans</b> per <b>evitar</b> el trànsit."},
+    {audio:"f060.mp3",en:"I'm <b>tired of</b> listening to the same songs <b>all the time</b>.",es:"Estic <b>cansat d'</b>escoltar les mateixes cançons <b>tot el temps</b>."},
+    {audio:"f061.mp3",en:"It's <b>important to</b> sleep at least seven hours <b>every night</b>.",es:"És <b>important</b> dormir almenys set hores <b>cada nit</b>."},
+    {audio:"f062.mp3",en:"I <b>don't know</b> how to <b>thank you for</b> everything you've done.",es:"<b>No sé</b> com <b>agrair-te</b> tot el que has fet."},
+    {audio:"f063.mp3",en:"He's <b>the most</b> intelligent person <b>I've ever</b> met.",es:"És la persona <b>més</b> intel·ligent que he <b>conegut mai</b>."},
+    {audio:"f064.mp3",en:"I'm <b>thinking about</b> taking a <b>cooking class</b> next month.",es:"Estic <b>pensant a</b> fer un <b>curs de cuina</b> el mes que ve."},
+    {audio:"f065.mp3",en:"It's <b>hard to</b> believe that <b>summer is already</b> over.",es:"És <b>difícil de</b> creure que l'<b>estiu ja s'hagi</b> acabat."},
+    {audio:"f066.mp3",en:"I'm <b>really looking forward to</b> our <b>next vacation</b>.",es:"Tinc <b>moltes ganes de</b> les nostres <b>properes vacances</b>."},
+    {audio:"f067.mp3",en:"I've <b>been living in</b> this city <b>since</b> I was a child.",es:"<b>Visc en</b> aquesta ciutat <b>des que</b> era petit."},
+    {audio:"f068.mp3",en:"I <b>hope you have</b> a wonderful time <b>at the concert</b>.",es:"<b>Espero que t'ho passis</b> d'allò més bé <b>al concert</b>."},
+    {audio:"f069.mp3",en:"It's <b>never too late</b> to learn something <b>new</b>.",es:"<b>Mai és massa tard</b> per aprendre alguna cosa <b>nova</b>."},
+    {audio:"f070.mp3",en:"I'm <b>going to</b> the supermarket; <b>do you need</b> anything?",es:"<b>Me'n vaig</b> al supermercat; <b>necessites</b> res?"},
+    {audio:"f071.mp3",en:"The movie was <b>even better</b> than the <b>book</b>.",es:"La pel·lícula va ser <b>encara millor</b> que el <b>llibre</b>."},
+    {audio:"f072.mp3",en:"I'll <b>call you</b> as soon as I <b>get there</b>.",es:"Et <b>trucaré</b> tan bon punt <b>arribi</b>."},
+    {audio:"f073.mp3",en:"It <b>doesn't matter</b> what <b>other people</b> think.",es:"<b>No importa</b> el que pensin els <b>altres</b>."},
+    {audio:"f074.mp3",en:"I <b>can't wait to</b> see your <b>new house</b>.",es:"<b>Tinc moltes ganes de</b> veure la teva <b>casa nova</b>."},
+    {audio:"f075.mp3",en:"You <b>should try to</b> get some <b>rest</b> this weekend.",es:"<b>Hauries d'intentar</b> <b>descansar</b> una mica aquest cap de setmana."},
+    {audio:"f076.mp3",en:"I <b>didn't mean to</b> hurt your <b>feelings</b>.",es:"<b>No volia</b> ferir els teus <b>sentiments</b>."}
 ];
 
 let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0;
@@ -181,7 +241,6 @@ function update(fromAction = false) {
   document.getElementById("en").classList.add("hidden");
   progressBar.value = 0;
 
-  // Actualizar estrella
   const isStarred = starredIds.includes(item.audio);
   document.getElementById("starBtn").classList.toggle("active", isStarred);
 
