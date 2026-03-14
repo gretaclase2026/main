@@ -17,15 +17,10 @@ main{display:flex;justify-content:center;padding:24px}
 .blocks{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:15px 0 20px}
 .block{width:32px;height:32px;border-radius:50%;border:none;background:#f1f5f9;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.2s}
 .block.active{background:#2563eb !important;color:#fff !important}
-.audio-container { display: flex; justify-content: center; gap: 15px; margin: 10px 0 10px; }
+.audio-container { display: flex; justify-content: center; gap: 15px; margin: 10px 0 20px; }
 .audio-btn{width:85px;height:85px;border-radius:50%;border:none;background:#dbeafe;font-size:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
 .audio-btn.slow{background:#fef08a; font-size:26px;}
 .audio-btn:active{transform:scale(0.9)}
-
-/* Estils per a la barra de progrés */
-.progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
-input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
-
 .hidden{display:none}
 .es{font-size:19px;color:#2563eb;margin-top:14px;line-height:1.4}
 .en{font-size:19px;color:#0f172a;margin-top:14px;font-weight:700;line-height:1.4}
@@ -67,10 +62,6 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
  <div class="audio-container">
   <button class="audio-btn" onclick="play(1.0)">🔊</button>
   <button class="audio-btn slow" onclick="play(0.75)">🐢</button>
- </div>
-
- <div class="progress-wrapper">
-  <input type="range" id="progressBar" value="0" step="0.1">
  </div>
 
  <div id="es" class="es hidden"></div>
@@ -177,21 +168,6 @@ const items = [
 
 let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0;
 const audioObj = new Audio();
-const progressBar = document.getElementById("progressBar");
-
-// Actualització de la barra mentre l'àudio sona
-audioObj.ontimeupdate = () => {
-  if (audioObj.duration) {
-    progressBar.value = (audioObj.currentTime / audioObj.duration) * 100;
-  }
-};
-
-// Permet saltar a qualsevol punt de l'àudio
-progressBar.oninput = () => {
-  if (audioObj.duration) {
-    audioObj.currentTime = (progressBar.value / 100) * audioObj.duration;
-  }
-};
 
 function initBlocks() {
   const container = document.getElementById("blockContainer");
@@ -240,9 +216,6 @@ function update(fromAction = false) {
     document.getElementById("en").classList.remove("hidden");
     return;
   }
-  
-  progressBar.value = 0; // Reinicia la barra en canviar de frase
-  
   const item = currentBlockData[pos];
   document.getElementById("es").classList.add("hidden");
   document.getElementById("en").classList.add("hidden");
@@ -264,16 +237,13 @@ function play(speed) {
   const item = currentBlockData[pos];
   const newSrc = item.audio;
 
-  if (!audioObj.src.includes(newSrc)) {
-    audioObj.src = newSrc;
-    progressBar.value = 0;
-  }
-
-  audioObj.playbackRate = speed;
-  
-  if (!audioObj.paused && audioObj.playbackRate === speed) {
+  if (audioObj.src.includes(newSrc) && !audioObj.paused) {
     audioObj.pause();
   } else {
+    if (!audioObj.src.includes(newSrc)) {
+      audioObj.src = newSrc;
+    }
+    audioObj.playbackRate = speed;
     audioObj.play().catch(() => {});
   }
 }
