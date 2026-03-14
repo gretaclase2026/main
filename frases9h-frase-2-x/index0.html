@@ -18,18 +18,14 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#fff4cc;cursor:pointer;transition:0.2s}
 .block.active{background:#ffcc00;transform:scale(1.1);box-shadow:inset 0 0 5px rgba(0,0,0,0.2)}
 
-.main-box-container{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;margin:20px 0}
-.audio-controls{display:flex;align-items:center;gap:15px;margin-bottom:15px}
+.main-box-container{display:flex;align-items:center;justify-content:center;position:relative;margin:20px 0}
+.main-box{text-align:center;display:flex;flex-direction:column;justify-content:center;align-items:center}
 
-.audio-btn{font-size:50px;background:#dcfce7;border:none;cursor:pointer;width:110px;height:110px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
-.audio-btn.slow{background:#fef08a;width:80px;height:80px;font-size:35px}
+.audio-btn{font-size:60px;background:#dcfce7;border:none;cursor:pointer;width:140px;height:140px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
 .audio-btn.vibrate{animation:vibrate 0.25s linear 2}
 @keyframes vibrate{0%{transform:translate(0)}25%{transform:translate(2px,-2px)}50%{transform:translate(-2px,2px)}75%{transform:translate(2px,2px)}100%{transform:translate(0)}}
 
-.progress-wrapper { width: 100%; max-width: 300px; margin: 10px 0; }
-input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 5px; accent-color: #2563eb; }
-
-.counter-side{position:absolute;right:10px;top:0;font-weight:bold;color:#2563eb;font-size:22px}
+.counter-side{position:absolute;right:10px;font-weight:bold;color:#2563eb;font-size:22px}
 
 #word{font-size:24px;font-weight:800;margin:20px 0;line-height:1.4;min-height:120px;text-align:center;display:flex;align-items:center;justify-content:center;padding:0 10px}
 .txt-es{color:#2563eb} 
@@ -42,14 +38,6 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 .btn-next{background:#fbcfe8}
 
 #list{margin-top:20px;background:#f9f9f9;padding:15px;border-radius:15px;display:none;border:1px solid #ddd}
-
-.check-box-manual {
-    position: absolute; top: 85px; right: 22px; width: 24px; height: 24px;
-    background: #fff !important; border: 1.5px solid #22c55e !important;
-    border-radius: 6px; display: flex; align-items: center; justify-content: center;
-    cursor: pointer; z-index: 10; transition: all 0.2s; font-size: 14px;
-}
-.check-box-manual.marked { background: #22c55e !important; color: white; }
 </style>
 </head>
 <body>
@@ -63,17 +51,11 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
   <div class="blocks" id="blocksContainer"></div>
 
   <div class="main-box-container">
+    <div class="main-box">
+      <button class="audio-btn" onclick="playAudio()">🔊</button>
+    </div>
     <div class="counter-side">
       <span id="pos">0</span> / <span id="total">0</span>
-    </div>
-    
-    <div class="audio-controls">
-      <button class="audio-btn" onclick="playAudio(1.0)">🔊</button>
-      <button class="audio-btn slow" onclick="playAudio(0.75)">🐢</button>
-    </div>
-
-    <div class="progress-wrapper">
-      <input type="range" id="progressBar" value="0" step="0.1">
     </div>
   </div>
 
@@ -165,7 +147,7 @@ const data = [
   {en: "We have so much to talk about, let's catch up today.", es: "Tenemos tanto de qué hablar, pongámonos al día hoy"},
   {en: "I’m really pissed off because they lied to me.", es: "Estoy muy cabreado porque me mintieron"},
   {en: "Don't talk to him right now, he's pissed off.", es: "No hables con él ahora mismo, está cabreado"},
-  {en: "I was pissed off when the flight was cancelled.", es: "Estaba muy molesto cuando se canalizó el vuelo"},
+  {en: "I was pissed off when the flight was cancelled.", es: "Estaba muy molesto cuando se canceló el vuelo"},
   {en: "What a long day, I'm absolutely beat.", es: "Vaya día más largo, estoy para el arrastre"},
   {en: "I can't go to the gym tonight, I'm beat.", es: "No puedo ir al gimnasio esta noche, estoy reventado"},
   {en: "After the hike, we were all beat.", es: "Después de la caminata, todos estábamos agotados"},
@@ -194,19 +176,6 @@ let pos = 0;
 let mode = "EN";
 let learnedCount = 0;
 let currentBlockID = 0;
-
-const a = document.getElementById("audio");
-const progressBar = document.getElementById("progressBar");
-
-// Actualizar barra de progreso mientras suena
-a.ontimeupdate = () => {
-  if (a.duration) progressBar.value = (a.currentTime / a.duration) * 100;
-};
-
-// Permitir saltar en el audio con la barra
-progressBar.oninput = () => {
-  if (a.duration) a.currentTime = (progressBar.value / 100) * a.duration;
-};
 
 function initBlocks() {
   const container = document.getElementById("blocksContainer");
@@ -266,20 +235,18 @@ function update(fromNextAction = false) {
   const translation = `<span class="txt-es">${item.es}</span>`;
   
   const w = document.getElementById("word");
-  const aElement = document.getElementById("answer");
-
-  progressBar.value = 0;
+  const a = document.getElementById("answer");
 
   if (mode === "EN") {
     w.innerHTML = ``; 
-    aElement.innerHTML = translation;
-    if (fromNextAction) playAudio(1.0);
+    a.innerHTML = translation;
+    if (fromNextAction) playAudio();
   } else {
     w.innerHTML = `<div style='font-size:22px;'>${translation}</div>`;
-    aElement.innerHTML = `<span style="font-size:24px;">${item.en}</span>`;
+    a.innerHTML = `<span style="font-size:24px;">${item.en}</span>`;
   }
   
-  aElement.style.display = "none";
+  a.style.display = "none";
   document.getElementById("pos").textContent = learnedCount;
   document.getElementById("total").textContent = currentBlockData.length + learnedCount;
 }
@@ -291,7 +258,7 @@ function reveal() {
         document.getElementById("word").innerHTML = `<span style="color:#333;">${item.en}</span>`;
     }
     document.getElementById("answer").style.display = "block";
-    if (mode === "ES") playAudio(1.0); 
+    if (mode === "ES") playAudio(); 
   }
 }
 
@@ -309,19 +276,13 @@ function next() {
   update(true);
 }
 
-function playAudio(speed) {
+function playAudio() {
   if (currentBlockData.length === 0) return;
   const num = currentBlockData[pos].realIdx;
-  const fileName = "frase" + num + ".mp3";
-  
-  if (!a.src.includes(fileName)) {
-    a.src = fileName;
-    progressBar.value = 0;
-  }
-
-  a.playbackRate = speed;
-  
-  const btn = document.querySelector('.audio-btn');
+  const a = document.getElementById("audio");
+  // Ajustado a los audios: frase1.mp3, frase2.mp3...
+  a.src = "frase" + num + ".mp3";
+  const btn=document.querySelector('.audio-btn');
   btn.classList.remove('vibrate'); void btn.offsetWidth; btn.classList.add('vibrate');
   a.play().catch(() => {});
 }
@@ -339,8 +300,38 @@ function toggleList() {
   l.style.display = "block";
 }
 
+initBlocks();
+ // --- CÓDIGO INTELIGENTE PARA EL CUADRITO DE MARCADO ---
+
+const style = document.createElement('style');
+style.innerHTML = `
+    .check-box-manual {
+        position: absolute;
+        top: 85px; 
+        right: 22px;
+        width: 24px;
+        height: 24px;
+        background: #fff !important;
+        border: 1.5px solid #22c55e !important;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+        transition: all 0.2s;
+        font-size: 14px;
+    }
+    .check-box-manual.marked { 
+        background: #22c55e !important; 
+        color: white; 
+    }
+`;
+document.head.appendChild(style);
+
 function getFolderName() {
-    return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "unknown";
+    const path = window.location.pathname;
+    return path.split('/').filter(Boolean).slice(-2, -1)[0] || "unknown";
 }
 
 function markAsDone(element) {
@@ -350,16 +341,17 @@ function markAsDone(element) {
     alert("Lliçó marcada ✅");
 }
 
-initBlocks();
-
-// Cuadrito de marcado
+// 1. Crear el cuadrito
 const card = document.querySelector(".card");
 const box = document.createElement("div");
 box.className = "check-box-manual";
+
+// 2. Comprobar si ya estaba marcada antes de pintarla
 if (localStorage.getItem(getFolderName())) {
     box.innerHTML = "✓";
     box.classList.add('marked');
 }
+
 box.onclick = function() { markAsDone(this); };
 card.appendChild(box);
 </script>
