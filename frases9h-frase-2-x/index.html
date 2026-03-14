@@ -13,10 +13,11 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .mode.es{background:#f4d6e6}
 .mode.active{border-color:#999;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
 .blocks{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}
-.block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#fff4cc;cursor:pointer;transition:0.2s}
-.block.active{background:#ffcc00;transform:scale(1.1);box-shadow:inset 0 0 5px rgba(0,0,0,0.2)}
+.block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#f1f5f9;cursor:pointer;transition:0.2s}
 
-/* Estilos actualizados para audio y progreso */
+/* CORRECCIÓN: Ahora el bloque activo es azul */
+.block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1);box-shadow:0 4px 10px rgba(37,99,235,0.3)}
+
 .main-box-container{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;margin:20px 0}
 .audio-controls{display:flex;align-items:center;gap:15px;margin-bottom:15px}
 .audio-btn{font-size:50px;background:#dcfce7;border:none;cursor:pointer;width:110px;height:110px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
@@ -37,6 +38,15 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 .btn-know{background:#dcfce7}
 .btn-next{background:#fbcfe8}
 #list{margin-top:20px;background:#f9f9f9;padding:15px;border-radius:15px;display:none;border:1px solid #ddd}
+
+.check-box-manual {
+    position: absolute; top: 85px; right: 22px;
+    width: 24px; height: 24px;
+    background: #fff !important; border: 1.5px solid #22c55e !important;
+    border-radius: 6px; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; z-index: 10; transition: all 0.2s; font-size: 14px;
+}
+.check-box-manual.marked { background: #22c55e !important; color: white; }
 </style>
 </head>
 <body>
@@ -107,7 +117,7 @@ const data = [
   {en: "Don't overload the dishwasher with too many plates, because the water won't be able to reach everything and you'll have to wash them by hand later.", es: "No sobrecargues el lavavajillas con demasiados platos, porque el agua no podrá llegar a todo y tendrás que lavarlos a mano después"},
   {en: "I always keep a spare set of keys at my neighbor's house in case I accidentally lock myself out while I'm taking out the trash.", es: "Siempre guardo un juego de llaves de repuesto en casa de mi vecino por si accidentalmente me quedo fuera mientras saco la basura"},
   {en: "Make sure you heat up the leftovers until they're steaming hot, as eating cold chicken that's been in the fridge for three days might be dangerous.", es: "Asegúrate de calentar las sobras hasta que estén humeantes, ya que comer pollo frío que ha estado en la nevera tres días podría ser peligroso"},
-  {en: "You'd better wear your waterproof boots if you're going for a walk in the forest, because it rained last night and the ground will be very muddy.", es: "Será mejor que lleves tus botas impermeables si vas a dar un paseo por el bosque, porque llovió anoche y el suelo estará muy embarrado"},
+  {en: "You'd better wear your waterproof boots if you're going for a walk in the forest, because it rained last night and the ground will be very muddy.", es: "Será mejor que llaves tus botas impermeables si vas a dar un paseo por el bosque, porque llovió anoche y el suelo estará muy embarrado"},
   {en: "We should tell the neighbors that we're having a small party on Saturday, so they don't get annoyed if there's a bit of noise until midnight.", es: "Deberíamos decirles a los vecinos que vamos a dar una pequeña fiesta el sábado, para que no se molesten si hay un poco de ruido hasta medianoche"},
   {en: "Don't push yourself too hard during your first workout after the holidays, or you'll end up with sore muscles that will last for a week.", es: "No te esfuerces demasiado en tu primer entrenamiento después de las vacaciones, o acabarás con agujetas que te durarán una semana"},
   {en: "Watch your step while you're going down the stairs because the light bulb on the second floor has burnt out and it's completely dark.", es: "Ten cuidado por dónde pisas mientras bajas las escaleras porque la bombilla del segundo piso se ha fundido y está completamente a oscuras"},
@@ -134,27 +144,25 @@ const data = [
 ];
 
 let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0;
-
-// Variables de audio actualizadas
 const a = document.getElementById("audio");
 const progressBar = document.getElementById("progressBar");
 
-// Actualización de barra y salto de tiempo
-a.ontimeupdate = () => {
-  if (a.duration) progressBar.value = (a.currentTime / a.duration) * 100;
-};
-progressBar.oninput = () => {
-  if (a.duration) a.currentTime = (progressBar.value / 100) * a.duration;
-};
+function getFolderName() {
+    return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "neural_b1";
+}
+
+a.ontimeupdate = () => { if (a.duration) progressBar.value = (a.currentTime / a.duration) * 100; };
+progressBar.oninput = () => { if (a.duration) a.currentTime = (progressBar.value / 100) * a.duration; };
 
 function initBlocks() {
   const container = document.getElementById("blocksContainer");
   const numBlocks = Math.ceil(data.length / 10);
+  const savedBlock = localStorage.getItem(getFolderName() + "_currentBlock");
+  
   container.innerHTML = "";
   for (let i = 0; i < numBlocks; i++) {
     const btn = document.createElement("button");
-    btn.className = "block";
-    btn.textContent = i + 1;
+    btn.className = "block"; btn.textContent = i + 1;
     btn.onclick = () => loadBlock(i);
     container.appendChild(btn);
   }
@@ -162,11 +170,14 @@ function initBlocks() {
   btnT.className = "block"; btnT.textContent = "T";
   btnT.onclick = () => loadBlock('T');
   container.appendChild(btnT);
-  loadBlock(0);
+
+  const blockToLoad = (savedBlock !== null) ? (savedBlock === 'T' ? 'T' : parseInt(savedBlock)) : 0;
+  loadBlock(blockToLoad);
 }
 
 function loadBlock(b) {
   currentBlockID = b;
+  localStorage.setItem(getFolderName() + "_currentBlock", b);
   let temp = [];
   if (b === 'T') {
     temp = data.map((item, i) => ({...item, realIdx: i+1}));
@@ -197,22 +208,19 @@ function update(fromNextAction = false) {
     document.getElementById("answer").innerHTML = "";
     return;
   }
-  
-  progressBar.value = 0; // Reiniciar barra al cambiar de frase
+  progressBar.value = 0;
   const item = currentBlockData[pos];
-  const translation = `<span class="txt-es">${item.es}</span>`;
   const w = document.getElementById("word");
   const ans = document.getElementById("answer");
 
   if (mode === "EN") {
     w.innerHTML = ``; 
-    ans.innerHTML = translation;
-    if (fromNextAction) playAudio(1.0); // Por defecto velocidad normal
+    ans.innerHTML = `<span class="txt-es">${item.es}</span>`;
+    if (fromNextAction) playAudio(1.0);
   } else {
-    w.innerHTML = `<div style='font-size:22px;'>${translation}</div>`;
+    w.innerHTML = `<div style='font-size:22px;' class="txt-es">${item.es}</div>`;
     ans.innerHTML = `<span style="font-size:24px;">${item.en}</span>`;
   }
-  
   ans.style.display = "none";
   document.getElementById("pos").textContent = learnedCount;
   document.getElementById("total").textContent = currentBlockData.length + learnedCount;
@@ -241,18 +249,12 @@ function next() {
   update(true);
 }
 
-// Función de audio actualizada con velocidad (speed)
 function playAudio(speed) {
   if (currentBlockData.length === 0) return;
   const num = currentBlockData[pos].realIdx;
   const fileName = "frase" + num + ".mp3";
-  
-  if (!a.src.includes(fileName)) {
-    a.src = fileName;
-    progressBar.value = 0;
-  }
-  
-  a.playbackRate = speed; // Aplicar velocidad
+  if (!a.src.includes(fileName)) { a.src = fileName; progressBar.value = 0; }
+  a.playbackRate = speed;
   const btn = document.querySelector('.audio-btn');
   btn.classList.remove('vibrate'); void btn.offsetWidth; btn.classList.add('vibrate');
   a.play().catch(() => {});
@@ -270,42 +272,20 @@ function toggleList() {
   l.style.display = "block";
 }
 
-initBlocks();
-
-// --- Código de Marcado de Lección ---
-const style = document.createElement('style');
-style.innerHTML = `
-    .check-box-manual {
-        position: absolute; top: 85px; right: 22px;
-        width: 24px; height: 24px;
-        background: #fff !important; border: 1.5px solid #22c55e !important;
-        border-radius: 6px; display: flex; align-items: center; justify-content: center;
-        cursor: pointer; z-index: 10; transition: all 0.2s; font-size: 14px;
-    }
-    .check-box-manual.marked { background: #22c55e !important; color: white; }
-`;
-document.head.appendChild(style);
-
-function getFolderName() {
-    return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "unknown";
-}
-
 function markAsDone(element) {
     localStorage.setItem(getFolderName(), new Date().toISOString());
-    element.innerHTML = "✓";
-    element.classList.add('marked');
+    element.innerHTML = "✓"; element.classList.add('marked');
     alert("Lliçó marcada ✅");
 }
 
 const card = document.querySelector(".card");
 const box = document.createElement("div");
 box.className = "check-box-manual";
-if (localStorage.getItem(getFolderName())) {
-    box.innerHTML = "✓";
-    box.classList.add('marked');
-}
+if (localStorage.getItem(getFolderName())) { box.innerHTML = "✓"; box.classList.add('marked'); }
 box.onclick = function() { markAsDone(this); };
 card.appendChild(box);
+
+initBlocks();
 </script>
 </body>
 </html>

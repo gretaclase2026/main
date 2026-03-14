@@ -17,10 +17,9 @@ main{display:flex;justify-content:center;padding:24px}
 
 .blocks{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:15px 0 20px}
 .block{width:32px;height:32px;border-radius:50%;border:none;background:#f1f5f9;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.2s}
+.block.active{background:#2563eb !important;color:#fff !important}
 
-/* ESTILO PARA EL BLOQUE SELECCIONADO (AZUL FUERTE) */
-.block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1);box-shadow:0 4px 10px rgba(37,99,235,0.3)}
-
+/* Audio, Estrella y Progreso */
 .audio-container { display: flex; justify-content: center; gap: 15px; margin: 10px 0 10px; align-items: center; }
 .audio-btn{width:75px;height:75px;border-radius:50%;border:none;background:#dbeafe;font-size:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
 .audio-btn.slow{background:#fef08a; font-size:22px;}
@@ -40,6 +39,7 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 .know{background:#dcfce7}
 .next{background:#fbcfe8}
 
+/* Listas */
 .list-controls { display: flex; gap: 10px; margin-top: 16px; }
 .list-btn{ flex:1; background:#e9d5ff; border:none; border-radius:16px; padding:14px; font-weight:800; cursor:pointer }
 .review-btn { background: #fef3c7; color: #92400e; }
@@ -109,8 +109,6 @@ const audioObj = new Audio();
 const progressBar = document.getElementById("progressBar");
 let starredIds = JSON.parse(localStorage.getItem('greta_stars_idx4')) || [];
 
-function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "unknown"; }
-
 audioObj.ontimeupdate = () => {
   if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100;
 };
@@ -122,10 +120,6 @@ progressBar.oninput = () => {
 function initBlocks() {
   const container = document.getElementById("blockContainer");
   const numBlocks = Math.ceil(items.length / 10);
-  
-  // LEER EL BLOQUE GUARDADO
-  const savedBlock = localStorage.getItem(getFolderName() + "_currentBlock");
-  
   container.innerHTML = "";
   for (let i = 0; i < numBlocks; i++) {
     const btn = document.createElement("button");
@@ -138,18 +132,11 @@ function initBlocks() {
   btnT.className = "block"; btnT.textContent = "T";
   btnT.onclick = () => loadBlock('T');
   container.appendChild(btnT);
-  
-  // CARGAR EL BLOQUE GUARDADO O EL 0 POR DEFECTO
-  const blockToLoad = (savedBlock !== null) ? (savedBlock === 'T' ? 'T' : parseInt(savedBlock)) : 0;
-  loadBlock(blockToLoad);
+  loadBlock(0);
 }
 
 function loadBlock(b) {
   currentBlockID = b;
-  
-  // GUARDAR PUNTO DE LIBRO
-  localStorage.setItem(getFolderName() + "_currentBlock", b);
-
   let temp = [];
   if (b === 'T') {
     temp = items.map((item, i) => ({...item, realIdx: i+1}));
@@ -163,15 +150,11 @@ function loadBlock(b) {
   }
   
   currentBlockData = temp.sort(() => Math.random() - 0.5);
-  
-  // MARCAR EL BOTÓN AZUL
   document.querySelectorAll(".block").forEach((btn) => {
-    const isThis = (b === 'T' && btn.textContent === 'T') || (parseInt(btn.textContent)-1 === b);
-    btn.classList.toggle("active", isThis);
+    btn.classList.toggle("active", (b === 'T' && btn.textContent === 'T') || (parseInt(btn.textContent)-1 === b));
   });
 
   pos = 0; learnedCount = 0;
-  if(document.getElementById("listBox")) document.getElementById("listBox").classList.add("hidden");
   update(true);
 }
 
@@ -278,6 +261,7 @@ function toggleList(type) {
   box.classList.remove("hidden");
 }
 
+function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "unknown"; }
 function markAsDone(el) {
     localStorage.setItem(getFolderName(), new Date().toISOString());
     el.innerHTML = "✓"; el.classList.add('marked');
@@ -286,7 +270,7 @@ function markAsDone(el) {
 
 if (localStorage.getItem(getFolderName())) { 
     const mc = document.getElementById("mainCheck");
-    if(mc) { mc.innerHTML = "✓"; mc.classList.add('marked'); }
+    mc.innerHTML = "✓"; mc.classList.add('marked'); 
 }
 
 initBlocks();

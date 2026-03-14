@@ -13,8 +13,11 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .mode.es{background:#f4d6e6}
 .mode.active{border-color:#999;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
 .blocks{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}
-.block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#fff4cc;cursor:pointer;box-shadow:0 2px 4px rgba(0,0,0,0.1)}
-.block.active{background:#ffcc00;box-shadow:inset 0 2px 4px rgba(0,0,0,0.2)}
+.block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#f1f5f9;cursor:pointer;box-shadow:0 2px 4px rgba(0,0,0,0.1);transition: 0.2s;}
+
+/* ESTILO PARA EL BLOQUE SELECCIONADO (AZUL FUERTE) */
+.block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1);box-shadow:0 4px 10px rgba(37,99,235,0.3)}
+
 .lang-label{text-align:center;font-weight:bold;color:#888;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px}
 .audio-section{display:flex;align-items:center;justify-content:center;position:relative;margin:30px 0;gap:20px}
 .audio-btn{width:100px;height:100px;background:#d1e7dd;border:6px solid #f0f0f0;border-radius:50%;font-size:45px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform 0.1s}
@@ -33,6 +36,16 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .list{margin-top:15px;display:none;background:#f9f9f9;padding:15px;border-radius:15px;font-size:14px;line-height:1.6}
 .vibrate{animation:vibrate 0.3s linear}
 @keyframes vibrate{0%{transform:rotate(0)}25%{transform:rotate(5deg)}50%{transform:rotate(0)}75%{transform:rotate(-5deg)}100%{transform:rotate(0)}}
+
+.check-box-manual {
+    position: absolute; top: 85px; right: 22px;
+    width: 24px; height: 24px;
+    background: #fff; border: 1.5px solid #22c55e;
+    border-radius: 6px; display: flex;
+    align-items: center; justify-content: center;
+    cursor: pointer; z-index: 10; font-size: 14px;
+}
+.check-box-manual.marked { background: #22c55e !important; color: white !important; }
 </style>
 </head>
 <body>
@@ -112,22 +125,48 @@ const data = [
   {en:"Lots of people", es:"Mucha gente", ca:"Molta gent", fast:"Lotsa"},
   {en:"I am going to try", es:"Voy a intentarlo", ca:"Ho intentaré", fast:"Gonna"}
 ];
+
 let mode="EN", currentBlockID='T', currentBlockData=[], pos=0, learnedCount=0, totalInBlock=50;
+
+function getFolderName() {
+    return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "fast_50";
+}
+
 function initBlocks(){
   const container=document.getElementById("blockContainer");
+  const savedBlock = localStorage.getItem(getFolderName() + "_currentBlock");
+  
+  container.innerHTML = "";
   const tBtn=document.createElement("button");
-  tBtn.className="block active"; tBtn.innerText="T"; tBtn.onclick=()=>setBlock('T');
+  tBtn.className="block"; tBtn.innerText="T"; tBtn.onclick=()=>setBlock('T');
   container.appendChild(tBtn);
+  
   for(let i=0; i<5; i++){
     const b=document.createElement("button");
     b.className="block"; b.innerText=i+1;
     b.onclick=()=>setBlock(i);
     container.appendChild(b);
   }
-  setBlock('T');
+
+  const blockToLoad = (savedBlock !== null) ? (savedBlock === 'T' ? 'T' : parseInt(savedBlock)) : 'T';
+  setBlock(blockToLoad);
+
+  // Cuadrito de marcado de lección
+  const card = document.querySelector(".card");
+  const box = document.createElement("div");
+  box.className = "check-box-manual";
+  if (localStorage.getItem(getFolderName())) {
+      box.innerHTML = "✓";
+      box.classList.add('marked');
+  }
+  box.onclick = function() { markAsDone(this); };
+  card.appendChild(box);
 }
+
 function setBlock(id){
   currentBlockID=id; learnedCount=0;
+  localStorage.setItem(getFolderName() + "_currentBlock", id);
+
   if(id==='T'){
     currentBlockData=data.map((d,i)=>({...d, realIdx:i+1}));
     totalInBlock=50;
@@ -138,16 +177,19 @@ function setBlock(id){
   }
   pos=0;
   document.querySelectorAll(".block").forEach(b=>{
-    b.className=(b.innerText==(id==='T'?'T':id+1))?"block active":"block";
+    const isThis = (id==='T' && b.innerText==='T') || (b.innerText == (id+1));
+    b.classList.toggle("active", isThis);
   });
   update(true);
 }
+
 function setMode(m){
   mode=m;
   document.getElementById("mEN").className=m==="EN"?"mode en active":"mode en";
   document.getElementById("mES").className=m==="ES"?"mode es active":"mode es";
   update(true);
 }
+
 function update(newWord){
   const lb=document.getElementById("langLabel");
   const w=document.getElementById("word");
@@ -164,6 +206,7 @@ function update(newWord){
   }
   document.getElementById("counterDisplay").innerText=`${learnedCount} / ${totalInBlock}`;
 }
+
 function reveal(){
   if(currentBlockData.length>0){
     const item=currentBlockData[pos];
@@ -174,6 +217,7 @@ function reveal(){
     if(mode==="ES") playAudio(1.0);
   }
 }
+
 function know(){
   if(currentBlockData.length===0) return;
   learnedCount++;
@@ -181,6 +225,7 @@ function know(){
   if(pos>=currentBlockData.length) pos=0;
   update(true);
 }
+
 function next(){
   if(currentBlockData.length===0) return;
   pos=(pos+1)%currentBlockData.length;
@@ -193,10 +238,8 @@ function playAudio(speed) {
   const a = document.getElementById("audio");
   a.src = "f" + num + ".mp3";
   a.playbackRate = speed;
-  
   const btn = speed === 1.0 ? document.getElementById('btnNormal') : document.getElementById('btnSlow');
   btn.classList.remove('vibrate'); void btn.offsetWidth; btn.classList.add('vibrate');
-  
   a.play().catch(() => {});
 }
 
@@ -209,38 +252,6 @@ function toggleList(){
     l.innerHTML+=`<b>${item.en}</b> (${item.fast})<br><span style="color:#2563eb;">${item.es} / ${item.ca}</span><br><br>`;
   });
 }
-initBlocks();
-
-const style = document.createElement('style');
-style.innerHTML = `
-    .check-box-manual {
-        position: absolute;
-        top: 85px; 
-        right: 22px;
-        width: 24px;
-        height: 24px;
-        background: #fff !important;
-        border: 1.5px solid #22c55e !important;
-        border-radius: 6px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        z-index: 10;
-        transition: all 0.2s;
-        font-size: 14px;
-    }
-    .check-box-manual.marked { 
-        background: #22c55e !important; 
-        color: white; 
-    }
-`;
-document.head.appendChild(style);
-
-function getFolderName() {
-    const path = window.location.pathname;
-    return path.split('/').filter(Boolean).slice(-2, -1)[0] || "unknown";
-}
 
 function markAsDone(element) {
     localStorage.setItem(getFolderName(), new Date().toISOString());
@@ -249,17 +260,7 @@ function markAsDone(element) {
     alert("Lliçó marcada ✅");
 }
 
-const card = document.querySelector(".card");
-const box = document.createElement("div");
-box.className = "check-box-manual";
-
-if (localStorage.getItem(getFolderName())) {
-    box.innerHTML = "✓";
-    box.classList.add('marked');
-}
-
-box.onclick = function() { markAsDone(this); };
-card.appendChild(box);
+initBlocks();
 </script>
 </body>
 </html>

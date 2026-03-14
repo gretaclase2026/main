@@ -13,24 +13,22 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .mode.es{background:#f4d6e6}
 .mode.active{border-color:#999;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
 .blocks{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}
-.block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#fff4cc;cursor:pointer;transition:0.2s}
-.block.active{background:#ffcc00;transform:scale(1.1);box-shadow:inset 0 0 5px rgba(0,0,0,0.2)}
-.main-box-container{display:flex;align-items:center;justify-content:center;position:relative;margin:20px 0}
-.main-box{text-align:center;display:flex;flex-direction:column;justify-content:center;align-items:center}
+.block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#f1f5f9;cursor:pointer;transition:0.2s}
 
-/* Audio Buttons */
-.audio-container { display: flex; justify-content: center; gap: 15px; align-items: center; margin-bottom: 10px; }
-.audio-btn{font-size:50px;background:#dcfce7;border:none;cursor:pointer;width:120px;height:120px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
-.audio-btn.slow{background:#fef08a; width:90px; height:90px; font-size:35px;}
+/* Bloque activo en AZUL */
+.block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1);box-shadow:0 4px 10px rgba(37,99,235,0.3)}
+
+.main-box-container{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;margin:20px 0}
+.audio-controls{display:flex;align-items:center;gap:15px;margin-bottom:15px}
+.audio-btn{font-size:50px;background:#dcfce7;border:none;cursor:pointer;width:110px;height:110px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
+.audio-btn.slow{background:#fef08a;width:80px;height:80px;font-size:35px}
 .audio-btn.vibrate{animation:vibrate 0.25s linear 2}
-
 @keyframes vibrate{0%{transform:translate(0)}25%{transform:translate(2px,-2px)}50%{transform:translate(-2px,2px)}75%{transform:translate(2px,2px)}100%{transform:translate(0)}}
-.counter-side{position:absolute;right:10px;font-weight:bold;color:#2563eb;font-size:22px}
 
-/* Progress Bar */
-.progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
-input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
+.progress-wrapper { width: 100%; max-width: 300px; margin: 10px 0; }
+input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 5px; accent-color: #2563eb; }
 
+.counter-side{position:absolute;right:10px;top:0;font-weight:bold;color:#2563eb;font-size:22px}
 #word{font-size:24px;font-weight:800;margin:20px 0;line-height:1.4;min-height:120px;text-align:center;display:flex;align-items:center;justify-content:center;padding:0 10px}
 .txt-es{color:#2563eb} 
 #answer{font-size:20px;font-weight:bold;margin-top:-10px;margin-bottom:20px;text-align:center;min-height:30px;color:#666}
@@ -42,7 +40,8 @@ input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius:
 #list{margin-top:20px;background:#f9f9f9;padding:15px;border-radius:15px;display:none;border:1px solid #ddd}
 
 .check-box-manual {
-    position: absolute; top: 85px; right: 22px; width: 24px; height: 24px;
+    position: absolute; top: 85px; right: 22px;
+    width: 24px; height: 24px;
     background: #fff !important; border: 1.5px solid #22c55e !important;
     border-radius: 6px; display: flex; align-items: center; justify-content: center;
     cursor: pointer; z-index: 10; transition: all 0.2s; font-size: 14px;
@@ -61,19 +60,18 @@ input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius:
   <div class="blocks" id="blocksContainer"></div>
 
   <div class="main-box-container">
-    <div class="main-box">
-      <div class="audio-container">
-        <button class="audio-btn" onclick="playAudio(1.0)">🔊</button>
-        <button class="audio-btn slow" onclick="playAudio(0.75)">🐢</button>
-      </div>
+    <div class="audio-controls">
+      <button class="audio-btn" onclick="playAudio(1.0)">🔊</button>
+      <button class="audio-btn slow" onclick="playAudio(0.75)">🐢</button>
     </div>
+    
+    <div class="progress-wrapper">
+      <input type="range" id="progressBar" value="0" step="0.1">
+    </div>
+
     <div class="counter-side">
       <span id="pos">0</span> / <span id="total">0</span>
     </div>
-  </div>
-
-  <div class="progress-wrapper">
-    <input type="range" id="progressBar" value="0" step="0.1">
   </div>
 
   <div id="word"></div>
@@ -110,7 +108,7 @@ const data = [
   {en: "I felt the weather was perfect, so we sat outside all night.", es: "Sentí que el tiempo era perfecto, así que nos quedamos fuera toda la noche"},
   {en: "You ought to try this wine, it's the best I've had in a long time.", es: "Deberías probar este vino, es lo mejor que he probado en mucho tiempo"},
   {en: "Could you give me some further details about what you did yesterday?", es: "¿Podrías darme más detalles sobre lo que hicisteis ayer?"},
-  {en: "We should be at the restaurant within fifteen minutes if there's no traffic.", es: "Deberíamos estar en el restaurante en quince minutos si no hay tráfico"},
+  {en: "We should be at the restaurant within fifteen minutes if there's no traffic.", es: "Deberías estar en el restaurante en quince minutos si no hay tráfico"},
   {en: "I've just tidied up the living room so everything looks spotless for the guests.", es: "Acabo de ordenar el salón para que todo se vea impecable para los invitados"},
   {en: "They told me they got along with the neighbors right from the start.", es: "Me dijeron que se llevaron bien con los vecinos desde el principio"},
   {en: "By the way, I brought some wine so you wouldn't have to walk back and forth to the store.", es: "Por cierto, traje un poco de vino para que no tuvieras que ir y venir a la tienda"},
@@ -159,22 +157,22 @@ let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockI
 const audioObj = document.getElementById("audio");
 const progressBar = document.getElementById("progressBar");
 
-// Lógica Barra de Progreso
-audioObj.ontimeupdate = () => {
-  if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100;
-};
-progressBar.oninput = () => {
-  if (audioObj.duration) audioObj.currentTime = (progressBar.value / 100) * audioObj.duration;
-};
+function getFolderName() {
+    return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "social_c1";
+}
+
+audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
+progressBar.oninput = () => { if (audioObj.duration) audioObj.currentTime = (progressBar.value / 100) * audioObj.duration; };
 
 function initBlocks() {
   const container = document.getElementById("blocksContainer");
   const numBlocks = Math.ceil(data.length / 10);
+  const savedBlock = localStorage.getItem(getFolderName() + "_currentBlock");
+  
   container.innerHTML = "";
   for (let i = 0; i < numBlocks; i++) {
     const btn = document.createElement("button");
-    btn.className = "block";
-    btn.textContent = i + 1;
+    btn.className = "block"; btn.textContent = i + 1;
     btn.onclick = () => loadBlock(i);
     container.appendChild(btn);
   }
@@ -182,16 +180,20 @@ function initBlocks() {
   btnT.className = "block"; btnT.textContent = "T";
   btnT.onclick = () => loadBlock('T');
   container.appendChild(btnT);
-  loadBlock(0);
+
+  const blockToLoad = (savedBlock !== null) ? (savedBlock === 'T' ? 'T' : parseInt(savedBlock)) : 0;
+  loadBlock(blockToLoad);
 }
 
 function loadBlock(b) {
   currentBlockID = b;
+  localStorage.setItem(getFolderName() + "_currentBlock", b);
   let temp = [];
   if (b === 'T') {
     temp = data.map((item, i) => ({...item, realIdx: i+1}));
   } else {
-    let start = b * 10, end = Math.min(start + 10, data.length);
+    let start = b * 10;
+    let end = Math.min(start + 10, data.length);
     for (let i = start; i < end; i++) temp.push({...data[i], realIdx: i+1});
   }
   currentBlockData = temp.sort(() => Math.random() - 0.5);
@@ -218,18 +220,18 @@ function update(fromNextAction = false) {
   }
   progressBar.value = 0;
   const item = currentBlockData[pos];
-  const translation = `<span class="txt-es">${item.es}</span>`;
-  const w = document.getElementById("word"), a = document.getElementById("answer");
+  const w = document.getElementById("word");
+  const ans = document.getElementById("answer");
 
   if (mode === "EN") {
     w.innerHTML = ``; 
-    a.innerHTML = translation;
+    ans.innerHTML = `<span class="txt-es">${item.es}</span>`;
     if (fromNextAction) playAudio(1.0);
   } else {
-    w.innerHTML = `<div style='font-size:22px;'>${translation}</div>`;
-    a.innerHTML = `<span style="font-size:24px;">${item.en}</span>`;
+    w.innerHTML = `<div style='font-size:22px;' class="txt-es">${item.es}</div>`;
+    ans.innerHTML = `<span style="font-size:24px;">${item.en}</span>`;
   }
-  a.style.display = "none";
+  ans.style.display = "none";
   document.getElementById("pos").textContent = learnedCount;
   document.getElementById("total").textContent = currentBlockData.length + learnedCount;
 }
@@ -260,11 +262,8 @@ function next() {
 function playAudio(speed) {
   if (currentBlockData.length === 0) return;
   const num = currentBlockData[pos].realIdx;
-  const newSrc = "frase" + num + ".mp3";
-  if (!audioObj.src.includes(newSrc)) {
-    audioObj.src = newSrc;
-    progressBar.value = 0;
-  }
+  const fileName = "frase" + num + ".mp3";
+  if (!audioObj.src.includes(fileName)) { audioObj.src = fileName; progressBar.value = 0; }
   audioObj.playbackRate = speed;
   const btn = document.querySelector('.audio-btn');
   btn.classList.remove('vibrate'); void btn.offsetWidth; btn.classList.add('vibrate');
@@ -275,21 +274,22 @@ function toggleList() {
   const l = document.getElementById("list");
   if (l.style.display === "block") { l.style.display = "none"; return; }
   l.innerHTML = "<b>Llista del bloc:</b><br><br>";
-  let start = currentBlockID === 'T' ? 0 : currentBlockID * 10, end = currentBlockID === 'T' ? data.length : Math.min(start + 10, data.length);
+  let start = currentBlockID === 'T' ? 0 : currentBlockID * 10;
+  let end = currentBlockID === 'T' ? data.length : Math.min(start + 10, data.length);
   data.slice(start, end).forEach((item) => {
     l.innerHTML += `<div style="margin-bottom:8px"><b>${item.en}</b> - <span class="txt-es">${item.es}</span></div>`;
   });
   l.style.display = "block";
 }
 
-function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "unknown"; }
 function markAsDone(element) {
     localStorage.setItem(getFolderName(), new Date().toISOString());
     element.innerHTML = "✓"; element.classList.add('marked');
     alert("Lliçó marcada ✅");
 }
 
-const card = document.querySelector(".card"), box = document.createElement("div");
+const card = document.querySelector(".card");
+const box = document.createElement("div");
 box.className = "check-box-manual";
 if (localStorage.getItem(getFolderName())) { box.innerHTML = "✓"; box.classList.add('marked'); }
 box.onclick = function() { markAsDone(this); };

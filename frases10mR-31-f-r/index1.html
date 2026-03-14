@@ -17,10 +17,20 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .block.active{background:#ffcc00;transform:scale(1.1);box-shadow:inset 0 0 5px rgba(0,0,0,0.2)}
 .main-box-container{display:flex;align-items:center;justify-content:center;position:relative;margin:20px 0}
 .main-box{text-align:center;display:flex;flex-direction:column;justify-content:center;align-items:center}
-.audio-btn{font-size:60px;background:#dcfce7;border:none;cursor:pointer;width:140px;height:140px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
+
+/* Audio Buttons */
+.audio-container { display: flex; justify-content: center; gap: 15px; align-items: center; margin-bottom: 10px; }
+.audio-btn{font-size:50px;background:#dcfce7;border:none;cursor:pointer;width:120px;height:120px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
+.audio-btn.slow{background:#fef08a; width:90px; height:90px; font-size:35px;}
 .audio-btn.vibrate{animation:vibrate 0.25s linear 2}
+
 @keyframes vibrate{0%{transform:translate(0)}25%{transform:translate(2px,-2px)}50%{transform:translate(-2px,2px)}75%{transform:translate(2px,2px)}100%{transform:translate(0)}}
 .counter-side{position:absolute;right:10px;font-weight:bold;color:#2563eb;font-size:22px}
+
+/* Progress Bar */
+.progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
+input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
+
 #word{font-size:24px;font-weight:800;margin:20px 0;line-height:1.4;min-height:120px;text-align:center;display:flex;align-items:center;justify-content:center;padding:0 10px}
 .txt-es{color:#2563eb} 
 #answer{font-size:20px;font-weight:bold;margin-top:-10px;margin-bottom:20px;text-align:center;min-height:30px;color:#666}
@@ -30,6 +40,14 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .btn-know{background:#dcfce7}
 .btn-next{background:#fbcfe8}
 #list{margin-top:20px;background:#f9f9f9;padding:15px;border-radius:15px;display:none;border:1px solid #ddd}
+
+.check-box-manual {
+    position: absolute; top: 85px; right: 22px; width: 24px; height: 24px;
+    background: #fff !important; border: 1.5px solid #22c55e !important;
+    border-radius: 6px; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; z-index: 10; transition: all 0.2s; font-size: 14px;
+}
+.check-box-manual.marked { background: #22c55e !important; color: white; }
 </style>
 </head>
 <body>
@@ -44,11 +62,18 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 
   <div class="main-box-container">
     <div class="main-box">
-      <button class="audio-btn" onclick="playAudio()">🔊</button>
+      <div class="audio-container">
+        <button class="audio-btn" onclick="playAudio(1.0)">🔊</button>
+        <button class="audio-btn slow" onclick="playAudio(0.75)">🐢</button>
+      </div>
     </div>
     <div class="counter-side">
       <span id="pos">0</span> / <span id="total">0</span>
     </div>
+  </div>
+
+  <div class="progress-wrapper">
+    <input type="range" id="progressBar" value="0" step="0.1">
   </div>
 
   <div id="word"></div>
@@ -68,7 +93,6 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 
 <script>
 const data = [
-  // --- FRASES 1-40 (Tus frases originales) ---
   {en: "I did it this way so she wouldn't have to walk back and forth all the time.", es: "Lo hice así para que ella no tuviera que ir y venir caminando todo el tiempo"},
   {en: "You ought to try and embrace new challenges if you want to improve your fluency.", es: "Deberías intentar aceptar nuevos retos si quieres mejorar tu fluidez"},
   {en: "The weather has been perfect so far, knock on wood it stays like this.", es: "El tiempo ha sido perfecto hasta ahora, toquemos madera para que siga así"},
@@ -109,8 +133,6 @@ const data = [
   {en: "If you ask me, you ought to embrace new challenges to improve your fluency.", es: "Si me preguntas a mí, deberías aceptar nuevos retos para mejorar tu fluidez"},
   {en: "By the way, did you bring the dessert we bought at that spotless bakery?", es: "Por cierto, ¿trajiste el postre que compramos en esa pastelería tan limpia?"},
   {en: "Truth be told, I'm glad you didn't have to walk back and forth so much.", es: "A decir verdad, me alegra que no tuvieras que caminar tanto de un lado a otro"},
-
-  // --- FRASES 41-60 (Nuevas expresiones naturales) ---
   {en: "It's been ages since we last caught up, we have so much to talk about!", es: "Hace siglos que no nos ponemos al día, ¡tenemos tanto de qué hablar!"},
   {en: "I'm a bit tied up at the moment, but I'll call you back as soon as I'm free.", es: "Estoy un poco liada en este momento, pero te devuelvo la llamada en cuanto esté libre"},
   {en: "To be fair, he's been under a lot of pressure lately so he's a bit stressed.", es: "Para ser justos, él ha estado bajo mucha presión últimamente, así que está un poco estresado"},
@@ -133,11 +155,17 @@ const data = [
   {en: "I'll get round to fixing that leaky faucet as soon as I have a spare moment.", es: "Sacaré tiempo para arreglar ese grifo que gotea en cuanto tenga un momento libre"}
 ];
 
-let currentBlockData = [];
-let pos = 0;
-let mode = "EN";
-let learnedCount = 0;
-let currentBlockID = 0;
+let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0;
+const audioObj = document.getElementById("audio");
+const progressBar = document.getElementById("progressBar");
+
+// Lógica Barra de Progreso
+audioObj.ontimeupdate = () => {
+  if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100;
+};
+progressBar.oninput = () => {
+  if (audioObj.duration) audioObj.currentTime = (progressBar.value / 100) * audioObj.duration;
+};
 
 function initBlocks() {
   const container = document.getElementById("blocksContainer");
@@ -163,18 +191,13 @@ function loadBlock(b) {
   if (b === 'T') {
     temp = data.map((item, i) => ({...item, realIdx: i+1}));
   } else {
-    let start = b * 10;
-    let end = Math.min(start + 10, data.length);
-    for (let i = start; i < end; i++) {
-      temp.push({...data[i], realIdx: i+1});
-    }
+    let start = b * 10, end = Math.min(start + 10, data.length);
+    for (let i = start; i < end; i++) temp.push({...data[i], realIdx: i+1});
   }
   currentBlockData = temp.sort(() => Math.random() - 0.5);
-  
   document.querySelectorAll(".block").forEach((btn) => {
     btn.classList.toggle("active", (b === 'T' && btn.textContent === 'T') || (parseInt(btn.textContent)-1 === b));
   });
-
   pos = 0; learnedCount = 0;
   document.getElementById("list").style.display = "none";
   update(true); 
@@ -193,21 +216,19 @@ function update(fromNextAction = false) {
     document.getElementById("answer").innerHTML = "";
     return;
   }
+  progressBar.value = 0;
   const item = currentBlockData[pos];
   const translation = `<span class="txt-es">${item.es}</span>`;
-  
-  const w = document.getElementById("word");
-  const a = document.getElementById("answer");
+  const w = document.getElementById("word"), a = document.getElementById("answer");
 
   if (mode === "EN") {
     w.innerHTML = ``; 
     a.innerHTML = translation;
-    if (fromNextAction) playAudio();
+    if (fromNextAction) playAudio(1.0);
   } else {
     w.innerHTML = `<div style='font-size:22px;'>${translation}</div>`;
     a.innerHTML = `<span style="font-size:24px;">${item.en}</span>`;
   }
-  
   a.style.display = "none";
   document.getElementById("pos").textContent = learnedCount;
   document.getElementById("total").textContent = currentBlockData.length + learnedCount;
@@ -216,11 +237,9 @@ function update(fromNextAction = false) {
 function reveal() {
   if (currentBlockData.length > 0) {
     const item = currentBlockData[pos];
-    if (mode === "EN") {
-        document.getElementById("word").innerHTML = `<span style="color:#333;">${item.en}</span>`;
-    }
+    if (mode === "EN") document.getElementById("word").innerHTML = `<span style="color:#333;">${item.en}</span>`;
     document.getElementById("answer").style.display = "block";
-    if (mode === "ES") playAudio(); 
+    if (mode === "ES") playAudio(1.0); 
   }
 }
 
@@ -238,80 +257,45 @@ function next() {
   update(true);
 }
 
-function playAudio() {
+function playAudio(speed) {
   if (currentBlockData.length === 0) return;
   const num = currentBlockData[pos].realIdx;
-  const a = document.getElementById("audio");
-  a.src = "frase" + num + ".mp3";
-  const btn=document.querySelector('.audio-btn');
+  const newSrc = "frase" + num + ".mp3";
+  if (!audioObj.src.includes(newSrc)) {
+    audioObj.src = newSrc;
+    progressBar.value = 0;
+  }
+  audioObj.playbackRate = speed;
+  const btn = document.querySelector('.audio-btn');
   btn.classList.remove('vibrate'); void btn.offsetWidth; btn.classList.add('vibrate');
-  a.play().catch(() => {});
+  audioObj.play().catch(() => {});
 }
 
 function toggleList() {
   const l = document.getElementById("list");
   if (l.style.display === "block") { l.style.display = "none"; return; }
   l.innerHTML = "<b>Llista del bloc:</b><br><br>";
-  let start = currentBlockID === 'T' ? 0 : currentBlockID * 10;
-  let end = currentBlockID === 'T' ? data.length : Math.min(start + 10, data.length);
-  let originalBlock = data.slice(start, end);
-  originalBlock.forEach((item) => {
+  let start = currentBlockID === 'T' ? 0 : currentBlockID * 10, end = currentBlockID === 'T' ? data.length : Math.min(start + 10, data.length);
+  data.slice(start, end).forEach((item) => {
     l.innerHTML += `<div style="margin-bottom:8px"><b>${item.en}</b> - <span class="txt-es">${item.es}</span></div>`;
   });
   l.style.display = "block";
 }
 
-initBlocks();
-
-const style = document.createElement('style');
-style.innerHTML = `
-    .check-box-manual {
-        position: absolute;
-        top: 85px; 
-        right: 22px;
-        width: 24px;
-        height: 24px;
-        background: #fff !important;
-        border: 1.5px solid #22c55e !important;
-        border-radius: 6px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        z-index: 10;
-        transition: all 0.2s;
-        font-size: 14px;
-    }
-    .check-box-manual.marked { 
-        background: #22c55e !important; 
-        color: white; 
-    }
-`;
-document.head.appendChild(style);
-
-function getFolderName() {
-    const path = window.location.pathname;
-    return path.split('/').filter(Boolean).slice(-2, -1)[0] || "unknown";
-}
-
+function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "unknown"; }
 function markAsDone(element) {
     localStorage.setItem(getFolderName(), new Date().toISOString());
-    element.innerHTML = "✓";
-    element.classList.add('marked');
+    element.innerHTML = "✓"; element.classList.add('marked');
     alert("Lliçó marcada ✅");
 }
 
-const card = document.querySelector(".card");
-const box = document.createElement("div");
+const card = document.querySelector(".card"), box = document.createElement("div");
 box.className = "check-box-manual";
-
-if (localStorage.getItem(getFolderName())) {
-    box.innerHTML = "✓";
-    box.classList.add('marked');
-}
-
+if (localStorage.getItem(getFolderName())) { box.innerHTML = "✓"; box.classList.add('marked'); }
 box.onclick = function() { markAsDone(this); };
 card.appendChild(box);
+
+initBlocks();
 </script>
 </body>
 </html>
