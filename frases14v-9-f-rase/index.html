@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Estudi FRASES · 76 Frases</title>
+<title>Noves Frases d'Estudi (2nd & 3rd Conditional)</title>
 <style>
 body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
 header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center}
@@ -14,39 +14,35 @@ main{display:flex;justify-content:center;padding:24px}
 .card{position:relative;width:100%;max-width:560px;background:#ffffff;border-radius:28px;padding:32px;box-shadow:0 10px 24px rgba(0,0,0,0.06);text-align:center}
 .counter{position:absolute;top:18px;left:22px;font-weight:800;color:#2563eb}
 .lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
-
 .blocks{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:15px 0 20px}
 .block{width:32px;height:32px;border-radius:50%;border:none;background:#f1f5f9;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.2s}
 .block.active{background:#2563eb !important;color:#fff !important}
-
 .audio-container { display: flex; justify-content: center; gap: 15px; margin: 10px 0 10px; align-items: center; }
 .audio-btn{width:75px;height:75px;border-radius:50%;border:none;background:#dbeafe;font-size:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
 .audio-btn.slow{background:#fef08a; font-size:22px;}
 .star-btn { background: none; border: none; font-size: 32px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 10px; }
 .star-btn.active { color: #f59e0b; }
-
 .progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
 input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
-
 .hidden{display:none}
 .es{font-size:19px;color:#2563eb;margin-top:14px;line-height:1.4}
 .en{font-size:19px;color:#0f172a;margin-top:14px;font-weight:700;line-height:1.4}
-
 .buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:22px}
 button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;cursor:pointer}
 .reveal{background:#e0f2fe}
 .know{background:#dcfce7}
 .next{background:#fbcfe8}
-
 .list-controls { display: flex; gap: 10px; margin-top: 16px; }
 .list-btn{ flex:1; background:#e9d5ff; border:none; border-radius:16px; padding:14px; font-weight:800; cursor:pointer }
 .review-btn { background: #fef3c7; color: #92400e; }
 .list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
-
 .check-box-manual {
-    position: absolute; top: 18px; right: 22px; width: 24px; height: 24px;
-    background: #fff; border: 1.5px solid #22c55e; border-radius: 6px;
-    display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 14px;
+    position: absolute; top: 18px; right: 22px;
+    width: 24px; height: 24px;
+    background: #fff; border: 1.5px solid #22c55e;
+    border-radius: 6px; display: flex;
+    align-items: center; justify-content: center;
+    cursor: pointer; z-index: 10; font-size: 14px;
 }
 .check-box-manual.marked { background: #22c55e !important; color: white !important; }
 </style>
@@ -65,28 +61,22 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
  <div class="counter" id="counter">0 / 0</div>
  <div class="check-box-manual" id="mainCheck" onclick="markAsDone(this)"></div>
  <div id="langLabel" class="lang">ANGLÈS</div>
-
  <div id="blockContainer" class="blocks"></div>
-
  <div class="audio-container">
   <button class="star-btn" id="starBtn" onclick="toggleStar()">★</button>
   <button class="audio-btn" onclick="play(1.0)">🔊</button>
   <button class="audio-btn slow" onclick="play(0.75)">🐢</button>
  </div>
-
  <div class="progress-wrapper">
   <input type="range" id="progressBar" value="0" step="0.1">
  </div>
-
  <div id="es" class="es hidden"></div>
  <div id="en" class="en hidden"></div>
-
  <div class="buttons">
   <button class="action reveal" onclick="reveal()">Veure</button>
   <button class="action know" onclick="know()">Ja la sé</button>
   <button class="action next" onclick="nextOne()">Següent</button>
  </div>
-
  <div class="list-controls">
     <button class="list-btn" onclick="toggleList('all')">Tota la llista</button>
     <button class="list-btn review-btn" onclick="toggleList('stars')">Repàs (★)</button>
@@ -94,87 +84,110 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
  <div id="endMsg" class="end hidden" style="margin-top:16px; font-weight:800; color:#16a34a;">✔ Bloc completat!</div>
 </div>
 </main>
-
 <div id="listBox" class="list-box hidden"></div>
 
 <script>
 const items = [
-    {audio:"f001.mp3",en:"I was going to call you, but I <b>ended up</b> sending you a message because I didn't want to wake you up.",es:"T'anava a trucar, però al final <b>vaig acabar</b> enviant-te un missatge perquè no volia despertar-te."},
-    {audio:"f002.mp3",en:"The meeting was very long, so <b>halfway through</b> I decided to go out for a coffee <b>to wake up a bit</b>.",es:"La reunió va ser molt llarga, així que <b>a la meitat</b> vaig decidir sortir a prendre un cafè <b>per despertar-me una mica</b>."},
-    {audio:"f003.mp3",en:"If I <b>had known</b> you were in the neighborhood, I <b>would have</b> invited you to dinner at home.",es:"Si <b>hagués sabut</b> que eres pel barri, t'<b>hauria</b> convidat a sopar a casa."},
-    {audio:"f004.mp3",en:"The train <b>was about to leave</b> when I realized I <b>had forgotten</b> my bag on the platform.",es:"El tren <b>estava a punt de sortir</b> quan em vaig adonar que <b>m'havia deixat</b> la bossa a l'andana."},
-    {audio:"f005.mp3",en:"My boss told me that <b>unless</b> I finish the project today, I <b>won't be able to</b> go on vacation next week.",es:"El meu cap em va dir que <b>a menys que</b> acabi el projecte avui, <b>no podré</b> anar-me'n de vacances la setmana que ve."},
-    {audio:"f006.mp3",en:"We <b>used to go</b> to the mountains every summer, but now we <b>prefer</b> to stay in the city and relax.",es:"<b>Solíem anar</b> a la muntanya cada estiu, però ara <b>preferim</b> quedar-nos a la ciutat i descansar."},
-    {audio:"f007.mp3",en:"It's <b>the first time</b> I've seen such a beautiful sunset <b>since</b> I moved to this city.",es:"És <b>la primera vegada</b> que veig una posta de sol tan bonica <b>des que</b> em vaig mudar a aquesta ciutat."},
-    {audio:"f008.mp3",en:"I'm <b>not used to</b> waking up so early, so I'm <b>a bit sleepy</b> during the first few hours of work.",es:"<b>No estic acostumat a</b> despertar-me tan d'hora, així que estic <b>una mica adormit</b> durant les primeres hores de feina."},
-    {audio:"f009.mp3",en:"The doctor told me I should <b>take it easy</b> and <b>avoid</b> stressful situations for a while.",es:"El metge em va dir que m'ho hauria de <b>prendre amb calma</b> i <b>evitar</b> situacions d'estrès durant un temps."},
-    {audio:"f010.mp3",en:"<b>As soon as</b> I get home, I'm going to take off my shoes and <b>lie down</b> on the sofa to watch a movie.",es:"<b>Tan bon punt</b> arribi a casa, em trauré les sabates i em <b>peratallaré</b> al sofà per veure una pel·lícula."},
-    {audio:"f011.mp3",en:"I was <b>surprised to hear</b> that they had decided to move to another country <b>without</b> telling anyone.",es:"Em va <b>sorprendre sentir</b> que havien decidit mudar-se a un altre país <b>sense</b> dir-ho a ningú."},
-    {audio:"f012.mp3",en:"The concert was <b>so loud</b> that I could hardly hear what my friends were <b>saying</b> to me.",es:"El concert <b>estava tan fort</b> que gairebé no podia sentir el que els meus amics em <b>deien</b>."},
-    {audio:"f013.mp3",en:"I've been <b>trying to reach</b> you all morning, but your phone <b>must have been</b> turned off.",es:"He estat <b>intentant localitzar-te</b> tot el matí, però el teu telèfon <b>devia estar</b> apagat."},
-    {audio:"f014.mp3",en:"It <b>doesn't matter</b> if you don't have enough money now; you can <b>pay me back</b> whenever you can.",es:"<b>No importa</b> si ara no tens prou diners; ja <b>m'ho tornaràs</b> quan puguis."},
-    {audio:"f015.mp3",en:"The <b>best thing about</b> living here is that everything is <b>within walking distance</b>.",es:"El <b>millor de</b> viure aquí és que tot està <b>a prop caminant</b>."},
-    {audio:"f016.mp3",en:"I'm <b>looking forward to</b> the weekend because I really need to <b>disconnect from</b> work.",es:"Tinc <b>moltes ganes que</b> arribi el cap de setmana perquè realment necessito <b>desconnectar de</b> la feina."},
-    {audio:"f017.mp3",en:"I <b>accidentally</b> deleted the file I had been working on <b>all afternoon</b>.",es:"Vaig esborrar <b>sense voler</b> l'arxiu en el qual havia estat treballant <b>tota la tarda</b>."},
-    {audio:"f018.mp3",en:"Could you <b>keep an eye on</b> my suitcase for a moment while I go to the <b>restroom</b>?",es:"Podries <b>fer un cop d'ull a</b> la meva maleta un moment mentre vaig al <b>lavabo</b>?"},
-    {audio:"f019.mp3",en:"He <b>pretended not to</b> see me when he passed by, but I'm sure he <b>did</b>.",es:"Va <b>fer veure que no</b> em veia quan va passar pel costat, però estic segur que <b>sí</b>."},
-    {audio:"f020.mp3",en:"The cake <b>turned out to be</b> much better than I expected, <b>considering</b> it was my first time making it.",es:"El pastís <b>va resultar estar</b> molt millor del que esperava, <b>tenint en compte</b> que era la primera vegada que el feia."},
-    {audio:"f021.mp3",en:"I'm <b>thinking of</b> buying a new laptop because the one I have is <b>starting to</b> be very slow.",es:"Estic <b>pensant en</b> comprar-me un portàtil nou perquè el que tinc <b>comença a</b> anar molt lent."},
-    {audio:"f022.mp3",en:"It's <b>worth visiting</b> the museum on Sundays because <b>the entrance</b> is free for everyone.",es:"<b>Val la pena visitar</b> el museu els diumenges perquè <b>l'entrada</b> és gratuïta per a tothom."},
-    {audio:"f023.mp3",en:"I <b>hardly ever</b> go to the cinema anymore because it's <b>become</b> quite expensive lately.",es:"<b>Gairebé mai</b> ja no vaig al cinema perquè s'ha <b>tornat</b> força car últimament."},
-    {audio:"f024.mp3",en:"I <b>ran into</b> an old friend from high school while I was <b>doing the shopping</b>.",es:"Em vaig <b>trobar de casualitat</b> amb un antic amic de l'institut mentre <b>anava a comprar</b>."},
-    {audio:"f025.mp3",en:"The movie was <b>so boring</b> that I <b>fell asleep</b> before the end.",es:"La pel·lícula era <b>tan avorrida</b> que em vaig <b>quedar adormit</b> abans del final."},
-    {audio:"f026.mp3",en:"I <b>should have</b> listened to your advice <b>instead of</b> doing what I wanted.",es:"T'<b>hauria d'haver</b> fet cas <b>en lloc de</b> fer el que jo volia."},
-    {audio:"f027.mp3",en:"It's <b>likely to</b> rain this afternoon, so you'd <b>better</b> take an umbrella with you.",es:"És <b>probable que</b> plogui aquesta tarda, així que <b>més val que</b> agafis un paraigua."},
-    {audio:"f028.mp3",en:"I <b>can't stand</b> it when people talk loudly on their phones <b>on the train</b>.",es:"<b>No suporto</b> quan la gent parla fort pel mòbil <b>al tren</b>."},
-    {audio:"f029.mp3",en:"We <b>had trouble</b> finding the house because the GPS <b>wasn't working</b> properly.",es:"Ens va <b>costar</b> trobar la casa perquè el GPS <b>no funcionava</b> bé."},
-    {audio:"f030.mp3",en:"I'll <b>let you know</b> as soon as I <b>have</b> any news about the project.",es:"<b>T'ho faré saber</b> tan bon punt <b>tingui</b> alguna notícia sobre el projecte."},
-    {audio:"f031.mp3",en:"I'm <b>not in the mood</b> to go out tonight; I'd <b>rather</b> stay home and read.",es:"<b>No estic d'humor per</b> sortir aquesta nit; <b>prefereixo</b> quedar-me a casa i llegir."},
-    {audio:"f032.mp3",en:"The <b>more</b> I study English, the <b>more</b> I realize how much I still have to learn.",es:"<b>Com més</b> estudio anglès, <b>més</b> m'adono de tot el que em queda per aprendre."},
-    {audio:"f033.mp3",en:"I <b>haven't been able to</b> sleep well lately <b>due to</b> the noise from the street.",es:"<b>No he pogut</b> dormir bé últimament <b>a causa del</b> soroll del carrer."},
-    {audio:"f034.mp3",en:"It's <b>none of your business</b> what I do with my free time, <b>is it</b>?",es:"<b>No és assumpte teu</b> el que faig amb el meu temps lliure, <b>oi</b>?"},
-    {audio:"f035.mp3",en:"I <b>used to be</b> very shy, but <b>over time</b> I've become more confident.",es:"<b>Solia ser</b> molt tímid, però <b>amb el temps</b> m'he tornat més segur de mi mateix."},
-    {audio:"f036.mp3",en:"The <b>reason why</b> I'm late is that my car <b>broke down</b> on the way here.",es:"El <b>motiu pel qual</b> arribo tard és que el cotxe se m'ha <b>espatllat</b> venint cap aquí."},
-    {audio:"f037.mp3",en:"I'll <b>make sure</b> that everything is ready <b>by the time</b> you get back.",es:"M'<b>asseguraré</b> que tot estigui llest <b>quan</b> tornis."},
-    {audio:"f038.mp3",en:"I <b>don't feel like</b> cooking tonight, so let's <b>order</b> some pizza.",es:"<b>No em ve de gust</b> cuinar aquesta nit, així que <b>demanem</b> una pizza."},
-    {audio:"f039.mp3",en:"It's <b>not as easy as</b> it looks; you have to <b>practice</b> a lot to get it right.",es:"<b>No és tan fàcil com</b> sembla; has de <b>practicar</b> molt per fer-ho bé."},
-    {audio:"f040.mp3",en:"I'm <b>exhausted</b> after working <b>ten hours straight</b> without a break.",es:"Estic <b>esgotat</b> després de treballar <b>deu hores seguides</b> sense descans."},
-    {audio:"f041.mp3",en:"I <b>can't believe</b> it's already been a year since we <b>last</b> saw each other.",es:"<b>No em puc creure</b> que ja hagi passat un any des de l'<b>última vegada</b> que ens vam veure."},
-    {audio:"f042.mp3",en:"It <b>turned out</b> that the keys were <b>in my pocket</b> the whole time.",es:"<b>Va resultar</b> que les claus eren <b>a la meva butxaca</b> tot el temps."},
-    {audio:"f043.mp3",en:"I'm <b>sorry for</b> the inconvenience, but we <b>have to</b> postpone the meeting.",es:"<b>Sento</b> les molèsties, però <b>hem de</b> posposar la reunió."},
-    {audio:"f044.mp3",en:"He's <b>the kind of person</b> who always <b>tells the truth</b>, even if it's difficult.",es:"És <b>el tipus de persona</b> que sempre <b>diu la veritat</b>, encara que sigui difícil."},
-    {audio:"f045.mp3",en:"I <b>would rather</b> you didn't tell anyone what I've <b>just</b> told you.",es:"<b>Preferiria</b> que no diguessis a ningú el que <b>t'acabo</b> de dir."},
-    {audio:"f046.mp3",en:"It's <b>getting dark</b>, so we'd <b>better</b> start heading back home.",es:"S'està <b>fent fosc</b>, així que <b>més val que</b> comencem a tornar cap a casa."},
-    {audio:"f047.mp3",en:"I <b>wonder if</b> they'll ever <b>find out</b> the truth about what happened.",es:"<b>Em pregunto si</b> algun dia <b>esbrinaran</b> la veritat sobre el que va passar."},
-    {audio:"f048.mp3",en:"I <b>don't mind</b> waiting for a few minutes <b>as long as</b> I'm not in a hurry.",es:"<b>No m'importa</b> esperar uns minuts <b>mentre</b> no tingui pressa."},
-    {audio:"f049.mp3",en:"He <b>always complains about</b> his job, but he <b>never</b> does anything to change it.",es:"<b>Sempre es queixa de</b> la seva feina, però <b>mai</b> fa res per canviar-la."},
-    {audio:"f050.mp3",en:"The <b>best way to</b> learn a language is <b>by speaking</b> it every day.",es:"La <b>millor manera de</b> aprendre un idioma és <b>parlant-lo</b> cada dia."},
-    {audio:"f051.mp3",en:"I <b>was about to</b> leave when the phone <b>rang</b>.",es:"<b>Estava a punt de</b> marxar quan el telèfon <b>va sonar</b>."},
-    {audio:"f052.mp3",en:"I <b>forgot to</b> buy milk, so I'll <b>have to</b> go back to the store.",es:"Vaig <b>oblidar</b> comprar llet, així que <b>hauré de</b> tornar a la botiga."},
-    {audio:"f053.mp3",en:"It's <b>too late to</b> change your mind now; the tickets <b>are already</b> bought.",es:"És <b>massa tard per</b> canviar d'opinió ara; els bitllets <b>ja estan</b> comprats."},
-    {audio:"f054.mp3",en:"I <b>wish I had</b> more time to <b>spend with</b> my family.",es:"<b>M'agradaria tenir</b> més temps per <b>passar amb</b> la meva família."},
-    {audio:"f055.mp3",en:"She's <b>been working</b> for that company <b>for</b> over ten years.",es:"Fa <b>més de deu anys que treballa</b> per a aquella empresa."},
-    {audio:"f056.mp3",en:"I'm <b>not sure if</b> I'll <b>be able to</b> come to the party on Saturday.",es:"<b>No estic segur de si</b> podré <b>venir</b> a la festa dissabte."},
-    {audio:"f057.mp3",en:"It <b>seems like</b> it's going to be a <b>beautiful day</b> today.",es:"<b>Sembla que</b> avui farà un <b>dia bonic</b>."},
-    {audio:"f058.mp3",en:"I <b>can't afford</b> to buy a new car <b>at the moment</b>.",es:"<b>No em puc permetre</b> comprar un cotxe nou <b>en aquest moment</b>."},
-    {audio:"f059.mp3",en:"We <b>should have</b> left earlier <b>to avoid</b> the traffic.",es:"Hauríem d'haver <b>marxat abans</b> per <b>evitar</b> el trànsit."},
-    {audio:"f060.mp3",en:"I'm <b>tired of</b> listening to the same songs <b>all the time</b>.",es:"Estic <b>cansat d'</b>escoltar les mateixes cançons <b>tot el temps</b>."},
-    {audio:"f061.mp3",en:"It's <b>important to</b> sleep at least seven hours <b>every night</b>.",es:"És <b>important</b> dormir almenys set hores <b>cada nit</b>."},
-    {audio:"f062.mp3",en:"I <b>don't know</b> how to <b>thank you for</b> everything you've done.",es:"<b>No sé</b> com <b>agrair-te</b> tot el que has fet."},
-    {audio:"f063.mp3",en:"He's <b>the most</b> intelligent person <b>I've ever</b> met.",es:"És la persona <b>més</b> intel·ligent que he <b>conegut mai</b>."},
-    {audio:"f064.mp3",en:"I'm <b>thinking about</b> taking a <b>cooking class</b> next month.",es:"Estic <b>pensant a</b> fer un <b>curs de cuina</b> el mes que ve."},
-    {audio:"f065.mp3",en:"It's <b>hard to</b> believe that <b>summer is already</b> over.",es:"És <b>difícil de</b> creure que l'<b>estiu ja s'hagi</b> acabat."},
-    {audio:"f066.mp3",en:"I'm <b>really looking forward to</b> our <b>next vacation</b>.",es:"Tinc <b>moltes ganes de</b> les nostres <b>properes vacances</b>."},
-    {audio:"f067.mp3",en:"I've <b>been living in</b> this city <b>since</b> I was a child.",es:"<b>Visc en</b> aquesta ciutat <b>des que</b> era petit."},
-    {audio:"f068.mp3",en:"I <b>hope you have</b> a wonderful time <b>at the concert</b>.",es:"<b>Espero que t'ho passis</b> d'allò més bé <b>al concert</b>."},
-    {audio:"f069.mp3",en:"It's <b>never too late</b> to learn something <b>new</b>.",es:"<b>Mai és massa tard</b> per aprendre alguna cosa <b>nova</b>."},
-    {audio:"f070.mp3",en:"I'm <b>going to</b> the supermarket; <b>do you need</b> anything?",es:"<b>Me'n vaig</b> al supermercat; <b>necessites</b> res?"},
-    {audio:"f071.mp3",en:"The movie was <b>even better</b> than the <b>book</b>.",es:"La pel·lícula va ser <b>encara millor</b> que el <b>llibre</b>."},
-    {audio:"f072.mp3",en:"I'll <b>call you</b> as soon as I <b>get there</b>.",es:"Et <b>trucaré</b> tan bon punt <b>arribi</b>."},
-    {audio:"f073.mp3",en:"It <b>doesn't matter</b> what <b>other people</b> think.",es:"<b>No importa</b> el que pensin els <b>altres</b>."},
-    {audio:"f074.mp3",en:"I <b>can't wait to</b> see your <b>new house</b>.",es:"<b>Tinc moltes ganes de</b> veure la teva <b>casa nova</b>."},
-    {audio:"f075.mp3",en:"You <b>should try to</b> get some <b>rest</b> this weekend.",es:"<b>Hauries d'intentar</b> <b>descansar</b> una mica aquest cap de setmana."},
-    {audio:"f076.mp3",en:"I <b>didn't mean to</b> hurt your <b>feelings</b>.",es:"<b>No volia</b> ferir els teus <b>sentiments</b>."}
+    {audio:"f001.mp3",en:"If I had more money, <b>I'd buy</b> a new laptop.",es:"Si tingués més diners, <b>compraria</b> un portàtil nou."},
+    {audio:"f002.mp3",en:"If she lived in London, <b>she'd speak</b> English every day.",es:"Si ella visqués a Londres, <b>parlaria</b> anglès cada dia."},
+    {audio:"f003.mp3",en:"We <b>would go</b> to the beach if it weren't so cold.",es:"<b>Aniríem</b> a la platja si no fes tant de fred."},
+    {audio:"f004.mp3",en:"If I were you, <b>I'd accept</b> the job offer.",es:"Si fos tu, <b>acceptaria</b> l'oferta de feina."},
+    {audio:"f005.mp3",en:"They <b>would travel</b> more if they had more holidays.",es:"<b>Viatjarien</b> més si tinguessin més vacances."},
+    {audio:"f006.mp3",en:"If he exercised more, <b>he'd feel</b> much better.",es:"Si ell fes més exercici, <b>se sentiria</b> molt millor."},
+    {audio:"f007.mp3",en:"<b>I'd help</b> you if I had enough time.",es:"<b>T'ajudaria</b> si tingués prou temps."},
+    {audio:"f008.mp3",en:"If we lived in the countryside, <b>we'd have</b> a dog.",es:"Si visquéssim al camp, <b>tindríem</b> un gos."},
+    {audio:"f009.mp3",en:"She <b>would be</b> happier if she didn't work so much.",es:"Ella <b>seria</b> més feliç si no treballés tant."},
+    {audio:"f010.mp3",en:"If I won the lottery, <b>I'd travel</b> around the world.",es:"Si guanyés la loteria, <b>viatjaria</b> per tot el món."},
+    {audio:"f011.mp3",en:"We <b>would save</b> money if we cooked at home.",es:"<b>Estalviaríem</b> diners si cuinéssim a casa."},
+    {audio:"f012.mp3",en:"If you practiced every day, <b>you'd improve</b> quickly.",es:"Si practiquessis cada dia, <b>milloraries</b> ràpid."},
+    {audio:"f013.mp3",en:"<b>I'd call</b> him if I had his phone number.",es:"<b>El trucaria</b> si tingués el seu número de telèfon."},
+    {audio:"f014.mp3",en:"If it rained, <b>we'd stay</b> at home.",es:"Si plogués, <b>ens quedaríem</b> a casa."},
+    {audio:"f015.mp3",en:"He <b>would buy</b> a car if he passed his driving test.",es:"Ell <b>compraria</b> un cotxe si aprovés l'examen de conduir."},
+    {audio:"f016.mp3",en:"If I knew the answer, <b>I'd tell</b> you.",es:"Si sabés la resposta, <b>te la diria</b>."},
+    {audio:"f017.mp3",en:"They <b>would stay</b> at a hotel if they had more budget.",es:"<b>Es quedarien</b> en un hotel si tinguessin més pressupost."},
+    {audio:"f018.mp3",en:"If she grew her own vegetables, <b>they'd be</b> organic.",es:"Si ella conreés les seves pròpies verdures, <b>serien</b> orgàniques."},
+    {audio:"f019.mp3",en:"<b>I'd go</b> for a run if the weather were better.",es:"<b>Sortiria</b> a córrer si el temps fos millor."},
+    {audio:"f120.mp3",en:"If we had a garden, <b>we'd plant</b> trees.",es:"Si tinguéssim un jardí, <b>plantaríem</b> arbres."},
+    {audio:"f021.mp3",en:"<b>You'd understand</b> if you listened carefully.",es:"<b>Ho entendries</b> si escoltessis amb atenció."},
+    {audio:"f022.mp3",en:"If I found his wallet, <b>I'd return</b> it.",es:"Si trobés la seva cartera, <b>la retornaria</b>."},
+    {audio:"f023.mp3",en:"He <b>would be</b> famous if he played the guitar better.",es:"<b>Seria</b> famós si toqués millor la guitarra."},
+    {audio:"f024.mp3",en:"If I didn't have a headache, <b>I'd go</b> to the party.",es:"Si no tingués mal de cap, <b>aniria</b> a la festa."},
+    {audio:"f025.mp3",en:"We <b>would arrive</b> on time if we took a taxi.",es:"<b>Arribaríem</b> a temps si agaféssim un taxi."},
+    {audio:"f026.mp3",en:"If she studied harder, <b>she'd get</b> better grades.",es:"Si ella estudiés més, <b>treuria</b> millors notes."},
+    {audio:"f027.mp3",en:"<b>I'd buy</b> that shirt if it weren't so expensive.",es:"<b>Compraria</b> aquesta camisa si no fos tan cara."},
+    {audio:"f028.mp3",en:"If they moved to Spain, <b>they'd learn</b> Spanish.",es:"Si es mudessin a Espanya, <b>aprendrien</b> espanyol."},
+    {audio:"f029.mp3",en:"He <b>would cook</b> dinner if he arrived home early.",es:"Ell <b>cuinaria</b> el sopar si arribés a casa d'hora."},
+    {audio:"f030.mp3",en:"If I were a chef, <b>I'd open</b> a restaurant.",es:"Si fos cuiner, <b>obriria</b> un restaurant."},
+    {audio:"f031.mp3",en:"We <b>would visit</b> you if we lived closer.",es:"<b>Et visitaríem</b> si visquéssim més a prop."},
+    {audio:"f032.mp3",en:"If you ate less sugar, <b>you'd be</b> healthier.",es:"Si mengessis menys sucre, <b>estaries</b> més sa."},
+    {audio:"f033.mp3",en:"<b>I'd join</b> the gym if I had a partner.",es:"<b>M'apuntaria</b> al gimnàs si tingués un company."},
+    {audio:"f034.mp3",en:"If she had a camera, <b>she'd take</b> many photos.",es:"Si ella tingués una càmera, <b>faria</b> moltes fotos."},
+    {audio:"f035.mp3",en:"They <b>would be</b> surprised if they saw the news.",es:"<b>Es sorprendrien</b> si veiessin les notícies."},
+    {audio:"f036.mp3",en:"If I were hungry, <b>I'd eat</b> a sandwich.",es:"Si tingués gana, <b>em menjaria</b> un sandvitx."},
+    {audio:"f037.mp3",en:"He <b>would help</b> his parents if he earned more money.",es:"<b>Ajudaria</b> els seus pares si guanyés més diners."},
+    {audio:"f038.mp3",en:"If we bought a map, we <b>wouldn't get</b> lost.",es:"Si compréssim un mapa, <b>no ens perdríem</b>."},
+    {audio:"f039.mp3",en:"<b>I'd learn</b> to fly a plane if I weren't afraid.",es:"<b>Aprendria</b> a pilotar un avió si no tingués por."},
+    {audio:"f040.mp3",en:"If she spoke French, <b>she'd work</b> in Paris.",es:"Si parlés francès, <b>treballaria</b> a París."},
+    {audio:"f041.mp3",en:"They <b>would enjoy</b> the film if it were shorter.",es:"<b>Gaudirien</b> de la pel·lícula si fos més curta."},
+    {audio:"f042.mp3",en:"If I lost my keys, <b>I'd call</b> a locksmith.",es:"Si perdés les claus, <b>trucaria</b> a un cerrajer."},
+    {audio:"f043.mp3",en:"We <b>would go</b> hiking if it didn't snow.",es:"<b>Aniríem</b> a fer senderisme si no nevés."},
+    {audio:"f044.mp3",en:"If you asked him, <b>he'd give</b> you a ride.",es:"Si l'hi demanessis, <b>et portaria</b>."},
+    {audio:"f045.mp3",en:"<b>I'd write</b> a book if I had a good story.",es:"<b>Escriuria</b> un llibre si tingués una bona història."},
+    {audio:"f046.mp3",en:"If he were taller, <b>he'd play</b> basketball.",es:"Si fos més alt, <b>jugaria</b> a bàsquet."},
+    {audio:"f047.mp3",en:"We <b>would use</b> the bike if the city had more lanes.",es:"<b>Faríem servir</b> la bici si la ciutat tingués més carrils."},
+    {audio:"f048.mp3",en:"If she needed help, <b>she'd call</b> me.",es:"Si ella necessités ajuda, <b>em trucaria</b>."},
+    {audio:"f049.mp3",en:"<b>I'd sleep</b> more if I didn't have so much work.",es:"<b>Dormiria</b> més si no tingués tanta feina."},
+    {audio:"f050.mp3",en:"If they invited us, <b>we'd go</b> to the wedding.",es:"Si ens convidessin, <b>aniríem</b> al casament."},
+    {audio:"f051.mp3",en:"If I'd studied more, <b>I'd have passed</b> the exam.",es:"Si hagués estudiat més, <b>hauria aprovat</b> l'examen."},
+    {audio:"f052.mp3",en:"We <b>would've arrived</b> earlier if we'd taken the bus.",es:"<b>Hauríem arribat</b> més d'hora si haguéssim agafat l'autobús."},
+    {audio:"f053.mp3",en:"If she'd seen you, <b>she'd have said</b> hello.",es:"Si t'hagués vist, <b>t'hauria saludat</b>."},
+    {audio:"f054.mp3",en:"He <b>would've bought</b> the house if he'd had the money.",es:"Ell <b>hauria comprat</b> la casa si hagués tingut els diners."},
+    {audio:"f055.mp3",en:"If they'd invited me, <b>I'd have gone</b>.",es:"Si m'haguessin convidat, <b>hi hauria anat</b>."},
+    {audio:"f056.mp3",en:"<b>I'd have called</b> you if I'd known you were ill.",es:"<b>T'hauria trucat</b> si hagués sabut que estaves malalt."},
+    {audio:"f057.mp3",en:"If we'd left earlier, we <b>wouldn't have missed</b> the flight.",es:"Si haguéssim sortit abans, <b>no hauríem perdut</b> el vol."},
+    {audio:"f058.mp3",en:"She <b>would've finished</b> the report if she'd had more time.",es:"Ella <b>hauria acabat</b> l'informe si hagués tingut més temps."},
+    {audio:"f059.mp3",en:"If you'd told me, <b>I'd have helped</b> you.",es:"Si m'ho haguessis dit, <b>t'hauria ajudat</b>."},
+    {audio:"f060.mp3",en:"They <b>would've won</b> the match if they'd played better.",es:"<b>Haurien guanyat</b> el partit si haguessin jugat millor."},
+    {audio:"f061.mp3",en:"If it hadn't rained, we <b>would've gone</b> to the park.",es:"Si no hagués plogut, <b>hauríem anat</b> al parc."},
+    {audio:"f062.mp3",en:"<b>I'd have bought</b> that coat if it'd been on sale.",es:"<b>Hauria comprat</b> aquell abric si hagués estat de rebaixes."},
+    {audio:"f063.mp3",en:"If he'd driven more slowly, he <b>wouldn't have had</b> the accident.",es:"Si hagués conduït més lent, <b>no hauria tingut</b> l'accident."},
+    {audio:"f064.mp3",en:"We <b>would've visited</b> the museum if it'd been open.",es:"<b>Hauríem visitat</b> el museu si hagués estat obert."},
+    {audio:"f065.mp3",en:"If she'd woken up early, <b>she'd have seen</b> the sunrise.",es:"Si s'hagués despertat d'hora, <b>hauria vist</b> la sortida del sol."},
+    {audio:"f066.mp3",en:"They <b>would've stayed</b> longer if they'd liked the place.",es:"<b>S'haurien quedat</b> més temps si els hagués agradat el lloc."},
+    {audio:"f067.mp3",en:"If I'd found your glasses, <b>I'd have told</b> you.",es:"Si hagués trobat les teves ulleres, <b>t'ho hauria dit</b>."},
+    {audio:"f068.mp3",en:"He <b>would've been</b> angry if he'd known the truth.",es:"Ell <b>s'hauria enfadat</b> si hagués sabut la veritat."},
+    {audio:"f069.mp3",en:"If we'd booked a table, we <b>wouldn't have waited</b>.",es:"Si haguéssim reservat taula, <b>no hauríem esperat</b>."},
+    {audio:"f070.mp3",en:"<b>I'd have brought</b> my umbrella if I'd checked the weather.",es:"<b>Hauria portat</b> el paraigua si hagués mirat el temps."},
+    {audio:"f071.mp3",en:"If they'd asked me, <b>I'd have explained</b> it.",es:"Si m'ho haguessin preguntat, <b>ho hauria explicat</b>."},
+    {audio:"f072.mp3",en:"She <b>would've worn</b> a dress if she'd known it was a formal party.",es:"Ella <b>hauria portat</b> un vestit si hagués sabut que era una festa formal."},
+    {audio:"f073.mp3",en:"If you'd been careful, you <b>wouldn't have broken</b> the vase.",es:"Si haguessis anat amb compte, <b>no hauries trencat</b> el gerro."},
+    {audio:"f074.mp3",en:"We <b>would've sent</b> a gift if we'd remembered the date.",es:"<b>Hauríem enviat</b> un regal si haguéssim recordat la data."},
+    {audio:"f075.mp3",en:"If I'd had a map, <b>I'd have found</b> the hotel easily.",es:"Si hagués tingut un mapa, <b>hauria trobat</b> l'hotel fàcilment."},
+    {audio:"f076.mp3",en:"He <b>would've learned</b> English if he'd lived in London.",es:"Ell <b>hauria après</b> anglès si hagués viscut a Londres."},
+    {audio:"f077.mp3",en:"If they'd seen the movie, <b>they'd have liked</b> it.",es:"Si haguessin vist la pel·lícula, <b>els hauria agradat</b>."},
+    {audio:"f078.mp3",en:"<b>I'd have taken</b> a photo if I'd had my phone.",es:"<b>Hauria fet</b> una foto si hagués tingut el telèfon."},
+    {audio:"f079.mp3",en:"If we'd had enough eggs, <b>I'd have made</b> a cake.",es:"Si haguéssim tingut prou ous, <b>hauria fet</b> un pastís."},
+    {audio:"f080.mp3",en:"She <b>would've come</b> if she hadn't been so busy.",es:"Ella <b>hauria vingut</b> si no hagués estat tan ocupada."},
+    {audio:"f081.mp3",en:"If you'd followed the instructions, <b>you'd have finished</b> sooner.",es:"Si haguessis seguit les instruccions, <b>hauries acabat</b> abans."},
+    {audio:"f082.mp3",en:"They <b>would've been</b> late if they hadn't run.",es:"<b>Haurien arribat</b> tard si no haguessin corregut."},
+    {audio:"f083.mp3",en:"If I'd known you were coming, <b>I'd have cooked</b> dinner.",es:"Si hagués sabut que venies, <b>hauria cuinat</b> el sopar."},
+    {audio:"f084.mp3",en:"He <b>would've passed</b> the test if he hadn't been nervous.",es:"Ell <b>hauria aprovat</b> el test si no hagués estat nerviós."},
+    {audio:"f085.mp3",en:"If we'd won the game, we <b>would've celebrated</b>.",es:"Si haguéssim guanyat el partit, <b>ho hauríem celebrat</b>."},
+    {audio:"f086.mp3",en:"<b>I'd have gone</b> to the concert if the tickets hadn't been sold out.",es:"<b>Hauria anat</b> al concert si les entrades no s'haguessin esgotat."},
+    {audio:"f087.mp3",en:"If she'd lost her phone, <b>she'd have been</b> very worried.",es:"Si ella hagués perdut el telèfon, <b>hauria estat</b> molt preocupada."},
+    {audio:"f088.mp3",en:"They <b>would've moved</b> house if they'd found a cheaper one.",es:"<b>S'haurien mudat</b> de casa si n'haguessin trobat una de més barata."},
+    {audio:"f089.mp3",en:"If I'd seen the sign, <b>I'd have stopped</b> the car.",es:"Si hagués vist el senyal, <b>hauria parat</b> el cotxe."},
+    {audio:"f090.mp3",en:"We <b>would've enjoyed</b> the trip if the hotel had been better.",es:"<b>Hauríem gaudit</b> del viatge si l'hotel hagués estat millor."},
+    {audio:"f091.mp3",en:"If he'd had a bike, <b>he'd have cycled</b> to work.",es:"Si ell hagués tingut una bici, <b>hauria anat</b> a la feina en ella."},
+    {audio:"f092.mp3",en:"She <b>would've bought</b> the dress if it'd fit her.",es:"Ella <b>hauria comprat</b> el vestit si li hagués quedat bé."},
+    {audio:"f093.mp3",en:"If they'd listened to the advice, they <b>wouldn't have failed</b>.",es:"Si haguessis escoltat el consell, <b>no haurien fracassat</b>."},
+    {audio:"f094.mp3",en:"<b>I'd have lent</b> you the money if you'd asked me.",es:"<b>T'hauria deixat</b> els diners si m'ho haguessis demanat."},
+    {audio:"f095.mp3",en:"If we'd known the way, we <b>would've arrived</b> on time.",es:"Si haguéssim sabut el camí, <b>hauríem arribat</b> a temps."},
+    {audio:"f096.mp3",en:"He <b>would've felt</b> better if he'd slept more.",es:"Ell <b>se n'hauria sentit</b> millor si hagués dormit més."},
+    {audio:"f097.mp3",en:"If it'd been sunny, we <b>would've gone</b> for a walk.",es:"Si hagués fet sol, <b>hauríem anat</b> a fer un tomb."},
+    {audio:"f098.mp3",en:"They <b>would've bought</b> the tickets if they'd had a discount.",es:"<b>Haurien comprat</b> les entrades si haguessin tingut un descompte."},
+    {audio:"f099.mp3",en:"If I'd seen him, <b>I'd have given</b> him the news.",es:"Si l'hagués vist, <b>li hauria donat</b> les notícies."},
+    {audio:"f100.mp3",en:"We <b>would've finished</b> the project if we'd worked together.",es:"<b>Hauríem acabat</b> el projecte si haguéssim treballat junts."}
 ];
 
 let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0;
@@ -182,13 +195,8 @@ const audioObj = new Audio();
 const progressBar = document.getElementById("progressBar");
 let starredIds = JSON.parse(localStorage.getItem('greta_stars')) || [];
 
-audioObj.ontimeupdate = () => {
-  if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100;
-};
-
-progressBar.oninput = () => {
-  if (audioObj.duration) audioObj.currentTime = (progressBar.value / 100) * audioObj.duration;
-};
+audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
+progressBar.oninput = () => { if (audioObj.duration) audioObj.currentTime = (progressBar.value / 100) * audioObj.duration; };
 
 function initBlocks() {
   const container = document.getElementById("blockContainer");
@@ -218,12 +226,10 @@ function loadBlock(b) {
     let end = Math.min(start + 10, items.length);
     for (let i = start; i < end; i++) temp.push({...items[i], realIdx: i+1});
   }
-  
   currentBlockData = temp.sort(() => Math.random() - 0.5);
   document.querySelectorAll(".block").forEach((btn) => {
     btn.classList.toggle("active", (b === 'T' && btn.textContent === 'T') || (parseInt(btn.textContent)-1 === b));
   });
-
   pos = 0; learnedCount = 0;
   document.getElementById("endMsg").classList.add("hidden");
   update(true);
@@ -240,10 +246,7 @@ function update(fromAction = false) {
   document.getElementById("es").classList.add("hidden");
   document.getElementById("en").classList.add("hidden");
   progressBar.value = 0;
-
-  const isStarred = starredIds.includes(item.audio);
-  document.getElementById("starBtn").classList.toggle("active", isStarred);
-
+  document.getElementById("starBtn").classList.toggle("active", starredIds.includes(item.audio));
   if (mode === "EN") {
     document.getElementById("langLabel").textContent = "ANGLÈS";
     if (fromAction) play(1.0);
@@ -252,17 +255,13 @@ function update(fromAction = false) {
     document.getElementById("es").innerHTML = item.es;
     document.getElementById("es").classList.remove("hidden");
   }
-  
   document.getElementById("counter").textContent = `${learnedCount} / ${currentBlockData.length + learnedCount}`;
 }
 
 function toggleStar() {
   const item = currentBlockData[pos];
-  if (starredIds.includes(item.audio)) {
-    starredIds = starredIds.filter(id => id !== item.audio);
-  } else {
-    starredIds.push(item.audio);
-  }
+  if (starredIds.includes(item.audio)) starredIds = starredIds.filter(id => id !== item.audio);
+  else starredIds.push(item.audio);
   localStorage.setItem('greta_stars', JSON.stringify(starredIds));
   update();
 }
@@ -270,12 +269,13 @@ function toggleStar() {
 function play(speed) {
   if (currentBlockData.length === 0) return;
   const item = currentBlockData[pos];
-  if (!audioObj.src.includes(item.audio)) {
-    audioObj.src = item.audio;
-    progressBar.value = 0;
+  if (audioObj.src.includes(item.audio) && !audioObj.paused && speed === audioObj.playbackRate) {
+    audioObj.pause();
+  } else {
+    if (!audioObj.src.includes(item.audio)) { audioObj.src = item.audio; progressBar.value = 0; }
+    audioObj.playbackRate = speed;
+    audioObj.play().catch(() => {});
   }
-  audioObj.playbackRate = speed;
-  audioObj.play().catch(() => {});
 }
 
 function reveal() {
@@ -308,15 +308,8 @@ function toggleList(type) {
   const box = document.getElementById("listBox");
   if (!box.classList.contains("hidden")) { box.classList.add("hidden"); return; }
   box.innerHTML = type === 'stars' ? "<h3>Frases destacades (★):</h3>" : "";
-  
-  const listToRender = type === 'stars' 
-    ? items.filter(i => starredIds.includes(i.audio))
-    : (currentBlockID === 'T' ? items : items.slice(currentBlockID * 10, (currentBlockID + 1) * 10));
-
-  if (listToRender.length === 0 && type === 'stars') {
-    box.innerHTML = "<p style='padding:10px;'>Encara no has marcat cap frase.</p>";
-  }
-
+  const listToRender = type === 'stars' ? items.filter(i => starredIds.includes(i.audio)) : (currentBlockID === 'T' ? items : items.slice(currentBlockID * 10, (currentBlockID + 1) * 10));
+  if (listToRender.length === 0 && type === 'stars') { box.innerHTML = "<p style='padding:10px;'>Encara no has marcat cap frase.</p>"; }
   listToRender.forEach((i) => {
     const d = document.createElement("div");
     d.style.padding = "10px 0"; d.style.borderBottom = "1px solid #eee";
@@ -326,18 +319,16 @@ function toggleList(type) {
   box.classList.remove("hidden");
 }
 
-function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "index4"; }
+function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "index_condicionals"; }
 function markAsDone(el) {
     localStorage.setItem(getFolderName(), new Date().toISOString());
     el.innerHTML = "✓"; el.classList.add('marked');
     alert("Lliçó marcada ✅");
 }
-
 if (localStorage.getItem(getFolderName())) { 
     const mc = document.getElementById("mainCheck");
     mc.innerHTML = "✓"; mc.classList.add('marked'); 
 }
-
 initBlocks();
 </script>
 </body>
