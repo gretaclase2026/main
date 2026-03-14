@@ -3,190 +3,134 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vocabulari Social C1 - Vibrant</title>
+<title>Estudi FRASES · Format Blanc</title>
 <style>
-body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
-.card{max-width:720px;margin:20px auto;background:#fff;border-radius:24px;padding:24px;box-shadow:0 8px 18px rgba(0,0,0,.15);position:relative}
-.modes{display:flex;gap:10px;margin-bottom:10px;width:100%}
-.mode{flex:1;text-align:center;padding:14px;border-radius:24px;font-weight:bold;cursor:pointer;border:2px solid transparent}
-.mode.en{background:#d6e6f5}
-.mode.es{background:#f4d6e6}
-.mode.active{border-color:#999;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
-.blocks{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}
-.block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#fff4cc;cursor:pointer;transition:0.2s}
-.block.active{background:#ffcc00;transform:scale(1.1);box-shadow:inset 0 0 5px rgba(0,0,0,0.2)}
+body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
+header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center}
+.mode-btns button{margin:0 6px;padding:8px 14px;border:none;border-radius:14px;font-weight:700;cursor:pointer}
+.mode-en{background:#dbeafe}
+.mode-es{background:#fde68a}
+main{display:flex;justify-content:center;padding:24px}
+.card{position:relative;width:100%;max-width:560px;background:#ffffff;border-radius:28px;padding:32px;box-shadow:0 10px 24px rgba(0,0,0,0.06);text-align:center}
+.counter{position:absolute;top:18px;left:22px;font-weight:800;color:#2563eb}
+.lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
 
-.main-box-container{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;margin:20px 0}
-.audio-controls{display:flex;align-items:center;gap:15px;margin-bottom:15px}
-.audio-btn{font-size:50px;background:#dcfce7;border:none;cursor:pointer;width:110px;height:110px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
-.audio-btn.slow{background:#fef08a;width:80px;height:80px;font-size:35px}
-.audio-btn.vibrate{animation:vibrate 0.25s linear 2}
-@keyframes vibrate{0%{transform:translate(0)}25%{transform:translate(2px,-2px)}50%{transform:translate(-2px,2px)}75%{transform:translate(2px,2px)}100%{transform:translate(0)}}
+/* Bloques de navegación */
+.blocks{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:15px 0 20px}
+.block{width:32px;height:32px;border-radius:50%;border:none;background:#f1f5f9;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.2s}
+.block.active{background:#2563eb !important;color:#fff !important}
 
-/* Barra de progreso estilo unificado */
-.progress-wrapper { 
-    width: 100%; 
-    padding: 0 10px; 
-    margin: 15px 0 25px; 
-    box-sizing: border-box; 
-}
-input[type="range"] { 
-    width: 100%; 
-    cursor: pointer; 
-    height: 10px; 
-    border-radius: 5px; 
-    -webkit-appearance: none;
-    background: #e5e7eb;
-    outline: none;
-}
-/* Ocultamos el tirador (thumb) para que solo se vea la línea */
-input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 0; height: 0; }
-input[type="range"]::-moz-range-thumb { width: 0; height: 0; border: none; }
+/* Contenedor Audio */
+.audio-container { display: flex; justify-content: center; gap: 15px; margin: 10px 0 20px; }
+.audio-btn{width:85px;height:85px;border-radius:50%;border:none;background:#dbeafe;font-size:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
+.audio-btn.slow{background:#fef08a; font-size:26px;}
+.audio-btn:active{transform:scale(0.9)}
 
-.counter-side{position:absolute;right:10px;top:0;font-weight:bold;color:#2563eb;font-size:22px}
-#word{font-size:24px;font-weight:800;margin:20px 0;line-height:1.4;min-height:120px;text-align:center;display:flex;align-items:center;justify-content:center;padding:0 10px}
-.txt-es{color:#2563eb} 
-#answer{font-size:20px;font-weight:bold;margin-top:-10px;margin-bottom:20px;text-align:center;min-height:30px;color:#666}
-.actions{display:flex;gap:12px}
-.btn{flex:1;padding:18px;border-radius:18px;border:none;font-weight:bold;font-size:18px;cursor:pointer}
-.btn-reveal{background:#e0f2fe}
-.btn-know{background:#dcfce7}
-.btn-next{background:#fbcfe8}
-#list{margin-top:20px;background:#f9f9f9;padding:15px;border-radius:15px;display:none;border:1px solid #ddd}
+.hidden{display:none}
+.es{font-size:19px;color:#2563eb;margin-top:14px;line-height:1.4}
+.en{font-size:19px;color:#0f172a;margin-top:14px;font-weight:700;line-height:1.4}
 
+.buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:22px}
+button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;cursor:pointer}
+.reveal{background:#e0f2fe}
+.know{background:#dcfce7}
+.next{background:#fbcfe8}
+
+.list-btn{margin-top:16px;background:#e9d5ff;border:none;border-radius:16px;padding:14px;font-weight:800;cursor:pointer;width:100%}
+.list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
+
+/* Cuadrito de marcado */
 .check-box-manual {
-    position: absolute; top: 85px; right: 22px;
+    position: absolute; top: 18px; right: 22px;
     width: 24px; height: 24px;
-    background: #fff !important; border: 1.5px solid #22c55e !important;
-    border-radius: 6px; display: flex; align-items: center; justify-content: center;
-    cursor: pointer; z-index: 10; transition: all 0.2s; font-size: 14px;
+    background: #fff; border: 1.5px solid #22c55e;
+    border-radius: 6px; display: flex;
+    align-items: center; justify-content: center;
+    cursor: pointer; z-index: 10; font-size: 14px;
 }
-.check-box-manual.marked { background: #22c55e !important; color: white; }
+.check-box-manual.marked { background: #22c55e !important; color: white !important; }
+
+.focus{color:#334155;}
+
 </style>
 </head>
 <body>
 
+<header>
+ <div class="mode-btns">
+  <button class="mode-en" onclick="setMode('EN')">Mode anglès → català</button>
+  <button class="mode-es" onclick="setMode('ES')">Mode català → anglès</button>
+ </div>
+</header>
+
+<main>
 <div class="card">
-  <div class="modes">
-    <div id="modeEN" class="mode en active" onclick="setMode('EN')">ENG → ESP</div>
-    <div id="modeES" class="mode es" onclick="setMode('ES')">ESP → ENG</div>
-  </div>
+ <div class="counter" id="counter">0 / 0</div>
+ <div class="check-box-manual" id="mainCheck" onclick="markAsDone(this)"></div>
+ <div id="langLabel" class="lang">ANGLÈS</div>
 
-  <div class="blocks" id="blocksContainer"></div>
+ <div id="blockContainer" class="blocks"></div>
 
-  <div class="main-box-container">
-    <div class="audio-controls">
-      <button class="audio-btn" onclick="playAudio(1.0)">🔊</button>
-      <button class="audio-btn slow" onclick="playAudio(0.75)">🐢</button>
-    </div>
+ <div class="audio-container">
+  <button class="audio-btn" onclick="play(1.0)">🔊</button>
+  <button class="audio-btn slow" onclick="play(0.75)">🐢</button>
+ </div>
 
-    <div class="progress-wrapper">
-      <input type="range" id="progressBar" value="0" step="0.1">
-    </div>
+ <div id="es" class="es hidden"></div>
+ <div id="en" class="en hidden"></div>
 
-    <div class="counter-side">
-      <span id="pos">0</span> / <span id="total">0</span>
-    </div>
-  </div>
+ <div class="buttons">
+  <button class="action reveal" onclick="reveal()">Veure</button>
+  <button class="action know" onclick="know()">Ja la sé</button>
+  <button class="action next" onclick="nextOne()">Següent</button>
+ </div>
 
-  <div id="word"></div>
-  <div id="answer"></div>
-
-  <div class="actions">
-    <button class="btn btn-reveal" onclick="reveal()">veure</button>
-    <button class="btn btn-know" onclick="know()">ja la se</button>
-    <button class="btn btn-next" onclick="next()">següent</button>
-  </div>
-  
-  <button id="listBtn" onclick="toggleList()" style="width:100%;margin-top:20px;padding:12px;border-radius:12px;border:none;background:#e9d5ff;font-weight:bold;cursor:pointer">mostrar llista del bloc</button>
-  <div id="list"></div>
+ <button class="list-btn" onclick="toggleList()">Veure tota la llista</button>
 </div>
+</main>
 
-<audio id="audio"></audio>
+<div id="listBox" class="list-box hidden"></div>
 
 <script>
-const data = [
-  {en: "We need to address the rising inequality in our society.", es: "Tenemos que abordar la creciente desigualdad en nuestra sociedad"},
-  {en: "Freedom of speech is a fundamental human right.", es: "La libertad de expresión es un derecho humano fundamental"},
-  {en: "Volunteering is a great way to give back to the community.", es: "El voluntariado es una excelente manera de devolver algo a la comunidad"},
-  {en: "Social justice aims for a fair distribution of wealth and opportunities.", es: "La justicia social aspira a una distribución equitativa de la riqueza y las oportunidades"},
-  {en: "Cultural diversity enriches our lives and broadens our perspectives.", es: "La diversidad cultural enriquece nuestras vidas y amplía nuestras perspectivas"},
-  {en: "Climate change is one of the biggest challenges facing humanity today.", es: "El cambio climático es uno de los mayores desafíos que enfrenta la humanidad hoy en día"},
-  {en: "Access to education should be a universal right for everyone.", es: "El acceso a la educación debería ser un derecho universal para todos"},
-  {en: "Gender equality is essential for a balanced and fair society.", es: "La igualdad de género es esencial para una sociedad equilibrada y justa"},
-  {en: "Advocacy plays a crucial role in bringing about social change.", es: "La defensa y promoción (advocacy) juegan un papel crucial en lograr el cambio social"},
-  {en: "Sustainable development meets the needs of the present without compromising the future.", es: "El desarrollo sostenible satisface las necesidades del presente sin comprometer el futuro"},
-  {en: "Poverty reduction remains a top priority for international organizations.", es: "La reducción de la pobreza sigue siendo una prioridad absoluta para las organizaciones internacionales"},
-  {en: "Promoting peace and stability is vital for global progress.", es: "Promover la paz y la estabilidad es vital para el progreso global"},
-  {en: "Civic engagement encourages people to participate in democracy.", es: "El compromiso cívico anima a la gente a participar en la democracia"},
-  {en: "Social welfare programs provide a safety net for those in need.", es: "Los programas de bienestar social proporcionan una red de seguridad para quienes lo necesitan"},
-  {en: "Humanitarian aid is critical in regions affected by conflict.", es: "La ayuda hospitalaria es crítica en las regiones afectadas por conflictos"},
-  {en: "Environmental protection is a responsibility we all share.", es: "La protección del medio ambiente es una responsabilidad que todos compartimos"},
-  {en: "Inclusive policies ensure that no one is left behind.", es: "Las políticas inclusivas garantizan que nadie se quede atrás"},
-  {en: "Empowering young people is key to a brighter future.", es: "Empoderar a los jóvenes es clave para un futuro mejor"},
-  {en: "Economic growth should benefit all sectors of society.", es: "El crecimiento económico debería beneficiar a todos los sectores de la sociedad"},
-  {en: "Protecting the rights of minorities is a sign of a healthy democracy.", es: "Proteger los derechos de las minorías es un signo de una democracia sana"},
-  {en: "Public health initiatives are essential for preventing diseases.", es: "Las iniciativas de salud pública son esenciales para prevenir enfermedades"},
-  {en: "Quality healthcare must be affordable and accessible to all.", es: "La atención sanitaria de calidad debe ser asequible y accesible para todos"},
-  {en: "Reducing carbon emissions is vital to slow down global warming.", es: "Reducir las emisiones de carbono es vital para frenar el calentamiento global"},
-  {en: "Technological innovation can help solve many social problems.", es: "La innovación tecnológica puede ayudar a resolver muchos problemas sociales"},
-  {en: "Collaboration between nations is necessary to tackle global issues.", es: "La colaboración entre naciones es necesaria para abordar los problemas globales"},
-  {en: "Fair trade ensures that producers receive a just price for their goods.", es: "El comercio justo garantiza que los productores reciban un precio justo por sus productos"},
-  {en: "Fighting corruption is essential for transparent governance.", es: "Luchar contra la corrupción es esencial para una gobernanza transparente"},
-  {en: "Access to clean water is a basic necessity for every human being.", es: "El acceso a agua limpia es una necesidad básica para cada ser humano"},
-  {en: "Refugee crises require a coordinated international response.", es: "Las crisis de refugiados requieren una respuesta internacional coordinada"},
-  {en: "Education is the most powerful tool to change the world.", es: "La educación es la herramienta más poderosa para cambiar el mundo"},
-  {en: "Mental health awareness helps reduce the stigma around it.", es: "La concienciación sobre la salud mental ayuda a reducir el estigma que la rodea"},
-  {en: "Social media can be a powerful tool for raising awareness.", es: "Las redes sociales pueden ser una herramienta poderosa para concienciar"},
-  {en: "Protecting biodiversity is essential for a healthy planet.", es: "Proteger la biodiversidad es esencial para un planeta sano"},
-  {en: "Ensuring food security is a major global challenge.", es: "Garantizar la seguridad alimentaria es un gran desafío global"},
-  {en: "Intercultural dialogue promotes understanding between different groups.", es: "El diálogo intercultural promueve el entendimiento entre diferentes grupos"},
-  {en: "Universal healthcare covers all residents and citizens.", es: "La sanidad universal cubre a todos los residentes y ciudadanos"},
-  {en: "Corporate social responsibility is becoming more important.", es: "La responsabilidad social corporativa es cada vez más importante"},
-  {en: "The right to privacy is increasingly challenged in the digital age.", es: "El derecho a la privacidad está cada vez más amenazado en la era digital"},
-  {en: "Strengthening community ties improves overall well-being.", es: "Fortalecer los lazos comunitarios mejora el bienestar general"},
-  {en: "Upholding the rule of law is fundamental for any democracy.", es: "Defender el estado de derecho es fundamental para cualquier democracia"},
-  {en: "Fighting discrimination in all its forms is our duty.", es: "Luchar contra la discriminación en todas sus formas es nuestro deber"},
-  {en: "Investing in renewable energy is crucial for the environment.", es: "Invertir en energía renovable es crucial para el medio ambiente"},
-  {en: "The digital divide prevents many from accessing opportunities.", es: "La brecha digital impide que muchos accedan a oportunidades"},
-  {en: "Improving urban planning can lead to more livable cities.", es: "Mejorar la planificación urbana puede conducir a ciudades más habitables"},
-  {en: "Protecting children's rights is a global priority.", es: "Proteger los derechos de los niños es una prioridad global"},
-  {en: "A fair justice system should treat everyone equally.", es: "Un sistema de justicia justo debería tratar a todos por igual"},
-  {en: "Global citizenship means feeling part of a larger community.", es: "La ciudadanía global significa sentirse parte de una comunidad más grande"},
-  {en: "Active participation in local government is encouraged.", es: "Se fomenta la participación activa en el gobierno local"},
-  {en: "Solidarity is essential during times of crisis.", es: "La solidaridad es esencial en tiempos de crisis"},
-  {en: "Every individual has the power to make a difference.", es: "Cada individuo tiene el poder de marcar la diferencia"}
+
+const items = [
+{audio:"f001.mp3",en:"This morning I <span class='focus'>woke up</span> a bit late because I went to bed very late last night, but I still tried to prepare a calm breakfast before starting work.",es:"Aquest matí <span class='focus'>m’he despertat</span> una mica tard perquè ahir a la nit vaig anar a dormir molt tard, però tot i així he intentat preparar un esmorzar tranquil abans de començar a treballar."},
+{audio:"f002.mp3",en:"When I <span class='focus'>arrive home</span> after a long day of work, I usually sit on the sofa for a few minutes and think about what I will cook for dinner.",es:"Quan <span class='focus'>arribo a casa</span> després d’un dia llarg de feina, normalment m’agrada seure al sofà uns minuts i pensar què faré per sopar."},
+{audio:"f003.mp3",en:"Sometimes I <span class='focus'>buy too much food</span> at the supermarket because I think I will need it during the week.",es:"A vegades <span class='focus'>compro massa menjar</span> al supermercat perquè penso que el necessitaré durant la setmana."},
+{audio:"f004.mp3",en:"When it rains a lot and it is cold, I prefer to <span class='focus'>stay at home</span> and watch a movie.",es:"Quan plou molt i fa fred, prefereixo <span class='focus'>quedar-me a casa</span> i mirar una pel·lícula tranquil·lament."},
+{audio:"f005.mp3",en:"Yesterday I went to the <span class='focus'>local market</span> because I wanted to buy fresh fruit.",es:"Ahir vaig anar al <span class='focus'>mercat del barri</span> perquè volia comprar fruita fresca."},
+{audio:"f006.mp3",en:"When I enter a new shop, I like to <span class='focus'>look around</span> before deciding if I need something.",es:"Quan entro en una botiga nova, m’agrada <span class='focus'>mirar una mica tot</span> abans de decidir si necessito comprar alguna cosa."},
+{audio:"f007.mp3",en:"Sometimes I <span class='focus'>stop by</span> a small café in the center because they make very good coffee.",es:"A vegades <span class='focus'>passo per</span> una cafeteria petita del centre perquè fan un cafè molt bo."},
+{audio:"f008.mp3",en:"On weekends I like to <span class='focus'>walk without rushing</span> through the park and watch the people.",es:"Els caps de setmana m’agrada <span class='focus'>caminar sense pressa</span> pel parc."},
+{audio:"f009.mp3",en:"When I have a <span class='focus'>free afternoon</span>, I try to read a book or listen to music.",es:"Quan tinc una <span class='focus'>tarda lliure</span>, intento llegir un llibre o escoltar música."},
+{audio:"f010.mp3",en:"Sometimes I feel very tired after work, but I still try to <span class='focus'>do some exercise</span>.",es:"A vegades em sento molt cansat després de treballar però intento <span class='focus'>fer una mica d’exercici</span>."},
+{audio:"f011.mp3",en:"When I meet friends I haven't seen for a long time, we <span class='focus'>spend a lot of time talking</span>.",es:"Quan quedo amb amics que fa temps que no veig, <span class='focus'>passem molta estona parlant</span>."},
+{audio:"f012.mp3",en:"Sometimes it is difficult to <span class='focus'>start a conversation</span> with someone new.",es:"A vegades és difícil <span class='focus'>començar una conversa</span> amb algú nou."},
+{audio:"f013.mp3",en:"This morning I <span class='focus'>left home in a hurry</span> because I thought I would arrive late.",es:"Aquest matí <span class='focus'>he sortit de casa amb pressa</span> perquè pensava que arribaria tard."},
+{audio:"f014.mp3",en:"When I go to the supermarket without a list, I <span class='focus'>end up buying</span> things I don't need.",es:"Quan vaig al supermercat sense llista, <span class='focus'>acabo comprant</span> coses que no necessito."},
+{audio:"f015.mp3",en:"Sometimes I start watching a series and I <span class='focus'>get hooked</span> very quickly.",es:"A vegades començo a mirar una sèrie i <span class='focus'>m’hi enganxo</span> molt ràpid."},
+{audio:"f016.mp3",en:"When I cook something new, I <span class='focus'>read the recipe</span> carefully before starting.",es:"Quan cuino alguna cosa nova, <span class='focus'>llegeixo la recepta</span> amb calma abans de començar."},
+{audio:"f017.mp3",en:"On Sunday mornings I like to <span class='focus'>wake up without an alarm</span>.",es:"Els diumenges al matí m’agrada <span class='focus'>llevar-me sense alarma</span>."},
+{audio:"f018.mp3",en:"When I forget a word, I try to <span class='focus'>explain the idea</span> in another way.",es:"Quan oblido una paraula, intento <span class='focus'>explicar la idea</span> d’una altra manera."},
+{audio:"f019.mp3",en:"Sometimes I <span class='focus'>start many things at the same time</span> and then realize it is better to finish one first.",es:"A vegades <span class='focus'>començo moltes coses alhora</span> i després veig que és millor acabar-ne una."},
+{audio:"f020.mp3",en:"When I travel to a new city, I like to <span class='focus'>walk without looking at the map</span> too much.",es:"Quan viatjo a una ciutat nova, m’agrada <span class='focus'>caminar sense mirar massa el mapa</span>."},
+{audio:"f021.mp3",en:"Before leaving home I always <span class='focus'>check the door</span> to make sure it is closed.",es:"Abans de sortir de casa sempre <span class='focus'>miro la porta</span> per assegurar-me que està ben tancada."},
+{audio:"f022.mp3",en:"When I buy clothes, I first <span class='focus'>check the price</span>.",es:"Quan compro roba, primer <span class='focus'>miro el preu</span>."},
+{audio:"f023.mp3",en:"If I have a lot of work during the day, I try to <span class='focus'>take short breaks</span>.",es:"Si tinc molta feina durant el dia, intento <span class='focus'>fer pauses curtes</span>."},
+{audio:"f024.mp3",en:"Sometimes I start <span class='focus'>tidying a room</span> and find old things from the past.",es:"A vegades començo a <span class='focus'>ordenar una habitació</span> i trobo coses antigues."},
+{audio:"f025.mp3",en:"When I cook pasta, I always make <span class='focus'>a little extra</span> for the next day.",es:"Quan cuino pasta, sempre en faig <span class='focus'>una mica més</span> per l’endemà."},
+{audio:"f026.mp3",en:"When it is very hot in summer, I prefer to <span class='focus'>go for a walk in the evening</span>.",es:"Quan fa molta calor a l’estiu, prefereixo <span class='focus'>sortir a caminar al vespre</span>."},
+{audio:"f027.mp3",en:"Sometimes I <span class='focus'>open the fridge</span> several times even if there is nothing new.",es:"A vegades <span class='focus'>obro la nevera</span> diverses vegades encara que no hi hagi res de nou."},
+{audio:"f028.mp3",en:"When I meet someone new, I always <span class='focus'>arrive a few minutes early</span>.",es:"Quan quedo amb algú nou, sempre <span class='focus'>arribo uns minuts abans</span>."}
 ];
 
+
 let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0;
-
-const audioObj = document.getElementById("audio");
-const progressBar = document.getElementById("progressBar");
-
-// Lógica de la barra con degradado dinámico
-function updateBarGradient(val) {
-  progressBar.style.background = `linear-gradient(to right, #2563eb ${val}%, #e5e7eb ${val}%)`;
-}
-
-audioObj.ontimeupdate = () => {
-  if (audioObj.duration) {
-    const percentage = (audioObj.currentTime / audioObj.duration) * 100;
-    progressBar.value = percentage;
-    updateBarGradient(percentage);
-  }
-};
-
-progressBar.oninput = () => {
-  if (audioObj.duration) {
-    const val = progressBar.value;
-    audioObj.currentTime = (val / 100) * audioObj.duration;
-    updateBarGradient(val);
-  }
-};
+const audioObj = new Audio();
 
 function initBlocks() {
-  const container = document.getElementById("blocksContainer");
-  const numBlocks = Math.ceil(data.length / 10);
+  const container = document.getElementById("blockContainer");
+  const numBlocks = Math.ceil(items.length / 10);
   container.innerHTML = "";
   for (let i = 0; i < numBlocks; i++) {
     const btn = document.createElement("button");
@@ -206,64 +150,74 @@ function loadBlock(b) {
   currentBlockID = b;
   let temp = [];
   if (b === 'T') {
-    temp = data.map((item, i) => ({...item, realIdx: i+1}));
+    temp = items.map((item, i) => ({...item, realIdx: i+1}));
   } else {
     let start = b * 10;
-    let end = Math.min(start + 10, data.length);
-    for (let i = start; i < end; i++) temp.push({...data[i], realIdx: i+1});
+    let end = Math.min(start + 10, items.length);
+    for (let i = start; i < end; i++) {
+      temp.push({...items[i], realIdx: i+1});
+    }
   }
   currentBlockData = temp.sort(() => Math.random() - 0.5);
+  
   document.querySelectorAll(".block").forEach((btn) => {
     btn.classList.toggle("active", (b === 'T' && btn.textContent === 'T') || (parseInt(btn.textContent)-1 === b));
   });
-  pos = 0; learnedCount = 0;
-  document.getElementById("list").style.display = "none";
-  update(true); 
-}
 
-function setMode(m) {
-  mode = m;
-  document.getElementById("modeEN").classList.toggle("active", m === "EN");
-  document.getElementById("modeES").classList.toggle("active", m === "ES");
+  pos = 0; learnedCount = 0;
   update(true);
 }
 
-function update(fromNextAction = false) {
+function update(fromAction = false) {
   if (currentBlockData.length === 0) {
-    document.getElementById("word").innerHTML = "¡Bloque Completado! 🎉";
-    document.getElementById("answer").innerHTML = "";
+    document.getElementById("en").textContent = "🎉 Bloc completat!";
+    document.getElementById("es").textContent = "";
+    document.getElementById("en").classList.remove("hidden");
     return;
   }
-  
-  progressBar.value = 0;
-  updateBarGradient(0);
-  
   const item = currentBlockData[pos];
-  const translation = `<span class="txt-es">${item.es}</span>`;
-  const w = document.getElementById("word");
-  const ans = document.getElementById("answer");
+  document.getElementById("es").classList.add("hidden");
+  document.getElementById("en").classList.add("hidden");
 
   if (mode === "EN") {
-    w.innerHTML = ``; 
-    ans.innerHTML = translation;
-    if (fromNextAction) playAudio(1.0);
+    document.getElementById("langLabel").textContent = "ANGLÈS";
+    if (fromAction) play(1.0);
   } else {
-    w.innerHTML = `<div style='font-size:22px;'>${translation}</div>`;
-    ans.innerHTML = `<span style="font-size:24px;">${item.en}</span>`;
+    document.getElementById("langLabel").textContent = "CATALÀ";
+    document.getElementById("es").innerHTML = item.es;
+    document.getElementById("es").classList.remove("hidden");
   }
   
-  ans.style.display = "none";
-  document.getElementById("pos").textContent = learnedCount;
-  document.getElementById("total").textContent = currentBlockData.length + learnedCount;
+  document.getElementById("counter").textContent = `${learnedCount} / ${currentBlockData.length + learnedCount}`;
+}
+
+// FUNCIÓN ACTUALIZADA CON PAUSA
+function play(speed) {
+  if (currentBlockData.length === 0) return;
+  const item = currentBlockData[pos];
+  const newSrc = item.audio;
+
+  // Si es la misma frase y está sonando, pausamos
+  if (audioObj.src.includes(newSrc) && !audioObj.paused) {
+    audioObj.pause();
+  } else {
+    // Si es otra frase o está pausado, reproducimos
+    if (!audioObj.src.includes(newSrc)) {
+      audioObj.src = newSrc;
+    }
+    audioObj.playbackRate = speed;
+    audioObj.play().catch(() => {});
+  }
 }
 
 function reveal() {
-  if (currentBlockData.length > 0) {
-    const item = currentBlockData[pos];
-    if (mode === "EN") document.getElementById("word").innerHTML = `<span style="color:#333;">${item.en}</span>`;
-    document.getElementById("answer").style.display = "block";
-    if (mode === "ES") playAudio(1.0); 
-  }
+  if (currentBlockData.length === 0) return;
+  const item = currentBlockData[pos];
+  document.getElementById("es").innerHTML = item.es;
+  document.getElementById("en").innerHTML = item.en;
+  document.getElementById("es").classList.remove("hidden");
+  document.getElementById("en").classList.remove("hidden");
+  if (mode === "ES") play(1.0);
 }
 
 function know() {
@@ -274,58 +228,37 @@ function know() {
   update(true);
 }
 
-function next() {
+function nextOne() {
   if (currentBlockData.length === 0) return;
   pos = (pos + 1) % currentBlockData.length;
   update(true);
 }
 
-function playAudio(speed) {
-  if (currentBlockData.length === 0) return;
-  const num = currentBlockData[pos].realIdx;
-  const fileName = "frase" + num + ".mp3";
-  
-  if (!audioObj.src.includes(fileName)) {
-    audioObj.src = fileName;
-    progressBar.value = 0;
-    updateBarGradient(0);
-  }
-  
-  audioObj.playbackRate = speed;
-  const btn = document.querySelector('.audio-btn');
-  btn.classList.remove('vibrate'); void btn.offsetWidth; btn.classList.add('vibrate');
-  audioObj.play().catch(() => {});
-}
+function setMode(m) { mode = m; update(true); }
 
 function toggleList() {
-  const l = document.getElementById("list");
-  if (l.style.display === "block") { l.style.display = "none"; return; }
-  l.innerHTML = "<b>Llista del bloc:</b><br><br>";
+  const box = document.getElementById("listBox");
+  if (!box.classList.contains("hidden")) { box.classList.add("hidden"); return; }
+  box.innerHTML = "";
   let start = currentBlockID === 'T' ? 0 : currentBlockID * 10;
-  let end = currentBlockID === 'T' ? data.length : Math.min(start + 10, data.length);
-  data.slice(start, end).forEach((item) => {
-    l.innerHTML += `<div style="margin-bottom:8px"><b>${item.en}</b> - <span class="txt-es">${item.es}</span></div>`;
+  let end = currentBlockID === 'T' ? items.length : Math.min(start + 10, items.length);
+  items.slice(start, end).forEach(i => {
+    const d = document.createElement("div");
+    d.style.padding = "10px 0"; d.style.borderBottom = "1px solid #eee";
+    d.innerHTML = `<div style="color:#0f172a; font-weight:800;">${i.en}</div><div style="color:#2563eb; font-weight:700;">${i.es}</div>`;
+    box.appendChild(d);
   });
-  l.style.display = "block";
+  box.classList.remove("hidden");
 }
 
 function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "unknown"; }
-function markAsDone(element) {
+function markAsDone(el) {
     localStorage.setItem(getFolderName(), new Date().toISOString());
-    element.innerHTML = "✓";
-    element.classList.add('marked');
+    el.innerHTML = "✓"; el.classList.add('marked');
     alert("Lliçó marcada ✅");
 }
 
-const card = document.querySelector(".card");
-const box = document.createElement("div");
-box.className = "check-box-manual";
-if (localStorage.getItem(getFolderName())) {
-    box.innerHTML = "✓";
-    box.classList.add('marked');
-}
-box.onclick = function() { markAsDone(this); };
-card.appendChild(box);
+const mainCheck = document.getElementById("mainCheck");
 
 initBlocks();
 </script>

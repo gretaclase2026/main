@@ -1,0 +1,333 @@
+ <!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vocabulari Social C1 - Vibrant</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
+.card{max-width:720px;margin:20px auto;background:#fff;border-radius:24px;padding:24px;box-shadow:0 8px 18px rgba(0,0,0,.15);position:relative}
+.modes{display:flex;gap:10px;margin-bottom:10px;width:100%}
+.mode{flex:1;text-align:center;padding:14px;border-radius:24px;font-weight:bold;cursor:pointer;border:2px solid transparent}
+.mode.en{background:#d6e6f5}
+.mode.es{background:#f4d6e6}
+.mode.active{border-color:#999;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
+.blocks{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}
+.block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#fff4cc;cursor:pointer;transition:0.2s}
+.block.active{background:#ffcc00;transform:scale(1.1);box-shadow:inset 0 0 5px rgba(0,0,0,0.2)}
+
+.main-box-container{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;margin:20px 0}
+.audio-controls{display:flex;align-items:center;gap:15px;margin-bottom:15px}
+.audio-btn{font-size:50px;background:#dcfce7;border:none;cursor:pointer;width:110px;height:110px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
+.audio-btn.slow{background:#fef08a;width:80px;height:80px;font-size:35px}
+.audio-btn.vibrate{animation:vibrate 0.25s linear 2}
+@keyframes vibrate{0%{transform:translate(0)}25%{transform:translate(2px,-2px)}50%{transform:translate(-2px,2px)}75%{transform:translate(2px,2px)}100%{transform:translate(0)}}
+
+/* Barra de progreso estilo unificado */
+.progress-wrapper { 
+    width: 100%; 
+    padding: 0 10px; 
+    margin: 15px 0 25px; 
+    box-sizing: border-box; 
+}
+input[type="range"] { 
+    width: 100%; 
+    cursor: pointer; 
+    height: 10px; 
+    border-radius: 5px; 
+    -webkit-appearance: none;
+    background: #e5e7eb;
+    outline: none;
+}
+/* Ocultamos el tirador (thumb) para que solo se vea la línea */
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 0; height: 0; }
+input[type="range"]::-moz-range-thumb { width: 0; height: 0; border: none; }
+
+.counter-side{position:absolute;right:10px;top:0;font-weight:bold;color:#2563eb;font-size:22px}
+#word{font-size:24px;font-weight:800;margin:20px 0;line-height:1.4;min-height:120px;text-align:center;display:flex;align-items:center;justify-content:center;padding:0 10px}
+.txt-es{color:#2563eb} 
+#answer{font-size:20px;font-weight:bold;margin-top:-10px;margin-bottom:20px;text-align:center;min-height:30px;color:#666}
+.actions{display:flex;gap:12px}
+.btn{flex:1;padding:18px;border-radius:18px;border:none;font-weight:bold;font-size:18px;cursor:pointer}
+.btn-reveal{background:#e0f2fe}
+.btn-know{background:#dcfce7}
+.btn-next{background:#fbcfe8}
+#list{margin-top:20px;background:#f9f9f9;padding:15px;border-radius:15px;display:none;border:1px solid #ddd}
+
+.check-box-manual {
+    position: absolute; top: 85px; right: 22px;
+    width: 24px; height: 24px;
+    background: #fff !important; border: 1.5px solid #22c55e !important;
+    border-radius: 6px; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; z-index: 10; transition: all 0.2s; font-size: 14px;
+}
+.check-box-manual.marked { background: #22c55e !important; color: white; }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="modes">
+    <div id="modeEN" class="mode en active" onclick="setMode('EN')">ENG → ESP</div>
+    <div id="modeES" class="mode es" onclick="setMode('ES')">ESP → ENG</div>
+  </div>
+
+  <div class="blocks" id="blocksContainer"></div>
+
+  <div class="main-box-container">
+    <div class="audio-controls">
+      <button class="audio-btn" onclick="playAudio(1.0)">🔊</button>
+      <button class="audio-btn slow" onclick="playAudio(0.75)">🐢</button>
+    </div>
+
+    <div class="progress-wrapper">
+      <input type="range" id="progressBar" value="0" step="0.1">
+    </div>
+
+    <div class="counter-side">
+      <span id="pos">0</span> / <span id="total">0</span>
+    </div>
+  </div>
+
+  <div id="word"></div>
+  <div id="answer"></div>
+
+  <div class="actions">
+    <button class="btn btn-reveal" onclick="reveal()">veure</button>
+    <button class="btn btn-know" onclick="know()">ja la se</button>
+    <button class="btn btn-next" onclick="next()">següent</button>
+  </div>
+  
+  <button id="listBtn" onclick="toggleList()" style="width:100%;margin-top:20px;padding:12px;border-radius:12px;border:none;background:#e9d5ff;font-weight:bold;cursor:pointer">mostrar llista del bloc</button>
+  <div id="list"></div>
+</div>
+
+<audio id="audio"></audio>
+
+<script>
+const data = [
+  {en: "We need to address the rising inequality in our society.", es: "Tenemos que abordar la creciente desigualdad en nuestra sociedad"},
+  {en: "Freedom of speech is a fundamental human right.", es: "La libertad de expresión es un derecho humano fundamental"},
+  {en: "Volunteering is a great way to give back to the community.", es: "El voluntariado es una excelente manera de devolver algo a la comunidad"},
+  {en: "Social justice aims for a fair distribution of wealth and opportunities.", es: "La justicia social aspira a una distribución equitativa de la riqueza y las oportunidades"},
+  {en: "Cultural diversity enriches our lives and broadens our perspectives.", es: "La diversidad cultural enriquece nuestras vidas y amplía nuestras perspectivas"},
+  {en: "Climate change is one of the biggest challenges facing humanity today.", es: "El cambio climático es uno de los mayores desafíos que enfrenta la humanidad hoy en día"},
+  {en: "Access to education should be a universal right for everyone.", es: "El acceso a la educación debería ser un derecho universal para todos"},
+  {en: "Gender equality is essential for a balanced and fair society.", es: "La igualdad de género es esencial para una sociedad equilibrada y justa"},
+  {en: "Advocacy plays a crucial role in bringing about social change.", es: "La defensa y promoción (advocacy) juegan un papel crucial en lograr el cambio social"},
+  {en: "Sustainable development meets the needs of the present without compromising the future.", es: "El desarrollo sostenible satisface las necesidades del presente sin comprometer el futuro"},
+  {en: "Poverty reduction remains a top priority for international organizations.", es: "La reducción de la pobreza sigue siendo una prioridad absoluta para las organizaciones internacionales"},
+  {en: "Promoting peace and stability is vital for global progress.", es: "Promover la paz y la estabilidad es vital para el progreso global"},
+  {en: "Civic engagement encourages people to participate in democracy.", es: "El compromiso cívico anima a la gente a participar en la democracia"},
+  {en: "Social welfare programs provide a safety net for those in need.", es: "Los programas de bienestar social proporcionan una red de seguridad para quienes lo necesitan"},
+  {en: "Humanitarian aid is critical in regions affected by conflict.", es: "La ayuda hospitalaria es crítica en las regiones afectadas por conflictos"},
+  {en: "Environmental protection is a responsibility we all share.", es: "La protección del medio ambiente es una responsabilidad que todos compartimos"},
+  {en: "Inclusive policies ensure that no one is left behind.", es: "Las políticas inclusivas garantizan que nadie se quede atrás"},
+  {en: "Empowering young people is key to a brighter future.", es: "Empoderar a los jóvenes es clave para un futuro mejor"},
+  {en: "Economic growth should benefit all sectors of society.", es: "El crecimiento económico debería beneficiar a todos los sectores de la sociedad"},
+  {en: "Protecting the rights of minorities is a sign of a healthy democracy.", es: "Proteger los derechos de las minorías es un signo de una democracia sana"},
+  {en: "Public health initiatives are essential for preventing diseases.", es: "Las iniciativas de salud pública son esenciales para prevenir enfermedades"},
+  {en: "Quality healthcare must be affordable and accessible to all.", es: "La atención sanitaria de calidad debe ser asequible y accesible para todos"},
+  {en: "Reducing carbon emissions is vital to slow down global warming.", es: "Reducir las emisiones de carbono es vital para frenar el calentamiento global"},
+  {en: "Technological innovation can help solve many social problems.", es: "La innovación tecnológica puede ayudar a resolver muchos problemas sociales"},
+  {en: "Collaboration between nations is necessary to tackle global issues.", es: "La colaboración entre naciones es necesaria para abordar los problemas globales"},
+  {en: "Fair trade ensures that producers receive a just price for their goods.", es: "El comercio justo garantiza que los productores reciban un precio justo por sus productos"},
+  {en: "Fighting corruption is essential for transparent governance.", es: "Luchar contra la corrupción es esencial para una gobernanza transparente"},
+  {en: "Access to clean water is a basic necessity for every human being.", es: "El acceso a agua limpia es una necesidad básica para cada ser humano"},
+  {en: "Refugee crises require a coordinated international response.", es: "Las crisis de refugiados requieren una respuesta internacional coordinada"},
+  {en: "Education is the most powerful tool to change the world.", es: "La educación es la herramienta más poderosa para cambiar el mundo"},
+  {en: "Mental health awareness helps reduce the stigma around it.", es: "La concienciación sobre la salud mental ayuda a reducir el estigma que la rodea"},
+  {en: "Social media can be a powerful tool for raising awareness.", es: "Las redes sociales pueden ser una herramienta poderosa para concienciar"},
+  {en: "Protecting biodiversity is essential for a healthy planet.", es: "Proteger la biodiversidad es esencial para un planeta sano"},
+  {en: "Ensuring food security is a major global challenge.", es: "Garantizar la seguridad alimentaria es un gran desafío global"},
+  {en: "Intercultural dialogue promotes understanding between different groups.", es: "El diálogo intercultural promueve el entendimiento entre diferentes grupos"},
+  {en: "Universal healthcare covers all residents and citizens.", es: "La sanidad universal cubre a todos los residentes y ciudadanos"},
+  {en: "Corporate social responsibility is becoming more important.", es: "La responsabilidad social corporativa es cada vez más importante"},
+  {en: "The right to privacy is increasingly challenged in the digital age.", es: "El derecho a la privacidad está cada vez más amenazado en la era digital"},
+  {en: "Strengthening community ties improves overall well-being.", es: "Fortalecer los lazos comunitarios mejora el bienestar general"},
+  {en: "Upholding the rule of law is fundamental for any democracy.", es: "Defender el estado de derecho es fundamental para cualquier democracia"},
+  {en: "Fighting discrimination in all its forms is our duty.", es: "Luchar contra la discriminación en todas sus formas es nuestro deber"},
+  {en: "Investing in renewable energy is crucial for the environment.", es: "Invertir en energía renovable es crucial para el medio ambiente"},
+  {en: "The digital divide prevents many from accessing opportunities.", es: "La brecha digital impide que muchos accedan a oportunidades"},
+  {en: "Improving urban planning can lead to more livable cities.", es: "Mejorar la planificación urbana puede conducir a ciudades más habitables"},
+  {en: "Protecting children's rights is a global priority.", es: "Proteger los derechos de los niños es una prioridad global"},
+  {en: "A fair justice system should treat everyone equally.", es: "Un sistema de justicia justo debería tratar a todos por igual"},
+  {en: "Global citizenship means feeling part of a larger community.", es: "La ciudadanía global significa sentirse parte de una comunidad más grande"},
+  {en: "Active participation in local government is encouraged.", es: "Se fomenta la participación activa en el gobierno local"},
+  {en: "Solidarity is essential during times of crisis.", es: "La solidaridad es esencial en tiempos de crisis"},
+  {en: "Every individual has the power to make a difference.", es: "Cada individuo tiene el poder de marcar la diferencia"}
+];
+
+let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0;
+
+const audioObj = document.getElementById("audio");
+const progressBar = document.getElementById("progressBar");
+
+// Lógica de la barra con degradado dinámico
+function updateBarGradient(val) {
+  progressBar.style.background = `linear-gradient(to right, #2563eb ${val}%, #e5e7eb ${val}%)`;
+}
+
+audioObj.ontimeupdate = () => {
+  if (audioObj.duration) {
+    const percentage = (audioObj.currentTime / audioObj.duration) * 100;
+    progressBar.value = percentage;
+    updateBarGradient(percentage);
+  }
+};
+
+progressBar.oninput = () => {
+  if (audioObj.duration) {
+    const val = progressBar.value;
+    audioObj.currentTime = (val / 100) * audioObj.duration;
+    updateBarGradient(val);
+  }
+};
+
+function initBlocks() {
+  const container = document.getElementById("blocksContainer");
+  const numBlocks = Math.ceil(data.length / 10);
+  container.innerHTML = "";
+  for (let i = 0; i < numBlocks; i++) {
+    const btn = document.createElement("button");
+    btn.className = "block";
+    btn.textContent = i + 1;
+    btn.onclick = () => loadBlock(i);
+    container.appendChild(btn);
+  }
+  const btnT = document.createElement("button");
+  btnT.className = "block"; btnT.textContent = "T";
+  btnT.onclick = () => loadBlock('T');
+  container.appendChild(btnT);
+  loadBlock(0);
+}
+
+function loadBlock(b) {
+  currentBlockID = b;
+  let temp = [];
+  if (b === 'T') {
+    temp = data.map((item, i) => ({...item, realIdx: i+1}));
+  } else {
+    let start = b * 10;
+    let end = Math.min(start + 10, data.length);
+    for (let i = start; i < end; i++) temp.push({...data[i], realIdx: i+1});
+  }
+  currentBlockData = temp.sort(() => Math.random() - 0.5);
+  document.querySelectorAll(".block").forEach((btn) => {
+    btn.classList.toggle("active", (b === 'T' && btn.textContent === 'T') || (parseInt(btn.textContent)-1 === b));
+  });
+  pos = 0; learnedCount = 0;
+  document.getElementById("list").style.display = "none";
+  update(true); 
+}
+
+function setMode(m) {
+  mode = m;
+  document.getElementById("modeEN").classList.toggle("active", m === "EN");
+  document.getElementById("modeES").classList.toggle("active", m === "ES");
+  update(true);
+}
+
+function update(fromNextAction = false) {
+  if (currentBlockData.length === 0) {
+    document.getElementById("word").innerHTML = "¡Bloque Completado! 🎉";
+    document.getElementById("answer").innerHTML = "";
+    return;
+  }
+  
+  progressBar.value = 0;
+  updateBarGradient(0);
+  
+  const item = currentBlockData[pos];
+  const translation = `<span class="txt-es">${item.es}</span>`;
+  const w = document.getElementById("word");
+  const ans = document.getElementById("answer");
+
+  if (mode === "EN") {
+    w.innerHTML = ``; 
+    ans.innerHTML = translation;
+    if (fromNextAction) playAudio(1.0);
+  } else {
+    w.innerHTML = `<div style='font-size:22px;'>${translation}</div>`;
+    ans.innerHTML = `<span style="font-size:24px;">${item.en}</span>`;
+  }
+  
+  ans.style.display = "none";
+  document.getElementById("pos").textContent = learnedCount;
+  document.getElementById("total").textContent = currentBlockData.length + learnedCount;
+}
+
+function reveal() {
+  if (currentBlockData.length > 0) {
+    const item = currentBlockData[pos];
+    if (mode === "EN") document.getElementById("word").innerHTML = `<span style="color:#333;">${item.en}</span>`;
+    document.getElementById("answer").style.display = "block";
+    if (mode === "ES") playAudio(1.0); 
+  }
+}
+
+function know() {
+  if (currentBlockData.length === 0) return;
+  learnedCount++;
+  currentBlockData.splice(pos, 1);
+  if (pos >= currentBlockData.length) pos = 0;
+  update(true);
+}
+
+function next() {
+  if (currentBlockData.length === 0) return;
+  pos = (pos + 1) % currentBlockData.length;
+  update(true);
+}
+
+function playAudio(speed) {
+  if (currentBlockData.length === 0) return;
+  const num = currentBlockData[pos].realIdx;
+  const fileName = "frase" + num + ".mp3";
+  
+  if (!audioObj.src.includes(fileName)) {
+    audioObj.src = fileName;
+    progressBar.value = 0;
+    updateBarGradient(0);
+  }
+  
+  audioObj.playbackRate = speed;
+  const btn = document.querySelector('.audio-btn');
+  btn.classList.remove('vibrate'); void btn.offsetWidth; btn.classList.add('vibrate');
+  audioObj.play().catch(() => {});
+}
+
+function toggleList() {
+  const l = document.getElementById("list");
+  if (l.style.display === "block") { l.style.display = "none"; return; }
+  l.innerHTML = "<b>Llista del bloc:</b><br><br>";
+  let start = currentBlockID === 'T' ? 0 : currentBlockID * 10;
+  let end = currentBlockID === 'T' ? data.length : Math.min(start + 10, data.length);
+  data.slice(start, end).forEach((item) => {
+    l.innerHTML += `<div style="margin-bottom:8px"><b>${item.en}</b> - <span class="txt-es">${item.es}</span></div>`;
+  });
+  l.style.display = "block";
+}
+
+function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "unknown"; }
+function markAsDone(element) {
+    localStorage.setItem(getFolderName(), new Date().toISOString());
+    element.innerHTML = "✓";
+    element.classList.add('marked');
+    alert("Lliçó marcada ✅");
+}
+
+const card = document.querySelector(".card");
+const box = document.createElement("div");
+box.className = "check-box-manual";
+if (localStorage.getItem(getFolderName())) {
+    box.innerHTML = "✓";
+    box.classList.add('marked');
+}
+box.onclick = function() { markAsDone(this); };
+card.appendChild(box);
+
+initBlocks();
+</script>
+</body>
+</html>

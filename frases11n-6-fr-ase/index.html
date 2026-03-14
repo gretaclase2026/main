@@ -1,0 +1,273 @@
+ <!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estudi FRASES · Collocations Informals</title>
+<style>
+body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
+header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center}
+.mode-btns button{margin:0 6px;padding:8px 14px;border:none;border-radius:14px;font-weight:700;cursor:pointer}
+.mode-en{background:#dbeafe}
+.mode-es{background:#fde68a}
+main{display:flex;justify-content:center;padding:24px}
+.card{position:relative;width:100%;max-width:560px;background:#ffffff;border-radius:28px;padding:32px;box-shadow:0 10px 24px rgba(0,0,0,0.06);text-align:center}
+.counter{position:absolute;top:18px;left:22px;font-weight:800;color:#2563eb}
+.lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
+.blocks{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:15px 0 20px}
+.block{width:32px;height:32px;border-radius:50%;border:none;background:#f1f5f9;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.2s}
+.block.active{background:#2563eb !important;color:#fff !important}
+.audio-container { display: flex; justify-content: center; gap: 15px; margin: 10px 0 20px; }
+.audio-btn{width:85px;height:85px;border-radius:50%;border:none;background:#dbeafe;font-size:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
+.audio-btn.slow{background:#fef08a; font-size:26px;}
+.audio-btn:active{transform:scale(0.9)}
+.hidden{display:none}
+.es{font-size:19px;color:#2563eb;margin-top:14px;line-height:1.4}
+.en{font-size:19px;color:#0f172a;margin-top:14px;font-weight:700;line-height:1.4}
+.buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:22px}
+button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;cursor:pointer}
+.reveal{background:#e0f2fe}
+.know{background:#dcfce7}
+.next{background:#fbcfe8}
+.list-btn{margin-top:16px;background:#e9d5ff;border:none;border-radius:16px;padding:14px;font-weight:800;cursor:pointer;width:100%}
+.list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
+.check-box-manual {
+    position: absolute; top: 18px; right: 22px;
+    width: 24px; height: 24px;
+    background: #fff; border: 1.5px solid #22c55e;
+    border-radius: 6px; display: flex;
+    align-items: center; justify-content: center;
+    cursor: pointer; z-index: 10; font-size: 14px;
+}
+.check-box-manual.marked { background: #22c55e !important; color: white !important; }
+</style>
+</head>
+<body>
+
+<header>
+ <div class="mode-btns">
+  <button class="mode-en" onclick="setMode('EN')">Mode anglès → castellà</button>
+  <button class="mode-es" onclick="setMode('ES')">Mode castellà → anglès</button>
+ </div>
+</header>
+
+<main>
+<div class="card">
+ <div class="counter" id="counter">0 / 0</div>
+ <div class="check-box-manual" id="mainCheck" onclick="markAsDone(this)"></div>
+ <div id="langLabel" class="lang">ANGLÈS</div>
+
+ <div id="blockContainer" class="blocks"></div>
+
+ <div class="audio-container">
+  <button class="audio-btn" onclick="play(1.0)">🔊</button>
+  <button class="audio-btn slow" onclick="play(0.75)">🐢</button>
+ </div>
+
+ <div id="es" class="es hidden"></div>
+ <div id="en" class="en hidden"></div>
+
+ <div class="buttons">
+  <button class="action reveal" onclick="reveal()">Veure</button>
+  <button class="action know" onclick="know()">Ja la sé</button>
+  <button class="action next" onclick="nextOne()">Següent</button>
+ </div>
+
+ <button class="list-btn" onclick="toggleList()">Veure tota la llista</button>
+</div>
+</main>
+
+<div id="listBox" class="list-box hidden"></div>
+
+<script>
+const items = [
+  {audio:"f077.mp3", en:"We need to get a move on if we want to catch the train.", es:"Tenemos que darnos prisa si queremos coger el tren."},
+  {audio:"f078.mp3", en:"You need to get a grip and stop worrying about it.", es:"Tienes que controlarte y dejar de preocuparte por eso."},
+  {audio:"f079.mp3", en:"I told him I was busy, but he didn't get the message.", es:"Le dije que estaba ocupado, pero no pilló la indirecta."},
+  {audio:"f080.mp3", en:"Stop checking my social media and get a life.", es:"Deja de mirar mis redes sociales y búscate una vida."},
+  {audio:"f081.mp3", en:"I’ll get in touch with you as soon as I land.", es:"Me pondré en contacto contigo en cuanto aterrice."},
+  {audio:"f082.mp3", en:"It's hard at first, but you'll soon get the hang of it.", es:"Es difícil al principio, pero pronto le pillarás el truco."},
+  {audio:"f083.mp3", en:"The party really got out of hand last night.", es:"La fiesta se descontroló de verdad anoche."},
+  {audio:"f084.mp3", en:"It happened ages ago, just get over it.", es:"Pasó hace siglos, simplemente supéralo."},
+  {audio:"f085.mp3", en:"She talks so much I couldn't get a word in edgeways.", es:"Habla tanto que no pude meter baza."},
+  {audio:"f086.mp3", en:"That constant whistling is starting to get on my nerves.", es:"Ese silbido constante me está empezando a poner de los nervios."},
+  {audio:"f087.mp3", en:"Don't make a fuss, it's just a small scratch.", es:"No montes un lío, es solo un pequeño rasguño."},
+  {audio:"f088.mp3", en:"Please don't make a scene in the middle of the restaurant.", es:"Por favor, no montes un espectáculo en mitad del restaurante."},
+  {audio:"f089.mp3", en:"I don't care which one we pick, just make up your mind.", es:"No me importa cuál elijamos, solo decídete."},
+  {audio:"f090.mp3", en:"To make a long story short, we ended up sleeping in the car.", es:"Para abreviar, acabamos durmiendo en el coche."},
+  {audio:"f091.mp3", en:"I always make a point of saying thank you.", es:"Siempre me esmero en dar las gracias."},
+  {audio:"f092.mp3", en:"It’s getting harder and harder to make ends meet these days.", es:"Cada vez es más difícil llegar a fin de mes hoy en día."},
+  {audio:"f093.mp3", en:"The kids made a real mess in the kitchen.", es:"Los niños hicieron un auténtico desastre en la cocina."},
+  {audio:"f094.mp3", en:"It’s getting late, I think we should make a move.", es:"Se está haciendo tarde, creo que deberíamos irnos."},
+  {audio:"f095.mp3", en:"It's not nice to make fun of the way he talks.", es:"No está bien burlarse de su forma de hablar."},
+  {audio:"f096.mp3", en:"They made a killing when they sold their startup.", es:"Se forraron cuando vendieron su startup."},
+  {audio:"f097.mp3", en:"I've tried to tell her I'm not interested, but she can't take a hint.", es:"He intentado decirle que no me interesa, pero no pilla la indirecta."},
+  {audio:"f098.mp3", en:"I’m just going to stay home and take it easy tonight.", es:"Simplemente me voy a quedar en casa y relajarme esta noche."},
+  {audio:"f099.mp3", en:"You should take a chance and apply for that job.", es:"Deberías arriesgarte y solicitar ese trabajo."},
+  {audio:"f100.mp3", en:"I can't go tonight, can I take a rain check?", es:"No puedo ir esta noche, ¿lo dejamos para otra ocasión?"},
+  {audio:"f101.mp3", en:"This bus is taking forever to arrive.", es:"Este autobús está tardando una eternidad en llegar."},
+  {audio:"f102.mp3", en:"No rush, just take your time and do it right.", es:"Sin prisas, tómate tu tiempo y hazlo bien."},
+  {audio:"f103.mp3", en:"Can you take a look at my computer? It's acting weird.", es:"¿Puedes echarle un vistazo a mi ordenador? Se comporta raro."},
+  {audio:"f104.mp3", en:"I'm not going to take the blame for your mistakes.", es:"No voy a cargar con la culpa de tus errores."},
+  {audio:"f105.mp3", en:"I’m exhausted, I need to take a quick nap.", es:"Estoy agotado, necesito echarme una siesta rápida."},
+  {audio:"f106.mp3", en:"Come in and take a seat, the meeting's about to start.", es:"Entra y toma asiento, la reunión está a punto de empezar."},
+  {audio:"f107.mp3", en:"Can you keep an eye on my bag for a second?", es:"¿Puedes echarle un ojo a mi bolsa un segundo?"},
+  {audio:"f108.mp3", en:"I'll tell you, but only if you can keep a secret.", es:"Te lo diré, pero solo si sabes guardar un secreto."},
+  {audio:"f109.mp3", en:"Keep in mind that the office is closed on Mondays.", es:"Ten en cuenta que la oficina cierra los lunes."},
+  {audio:"f110.mp3", en:"It's hard to keep track of all these different passwords.", es:"Es difícil llevar la cuenta de todas estas contraseñas diferentes."},
+  {audio:"f111.mp3", en:"You did a great job keeping your cool during the argument.", es:"Hiciste un gran trabajo manteniendo la calma durante la discusión."},
+  {audio:"f112.mp3", en:"We should definitely keep in touch after you move.", es:"Definitivamente deberíamos mantener el contacto después de que te mudes."},
+  {audio:"f113.mp3", en:"I know things are tough, but keep your chin up.", es:"Sé que las cosas están difíciles, pero mantén el ánimo."},
+  {audio:"f114.mp3", en:"It was so funny I could hardly keep a straight face.", es:"Fue tan divertido que apenas pude aguantar la risa."},
+  {audio:"f115.mp3", en:"Keep me posted on any new developments.", es:"Manténme informado de cualquier novedad."},
+  {audio:"f116.mp3", en:"You’re doing great, keep it up!", es:"Lo estás haciendo genial, ¡sigue así!"},
+  {audio:"f117.mp3", en:"Could you give me a hand with these boxes?", es:"¿Podrías echarme una mano con estas cajas?"},
+  {audio:"f118.mp3", en:"I've never tried surfing before, but I'll give it a shot.", es:"Nunca he probado el surf, pero lo intentaré."},
+  {audio:"f119.mp3", en:"Do you need me to give you a lift to the station?", es:"¿Necesitas que te lleve a la estación?"},
+  {audio:"f120.mp3", en:"Give him a break, he's had a really long day.", es:"Dale un respiro, ha tenido un día muy largo."},
+  {audio:"f121.mp3", en:"I don't know why she's giving me the cold shoulder.", es:"No sé por qué me está ignorando."},
+  {audio:"f122.mp3", en:"You've been complaining all day, just give it a rest!", es:"Llevas todo el día quejándote, ¡déjalo ya!"},
+  {audio:"f123.mp3", en:"To be honest, I don't give a damn what they think.", es:"Para ser sincero, me importa un bledo lo que piensen."},
+  {audio:"f124.mp3", en:"Give me a call when you get home.", es:"Pegame un toque cuando llegues a casa."},
+  {audio:"f125.mp3", en:"Thanks for giving me a heads-up about the meeting.", es:"Gracias por avisarme con antelación sobre la reunión."},
+  {audio:"f126.mp3", en:"My boss is really giving me a hard time lately.", es:"Mi jefe me está dando mala vida últimamente."},
+  {audio:"f127.mp3", en:"You missed the target! You're losing your touch.", es:"¡Has fallado el blanco! Estás perdiendo la maña."},
+  {audio:"f128.mp3", en:"He told a joke to break the ice at the party.", es:"Contó un chiste para romper el hielo en la fiesta."},
+  {audio:"f129.mp3", en:"Let's go Dutch on the dinner tonight.", es:"Paguemos la cena a medias esta noche."},
+  {audio:"f130.mp3", en:"I'm tired, let's call it a day and go home.", es:"Estoy cansado, demos el día por terminado y vayamos a casa."},
+  {audio:"f131.mp3", en:"That red dress really caught my eye.", es:"Ese vestido rojo me llamó mucho la atención."},
+  {audio:"f132.mp3", en:"Cut me some slack, I'm still learning.", es:"Ten un poco de paciencia conmigo, aún estoy aprendiendo."},
+  {audio:"f133.mp3", en:"I'm feeling a bit under the weather today.", es:"Me siento un poco mal hoy."},
+  {audio:"f134.mp3", en:"I know it's hard, but hang in there, it'll get better.", es:"Sé que es difícil, pero aguanta, mejorará."},
+  {audio:"f135.mp3", en:"Let's make sure we stay in touch after the summer.", es:"Asegurémonos de no perder el contacto después del verano."},
+  {audio:"f136.mp3", en:"The floor is slippery, so watch your step.", es:"El suelo resbala, así que ten cuidado por donde pisas."}
+];
+
+let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0;
+const audioObj = new Audio();
+
+function initBlocks() {
+  const container = document.getElementById("blockContainer");
+  const numBlocks = Math.ceil(items.length / 10);
+  container.innerHTML = "";
+  for (let i = 0; i < numBlocks; i++) {
+    const btn = document.createElement("button");
+    btn.className = "block";
+    btn.textContent = i + 1;
+    btn.onclick = () => loadBlock(i);
+    container.appendChild(btn);
+  }
+  const btnT = document.createElement("button");
+  btnT.className = "block"; btnT.textContent = "T";
+  btnT.onclick = () => loadBlock('T');
+  container.appendChild(btnT);
+  loadBlock(0);
+}
+
+function loadBlock(b) {
+  currentBlockID = b;
+  let temp = [];
+  if (b === 'T') {
+    temp = items.map((item, i) => ({...item, realIdx: i+1}));
+  } else {
+    let start = b * 10;
+    let end = Math.min(start + 10, items.length);
+    for (let i = start; i < end; i++) {
+      temp.push({...items[i], realIdx: i+1});
+    }
+  }
+  currentBlockData = temp.sort(() => Math.random() - 0.5);
+  document.querySelectorAll(".block").forEach((btn) => {
+    btn.classList.toggle("active", (b === 'T' && btn.textContent === 'T') || (parseInt(btn.textContent)-1 === b));
+  });
+  pos = 0; learnedCount = 0;
+  update(true);
+}
+
+function update(fromAction = false) {
+  if (currentBlockData.length === 0) {
+    document.getElementById("en").textContent = "🎉 Bloc completat!";
+    document.getElementById("es").textContent = "";
+    document.getElementById("en").classList.remove("hidden");
+    return;
+  }
+  const item = currentBlockData[pos];
+  document.getElementById("es").classList.add("hidden");
+  document.getElementById("en").classList.add("hidden");
+  if (mode === "EN") {
+    document.getElementById("langLabel").textContent = "ANGLÈS";
+    if (fromAction) play(1.0);
+  } else {
+    document.getElementById("langLabel").textContent = "CASTELLÀ";
+    document.getElementById("es").textContent = item.es;
+    document.getElementById("es").classList.remove("hidden");
+  }
+  document.getElementById("counter").textContent = `${learnedCount} / ${currentBlockData.length + learnedCount}`;
+}
+
+function play(speed) {
+  if (currentBlockData.length === 0) return;
+  const item = currentBlockData[pos];
+  const newSrc = item.audio;
+  if (audioObj.src.includes(newSrc) && !audioObj.paused) {
+    audioObj.pause();
+  } else {
+    if (!audioObj.src.includes(newSrc)) { audioObj.src = newSrc; }
+    audioObj.playbackRate = speed;
+    audioObj.play().catch(() => {});
+  }
+}
+
+function reveal() {
+  if (currentBlockData.length === 0) return;
+  const item = currentBlockData[pos];
+  document.getElementById("es").textContent = item.es;
+  document.getElementById("en").textContent = item.en;
+  document.getElementById("es").classList.remove("hidden");
+  document.getElementById("en").classList.remove("hidden");
+  if (mode === "ES") play(1.0);
+}
+
+function know() {
+  if (currentBlockData.length === 0) return;
+  learnedCount++;
+  currentBlockData.splice(pos, 1);
+  if (pos >= currentBlockData.length) pos = 0;
+  update(true);
+}
+
+function nextOne() {
+  if (currentBlockData.length === 0) return;
+  pos = (pos + 1) % currentBlockData.length;
+  update(true);
+}
+
+function setMode(m) { mode = m; update(true); }
+
+function toggleList() {
+  const box = document.getElementById("listBox");
+  if (!box.classList.contains("hidden")) { box.classList.add("hidden"); return; }
+  box.innerHTML = "";
+  let start = currentBlockID === 'T' ? 0 : currentBlockID * 10;
+  let end = currentBlockID === 'T' ? items.length : Math.min(start + 10, items.length);
+  items.slice(start, end).forEach(i => {
+    const d = document.createElement("div");
+    d.style.padding = "10px 0"; d.style.borderBottom = "1px solid #eee";
+    d.innerHTML = `<div style="color:#0f172a; font-weight:800;">${i.en}</div><div style="color:#2563eb; font-weight:700;">${i.es}</div>`;
+    box.appendChild(d);
+  });
+  box.classList.remove("hidden");
+}
+
+function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "unknown"; }
+function markAsDone(el) {
+    localStorage.setItem(getFolderName(), new Date().toISOString());
+    el.innerHTML = "✓"; el.classList.add('marked');
+    alert("Lliçó marcada ✅");
+}
+const mainCheck = document.getElementById("mainCheck");
+if (localStorage.getItem(getFolderName())) { mainCheck.innerHTML = "✓"; mainCheck.classList.add('marked'); }
+initBlocks();
+</script>
+</body>
+</html>

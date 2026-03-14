@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Estudi FRASES · Collocations Informals</title>
+<title>Noves Frases d'Estudi (Català/Anglès)</title>
 <style>
 body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
 header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center}
@@ -46,8 +46,8 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 
 <header>
  <div class="mode-btns">
-  <button class="mode-en" onclick="setMode('EN')">Mode anglès → castellà</button>
-  <button class="mode-es" onclick="setMode('ES')">Mode castellà → anglès</button>
+  <button class="mode-en" onclick="setMode('EN')">Mode anglès → català</button>
+  <button class="mode-es" onclick="setMode('CA')">Mode català → anglès</button>
  </div>
 </header>
 
@@ -81,66 +81,51 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 
 <script>
 const items = [
-  {audio:"f077.mp3", en:"We need to get a move on if we want to catch the train.", es:"Tenemos que darnos prisa si queremos coger el tren."},
-  {audio:"f078.mp3", en:"You need to get a grip and stop worrying about it.", es:"Tienes que controlarte y dejar de preocuparte por eso."},
-  {audio:"f079.mp3", en:"I told him I was busy, but he didn't get the message.", es:"Le dije que estaba ocupado, pero no pilló la indirecta."},
-  {audio:"f080.mp3", en:"Stop checking my social media and get a life.", es:"Deja de mirar mis redes sociales y búscate una vida."},
-  {audio:"f081.mp3", en:"I’ll get in touch with you as soon as I land.", es:"Me pondré en contacto contigo en cuanto aterrice."},
-  {audio:"f082.mp3", en:"It's hard at first, but you'll soon get the hang of it.", es:"Es difícil al principio, pero pronto le pillarás el truco."},
-  {audio:"f083.mp3", en:"The party really got out of hand last night.", es:"La fiesta se descontroló de verdad anoche."},
-  {audio:"f084.mp3", en:"It happened ages ago, just get over it.", es:"Pasó hace siglos, simplemente supéralo."},
-  {audio:"f085.mp3", en:"She talks so much I couldn't get a word in edgeways.", es:"Habla tanto que no pude meter baza."},
-  {audio:"f086.mp3", en:"That constant whistling is starting to get on my nerves.", es:"Ese silbido constante me está empezando a poner de los nervios."},
-  {audio:"f087.mp3", en:"Don't make a fuss, it's just a small scratch.", es:"No montes un lío, es solo un pequeño rasguño."},
-  {audio:"f088.mp3", en:"Please don't make a scene in the middle of the restaurant.", es:"Por favor, no montes un espectáculo en mitad del restaurante."},
-  {audio:"f089.mp3", en:"I don't care which one we pick, just make up your mind.", es:"No me importa cuál elijamos, solo decídete."},
-  {audio:"f090.mp3", en:"To make a long story short, we ended up sleeping in the car.", es:"Para abreviar, acabamos durmiendo en el coche."},
-  {audio:"f091.mp3", en:"I always make a point of saying thank you.", es:"Siempre me esmero en dar las gracias."},
-  {audio:"f092.mp3", en:"It’s getting harder and harder to make ends meet these days.", es:"Cada vez es más difícil llegar a fin de mes hoy en día."},
-  {audio:"f093.mp3", en:"The kids made a real mess in the kitchen.", es:"Los niños hicieron un auténtico desastre en la cocina."},
-  {audio:"f094.mp3", en:"It’s getting late, I think we should make a move.", es:"Se está haciendo tarde, creo que deberíamos irnos."},
-  {audio:"f095.mp3", en:"It's not nice to make fun of the way he talks.", es:"No está bien burlarse de su forma de hablar."},
-  {audio:"f096.mp3", en:"They made a killing when they sold their startup.", es:"Se forraron cuando vendieron su startup."},
-  {audio:"f097.mp3", en:"I've tried to tell her I'm not interested, but she can't take a hint.", es:"He intentado decirle que no me interesa, pero no pilla la indirecta."},
-  {audio:"f098.mp3", en:"I’m just going to stay home and take it easy tonight.", es:"Simplemente me voy a quedar en casa y relajarme esta noche."},
-  {audio:"f099.mp3", en:"You should take a chance and apply for that job.", es:"Deberías arriesgarte y solicitar ese trabajo."},
-  {audio:"f100.mp3", en:"I can't go tonight, can I take a rain check?", es:"No puedo ir esta noche, ¿lo dejamos para otra ocasión?"},
-  {audio:"f101.mp3", en:"This bus is taking forever to arrive.", es:"Este autobús está tardando una eternidad en llegar."},
-  {audio:"f102.mp3", en:"No rush, just take your time and do it right.", es:"Sin prisas, tómate tu tiempo y hazlo bien."},
-  {audio:"f103.mp3", en:"Can you take a look at my computer? It's acting weird.", es:"¿Puedes echarle un vistazo a mi ordenador? Se comporta raro."},
-  {audio:"f104.mp3", en:"I'm not going to take the blame for your mistakes.", es:"No voy a cargar con la culpa de tus errores."},
-  {audio:"f105.mp3", en:"I’m exhausted, I need to take a quick nap.", es:"Estoy agotado, necesito echarme una siesta rápida."},
-  {audio:"f106.mp3", en:"Come in and take a seat, the meeting's about to start.", es:"Entra y toma asiento, la reunión está a punto de empezar."},
-  {audio:"f107.mp3", en:"Can you keep an eye on my bag for a second?", es:"¿Puedes echarle un ojo a mi bolsa un segundo?"},
-  {audio:"f108.mp3", en:"I'll tell you, but only if you can keep a secret.", es:"Te lo diré, pero solo si sabes guardar un secreto."},
-  {audio:"f109.mp3", en:"Keep in mind that the office is closed on Mondays.", es:"Ten en cuenta que la oficina cierra los lunes."},
-  {audio:"f110.mp3", en:"It's hard to keep track of all these different passwords.", es:"Es difícil llevar la cuenta de todas estas contraseñas diferentes."},
-  {audio:"f111.mp3", en:"You did a great job keeping your cool during the argument.", es:"Hiciste un gran trabajo manteniendo la calma durante la discusión."},
-  {audio:"f112.mp3", en:"We should definitely keep in touch after you move.", es:"Definitivamente deberíamos mantener el contacto después de que te mudes."},
-  {audio:"f113.mp3", en:"I know things are tough, but keep your chin up.", es:"Sé que las cosas están difíciles, pero mantén el ánimo."},
-  {audio:"f114.mp3", en:"It was so funny I could hardly keep a straight face.", es:"Fue tan divertido que apenas pude aguantar la risa."},
-  {audio:"f115.mp3", en:"Keep me posted on any new developments.", es:"Manténme informado de cualquier novedad."},
-  {audio:"f116.mp3", en:"You’re doing great, keep it up!", es:"Lo estás haciendo genial, ¡sigue así!"},
-  {audio:"f117.mp3", en:"Could you give me a hand with these boxes?", es:"¿Podrías echarme una mano con estas cajas?"},
-  {audio:"f118.mp3", en:"I've never tried surfing before, but I'll give it a shot.", es:"Nunca he probado el surf, pero lo intentaré."},
-  {audio:"f119.mp3", en:"Do you need me to give you a lift to the station?", es:"¿Necesitas que te lleve a la estación?"},
-  {audio:"f120.mp3", en:"Give him a break, he's had a really long day.", es:"Dale un respiro, ha tenido un día muy largo."},
-  {audio:"f121.mp3", en:"I don't know why she's giving me the cold shoulder.", es:"No sé por qué me está ignorando."},
-  {audio:"f122.mp3", en:"You've been complaining all day, just give it a rest!", es:"Llevas todo el día quejándote, ¡déjalo ya!"},
-  {audio:"f123.mp3", en:"To be honest, I don't give a damn what they think.", es:"Para ser sincero, me importa un bledo lo que piensen."},
-  {audio:"f124.mp3", en:"Give me a call when you get home.", es:"Pegame un toque cuando llegues a casa."},
-  {audio:"f125.mp3", en:"Thanks for giving me a heads-up about the meeting.", es:"Gracias por avisarme con antelación sobre la reunión."},
-  {audio:"f126.mp3", en:"My boss is really giving me a hard time lately.", es:"Mi jefe me está dando mala vida últimamente."},
-  {audio:"f127.mp3", en:"You missed the target! You're losing your touch.", es:"¡Has fallado el blanco! Estás perdiendo la maña."},
-  {audio:"f128.mp3", en:"He told a joke to break the ice at the party.", es:"Contó un chiste para romper el hielo en la fiesta."},
-  {audio:"f129.mp3", en:"Let's go Dutch on the dinner tonight.", es:"Paguemos la cena a medias esta noche."},
-  {audio:"f130.mp3", en:"I'm tired, let's call it a day and go home.", es:"Estoy cansado, demos el día por terminado y vayamos a casa."},
-  {audio:"f131.mp3", en:"That red dress really caught my eye.", es:"Ese vestido rojo me llamó mucho la atención."},
-  {audio:"f132.mp3", en:"Cut me some slack, I'm still learning.", es:"Ten un poco de paciencia conmigo, aún estoy aprendiendo."},
-  {audio:"f133.mp3", en:"I'm feeling a bit under the weather today.", es:"Me siento un poco mal hoy."},
-  {audio:"f134.mp3", en:"I know it's hard, but hang in there, it'll get better.", es:"Sé que es difícil, pero aguanta, mejorará."},
-  {audio:"f135.mp3", en:"Let's make sure we stay in touch after the summer.", es:"Asegurémonos de no perder el contacto después del verano."},
-  {audio:"f136.mp3", en:"The floor is slippery, so watch your step.", es:"El suelo resbala, así que ten cuidado por donde pisas."}
+    {audio:"f001.mp3",en:"When I hang clothes on the balcony I always use many clothespins because if it starts to get windy the clothes can easily fall from the line.",es:"Quan estenc la roba al balcó sempre utilitzo moltes pinces perquè si comença a fer vent la roba pot caure fàcilment del fil."},
+    {audio:"f002.mp3",en:"When I arrive home after work I usually hang my jacket on a hanger so it doesn't get wrinkled and it is easier to find the next day.",es:"Quan arribo a casa després de treballar normalment penjo la jaqueta en un penjador perquè no s’arrugui i sigui més fàcil trobar-la l’endemà."},
+    {audio:"f003.mp3",en:"The door was making a strange noise every time I opened it because one of the hinges was a little loose.",es:"La porta feia un soroll estrany cada vegada que l’obria perquè una de les frontisses estava una mica fluixa."},
+    {audio:"f004.mp3",en:"He closed the door with the latch because the wind was very strong and it could open it easily.",es:"Va tancar la porta amb el pestell perquè el vent era molt fort i podia obrir-la fàcilment."},
+    {audio:"f005.mp3",en:"The cord of the lamp was too short and I had to move the table so it could reach the socket.",es:"El cable de la làmpada era massa curt i vaig haver de moure la taula perquè arribés a l’endoll."},
+    {audio:"f006.mp3",en:"He put a padlock on the garage door because he wanted to make sure nobody could enter when he was not at home.",es:"Va posar un cadenat a la porta del garatge perquè volia assegurar-se que ningú pogués entrar quan ell no era a casa."},
+    {audio:"f007.mp3",en:"There was a small gap between two parked cars and we used that space to park ours.",es:"Hi havia un petit espai entre dos cotxes aparcats i vam aprofitar aquell espai per aparcar el nostre."},
+    {audio:"f008.mp3",en:"When it is very cold I prefer to wear several layers of clothes because then I can remove one if I get too warm later.",es:"Quan fa molt fred prefereixo portar diverses capes de roba perquè així em puc treure alguna peça si després tinc calor."},
+    {audio:"f009.mp3",en:"After walking for a while in the park we found a quiet spot under a tree where we could sit and talk.",es:"Després de caminar una estona pel parc vam trobar un lloc tranquil sota un arbre on vam poder seure i parlar."},
+    {audio:"f010.mp3",en:"When I looked at the wall more carefully I saw a small mark that I had not noticed before.",es:"Quan vaig mirar la paret amb més atenció vaig veure una petita marca que abans no havia notat."},
+    {audio:"f011.mp3",en:"The jeans I bought yesterday are so tight that they are actually hurting my thighs.",es:"Els texans que vaig comprar ahir són tan ajustats que de fet m’estan fent mal a les cuixes."},
+    {audio:"f012.mp3",en:"I have a very tight muscle in my left thigh after running that marathon last weekend.",es:"Tinc un múscul molt tens a la cuixa esquerra després de córrer aquella marató el cap de setmana passat."},
+    {audio:"f013.mp3",en:"Since these leggings are too tight I can barely feel my thighs when I sit down.",es:"Com que aquests leggings són massa ajustats gairebé no puc sentir les cuixes quan m’assec."},
+    {audio:"f014.mp3",en:"The sea is much rougher today than it was yesterday so we should probably stay on the shore.",es:"El mar està molt més picat avui que ahir així que probablement hauríem de quedar-nos a la riba."},
+    {audio:"f015.mp3",en:"This wooden table feels very rough so I need to sand it down to make it smoother.",es:"Aquesta taula de fusta és molt aspra al tacte així que hauré de polir-la perquè quedi més suau."},
+    {audio:"f016.mp3",en:"There were roughly fifty people at the party but it got out of hand when more started arriving.",es:"Hi havia aproximadament cinquanta persones a la festa però la situació es va descontrolar quan en van començar a arribar més."},
+    {audio:"f017.mp3",en:"The bark of this tree is even rougher than the one we saw earlier in the park.",es:"L’escorça d’aquest arbre és encara més aspra que la que vam veure abans al parc."},
+    {audio:"f018.mp3",en:"It was a really tough decision to sell the company but we made a killing in the end.",es:"Va ser una decisió molt difícil vendre l’empresa però al final hi vam guanyar molts diners."},
+    {audio:"f019.mp3",en:"The steak was so tough that I could hardly chew it so I complained to the waiter.",es:"El bistec era tan dur que gairebé no el podia mastegar així que em vaig queixar al cambrer."},
+    {audio:"f020.mp3",en:"I know you are going through a tough time right now but you need to keep your chin up.",es:"Sé que estàs passant per un moment difícil ara mateix però has d’intentar mantenir l’ànim."},
+    {audio:"f021.mp3",en:"Since the floor is still damp after mopping you should watch your step so you do not slip.",es:"Com que el terra encara està humit després de fregar hauries d’anar amb compte per no relliscar."},
+    {audio:"f022.mp3",en:"The fuse blew because the microwave and the oven were running at the same time.",es:"El fusible va saltar perquè el microondas i el forn estaven funcionant alhora."},
+    {audio:"f023.mp3",en:"I do not want to discuss this matter any further because it only brings me great sorrow.",es:"No vull parlar més d’aquest assumpte perquè només em provoca una gran tristesa."},
+    {audio:"f024.mp3",en:"If you have any further questions about how I blew the engine just let me know.",es:"Si tens alguna altra pregunta sobre com vaig espatllar el motor només cal que m’ho diguis."},
+    {audio:"f025.mp3",en:"Since it is roughly three miles to the station we need to get a move on or we will be late.",es:"Com que hi ha aproximadament tres milles fins a l’estació ens hem d’afanyar o arribarem tard."},
+    {audio:"f026.mp3",en:"One morning I went out to the balcony to hang the clothes and I used several clothespins because it was starting to get a little windy.",es:"Un matí vaig sortir al balcó per estendre la roba i vaig utilitzar diverses pinces perquè començava a fer una mica de vent."},
+    {audio:"f027.mp3",en:"Then I went back inside the house and hung my jacket on a hanger next to the door.",es:"Després vaig tornar a dins de casa i vaig penjar la jaqueta en un penjador al costat de la porta."},
+    {audio:"f028.mp3",en:"When I opened the garage door I heard a small noise because one of the hinges was a little loose.",es:"Quan vaig obrir la porta del garaje vaig sentir un petit soroll perquè una de les frontisses estava una mica fluixa."},
+    {audio:"f029.mp3",en:"Before leaving I closed the door with a padlock because I wanted to make sure everything was properly locked.",es:"Abans de marxar vaig tancar la porta amb un cadenat perquè volia assegurar-se que tot quedava ben tancat."},
+    {audio:"f030.mp3",en:"When I looked at the garage floor I noticed a small mark that I did not remember seeing before.",es:"Quan vaig mirar el terra del garatge vaig veure una petita marca que no recordava haver vist abans."},
+    {audio:"f031.mp3",en:"This morning I opened the shutters in the room because I wanted more natural light to come in while I started working calmly.",es:"Aquest matí he obert les persianes de l’habitació perquè volia que entrés més llum natural mentre començava a treballar tranquil·lament."},
+    {audio:"f032.mp3",en:"After the rain a large puddle formed in front of the entrance and I had to be careful not to get my shoes wet.",es:"Després de la pluja es va formar un bassal gran davant de l’entrada i vaig haver d’anar amb compte per no mullar-me les sabates."},
+    {audio:"f033.mp3",en:"The charger could not reach the socket so I had to move the chair a little so the cord could reach properly.",es:"El carregador no arribava a l’endoll així que vaig haver de moure la cadira una mica perquè el cable pogués arribar bé."},
+    {audio:"f034.mp3",en:"When I arrived too early at the bus stop I decided to sit on a bench for a while while watching people pass by in the street.",es:"Quan vaig arribar massa aviat a la parada d’autobús vaig decidir seure una estona en un banc mentre mirava la gent passar pel carrer."},
+    {audio:"f035.mp3",en:"Since it was very windy I had to hold my hat with my hand because the wind was almost blowing it away.",es:"Com que feia molt vent vaig haver d’aguantar el barret amb la mà perquè gairebé se me l’emportava l’aire."},
+    {audio:"f036.mp3",en:"After a while I realized that I had left the window open and that the room was starting to get cold.",es:"Al cap d’una estona em vaig adonar que havia deixat la finestra oberta i que l’habitació començava a refredar-se."},
+    {audio:"f037.mp3",en:"I had to go back home because I had left my keys on the table near the entrance before leaving.",es:"Vaig haver de tornar a casa perquè m’havia deixat les claus a la taula de l’entrada abans de sortir."},
+    {audio:"f038.mp3",en:"I wanted to go for a walk in the city center but in the end I decided to stay home and rest instead of going out.",es:"Volia sortir a caminar pel centre però al final vaig decidir quedar-me a casa i descansar una mica en lloc de sortir."},
+    {audio:"f039.mp3",en:"When I looked at the garage floor I saw a small puddle of water that must have come in under the door.",es:"Quan vaig mirar cap al terra del garatge vaig veure un bassal petit d’aigua que devia haver entrat per sota de la porta."},
+    {audio:"f040.mp3",en:"When I closed all the shutters in the evening the house became much quieter and more peaceful.",es:"Quan vaig tancar totes les persianes al vespre la casa va quedar molt més tranquil·la i silenciosa."},
+    {audio:"f041.mp3",en:"One Saturday morning I went out to the balcony to hang the clothes and I used several clothespins because it was starting to get a little windy. When I went back inside the house I hung my jacket on a hanger next to the door and I realized that one of the hinges was making a small noise every time I opened the door.",es:"Un dissabte al matí vaig sortir al balcó per estendre la roba i vaig utilitzar diverses pinces perquè començava a fer una mica de vent. Quan vaig tornar a dins de casa vaig penjar la jaqueta en un penjador al costat de la porta i em vaig adonar que una de les frontisses feia un petit soroll cada vegada que obria la porta."},
+    {audio:"f042.mp3",en:"When I left the house to go to the shop I saw that there was a puddle in front of the entrance because it had rained during the night. I walked to the park and found a quiet spot under a tree where I could sit for a while.",es:"Quan vaig sortir de casa per anar a la botiga vaig veure que hi havia un bassal davant de l’entrada perquè havia plogut durant la nit. Vaig caminar fins al parc i vaig trobar un lloc tranquil sota un arbre on vaig poder seure una estona."},
+    {audio:"f043.mp3",en:"One day I tried to connect a new lamp but the cord was short to reach the socket. I had to move the table a little until everything finally worked correctly.",es:"Un dia vaig intentar connectar una làmpada nova però el cable era massa curt per arribar a l’endoll. Vaig haver de moure la taula una mica fins que finalment tot va funcionar correctament."},
+    {audio:"f044.mp3",en:"When we arrived at the park we walked for a while until we found a quiet spot under a tree. We sat there and talked for almost an hour because the weather was very nice.",es:"Quan vam arribar al parc vam caminar una estona fins que vam trobar un lloc tranquil sota un arbre. Ens vam asseure allà i vam parlar durant gairebé una hora perquè feia molt bon temps."},
+    {audio:"f045.mp3",en:"Before leaving the house I closed the garage door with a padlock because I wanted to make sure everything stayed properly locked while we were away.",es:"Abans de marxar de casa vaig tancar la porta del garatge amb un cadenat perquè volia assegurar-me que tot quedava ben tancat mentre no hi érem."}
 ];
 
 let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0;
@@ -177,9 +162,11 @@ function loadBlock(b) {
     }
   }
   currentBlockData = temp.sort(() => Math.random() - 0.5);
+  
   document.querySelectorAll(".block").forEach((btn) => {
     btn.classList.toggle("active", (b === 'T' && btn.textContent === 'T') || (parseInt(btn.textContent)-1 === b));
   });
+
   pos = 0; learnedCount = 0;
   update(true);
 }
@@ -194,14 +181,16 @@ function update(fromAction = false) {
   const item = currentBlockData[pos];
   document.getElementById("es").classList.add("hidden");
   document.getElementById("en").classList.add("hidden");
+
   if (mode === "EN") {
     document.getElementById("langLabel").textContent = "ANGLÈS";
     if (fromAction) play(1.0);
   } else {
-    document.getElementById("langLabel").textContent = "CASTELLÀ";
+    document.getElementById("langLabel").textContent = "CATALÀ";
     document.getElementById("es").textContent = item.es;
     document.getElementById("es").classList.remove("hidden");
   }
+  
   document.getElementById("counter").textContent = `${learnedCount} / ${currentBlockData.length + learnedCount}`;
 }
 
@@ -209,10 +198,13 @@ function play(speed) {
   if (currentBlockData.length === 0) return;
   const item = currentBlockData[pos];
   const newSrc = item.audio;
+
   if (audioObj.src.includes(newSrc) && !audioObj.paused) {
     audioObj.pause();
   } else {
-    if (!audioObj.src.includes(newSrc)) { audioObj.src = newSrc; }
+    if (!audioObj.src.includes(newSrc)) {
+      audioObj.src = newSrc;
+    }
     audioObj.playbackRate = speed;
     audioObj.play().catch(() => {});
   }
@@ -250,10 +242,10 @@ function toggleList() {
   box.innerHTML = "";
   let start = currentBlockID === 'T' ? 0 : currentBlockID * 10;
   let end = currentBlockID === 'T' ? items.length : Math.min(start + 10, items.length);
-  items.slice(start, end).forEach(i => {
+  items.slice(start, end).forEach((i, idx) => {
     const d = document.createElement("div");
     d.style.padding = "10px 0"; d.style.borderBottom = "1px solid #eee";
-    d.innerHTML = `<div style="color:#0f172a; font-weight:800;">${i.en}</div><div style="color:#2563eb; font-weight:700;">${i.es}</div>`;
+    d.innerHTML = `<div style=\"color:#64748b; font-size:11px;\">#${start + idx + 1}</div><div style=\"color:#0f172a; font-weight:800;\">${i.en}</div><div style=\"color:#2563eb; font-weight:700;\">${i.es}</div>`;
     box.appendChild(d);
   });
   box.classList.remove("hidden");
@@ -265,8 +257,10 @@ function markAsDone(el) {
     el.innerHTML = "✓"; el.classList.add('marked');
     alert("Lliçó marcada ✅");
 }
+
 const mainCheck = document.getElementById("mainCheck");
 if (localStorage.getItem(getFolderName())) { mainCheck.innerHTML = "✓"; mainCheck.classList.add('marked'); }
+
 initBlocks();
 </script>
 </body>
