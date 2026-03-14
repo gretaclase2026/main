@@ -23,11 +23,11 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .audio-btn.vibrate{animation:vibrate 0.25s linear 2}
 @keyframes vibrate{0%{transform:translate(0)}25%{transform:translate(2px,-2px)}50%{transform:translate(-2px,2px)}75%{transform:translate(2px,2px)}100%{transform:translate(0)}}
 
-/* Barra de progreso estilo unificado */
+/* Estilos de la barra de progreso (lado a lado) */
 .progress-wrapper { 
     width: 100%; 
-    padding: 0 10px; 
-    margin: 15px 0 25px; 
+    padding: 0 5px; 
+    margin: 10px 0 20px; 
     box-sizing: border-box; 
 }
 input[type="range"] { 
@@ -35,13 +35,12 @@ input[type="range"] {
     cursor: pointer; 
     height: 10px; 
     border-radius: 5px; 
+    accent-color: #2563eb; 
     -webkit-appearance: none;
     background: #e5e7eb;
-    outline: none;
 }
-/* Ocultamos el tirador (thumb) para que solo se vea la línea */
-input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 0; height: 0; }
-input[type="range"]::-moz-range-thumb { width: 0; height: 0; border: none; }
+input[type="range"]::-webkit-slider-runnable-track { height: 10px; border-radius: 5px; }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; height: 18px; width: 18px; border-radius: 50%; background: #2563eb; margin-top: -4px; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
 
 .counter-side{position:absolute;right:10px;top:0;font-weight:bold;color:#2563eb;font-size:22px}
 #word{font-size:24px;font-weight:800;margin:20px 0;line-height:1.4;min-height:120px;text-align:center;display:flex;align-items:center;justify-content:center;padding:0 10px}
@@ -53,15 +52,6 @@ input[type="range"]::-moz-range-thumb { width: 0; height: 0; border: none; }
 .btn-know{background:#dcfce7}
 .btn-next{background:#fbcfe8}
 #list{margin-top:20px;background:#f9f9f9;padding:15px;border-radius:15px;display:none;border:1px solid #ddd}
-
-.check-box-manual {
-    position: absolute; top: 85px; right: 22px;
-    width: 24px; height: 24px;
-    background: #fff !important; border: 1.5px solid #22c55e !important;
-    border-radius: 6px; display: flex; align-items: center; justify-content: center;
-    cursor: pointer; z-index: 10; transition: all 0.2s; font-size: 14px;
-}
-.check-box-manual.marked { background: #22c55e !important; color: white; }
 </style>
 </head>
 <body>
@@ -120,7 +110,7 @@ const data = [
   {en: "Promoting peace and stability is vital for global progress.", es: "Promover la paz y la estabilidad es vital para el progreso global"},
   {en: "Civic engagement encourages people to participate in democracy.", es: "El compromiso cívico anima a la gente a participar en la democracia"},
   {en: "Social welfare programs provide a safety net for those in need.", es: "Los programas de bienestar social proporcionan una red de seguridad para quienes lo necesitan"},
-  {en: "Humanitarian aid is critical in regions affected by conflict.", es: "La ayuda hospitalaria es crítica en las regiones afectadas por conflictos"},
+  {en: "Humanitarian aid is critical in regions affected by conflict.", es: "La ayuda humanitaria es crítica en las regiones afectadas por conflictos"},
   {en: "Environmental protection is a responsibility we all share.", es: "La protección del medio ambiente es una responsabilidad que todos compartimos"},
   {en: "Inclusive policies ensure that no one is left behind.", es: "Las políticas inclusivas garantizan que nadie se quede atrás"},
   {en: "Empowering young people is key to a brighter future.", es: "Empoderar a los jóvenes es clave para un futuro mejor"},
@@ -163,25 +153,12 @@ let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockI
 const audioObj = document.getElementById("audio");
 const progressBar = document.getElementById("progressBar");
 
-// Lógica de la barra con degradado dinámico
-function updateBarGradient(val) {
-  progressBar.style.background = `linear-gradient(to right, #2563eb ${val}%, #e5e7eb ${val}%)`;
-}
-
+// Sincronizar barra con el audio
 audioObj.ontimeupdate = () => {
-  if (audioObj.duration) {
-    const percentage = (audioObj.currentTime / audioObj.duration) * 100;
-    progressBar.value = percentage;
-    updateBarGradient(percentage);
-  }
+  if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100;
 };
-
 progressBar.oninput = () => {
-  if (audioObj.duration) {
-    const val = progressBar.value;
-    audioObj.currentTime = (val / 100) * audioObj.duration;
-    updateBarGradient(val);
-  }
+  if (audioObj.duration) audioObj.currentTime = (progressBar.value / 100) * audioObj.duration;
 };
 
 function initBlocks() {
@@ -236,8 +213,6 @@ function update(fromNextAction = false) {
   }
   
   progressBar.value = 0;
-  updateBarGradient(0);
-  
   const item = currentBlockData[pos];
   const translation = `<span class="txt-es">${item.es}</span>`;
   const w = document.getElementById("word");
@@ -288,7 +263,6 @@ function playAudio(speed) {
   if (!audioObj.src.includes(fileName)) {
     audioObj.src = fileName;
     progressBar.value = 0;
-    updateBarGradient(0);
   }
   
   audioObj.playbackRate = speed;
@@ -309,7 +283,26 @@ function toggleList() {
   l.style.display = "block";
 }
 
-function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "unknown"; }
+initBlocks();
+
+// Mantener lógica de guardado
+const style = document.createElement('style');
+style.innerHTML = `
+    .check-box-manual {
+        position: absolute; top: 85px; right: 22px;
+        width: 24px; height: 24px;
+        background: #fff !important; border: 1.5px solid #22c55e !important;
+        border-radius: 6px; display: flex; align-items: center; justify-content: center;
+        cursor: pointer; z-index: 10; transition: all 0.2s; font-size: 14px;
+    }
+    .check-box-manual.marked { background: #22c55e !important; color: white; }
+`;
+document.head.appendChild(style);
+
+function getFolderName() {
+    return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "unknown";
+}
+
 function markAsDone(element) {
     localStorage.setItem(getFolderName(), new Date().toISOString());
     element.innerHTML = "✓";
@@ -326,8 +319,6 @@ if (localStorage.getItem(getFolderName())) {
 }
 box.onclick = function() { markAsDone(this); };
 card.appendChild(box);
-
-initBlocks();
 </script>
 </body>
 </html>

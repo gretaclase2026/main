@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Greta App - Frases Unificadas (Tema 4 y 5)</title>
+<title>Greta App - Frases Tema 5</title>
 <style>
 body{margin:0;font-family:sans-serif;background:#f9fafb;color:#0f172a}
 header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center}
@@ -60,7 +60,7 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 </header>
 <main>
 <div class="card">
- <div class="counter" id="counter">0 / 20</div>
+ <div class="counter" id="counter">0 / 8</div>
  <div class="check-box-manual" id="mainCheck" onclick="markAsDone(this)"></div>
  <div id="langLabel" class="lang">INGLÉS</div>
 
@@ -89,7 +89,6 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 
 <script>
 const items = [
-    /* Frases de Tema 5 (Originales index6) */
     {"audio": "f001.mp3", "en": "Even though the weather forecast predicted heavy rain all weekend, we decided to go hiking because we had already packed our gear and didn't want to waste the opportunity.", "es": "Aunque el pronostico del tiempo predecia lluvia intensa todo el fin de semana, decidimos ir de excursion porque ya habiamos empacado nuestro equipo y no queriamos desperdiciar la oportunidad."},
     {"audio": "f002.mp3", "en": "The company that I told you about yesterday is looking for a professional who has extensive experience in digital marketing and who is also willing to travel abroad.", "es": "La empresa de la que te hable ayer esta buscando a un profesional que tenga amplia experiencia en marketing digital y que tambien este dispuesto a viajar al extranjero."},
     {"audio": "f003.mp3", "en": "While I was walking through the park listening to my favorite podcast, I realized that I had forgotten to lock the front door, so I had to run back home as fast as I could.", "es": "Mientras caminaba por el parque escuchando mi podcast favorito, me di cuenta de que habia olvidado cerrar la puerta principal, asi que tuve que volver corriendo a casa lo mas rapido que pude."},
@@ -97,21 +96,7 @@ const items = [
     {"audio": "f005.mp3", "en": "I usually try to wake up early to exercise before going to work, but this morning I was so tired that I decided to hit the snooze button and sleep for another thirty minutes.", "es": "Normalmente trato de despertarme temprano para hacer ejercicio antes de ir a trabajar, pero esta mañana estaba tan cansado que decidi posponer la alarma y dormir otros treinta minutos."},
     {"audio": "f006.mp3", "en": "Since the fridge was almost empty, I went to the supermarket to buy some groceries, only to realize when I got to the checkout that I had left my wallet inside my other jacket.", "es": "Como la nevera estaba casi vacia, fui al supermercado a comprar comida, solo para darme cuenta al llegar a la caja de que habia dejado mi cartera dentro de mi otra chaqueta."},
     {"audio": "f007.mp3", "en": "I was planning to spend the afternoon cleaning the house, but I ended up watching a new series on Netflix that was so addictive that I couldn't stop until I finished the whole season.", "es": "Tenia planeado pasar la tarde limpiando la casa, pero termine viendo una serie nueva en Netflix que era tan adictiva que no pude parar hasta que termine la temporada completa."},
-    {"audio": "f008.mp3", "en": "While I was waiting for the bus to go downtown, I ran into an old friend from high school whom I hadn't seen in years, so we decided to grab a quick coffee and catch up.", "es": "Mientras esperaba el autobus para ir al centro, me encontre con un viejo amigo de la secundaria a quien no habia visto en años, asi que decidimos tomar un cafe rapido y ponernos al dia."},
-    
-    /* Frases de Tema 4 (Originales index7 - Renumeradas f009 a f020) */
-    {"audio": "f009.mp3", "en": "I spent the whole morning looking for a specific ingredient for the cake I wanted to bake, only to find out that the small grocery store around the corner had it all along.", "es": "Pase toda la mañana buscando un ingrediente especifico para el pastel que queria hornear, solo para descubrir que la pequeña tienda de comestibles a la vuelta de la esquina lo tuvo todo el tiempo."},
-    {"audio": "f010.mp3", "en": "Every time I want to sort out my wardrobe, I end up trying on clothes that I haven't worn in years and looking at myself in the mirror instead of actually organizing anything.", "es": "Cada vez que decido limpiar mi armario, termino probandome ropa que no me he puesto en años y mirandome en el espejo en lugar de organizar algo realmente."},
-    {"audio": "f011.mp3", "en": "My cat has the strange habit of sleeping on top of the television, which is quite annoying because she blocks the screen right when I am watching the most interesting part of a movie.", "es": "Mi gata tiene la extraña costumbre de dormir encima del televisor, lo cual es bastante molesto porque bloquea la pantalla justo cuando estoy viendo la parte mas interesante de una pelicula."},
-    {"audio": "f012.mp3", "en": "It was so hot inside the house today that I had to open all the windows to let some fresh air in, but then a lot of mosquitoes entered and I spent the night trying to catch them.", "es": "Hacia tanto calor dentro de casa hoy que tuve que abrir todas las ventanas para dejar entrar un poco de aire fresco, pero luego entraron muchos mosquitos y pase la noche intentando atraparlos."},
-    {"audio": "f013.mp3", "en": "I went to the market to buy some fresh fruit and vegetables, but the smell of the bakery next door was so tempting that I ended up buying three chocolate croissants that I didn't need.", "es": "Fui al mercado a comprar algunas frutas y verduras frescas, pero el olor de la panaderia de al lado era tan tentador que termine comprando tres croissants de chocolate que no necesitaba."},
-    {"audio": "f014.mp3", "en": "I’ve been trying to learn how to play the guitar by watching videos on the internet, but my fingers hurt so much after ten minutes that I usually give up and go watch TV instead.", "es": "He estado intentando aprender a tocar la guitarra viendo videos en internet, pero me duelen tanto los dedos despues de diez minutos que normalmente me rindo y me voy a ver la tele en su lugar."},
-    {"audio": "f015.mp3", "en": "While I was taking a walk around the neighborhood this afternoon, I noticed that they are building a new park where the old parking lot used to be, and I think it will look beautiful.", "es": "Mientras daba un paseo por el barrio esta tarde, note que estan construyendo un parque nuevo donde solia estar el antiguo estacionamiento, y creo que se vera hermoso."},
-    {"audio": "f016.mp3", "en": "My old coffee machine broke down this morning, so I had to go to the kitchen and prepare my coffee the traditional way, which took much longer than I expected but tasted much better.", "es": "Mi vieja cafetera se estropeo esta mañana, asi que tuve que ir a la cocina y preparar mi cafe de la manera tradicional, lo que tomo mucho mas tiempo de lo que esperaba pero sabia mucho mejor."},
-    {"audio": "f017.mp3", "en": "I was going to take a short nap after lunch to recover some energy, but the neighbor started using a drill to hang some pictures and the noise made it impossible for me to sleep.", "es": "Iba a tomar una siesta corta despues de almorzar para recuperar algo de energia, pero el vecino empezo a usar un taladro para colgar unos cuadros y el ruido hizo que me fuera imposible dormir."},
-    {"audio": "f018.mp3", "en": "I forgot to water the plants on the balcony for a whole week because I was too busy reading a book, so now I have to hope that they don't dry out completely before tomorrow.", "es": "Olvide regar las plantas del balcon durante una semana entera porque estaba demasiado ocupado leyendo un libro, asi que ahora tengo que esperar que no se sequen por completo antes de mañana."},
-    {"audio": "f019.mp3", "en": "I haven't called my sister in a while, so I'm going to make some tea and sit on the sofa for an hour to have a long conversation with her about everything that has happened lately.", "es": "No he llamado a mi hermana en un tiempo, asi que voy a preparar un poco de te y sentarme en el sofa durante una hora para tener una conversacion larga con ella sobre todo lo que ha pasado ultimamente."},
-    {"audio": "f020.mp3", "en": "I finally decided to organize the kitchen drawers where I keep all the plastic containers, but it seems impossible to find the right lid for any of them no matter how hard I look.", "es": "Finalmente decidi organizar los cajones de la cocina donde guardo todos los recipientes de plastico, pero parece imposible encontrar la tapa adecuada para ninguno de ellos sin importar cuanto busque."}
+    {"audio": "f008.mp3", "en": "While I was waiting for the bus to go downtown, I ran into an old friend from high school whom I hadn't seen in years, so we decided to grab a quick coffee and catch up.", "es": "Mientras esperaba el autobus para ir al centro, me encontre con un viejo amigo de la secundaria a quien no habia visto en años, asi que decidimos tomar un cafe rapido y ponernos al dia."}
 ];
 
 let remaining=[...items], current=null, mode="EN", known=0;
