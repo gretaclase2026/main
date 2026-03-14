@@ -1,37 +1,37 @@
  <!DOCTYPE html>
-<html lang="ca">
+<html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Estudi FRASES · Format Blanc</title>
+<title>Greta App - 83 Frases</title>
 <style>
-body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
+body{margin:0;font-family:sans-serif;background:#f9fafb;color:#0f172a}
 header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center}
 .mode-btns button{margin:0 6px;padding:8px 14px;border:none;border-radius:14px;font-weight:700;cursor:pointer}
 .mode-en{background:#dbeafe}
 .mode-es{background:#fde68a}
 main{display:flex;justify-content:center;padding:24px}
-.card{position:relative;width:100%;max-width:560px;background:#ffffff;border-radius:28px;padding:32px;box-shadow:0 10px 24px rgba(0,0,0,0.06);text-align:center}
+.card{position:relative;width:100%;max-width:560px;background:#fff;border-radius:28px;padding:32px;box-shadow:0 12px 30px rgba(0,0,0,0.08);text-align:center}
 .counter{position:absolute;top:18px;left:22px;font-weight:800;color:#2563eb}
 .lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
 
-/* Bloques de navegación */
+/* Bloques */
 .blocks{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:15px 0 20px}
 .block{width:32px;height:32px;border-radius:50%;border:none;background:#f1f5f9;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.2s}
 .block.active{background:#2563eb !important;color:#fff !important}
 
-/* Contenedor Audio y Barra de Progreso */
+/* Audio y Progreso */
 .audio-container { display: flex; justify-content: center; gap: 15px; margin: 10px 0 10px; }
 .audio-btn{width:85px;height:85px;border-radius:50%;border:none;background:#dbeafe;font-size:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
 .audio-btn.slow{background:#fef08a; font-size:26px;}
 .audio-btn:active{transform:scale(0.9)}
-
 .progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
 input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
 
 .hidden{display:none}
-.es{font-size:19px;color:#2563eb;margin-top:14px;line-height:1.4}
-.en{font-size:19px;color:#0f172a;margin-top:14px;font-weight:700;line-height:1.4}
+.key{font-size:16px;font-weight:900;color:#9333ea;margin:10px 0}
+.es{font-size:20px;color:#2563eb;margin-top:14px;line-height:1.4}
+.en{font-size:20px;color:#0f172a;margin-top:14px;font-weight:700;line-height:1.4}
 
 .buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:22px}
 button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;cursor:pointer}
@@ -41,8 +41,8 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 
 .list-btn{margin-top:16px;background:#e9d5ff;border:none;border-radius:16px;padding:14px;font-weight:800;cursor:pointer;width:100%}
 .list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
+.list-item{padding:10px 0;border-bottom:1px solid #e5e7eb}
 
-/* Cuadrito de marcado */
 .check-box-manual {
     position: absolute; top: 18px; right: 22px;
     width: 24px; height: 24px;
@@ -55,14 +55,12 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 </style>
 </head>
 <body>
-
 <header>
  <div class="mode-btns">
-  <button class="mode-en" onclick="setMode('EN')">Mode anglès → castellà</button>
-  <button class="mode-es" onclick="setMode('ES')">Mode castellà → anglès</button>
+  <button class="mode-en" onclick="setMode('EN')">ANGLÈS → CASTELLÀ</button>
+  <button class="mode-es" onclick="setMode('ES')">CASTELLÀ → ANGLÈS</button>
  </div>
 </header>
-
 <main>
 <div class="card">
  <div class="counter" id="counter">0 / 0</div>
@@ -80,6 +78,7 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
   <input type="range" id="progressBar" value="0" step="0.1">
  </div>
 
+ <div id="key" class="key hidden"></div>
  <div id="es" class="es hidden"></div>
  <div id="en" class="en hidden"></div>
 
@@ -92,18 +91,99 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
  <button class="list-btn" onclick="toggleList()">Veure tota la llista</button>
 </div>
 </main>
-
 <div id="listBox" class="list-box hidden"></div>
 
 <script>
-// He recortado la lista de items en este ejemplo para brevedad, pero mantén todos los tuyos (f001 a f076)
-const items = [{audio:"f001.mp3",en:"It was so dark in the hallway that I had a lot of trouble finding the keyhole with my keys, and I spent several minutes trying to open the door.",es:"Estaba tan oscuro en el pasillo que tuve muchos problemas para encontrar la cerradura con las llaves y pasé varios minutos intentando abrir la puerta."}, /* ... resto de tus items ... */];
+const items = [
+    {"audio":"f001.mp3","key":"put off / furthermore","es":"No quiero posponer mis deberes de ingles porque es muy importante para mi futuro; ademas, tengo mucho tiempo libre esta tarde y el tiempo es muy bueno para estudiar.","en":"I do not want to put off my English homework because it is very important for my future; besides, I have a lot of free time this afternoon and the weather is very good for studying."},
+    {"audio":"f002.mp3","key":"handy","es":"Mi nuevo telefono inteligente es muy practico porque puedo usar el GPS para encontrar un restaurante, puedo llamar a mi madre todos los dias, y tambien puedo hacer muchas fotos bonitas de mi gato en el parque.","en":"My new smartphone is very handy because I can use the GPS to find a restaurant, I can call my mother every day, and I can also take many beautiful photos of my cat in the park."},
+    {"audio":"f003.mp3","key":"otherwise","es":"Necesitas comer todas tus verduras y beber mucha agua cada mañana; de lo contrario, no tendras energia para jugar al futbol con tus amigos o ir al gimnasio por la noche.","en":"You need to eat all your vegetables and drink a lot of water every morning; otherwise, you will not have energy to play football with your friends or go to the gym at night."},
+    {"audio":"f004.mp3","key":"awkward","es":"Estaba en una fiesta grande con mucha gente y olvide el nombre de mi jefe, asi que hubo un silencio incomodo por mucho tiempo y me senti muy rojo de la cara.","en":"I was at a big party with many people and I forgot the name of my boss, so there was an awkward silence for a long time and I felt very red in the face."},
+    {"audio":"f005.mp3","key":"amusing","es":"Ayer vi una pelicula muy divertida sobre un grupo de perros que pueden hablar español y van a una ciudad grande para encontrar un tesoro secreto en una casa pequeña.","en":"Yesterday I saw a very amusing movie about a group of dogs that can speak Spanish and they go to a big city to find a secret treasure in a small house."},
+    {"audio":"f006.mp3","key":"amazing","es":"La vista desde la ventana de mi hotel es increible porque puedo ver el oceano azul, las montañas altas con nieve, y el sol hermoso cada mañana cuando bebo mi cafe.","en":"The view from the window of my hotel is amazing because I can see the blue ocean, the tall mountains with snow, and the beautiful sun every morning when I drink my coffee."},
+    {"audio":"f007.mp3","key":"harmless","es":"No necesitas tener miedo de ese animal pequeño en el jardin porque es completamente inofensivo, solo quiere comer algo de hierba verde y dormir bajo el arbol grande.","en":"You do not need to be afraid of that small animal in the garden because it is completely harmless, it only wants to eat some green grass and sleep under the big tree."},
+    {"audio":"f008.mp3","key":"Whereas","en":"My brother always eats a lot of junk food like burgers and pizza for dinner, whereas I prefer to eat a healthy salad with tomatoes and chicken because I want to be fit.","es":"Mi hermano siempre cena mucha comida basura como hamburguesas y pizza, mientras que yo prefiero comer una ensalada saludable con tomates y pollo porque quiero estar en forma."},
+    {"audio":"f009.mp3","key":"Therefore","en":"Yesterday I woke up very late and I didn't have time to eat breakfast at home; so, I was very hungry during my English class and I couldn't concentrate well.","es":"Ayer me desperte muy tarde y no tuve tiempo de desayunar en casa; por lo tanto, tuve mucha hambre durante mi clase de ingles y no pude concentrarme bien."},
+    {"audio":"f010.mp3","key":"Broad","en":"The new road near the park is very broad and beautiful, so many people go there every weekend to walk with their dogs or to ride their bicycles with their friends.","es":"La carretera nueva cerca del parque es muy ancha y bonita, asi que mucha gente va alli cada fin de semana para caminar con sus perros o para montar en sus bicicletas con sus amigos."},
+    {"audio":"f011.mp3","key":"Roughly","en":"I think there were roughly eighty students in the museum yesterday, and they were all wearing red jackets and carrying big backpacks with their lunch and water.","es":"Creo que habia aproximadamente ochenta estudiantes en el museo ayer, y todos llevaban chaquetas rojas y cargaban mochilas grandes con su almuerzo y agua."},
+    {"audio":"f012.mp3","key":"Rough","en":"We wanted to go to the beach to swim in the ocean, but the water was very rough and the wind was cold, so we decided to stay at the hotel and play games.","es":"Queriamos ir a la playa para nadar en el oceano, pero el agua estaba muy agitada y el viento estaba frio, asi que decidimos quedarnos en el hotel y jugar a juegos."},
+    {"audio":"f013.mp3","key":"Take up","en":"My best friend wants to take up a new hobby like photography or painting next summer because she has a lot of free time and she wants to learn something creative.","es":"Mi mejor amiga quiere empezar un nuevo hobby como la fotografia o la pintura el proximo verano porque tiene mucho tiempo libre y quiere aprender algo creativo."},
+    {"audio":"f014.mp3","key":"Warn","en":"I need to warn you that the movie is very long and a bit boring, so you should bring some snacks and a drink if you want to go to the cinema tonight.","es":"Necesito advertirte que la pelicula es muy larga y un poco aburrida, asi que deberias traer algunos aperitivos y una bebida si quieres ir al cine esta noche."},
+    {"audio":"f015.mp3","key":"Distraction","en":"Every time I try to organize my desk before starting to work, I end up finding old photographs and letters that distract me for hours, making me realize how much I miss the old days when everything was simpler.","es":"Cada vez que intento organizar mi escritorio antes de empezar a trabajar, acabo encontrando fotografias y cartas viejas que me distraen durante horas, haciendome darme cuenta de cuanto extraño los viejos tiempos cuando todo era mas sencillo."},
+    {"audio":"f016.mp3","key":"Mistake","en":"I was planning to cook a sophisticated dinner for my friends tonight, but since I burned the main course while I was talking on the phone, we had to order some pizza from the place across the street instead.","es":"Tenia planeado cocinar una cena sofisticada para mis amigos esta noche, pero como queme el plato principal mientras hablaba por telefono, tuvimos que pedir pizza del local de enfrente en su lugar."},
+    {"audio":"f017.mp3","key":"Delay","en":"Even though I left the house ten minutes earlier than usual to avoid the traffic jam, the heavy rain caused a major delay on the subway, which meant that I arrived late for my most important meeting of the week.","es":"Aunque sali de casa diez minutos antes de lo habitual para evitar el atasco, la fuerte lluvia causo un gran retraso en el metro, lo que significo que llegue tarde a mi reunion mas importante de la semana."},
+    {"audio":"f018.mp3","key":"Motivation","en":"I promised myself that I would go to the gym at least four times a week to stay healthy, but sometimes it is extremely difficult to find the motivation after a long and stressful day at the office.","es":"Me prometi a mi mismo que iria al gimnasio al menos cuatro veces por semana para mantenerme saludable, pero a veces es extremadamente dificil encontrar la motivacion despues de un dia largo y estresante en la oficina."},
+    {"audio":"f019.mp3","key":"Laundry","en":"The laundry has been piling up since last Monday, so I will have to spend my entire Saturday washing, drying, and folding clothes if I want to have something clean to wear for the rest of the month.","es":"La ropa sucia se ha estado acumulando desde el lunes pasado, asi que tendre que pasar todo mi sabado lavando, secando y doblando ropa si quiero tener algo limpio que ponerme durante el resto del mes."},
+    {"audio":"f020.mp3","key":"Repair","en":"While I was scrolling through social media yesterday, I found a tutorial on how to repair my broken laptop, but I think it might be too complicated for me to fix it without professional help.","es":"Mientras navegaba por las redes sociales ayer, encontre un tutorial sobre como reparar mi portatil roto, pero creo que podria ser demasiado complicado para mi arreglarlo sin ayuda profesional."},
+    {"audio":"f021.mp3","key":"Spending","en":"I went to the shopping mall just to buy a pair of socks, but I ended up spending way more money than I intended because there were so many discounts that I simply couldn't resist buying a new jacket.","es":"Fui al centro comercial solo para comprar un par de calcetines, pero termine gastando mucho mas dinero de lo que pretendia porque habia tantos descuentos que simplemente no pude resistirme a comprar una chaqueta nueva."},
+    {"audio":"f022.mp3","key":"Awake","en":"If I had known that caffeine would keep me awake until three in the morning, I would never have ordered that double espresso after dinner while I was out with my coworkers last night.","es":"Si hubiera sabido que la cafeina me mantendria despierto hasta las tres de la mañana, nunca habria pedido ese espresso doble despues de cenar mientras estaba fuera con mis compañeros anoche."},
+    {"audio":"f023.mp3","key":"Advice","en":"I noticed that the plants on my balcony were starting to turn yellow, so I decided to look for some advice online to find out if I was watering them too much or if they needed more sunlight.","es":"Note que las plantas de mi balcon estaban empezando a ponerse amarillas, asi que decidi buscar algunos consejos en internet para averiguar si las estaba regando demasiado o si necesitaban mas luz solar."},
+    {"audio":"f024.mp3","key":"Mechanic","en":"We were thinking about going to the beach this weekend, but since the car is making a strange noise, we might have to take it to the mechanic and stay in the city to explore the new museum instead.","es":"Estabamos pensando en ir a la playa este fin de semana, pero como el coche esta haciendo un ruido extraño, puede que tengamos que llevarlo al mecanico y quedarnos en la ciudad para explorar el nuevo museo en su lugar."},
+    {"audio":"f025.mp3","key":"Mud","en":"My dog always gets extremely excited when it rains, running through the mud and then entering the house before I can clean his paws, which means I have to mop the entire floor twice a day.","es":"Mi perro siempre se emociona muchisimo cuando llueve, corriendo por el barro y luego entrando en casa antes de que pueda limpiarle las patas, lo que significa que tengo que fregar todo el suelo dos veces al dia."},
+    {"audio":"f026.mp3","key":"Fluency","en":"The reason why I am practicing these long sentences is that I want to improve my fluency so that I can talk to native speakers without having to stop every two seconds to think about grammar.","es":"La razon por la que estoy practicando estas frases largas es que quiero mejorar mi fluidez para poder hablar con hablantes nativos sin tener que parar cada dos segundos para pensar en la gramatica."},
+    {"audio":"f027.mp3","key":"Tidy up","en":"I really need to tidy up my bedroom because I can't find my car keys anywhere, and I am already late for my dental appointment which starts in fifteen minutes.","es":"Realmente necesito ordenar mi dormitorio porque no encuentro las llaves de mi coche por ninguna parte, y ya llego tarde a mi cita con el dentista que empieza en quince minutos."},
+    {"audio":"f028.mp3","key":"Hang out","en":"On Sundays, I usually like to hang out with my friends at the park, where we play guitar and talk about our plans for the next summer holidays in Europe.","es":"Los domingos, normalmente me gusta pasar el rato con mis amigos en el parque, donde tocamos la guitarra y hablamos sobre nuestros planes para las próximas vacaciones de verano en Europa."},
+    {"audio":"f029.mp3","key":"Pick up","en":"Could you please pick up some milk and eggs on your way back home? I want to bake a chocolate cake for our neighbor's birthday party tonight.","es":"¿Podrías por favor recoger algo de leche y huevos de camino a casa? Quiero hornear un pastel de chocolate para la fiesta de cumpleaños de nuestro vecino esta noche."},
+    {"audio":"f030.mp3","key":"Get along","en":"I am very happy because my new roommate and I get along very well; we share the chores and often cook dinner together while listening to jazz music.","es":"Estoy muy feliz porque mi nuevo compañero de cuarto y yo nos llevamos muy bien; compartimos las tareas y a menudo cocinamos la cena juntos mientras escuchamos música jazz."},
+    {"audio":"f031.mp3","key":"Look forward to","en":"I am really looking forward to the long weekend because I finally have some time to finish reading the book that my sister gave me last Christmas.","es":"Realmente tengo muchas ganas de que llegue el fin de semana largo porque finalmente tengo algo de tiempo para terminar de leer el libro que mi hermana me regaló la Navidad pasada."},
+    {"audio":"f032.mp3","key":"Run out of","en":"We had to stop at the petrol station because the car was about to run out of fuel, and we still had two hundred kilometers to go before reaching the hotel.","es":"Tuvimos que parar en la gasolinera porque el coche estaba a punto de quedarse sin combustible, y todavía nos quedaban doscientos kilómetros antes de llegar al hotel."},
+    {"audio":"f033.mp3","key":"Set off","en":"We decided to set off very early in the morning, around five o'clock, to avoid the heavy traffic that usually builds up on the main highway during the holidays.","es":"Decidimos partir muy temprano por la mañana, alrededor de las cinco, para evitar el tráfico pesado que normalmente se forma en la carretera principal durante las vacaciones."},
+    {"audio":"f034.mp3","key":"Turn up","en":"I was surprised when my cousin turned up at my house without calling first, but I was glad to see him because he brought some delicious Italian pizza.","es":"Me sorprendió cuando mi primo apareció en mi casa sin llamar primero, pero me alegró verlo porque trajo una deliciosa pizza italiana."},
+    {"audio":"f035.mp3","key":"Work out","en":"I try to work out at the local gym three times a week because it helps me reduce stress and stay in good shape for the basketball season.","es":"Intento hacer ejercicio en el gimnasio local tres veces por semana porque me ayuda a reducir el estrés y a mantenerme en buena forma para la temporada de baloncesto."},
+    {"audio":"f036.mp3","key":"Call off","en":"They had to call off the outdoor concert because of the heavy rain and thunder, which was a shame because many people had traveled from far away to see it.","es":"Tuvieron que cancelar el concierto al aire libre debido a la fuerte lluvia y los truenos, lo cual fue una lástima porque mucha gente había viajado desde lejos para verlo."},
+    {"audio":"f037.mp3","key":"Get over","en":"It took him a long time to get over the flu, but now he finally feels strong enough to go back to work and start his daily routine again.","es":"Le tomó mucho tiempo recuperarse de la gripe, pero ahora finalmente se siente lo suficientemente fuerte como para volver al trabajo y empezar su rutina diaria de nuevo."},
+    {"audio":"f038.mp3","key":"Find out","en":"I need to go to the library to find out more information about the history of the city for the project I am working on for my university class.","es":"Necesito ir a la biblioteca para averiguar más información sobre la historia de la ciudad para el proyecto en el que estoy trabajando para mi clase de la universidad."},
+    {"audio":"f039.mp3","key":"Keep on","en":"If you keep on practicing your English every day, I am sure that you will be able to speak fluently and understand everything when you go to London.","es":"Si sigues practicando tu inglés todos los días, estoy seguro de que podrás hablar con fluidez y entenderlo todo cuando vayas a Londres."},
+    {"audio":"f040.mp3","key":"Make up","en":"The children love to make up stories about dragons and knights while they are playing in the garden during the long and warm summer afternoons.","es":"A los niños les encanta inventar historias sobre dragones y caballeros mientras juegan en el jardín durante las largas y cálidas tardes de verano."},
+    {"audio":"f041.mp3","key":"Carry on","en":"Despite the difficulties we faced at the beginning of the year, we must carry on with our plan if we want to achieve our goals before December.","es":"A pesar de las dificultades que enfrentamos a principios de año, debemos continuar con nuestro plan si queremos lograr nuestras metas antes de diciembre."},
+    {"audio":"f042.mp3","key":"Give up","en":"I decided to give up smoking because I realized how bad it was for my health, and now I feel much better and have more energy every day.","es":"Decidí dejar de fumar porque me di cuenta de lo malo que era para mi salud, y ahora me siento mucho mejor y tengo más energía cada día."},
+    {"audio":"f043.mp3","key":"Look after","en":"My grandmother is coming to stay with us for a few weeks, so I will have to look after her and make sure she has everything she needs.","es":"Mi abuela vendrá a quedarse con nosotros durante unas semanas, así que tendré que cuidarla y asegurarme de que tenga todo lo que necesita."},
+    {"audio":"f044.mp3","key":"Put on","en":"It is very cold outside today, so you should put on your heavy coat and a scarf before you go out to buy the newspaper and some bread.","es":"Hace mucho frío fuera hoy, así que deberías ponerte tu abrigo grueso y una bufanda antes de salir a comprar el periódico y algo de pan."},
+    {"audio":"f045.mp3","key":"Take off","en":"The plane is scheduled to take off at ten o'clock, so we need to be at the airport at least two hours before to check in our luggage.","es":"El avión está programado para despegar a las diez en punto, así que necesitamos estar en el aeropuerto al menos dos horas antes para facturar nuestro equipaje."},
+    {"audio":"f046.mp3","key":"Break down","en":"I hope my old car doesn't break down on the way to the wedding, because it has been making some very strange noises lately and the engine feels weak.","es":"Espero que mi coche viejo no se averíe de camino a la boda, porque ha estado haciendo algunos ruidos muy extraños últimamente y el motor se siente débil."},
+    {"audio":"f047.mp3","key":"Cheer up","en":"We bought some flowers and a box of chocolates to cheer her up because she has been feeling a bit sad since her best friend moved to another city.","es":"Compramos algunas flores y una caja de bombones para animarla porque se ha estado sintiendo un poco triste desde que su mejor amiga se mudó a otra ciudad."},
+    {"audio":"f048.mp3","key":"Deal with","en":"As a manager, she has to deal with many different problems every day, but she always manages to find a solution that makes everyone happy and satisfied.","es":"Como gerente, ella tiene que lidiar con muchos problemas diferentes cada día, pero siempre logra encontrar una solución que hace que todos estén felices y satisfechos."},
+    {"audio":"f049.mp3","key":"End up","en":"We got lost in the forest and we ended up walking for three hours before we finally found the small wooden bridge that leads back to the village.","es":"Nos perdimos en el bosque y terminamos caminando durante tres horas antes de que finalmente encontráramos el pequeño puente de madera que lleva de vuelta al pueblo."},
+    {"audio":"f050.mp3","key":"Go on","en":"Please go on with your story, it is very interesting and I want to know what happened after you found the mysterious letter in the old suitcase.","es":"Por favor, continúa con tu historia, es muy interesante y quiero saber qué pasó después de que encontraras la carta misteriosa en la maleta vieja."},
+    {"audio":"f051.mp3","key":"Hold on","en":"Can you hold on for a moment while I find a pen and a piece of paper to write down the address of the new restaurant?","es":"¿Puedes esperar un momento mientras encuentro un bolígrafo y un trozo de papel para anotar la dirección del nuevo restaurante?"},
+    {"audio":"f052.mp3","key":"Keep up with","en":"It is hard to keep up with all the new technology these days, but I try to read some articles every week to stay informed about the latest trends.","es":"Es difícil mantenerse al día con toda la nueva tecnología en estos días, pero intento leer algunos artículos cada semana para mantenerme informado sobre las últimas tendencias."},
+    {"audio":"f053.mp3","key":"Let down","en":"I am sorry that I couldn't help you with your project yesterday, I didn't mean to let you down, but I had an unexpected emergency at home.","es":"Siento no haber podido ayudarte con tu proyecto ayer, no fue mi intención decepcionarte, pero tuve una emergencia inesperada en casa."},
+    {"audio":"f054.mp3","key":"Pass out","en":"It was so hot and crowded in the metro station that I thought I was going to pass out, so I decided to get out and walk instead.","es":"Hacía tanto calor y había tanta gente en la estación de metro que pensé que me iba a desmayar, así que decidí salir y caminar en su lugar."},
+    {"audio":"f055.mp3","key":"Put up with","en":"I don't know how she can put up with his constant complaining every single day; she must have a lot of patience and a very kind heart.","es":"No sé cómo ella puede soportar sus constantes quejas cada santo día; debe tener mucha paciencia y un corazón muy bondadoso."},
+    {"audio":"f056.mp3","key":"Show off","en":"He likes to show off his new sports car whenever he has the chance, driving slowly through the main street so that everyone can see it and admire it.","es":"Le gusta presumir de su nuevo coche deportivo cada vez que tiene la oportunidad, conduciendo despacio por la calle principal para que todos puedan verlo y admirarlo."},
+    {"audio":"f057.mp3","key":"Take after","en":"Everyone says that I take after my father because we both have the same blue eyes, the same smile, and a great passion for classical music and history.","es":"Todos dicen que me parezco a mi padre porque ambos tenemos los mismos ojos azules, la misma sonrisa y una gran pasión por la música clásica y la historia."},
+    {"audio":"f058.mp3","key":"Watch out","en":"You should watch out for the ice on the pavement because it is very slippery today and you don't want to fall down and hurt your leg again.","es":"Deberías tener cuidado con el hielo en la acera porque está muy resbaladizo hoy y no querrás caerte y lastimarte la pierna de nuevo."},
+    {"audio":"f059.mp3","key":"Wear out","en":"I need to buy some new running shoes because my old ones are completely worn out after all the training I have done for the marathon next month.","es":"Necesito comprar unas zapatillas de correr nuevas porque las viejas están completamente gastadas después de todo el entrenamiento que he hecho para el maratón del próximo mes."},
+    {"audio":"f060.mp3","key":"Back up","en":"It is always a good idea to back up your important files on an external hard drive, just in case your computer crashes or gets a virus.","es":"Siempre es una buena idea hacer una copia de seguridad de tus archivos importantes en un disco duro externo, por si acaso tu ordenador se estropea o le entra un virus."},
+    {"audio":"f061.mp3","key":"Bring up","en":"I didn't want to bring up the subject of money during dinner, but I think we need to discuss our budget for the upcoming trip to Japan.","es":"No quería sacar el tema del dinero durante la cena, pero creo que necesitamos discutir nuestro presupuesto para el próximo viaje a Japón."},
+    {"audio":"f062.mp3","key":"Come across","en":"While I was cleaning the attic, I came across an old box full of childhood toys and photographs that brought back many happy memories from my school years.","es":"Mientras limpiaba el ático, me encontré con una caja vieja llena de juguetes de la infancia y fotografías que me trajeron muchos recuerdos felices de mis años escolares."},
+    {"audio":"f063.mp3","key":"Cut down on","en":"The doctor told me that I need to cut down on sugar and salt if I want to improve my blood pressure and feel more energetic during the day.","es":"El médico me dijo que necesito reducir el azúcar y la sal si quiero mejorar mi presión arterial y sentirme con más energía durante el día."},
+    {"audio":"f064.mp3","key":"Drop off","en":"Can you drop me off at the train station on your way to work? My car is at the mechanic and I need to catch the nine o'clock train.","es":"¿Puedes dejarme en la estación de tren de camino al trabajo? Mi coche está en el mecánico y necesito coger el tren de las nueve."},
+    {"audio":"f065.mp3","key":"Fall apart","en":"This old suitcase is starting to fall apart, so I think it's time to buy a new one before our next holiday to the mountains in February.","es":"Esta maleta vieja está empezando a romperse en pedazos, así que creo que es hora de comprar una nueva antes de nuestras próximas vacaciones a las montañas en febrero."},
+    {"audio":"f066.mp3","key":"Fill in","en":"Please fill in this form with your personal details and sign it at the bottom before you hand it back to the receptionist at the front desk.","es":"Por favor, rellene este formulario con sus datos personales y fírmelo al final antes de devolvérselo al recepcionista en el mostrador principal."},
+    {"audio":"f067.mp3","key":"Get by","en":"When I first moved to Paris, my French wasn't very good, but I managed to get by with the help of a dictionary and some very kind neighbors.","es":"Cuando me mudé a París por primera vez, mi francés no era muy bueno, pero me las arreglé para sobrevivir con la ayuda de un diccionario y algunos vecinos muy amables."},
+    {"audio":"f068.mp3","key":"Give in","en":"After hours of begging, my parents finally gave in and let me adopt a puppy from the local animal shelter, which made me the happiest person in the world.","es":"Después de horas de rogar, mis padres finalmente cedieron y me dejaron adoptar un cachorro del refugio de animales local, lo que me hizo la persona más feliz del mundo."},
+    {"audio":"f069.mp3","key":"Look into","en":"The police are looking into the cause of the accident that happened last night on the highway, and they are asking for any witnesses to come forward.","es":"La policía está investigando la causa del accidente que ocurrió anoche en la carretera, y están pidiendo que cualquier testigo se presente."},
+    {"audio":"f070.mp3","key":"Pass away","en":"We were all very sad to hear that our old neighbor passed away last week; he was a very kind man who always had a smile for everyone.","es":"A todos nos entristeció mucho saber que nuestro viejo vecino falleció la semana pasada; era un hombre muy amable que siempre tenía una sonrisa para todos."},
+    {"audio":"f071.mp3","key":"Point out","en":"I would like to point out that we have already exceeded our budget for this month, so we need to be more careful with our spending from now on.","es":"Me gustaría señalar que ya hemos superado nuestro presupuesto para este mes, por lo que debemos tener más cuidado con nuestros gastos a partir de ahora."},
+    {"audio":"f072.mp3","key":"Rely on","en":"You can always rely on her to do a great job because she is very professional, hardworking, and always pays attention to even the smallest details.","es":"Siempre puedes confiar en ella para hacer un gran trabajo porque es muy profesional, trabajadora y siempre presta atención incluso a los detalles más pequeños."},
+    {"audio":"f073.mp3","key":"Sort out","en":"We need to sort out the documents for the tax return before the deadline, otherwise we might have to pay a fine to the government next month.","es":"Necesitamos organizar los documentos para la declaración de la renta antes de la fecha límite, de lo contrario podríamos tener que pagar una multa al gobierno el próximo mes."},
+    {"audio":"f074.mp3","key":"Take up","en":"I am thinking about taking up yoga because I have heard it is very good for both physical health and mental well-being, especially after a long day.","es":"Estoy pensando en empezar a hacer yoga porque he oído que es muy bueno tanto para la salud física como para el bienestar mental, especialmente después de un largo día."},
+    {"audio":"f075.mp3","key":"Tell off","en":"The teacher had to tell off the students because they were talking too loudly and not paying attention to the lesson about the history of the Roman Empire.","es":"El profesor tuvo que regañar a los alumnos porque estaban hablando demasiado alto y no prestaban atención a la lección sobre la historia del Imperio Romano."},
+    {"audio":"f076.mp3","key":"Throw away","en":"Don't throw away those old magazines yet; I want to look through them one last time to see if there are any interesting recipes for the weekend.","es":"No tires esas revistas viejas todavía; quiero echarles un vistazo por última vez para ver si hay alguna receta interesante para el fin de semana."},
+    {"audio":"f077.mp3","key":"Try on","en":"I would like to try on this blue jacket in a medium size, please. Where are the changing rooms? I want to see if it fits me well.","es":"Me gustaría probarme esta chaqueta azul en una talla mediana, por favor. ¿Dónde están los probadores? Quiero ver si me queda bien."},
+    {"audio":"f078.mp3","key":"Turn down","en":"They offered him a job in another city, but he had to turn it down because he didn't want to move away from his family and his friends.","es":"Le ofrecieron un trabajo en otra ciudad, pero tuvo que rechazarlo porque no quería mudarse lejos de su familia y sus amigos."},
+    {"audio":"f079.mp3","key":"Use up","en":"We have used up all the coffee, so I will have to go to the supermarket later to buy some more, and maybe some biscuits as well.","es":"Hemos gastado todo el café, así que tendré que ir al supermercado más tarde para comprar más, y quizás algunas galletas también."},
+    {"audio":"f080.mp3","key":"Wake up","en":"I usually wake up at seven o'clock in the morning, but on weekends I like to stay in bed until ten and read the news on my tablet.","es":"Normalmente me despierto a las siete de la mañana, pero los fines de semana me gusta quedarme en la cama hasta las diez y leer las noticias en mi tableta."},
+    {"audio":"f081.mp3","key":"Walk out","en":"The workers decided to walk out in protest against the new safety regulations that the company wanted to implement without discussing them with the union first.","es":"Los trabajadores decidieron declararse en huelga en protesta contra las nuevas regulaciones de seguridad que la empresa quería implementar sin discutirlas primero con el sindicato."},
+    {"audio":"f082.mp3","key":"Work out","en":"Things didn't work out as we had expected, but we learned a lot from the experience and we are ready to try again with a better plan.","es":"Las cosas no salieron como esperábamos, pero aprendimos mucho de la experiencia y estamos listos para intentarlo de nuevo con un plan mejor."},
+    {"audio":"f083.mp3","key":"Write down","en":"Please write down your phone number and email address on this piece of paper so that I can contact you as soon as I have more information.","es":"Por favor, anote su número de teléfono y dirección de correo electrónico en este trozo de papel para que pueda ponerme en contacto con usted tan pronto como tenga más información."}
+];
 
 let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0;
 const audioObj = new Audio();
 const progressBar = document.getElementById("progressBar");
 
-// Lógica de la barra de progreso
 audioObj.ontimeupdate = () => {
   if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100;
 };
@@ -138,39 +218,37 @@ function loadBlock(b) {
   } else {
     let start = b * 10;
     let end = Math.min(start + 10, items.length);
-    for (let i = start; i < end; i++) {
-      temp.push({...items[i], realIdx: i+1});
-    }
+    for (let i = start; i < end; i++) temp.push({...items[i], realIdx: i+1});
   }
   currentBlockData = temp.sort(() => Math.random() - 0.5);
-  
   document.querySelectorAll(".block").forEach((btn) => {
     btn.classList.toggle("active", (b === 'T' && btn.textContent === 'T') || (parseInt(btn.textContent)-1 === b));
   });
-
   pos = 0; learnedCount = 0;
   update(true);
 }
 
 function update(fromAction = false) {
   if (currentBlockData.length === 0) {
-    document.getElementById("en").textContent = "🎉 Bloc completat!";
-    document.getElementById("es").textContent = "";
+    document.getElementById("en").innerHTML = "🎉 ¡Bloque completado!";
+    document.getElementById("es").innerHTML = "";
+    document.getElementById("key").classList.add("hidden");
     document.getElementById("en").classList.remove("hidden");
     return;
   }
   
-  progressBar.value = 0; // Reset barra al cambiar frase
+  progressBar.value = 0;
   const item = currentBlockData[pos];
   document.getElementById("es").classList.add("hidden");
   document.getElementById("en").classList.add("hidden");
+  document.getElementById("key").classList.add("hidden");
 
   if (mode === "EN") {
-    document.getElementById("langLabel").textContent = "ANGLÈS";
+    document.getElementById("langLabel").textContent = "INGLÉS";
     if (fromAction) play(1.0);
   } else {
-    document.getElementById("langLabel").textContent = "CASTELLÀ";
-    document.getElementById("es").textContent = item.es;
+    document.getElementById("langLabel").textContent = "CASTELLANO";
+    document.getElementById("es").innerHTML = item.es;
     document.getElementById("es").classList.remove("hidden");
   }
   
@@ -180,12 +258,10 @@ function update(fromAction = false) {
 function play(speed) {
   if (currentBlockData.length === 0) return;
   const item = currentBlockData[pos];
-  
   if (!audioObj.src.includes(item.audio)) {
     audioObj.src = item.audio;
     progressBar.value = 0;
   }
-  
   audioObj.playbackRate = speed;
   audioObj.play().catch(() => {});
 }
@@ -193,8 +269,12 @@ function play(speed) {
 function reveal() {
   if (currentBlockData.length === 0) return;
   const item = currentBlockData[pos];
-  document.getElementById("es").textContent = item.es;
-  document.getElementById("en").textContent = item.en;
+  if(item.key) {
+      document.getElementById("key").textContent = "Clave: " + item.key;
+      document.getElementById("key").classList.remove("hidden");
+  }
+  document.getElementById("es").innerHTML = item.es;
+  document.getElementById("en").innerHTML = item.en;
   document.getElementById("es").classList.remove("hidden");
   document.getElementById("en").classList.remove("hidden");
   if (mode === "ES") play(1.0);
@@ -222,24 +302,26 @@ function toggleList() {
   box.innerHTML = "";
   let start = currentBlockID === 'T' ? 0 : currentBlockID * 10;
   let end = currentBlockID === 'T' ? items.length : Math.min(start + 10, items.length);
-  items.slice(start, end).forEach(i => {
+  items.slice(start, end).forEach((i, idx) => {
     const d = document.createElement("div");
-    d.style.padding = "10px 0"; d.style.borderBottom = "1px solid #eee";
-    d.innerHTML = `<div style="color:#0f172a; font-weight:800;">${i.en}</div><div style="color:#2563eb; font-weight:700;">${i.es}</div>`;
+    d.className = "list-item";
+    d.innerHTML = `<div style="color:#64748b; font-size:11px;">#${start + idx + 1}</div><div style="color:#2563eb; font-weight:700;">${i.es}</div><div style="color:#0f172a; font-weight:800;">${i.en}</div>`;
     box.appendChild(d);
   });
   box.classList.remove("hidden");
 }
 
-function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "unknown"; }
+function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "unificado"; }
 function markAsDone(el) {
     localStorage.setItem(getFolderName(), new Date().toISOString());
     el.innerHTML = "✓"; el.classList.add('marked');
     alert("Lliçó marcada ✅");
 }
 
-const mainCheck = document.getElementById("mainCheck");
-if (localStorage.getItem(getFolderName())) { mainCheck.innerHTML = "✓"; mainCheck.classList.add('marked'); }
+if (localStorage.getItem(getFolderName())) { 
+    const mc = document.getElementById("mainCheck");
+    mc.innerHTML = "✓"; mc.classList.add('marked'); 
+}
 
 initBlocks();
 </script>

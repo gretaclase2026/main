@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ca">
 <head>
 <meta charset="UTF-8">
@@ -12,44 +12,24 @@ header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex
 .mode-ca{background:#fde68a}
 main{display:flex;justify-content:center;padding:24px}
 .card{position:relative;width:100%;max-width:560px;background:#ffffff;border-radius:28px;padding:32px;box-shadow:0 10px 24px rgba(0,0,0,0.06);text-align:center}
-.counter{position:absolute;top:18px;left:22px;font-weight:800;color:#2563eb}
+.counter{position:absolute;top:18px;right:22px;font-weight:800;color:#2563eb}
 .lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
-
-/* Audio y Progreso */
-.audio-container { display: flex; justify-content: center; gap: 15px; margin: 10px 0 10px; }
-.audio-btn{width:85px;height:85px;border-radius:50%;border:none;background:#dbeafe;font-size:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
-.audio-btn.slow{background:#fef08a; font-size:26px;}
-.audio-btn:active{transform:scale(0.9)}
-.progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
-input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
-
+.audio-btn{width:120px;height:120px;border-radius:50%;border:none;background:#dbeafe;font-size:36px;cursor:pointer;margin:6px auto 10px}
 .hidden{display:none}
 .key{font-size:16px;font-weight:900;color:#9333ea;margin:10px 0}
-.ca{font-size:20px;color:#2563eb;margin-top:14px;line-height:1.4}
-.en{font-size:20px;color:#0f172a;margin-top:14px;font-weight:700;line-height:1.4}
-
+.ca{font-size:20px;color:#2563eb;margin-top:14px}
+.en{font-size:20px;color:#0f172a;margin-top:14px;font-weight:700}
 .buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:22px}
 button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;cursor:pointer}
 .reveal{background:#e0f2fe}
 .know{background:#dcfce7}
 .next{background:#fbcfe8}
-
-.list-btn{margin-top:16px;background:#e9d5ff;border:none;border-radius:16px;padding:14px;font-weight:800;cursor:pointer;width:100%}
+.list-btn{margin-top:16px;background:#e9d5ff;border:none;border-radius:16px;padding:14px;font-weight:800;cursor:pointer}
 .list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
 .list-item{padding:10px 0;border-bottom:1px solid #e5e7eb}
 .list-ca{color:#2563eb;font-weight:700}
 .list-en{color:#0f172a;font-weight:800}
 .end{margin-top:16px;font-weight:800;color:#16a34a}
-
-.check-box-manual {
-    position: absolute; top: 18px; right: 22px;
-    width: 24px; height: 24px;
-    background: #fff; border: 1.5px solid #22c55e;
-    border-radius: 6px; display: flex;
-    align-items: center; justify-content: center;
-    cursor: pointer; z-index: 10; font-size: 14px;
-}
-.check-box-manual.marked { background: #22c55e !important; color: white !important; }
 </style>
 </head>
 <body>
@@ -64,17 +44,8 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 <main>
 <div class="card">
  <div class="counter" id="counter">0 / 10</div>
- <div class="check-box-manual" id="mainCheck" onclick="markAsDone(this)"></div>
  <div id="langLabel" class="lang">ANGLÈS</div>
-
- <div class="audio-container">
-  <button class="audio-btn" onclick="play(1.0)">🔊</button>
-  <button class="audio-btn slow" onclick="play(0.75)">🐢</button>
- </div>
-
- <div class="progress-wrapper">
-  <input type="range" id="progressBar" value="0" step="0.1">
- </div>
+ <button class="audio-btn" onclick="play()">🔊</button>
 
  <div id="key" class="key hidden"></div>
  <div id="ca" class="ca hidden"></div>
@@ -109,38 +80,23 @@ const items = [
 
 const total = items.length;
 let remaining=[...items], current=null, mode="EN", known=0;
-const audioObj = new Audio();
-const progressBar = document.getElementById("progressBar");
-
-// Lógica de la barra de progreso
-audioObj.ontimeupdate = () => {
-  if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100;
-};
-
-progressBar.oninput = () => {
-  if (audioObj.duration) audioObj.currentTime = (progressBar.value / 100) * audioObj.duration;
-};
+let audio = new Audio();
 
 function updateCounter(){ counter.textContent = known + " / " + total; }
 
-function load(fromAction = false){
+function load(){
  if(!remaining.length){
   endMsg.classList.remove("hidden");
-  ca.classList.add("hidden");
-  en.classList.add("hidden");
-  key.classList.add("hidden");
   return;
  }
- 
  current = remaining[Math.floor(Math.random()*remaining.length)];
- progressBar.value = 0;
  key.classList.add("hidden");
  ca.classList.add("hidden");
  en.classList.add("hidden");
 
  if(mode==="EN"){
   langLabel.textContent="ANGLÈS";
-  if (fromAction) play(1.0);
+  play();
  } else {
   langLabel.textContent="CATALÀ";
   ca.textContent=current.ca;
@@ -148,15 +104,7 @@ function load(fromAction = false){
  }
 }
 
-function play(speed){ 
-  if(current){ 
-    if (!audioObj.src.includes(current.audio)) {
-      audioObj.src = current.audio;
-    }
-    audioObj.playbackRate = speed;
-    audioObj.play().catch(() => {}); 
-  } 
-}
+function play(){ if(current){ audio.src=current.audio; audio.play(); } }
 
 function reveal(){
  if(!current) return;
@@ -166,29 +114,57 @@ function reveal(){
  en.textContent=current.en;
  ca.classList.remove("hidden");
  en.classList.remove("hidden");
- if(mode==="CA") play(1.0);
+ if(mode==="CA") play();
 }
 
 function know(){
  remaining = remaining.filter(i=>i!==current);
- known++; updateCounter(); load(true);
+ known++; updateCounter(); load();
 }
 
-function nextOne(){ load(true); }
-function setMode(m){ mode=m; load(true); }
+function nextOne(){ load(); }
+function setMode(m){ mode=m; load(); }
 
 function toggleList(){
- const box = document.getElementById("listBox");
- if (!box.classList.contains("hidden")) { box.classList.add("hidden"); return; }
- box.innerHTML="";
+ listBox.innerHTML="";
  items.forEach(i=>{
   const d=document.createElement("div");
   d.className="list-item";
   d.innerHTML="<div class='list-ca'>"+i.ca+"</div><div class='list-en'>"+i.en+"</div>";
-  box.appendChild(d);
+  listBox.appendChild(d);
  });
- box.classList.remove("hidden");
+ listBox.classList.toggle("hidden");
 }
+
+updateCounter();
+load();
+// --- CÓDIGO INTELIGENTE PARA EL CUADRITO DE MARCADO ---
+
+const style = document.createElement('style');
+style.innerHTML = `
+    .check-box-manual {
+        position: absolute;
+        top: 85px; 
+        right: 22px;
+        width: 24px;
+        height: 24px;
+        background: #fff !important;
+        border: 1.5px solid #22c55e !important;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+        transition: all 0.2s;
+        font-size: 14px;
+    }
+    .check-box-manual.marked { 
+        background: #22c55e !important; 
+        color: white; 
+    }
+`;
+document.head.appendChild(style);
 
 function getFolderName() {
     const path = window.location.pathname;
@@ -202,14 +178,19 @@ function markAsDone(element) {
     alert("Lliçó marcada ✅");
 }
 
+// 1. Crear el cuadrito
+const card = document.querySelector(".card");
+const box = document.createElement("div");
+box.className = "check-box-manual";
+
+// 2. Comprobar si ya estaba marcada antes de pintarla
 if (localStorage.getItem(getFolderName())) {
-    const mc = document.getElementById("mainCheck");
-    mc.innerHTML = "✓";
-    mc.classList.add('marked');
+    box.innerHTML = "✓";
+    box.classList.add('marked');
 }
 
-updateCounter();
-load();
+box.onclick = function() { markAsDone(this); };
+card.appendChild(box);
 </script>
 
 </body>
