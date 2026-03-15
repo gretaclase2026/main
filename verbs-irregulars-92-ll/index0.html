@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Estudi 450 Verbs Irregulars - Millorat</title>
+<title>Estudi 150 Verbs Irregulars</title>
 <style>
 body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
 header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center}
@@ -12,82 +12,99 @@ header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex
 .mode-es{background:#fde68a}
 main{display:flex;justify-content:center;padding:24px}
 .card{position:relative;width:100%;max-width:560px;background:#ffffff;border-radius:28px;padding:32px;box-shadow:0 10px 24px rgba(0,0,0,0.06);text-align:center}
-.counter{position:absolute;top:18px;left:22px;font-weight:800;color:#2563eb}
-.check-box-manual { position: absolute; top: 18px; right: 22px; width: 24px; height: 24px; background: #fff; border: 1.5px solid #22c55e; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 14px; }
-.check-box-manual.marked { background: #22c55e !important; color: white !important; }
+.counter{position:absolute;top:18px;right:22px;font-weight:800;color:#2563eb}
 .lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
-.blocks{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:15px 0 20px}
-.block{width:35px;height:35px;border-radius:50%;border:none;background:#fefce8;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.2s;border:1px solid #fde68a}
-.block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1);box-shadow:0 4px 10px rgba(37,99,235,0.3);border-color:#2563eb}
-.audio-container { display: flex; justify-content: center; gap: 15px; margin: 10px 0; align-items: center; }
-.audio-btn{width:75px;height:75px;border-radius:50%;border:none;background:#dbeafe;font-size:28px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.audio-btn.slow{background:#fef08a; font-size:22px;}
-.star-btn { background: none; border: none; font-size: 32px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 10px; }
-.star-btn.active { color: #f59e0b !important; }
-.progress-wrapper { width: 100%; padding: 0 10px; margin: 10px 0 20px; box-sizing: border-box; }
-input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
+.audio-btn{width:140px;height:140px;border-radius:50%;border:none;background:#dcfce7;font-size:60px;cursor:pointer;margin:12px auto;transition:0.2s}
+.audio-btn.vibrate{animation:vibrate 0.25s linear 2}
+@keyframes vibrate{0%{transform:translate(0)}25%{transform:translate(2px,-2px)}50%{transform:translate(-2px,2px)}75%{transform:translate(2px,2px)}100%{transform:translate(0)}}
 .hidden{display:none}
-.es{font-size:18px;color:#2563eb;margin-top:14px;line-height:1.4;font-weight:600}
-.en{font-size:18px;color:#0f172a;margin-top:14px;font-weight:700;line-height:1.4}
-.buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:22px}
-button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;cursor:pointer}
+/* CAMBIO: Texto en Castellano en AZUL */
+.es{font-size:19px;color:#2563eb;margin-top:-6px;margin-bottom:10px;font-weight:600}
+.en{font-size:21px;color:#0f172a;margin-top:6px;margin-bottom:14px;font-weight:800}
+.buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:20px}
+button.action{padding:14px 0;border:none;border-radius:14px;font-weight:800;cursor:pointer}
 .reveal{background:#e0f2fe}
 .know{background:#dcfce7}
 .next{background:#fbcfe8}
-.list-controls { display: flex; gap: 10px; margin-top: 16px; }
-.list-btn{ flex:1; background:#e9d5ff; border:none; border-radius:16px; padding:14px; font-weight:800; cursor:pointer }
-.review-btn { background: #fef3c7; color: #92400e; }
-.list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
-.list-item { display: flex; align-items: center; gap: 10px; padding: 12px 0; border-bottom: 1px solid #eee; }
-.list-content { flex-grow: 1; }
-.list-actions { display: flex; gap: 5px; }
-.mini-btn { border: none; border-radius: 8px; width: 35px; height: 35px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
-.btn-eye { background: #e0f2fe; }
-.btn-ok { background: #dcfce7; }
-.btn-audio { background: #fef08a; }
-.blur { filter: blur(4px); background: #eee; color: transparent; user-select: none; }
+.list-btn{margin-top:15px;background:#e9d5ff;border:none;border-radius:14px;padding:12px;font-weight:800;cursor:pointer;width:100%}
+.list-box{max-width:560px;margin:15px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:15px;text-align:left}
+.list-item{padding:8px 0;border-bottom:1px solid #eee;font-size:14px}
+/* Color azul también en la lista */
+.list-es{color:#2563eb;font-weight:500}
+
+/* BLOCS – botons grocs com el model estàndard */
+.block{
+  background:#fff4cc !important;
+}
+.block.active{
+  background:#ffcc00 !important;
+}
+
+
+.blocks{
+ display:flex;
+ justify-content:center;
+ gap:10px;
+ padding:10px 0;
+}
+.block{
+ width:44px;
+ height:44px;
+ border-radius:50%;
+ border:none;
+ background:#fff4cc;
+ font-weight:800;
+ cursor:pointer;
+}
+.block.active{
+ background:#ffcc00;
+}
+
 </style>
 </head>
 <body>
 
 <header>
  <div class="mode-btns">
-  <button class="mode-en" onclick="setMode('EN')">Anglès → Castellà</button>
-  <button class="mode-es" onclick="setMode('ES')">Castellà → Anglès</button>
+  <button class="mode-en" onclick="setMode('EN')">ANGLÈS → CASTELLÀ</button>
+  <button class="mode-es" onclick="setMode('ES')">CASTELLÀ → ANGLÈS</button>
  </div>
 </header>
 
+<div class="blocks">
+  <button class="block active" onclick="selectTotal()">T</button>
+  <button class="block" onclick="selectBlock(0)">1</button>
+  <button class="block" onclick="selectBlock(1)">2</button>
+  <button class="block" onclick="selectBlock(2)">3</button>
+  <button class="block" onclick="selectBlock(3)">4</button>
+  <button class="block" onclick="selectBlock(4)">5</button>
+  <button class="block" onclick="selectBlock(5)">6</button>
+  <button class="block" onclick="selectBlock(6)">7</button>
+  <button class="block" onclick="selectBlock(7)">8</button>
+  <button class="block" onclick="selectBlock(8)">9</button>
+</div>
+
+
 <main>
 <div class="card">
- <div class="counter" id="counter">0 / 0</div>
- <div class="check-box-manual" id="mainCheck" onclick="markAsDone(this)"></div>
+ <div class="counter" id="counter">0 / 450</div>
  <div id="langLabel" class="lang">ANGLÈS</div>
- <div id="blockContainer" class="blocks"></div>
- <div class="audio-container">
-  <button class="star-btn" id="starBtn" onclick="toggleStar()">★</button>
-  <button class="audio-btn" onclick="playCurrent(1.0)">🔊</button>
-  <button class="audio-btn slow" onclick="playCurrent(0.75)">🐢</button>
- </div>
- <div class="progress-wrapper"><input type="range" id="progressBar" value="0" min="0" max="100" step="0.1"></div>
+ <button class="audio-btn" onclick="play()">🔊</button>
  <div id="es" class="es hidden"></div>
  <div id="en" class="en hidden"></div>
  <div class="buttons">
-  <button class="action reveal" onclick="reveal()">Veure</button>
+  <button class="action reveal" onclick="reveal(); if(mode==='ES'){ play(); }">Veure</button>
   <button class="action know" onclick="know()">Ja la sé</button>
   <button class="action next" onclick="nextOne()">Següent</button>
  </div>
- <div class="list-controls">
-    <button class="list-btn" onclick="toggleList('all')">Llista Bloc</button>
-    <button class="list-btn review-btn" onclick="toggleList('stars')">Repàs (★)</button>
- </div>
- <div id="endMsg" class="hidden" style="margin-top:16px; font-weight:800; color:#16a34a;">✔ Bloc completat!</div>
+ <button class="list-btn" onclick="toggleList()">Veure tota la llista</button>
+ <div id="endMsg" style="margin-top:20px;font-weight:800;color:green" class="hidden">✔ ¡Completat!</div>
 </div>
 </main>
 <div id="listBox" class="list-box hidden"></div>
 
 <script>
-// Aquí he integrado las 450 frases de tu archivo original
-const items = [
+const data = [
  ["I am tired today.","Hoy estoy cansado."],["She was late yesterday.","Ella llegó tarde ayer."],["They have been here before.","Ellos han estado aquí antes."],
  ["He wants to become a teacher.","Él quiere llegar a ser profesor."],["She became famous quickly.","Ella se hizo famosa rápidamente."],["He has become more confident.","Él se ha vuelto más seguro."],
  ["We begin at nine.","Empezamos a las nueve."],["The concert began late.","El concierto empezó tarde."],["The meeting has begun.","La reunión ha comenzado."],
@@ -169,7 +186,7 @@ const items = [
  ["The wind blows hard.","El viento sopla fuerte."],["It blew yesterday.","Sopló ayer."],["The storm has blown away.","La tormenta se ha ido."],
  ["I burn calories.","Quemo calorías."],["She burnt the toast.","Ella quemó la tostada."],["The house has burned down.","La casa se ha quemado."],
  ["I deal with clients.","Trato con clientes."],["She dealt with it.","Ella se encargó de ello."],["He has dealt fairly.","Él ha tratado de forma justa."],
- ["They dig holes.","Cavan hoyos."],["He dug the ground.","El cavó la tierra."],["They have dug deeply.","Ellos han cavado hondo."],
+ ["They dig holes.","Cavan hoyos."],["He dug the ground.","Él cavó la tierra."],["They have dug deeply.","Ellos han cavado hondo."],
  ["I feed the cat.","Alimento al gato."],["She fed the baby.","Ella alimentó al bebé."],["He has fed everyone.","Él ha alimentado a todos."],
  ["They fight often.","Pelean a menudo."],["He fought bravely.","Él luchó con valentía."],["She has fought hard.","Ella ha luchado duro."],
  ["I hang pictures.","Cuelgo cuadros."],["She hung the coat.","Ella colgó el abrigo."],["He has hung it up.","Él lo ha colgado."],
@@ -235,173 +252,174 @@ const items = [
  ["I overeat sometimes.","Como demasiado a veces."],["He overate last night.","Él comió demasiado anoche."],["She has overeaten again.","Ella ha vuelto a comer de más."],
  ["I withdraw money.","Retiro dinero."],["She withdrew early.","Ella se retiró temprano."],["He has withdrawn support.","Él ha retirado su apoyo."],
  ["Walls withstand pressure.","Las paredes resisten la presión."],["The bridge withstood the storm.","El puente resistió la tormenta."],["It has withstood years.","Ha resistido años."]
-].map((arr, i) => ({ en: arr[0], es: arr[1], audio: `f${(i+1).toString().padStart(3,'0')}.mp3` }));
+];
 
-let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0;
-const audioObj = new Audio();
-const progressBar = document.getElementById("progressBar");
+let remaining = [...data], current = null, mode = "EN", knownCount = 0;
+let audio = new Audio();
 
-function getFolderName() { return "verbs-irregulars-450"; }
-let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
+function updateCounter(){ document.getElementById("counter").textContent = knownCount + " / 450"; }
 
-audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
-progressBar.oninput = () => { if (audioObj.duration) audioObj.currentTime = (progressBar.value / 100) * audioObj.duration; };
-
-function initBlocks() {
-  const container = document.getElementById("blockContainer");
-  const numBlocks = Math.ceil(items.length / 50);
-  const savedBlock = localStorage.getItem(getFolderName() + "_puntoLibro");
-  container.innerHTML = "";
-  for (let i = 0; i < numBlocks; i++) {
-    const btn = document.createElement("button");
-    btn.className = "block";
-    btn.textContent = i + 1;
-    btn.onclick = () => loadBlock(i);
-    container.appendChild(btn);
-  }
-  loadBlock((savedBlock !== null) ? parseInt(savedBlock) : 0);
-}
-
-function loadBlock(b) {
-  currentBlockID = b;
-  localStorage.setItem(getFolderName() + "_puntoLibro", b);
-  let start = b * 50;
-  let end = Math.min(start + 50, items.length);
-  currentBlockData = items.slice(start, end).sort(() => Math.random() - 0.5);
-  document.querySelectorAll(".block").forEach((btn, idx) => btn.classList.toggle("active", idx === b));
-  pos = 0; learnedCount = 0;
-  document.getElementById("endMsg").classList.add("hidden");
-  update(true);
-}
-
-function update(fromAction = false) {
-  if (currentBlockData.length === 0) {
-    document.getElementById("en").classList.add("hidden");
-    document.getElementById("es").classList.add("hidden");
-    document.getElementById("endMsg").classList.remove("hidden");
-    return;
-  }
-  progressBar.value = 0;
-  const item = currentBlockData[pos];
-  document.getElementById("es").classList.add("hidden");
-  document.getElementById("en").classList.add("hidden");
-  document.getElementById("starBtn").classList.toggle("active", starredIds.includes(item.audio));
-  
-  if (mode === "EN") {
-    document.getElementById("langLabel").textContent = "ANGLÈS";
-    document.getElementById("en").innerHTML = item.en;
-    document.getElementById("en").classList.remove("hidden");
-    if (fromAction) playAudio(item.audio, 1.0);
-  } else {
-    document.getElementById("langLabel").textContent = "CASTELLÀ";
-    document.getElementById("es").innerHTML = item.es;
-    document.getElementById("es").classList.remove("hidden");
-  }
-  document.getElementById("counter").textContent = `${learnedCount} / ${currentBlockData.length + learnedCount}`;
-}
-
-function playAudio(src, speed) { audioObj.src = src; audioObj.playbackRate = speed; audioObj.play().catch(() => {}); }
-function playCurrent(speed) { if (currentBlockData.length > 0) playAudio(currentBlockData[pos].audio, speed); }
-
-function reveal() {
-  if (currentBlockData.length === 0) return;
-  const item = currentBlockData[pos];
-  document.getElementById("es").innerHTML = item.es;
-  document.getElementById("en").innerHTML = item.en;
+function load(){
+ if(remaining.length === 0){
+  document.getElementById("endMsg").classList.remove("hidden");
+  return;
+ }
+ current = remaining[Math.floor(Math.random()*remaining.length)];
+ document.getElementById("es").classList.add("hidden");
+ document.getElementById("en").classList.add("hidden");
+ if(mode === "EN"){
+  document.getElementById("langLabel").textContent = "ANGLÈS";
+ } else {
+  document.getElementById("langLabel").textContent = "CASTELLÀ";
+  document.getElementById("es").textContent = current[1];
   document.getElementById("es").classList.remove("hidden");
-  document.getElementById("en").classList.remove("hidden");
-  if (mode === "ES") playAudio(item.audio, 1.0);
+ }
 }
 
-function know() {
-  if (currentBlockData.length === 0) return;
-  learnedCount++; 
-  currentBlockData.splice(pos, 1);
-  if (pos >= currentBlockData.length) pos = 0;
-  update(true);
+function reveal(){
+ document.getElementById("es").textContent=current[1];
+ document.getElementById("en").textContent=current[0];
+ document.getElementById("es").classList.remove("hidden");
+ document.getElementById("en").classList.remove("hidden");
+ if(mode==="ES"){
+   setTimeout(()=>{ play(); }, 0);
+ }
 }
 
-function nextOne() {
-  if (currentBlockData.length === 0) return;
-  pos = (pos + 1) % currentBlockData.length;
-  update(true);
+function play(){
+ const idx = data.indexOf(current);
+ const fileName = "f" + (idx + 1).toString().padStart(3, '0') + ".mp3";
+ audio.src = fileName;
+ const btn=document.querySelector('.audio-btn');btn.classList.remove('vibrate');void btn.offsetWidth;btn.classList.add('vibrate');audio.play().catch(e => console.log("Audio no trobat:", fileName));
 }
 
-function setMode(m) { mode = m; update(true); }
-
-function toggleStar() {
-  const audio = currentBlockData[pos].audio;
-  if (starredIds.includes(audio)) {
-    starredIds = starredIds.filter(id => id !== audio);
-  } else {
-    starredIds.push(audio);
-  }
-  localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
-  update();
+function know(){
+ remaining = remaining.filter(i => i !== current);
+ knownCount++; 
+// ===== BLOCS =====
+const BLOCK_SIZE = 50;
+const BLOCKS = [];
+for(let i=0;i<9;i++){
+ BLOCKS.push(data.slice(i*BLOCK_SIZE,(i+1)*BLOCK_SIZE));
 }
 
-function toggleList(type) {
-  const box = document.getElementById("listBox");
-  if (!box.classList.contains("hidden") && box.dataset.activeType === type) { 
-    box.classList.add("hidden"); 
-    return; 
-  }
-  box.dataset.activeType = type;
-  renderList(type);
-  box.classList.remove("hidden");
+function setActive(btn){
+ document.querySelectorAll('.block').forEach(b=>b.classList.remove('active'));
+ btn.classList.add('active');
 }
 
-function renderList(type) {
-  const box = document.getElementById("listBox");
-  box.innerHTML = type === 'stars' ? "<h3>Frases per repassar (★):</h3>" : "<h3>Frases del Bloc (Ordre original):</h3>";
-  
-  const listToRender = type === 'stars' 
-    ? items.filter(i => starredIds.includes(i.audio))
-    : items.slice(currentBlockID * 50, (currentBlockID + 1) * 50);
-
-  if (listToRender.length === 0) {
-    box.innerHTML += "<p style='padding:10px;'>Buit.</p>";
-    return;
-  }
-
-  listToRender.forEach((i, idx) => {
-    const itemDiv = document.createElement("div");
-    itemDiv.className = "list-item";
-    itemDiv.innerHTML = `
-      <div class="list-content">
-        <div style="color:#2563eb; font-weight:700;">${i.es}</div>
-        <div id="rev-${idx}" class="blur" style="font-weight:800; margin-top:4px;">${i.en}</div>
-      </div>
-      <div class="list-actions">
-        <button class="mini-btn btn-audio" onclick="playAudio('${i.audio}', 1.0)">🔊</button>
-        <button class="mini-btn btn-eye" onclick="document.getElementById('rev-${idx}').classList.remove('blur')">👁️</button>
-        <button class="mini-btn btn-ok" onclick="removeFromStars('${i.audio}')">✅</button>
-      </div>
-    `;
-    box.appendChild(itemDiv);
-  });
+function selectTotal(){
+ remaining = [...data];
+ setActive(document.querySelectorAll('.block')[0]);
+ load();
 }
 
-function removeFromStars(audio) {
-  starredIds = starredIds.filter(id => id !== audio);
-  localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
-  const box = document.getElementById("listBox");
-  if (box.dataset.activeType === 'stars') renderList('stars');
-  update();
+function selectBlock(i){
+ remaining = [...BLOCKS[i]];
+ setActive(document.querySelectorAll('.block')[i+1]);
+ load();
+}
+// ==================
+
+updateCounter(); selectTotal();
 }
 
-function markAsDone(el) {
+function nextOne(){ load(); if(mode==="EN"){ play(); } }
+function setMode(m){ mode = m; load(); }
+
+function toggleList(){
+ const box = document.getElementById("listBox");
+ box.innerHTML = "";
+ data.forEach((i, idx) => {
+  const d = document.createElement("div");
+  d.className = "list-item";
+  // CAMBIO: Se ha eliminado el nombre del archivo f001 etc. de la lista
+  d.innerHTML = "<strong>" + i[0] + "</strong><br><span class='list-es'>" + i[1] + "</span>";
+  box.appendChild(d);
+ });
+ box.classList.toggle("hidden");
+}
+
+
+// ===== BLOCS =====
+const BLOCK_SIZE = 50;
+const BLOCKS = [];
+for(let i=0;i<9;i++){
+ BLOCKS.push(data.slice(i*BLOCK_SIZE,(i+1)*BLOCK_SIZE));
+}
+
+function setActive(btn){
+ document.querySelectorAll('.block').forEach(b=>b.classList.remove('active'));
+ btn.classList.add('active');
+}
+
+function selectTotal(){
+ remaining = [...data];
+ setActive(document.querySelectorAll('.block')[0]);
+ load();
+}
+
+function selectBlock(i){
+ remaining = [...BLOCKS[i]];
+ setActive(document.querySelectorAll('.block')[i+1]);
+ load();
+}
+// ==================
+
+updateCounter(); selectTotal();
+ // --- CÓDIGO INTELIGENTE PARA EL CUADRITO DE MARCADO ---
+
+const style = document.createElement('style');
+style.innerHTML = `
+    .check-box-manual {
+        position: absolute;
+        top: 85px; 
+        right: 22px;
+        width: 24px;
+        height: 24px;
+        background: #fff !important;
+        border: 1.5px solid #22c55e !important;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+        transition: all 0.2s;
+        font-size: 14px;
+    }
+    .check-box-manual.marked { 
+        background: #22c55e !important; 
+        color: white; 
+    }
+`;
+document.head.appendChild(style);
+
+function getFolderName() {
+    const path = window.location.pathname;
+    return path.split('/').filter(Boolean).slice(-2, -1)[0] || "unknown";
+}
+
+function markAsDone(element) {
     localStorage.setItem(getFolderName(), new Date().toISOString());
-    el.innerHTML = "✓"; el.classList.add('marked');
-    alert("Bloc completat ✅");
+    element.innerHTML = "✓";
+    element.classList.add('marked');
+    alert("Lliçó marcada ✅");
 }
 
-if (localStorage.getItem(getFolderName())) { 
-    const mc = document.getElementById("mainCheck");
-    if(mc) { mc.innerHTML = "✓"; mc.classList.add('marked'); }
+// 1. Crear el cuadrito
+const card = document.querySelector(".card");
+const box = document.createElement("div");
+box.className = "check-box-manual";
+
+// 2. Comprobar si ya estaba marcada antes de pintarla
+if (localStorage.getItem(getFolderName())) {
+    box.innerHTML = "✓";
+    box.classList.add('marked');
 }
 
-initBlocks();
+box.onclick = function() { markAsDone(this); };
+card.appendChild(box);
 </script>
 </body>
 </html>

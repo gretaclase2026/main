@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Estudi FRASES - Repàs Avançat</title>
+<title>Noves Frases d'Estudi - 83 Frases</title>
 <style>
 body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
 header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center}
@@ -36,14 +36,8 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 .list-btn{ flex:1; background:#e9d5ff; border:none; border-radius:16px; padding:14px; font-weight:800; cursor:pointer }
 .review-btn { background: #fef3c7; color: #92400e; }
 .list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
-.list-item { display: flex; align-items: center; gap: 10px; padding: 12px 0; border-bottom: 1px solid #eee; }
-.list-content { flex-grow: 1; }
-.list-actions { display: flex; gap: 5px; }
-.mini-btn { border: none; border-radius: 8px; width: 35px; height: 35px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
-.btn-eye { background: #e0f2fe; }
-.btn-ok { background: #dcfce7; }
-.btn-audio { background: #fef08a; }
-.blur { filter: blur(4px); background: #eee; color: transparent; user-select: none; }
+.list-item { display: flex; align-items: center; gap: 15px; padding: 12px 0; border-bottom: 1px solid #eee; }
+.list-audio-btn { background: #dbeafe; border: none; border-radius: 50%; width: 38px; height: 38px; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 16px; }
 .check-box-manual { position: absolute; top: 18px; right: 22px; width: 24px; height: 24px; background: #fff; border: 1.5px solid #22c55e; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 14px; }
 .check-box-manual.marked { background: #22c55e !important; color: white !important; }
 </style>
@@ -115,7 +109,7 @@ const items = [
     {audio:"f026.mp3",en:"I'm sorry, I <b>can't help you</b> right now because I'm <b>very busy</b>.",es:"Em sap greu, <b>no t'puc ajudar</b> ara mateix perquè estic <b>molt ocupat</b>."},
     {audio:"f027.mp3",en:"We <b>were walking</b> in the park when it <b>started to rain heavily</b>.",es:"<b>Estàvem caminant</b> pel parc quan va <b>començar a ploure fort</b>."},
     {audio:"f028.mp3",en:"If I <b>have time</b> tomorrow, I'll go to the gym <b>in the afternoon</b>.",es:"Si <b>tinc temps</b> demà, aniré al gimnàs <b>a la tarda</b>."},
-    {audio:"f029.mp3",en:"She's <b>been living</b> in Paris <b>for three years</b> and speaks French perfectly.",es:"Fa <b>tres anys que viu</b> a París i parla francès preventament."},
+    {audio:"f029.mp3",en:"She's <b>been living</b> in Paris <b>for three years</b> and speaks French perfectly.",es:"Fa <b>tres anys que viu</b> a París i parla francès perfectament."},
     {audio:"f030.mp3",en:"I'd <b>rather stay</b> at home tonight <b>than go out</b> to a club.",es:"<b>Prefereixo quedar-me</b> a casa aquesta nit <b>que sortir</b> de festa."},
     {audio:"f031.mp3",en:"They <b>haven't finished</b> the work yet, so we'll <b>have to wait</b>.",es:"Encara <b>no han acabat</b> la feina, així que <b>haurem d'esperar</b>."},
     {audio:"f032.mp3",en:"Can you tell me <b>where the nearest</b> pharmacy is?",es:"Em pots dir <b>on és la</b> farmàcia <b>més propera</b>?"},
@@ -146,7 +140,7 @@ const items = [
     {audio:"f057.mp3",en:"I've <b>never seen such a</b> boring movie in my life.",es:"No he vist <b>mai una pel·lícula tan</b> avorrida en la meva vida."},
     {audio:"f058.mp3",en:"They're <b>planning to get married</b> next summer <b>in Italy</b>.",es:"Tenen <b>pensat casar-se</b> l'estiu que ve <b>a Itàlia</b>."},
     {audio:"f059.mp3",en:"I'm sorry, I <b>didn't hear</b> what you said <b>because of the noise</b>.",es:"Em sap greu, <b>no he sentit</b> el que has dit <b>pel sofoll</b>."},
-    {audio:"f060.mp3",en:"We'd <b>better leave now</b> if we want to <b>get a good seat</b>.",es:"<b>Més val que marxem ara</b> si volem <b>agafar un bon lloc</b>."},
+    {audio:"f060.mp3",en:"We'd <b>better leave now</b> if we want to <b>get a good seat</b>.",es:"<b>M'és val que marxem ara</b> si volem <b>agafar un bon lloc</b>."},
     {audio:"f061.mp3",en:"She's <b>been studying English since</b> she was a child.",es:"Fa que <b>estudia anglès des que</b> era petita."},
     {audio:"f062.mp3",en:"I <b>wonder why</b> they <b>haven't called</b> us yet.",es:"<b>Em pregunto per què</b> encara <b>no ens han trucat</b>."},
     {audio:"f063.mp3",en:"It <b>was so cold</b> yesterday I <b>had to wear</b> two sweaters.",es:"Ahir <b>feia tant de fred</b> que em vaig <b>haver de posar</b> dos jerseis."},
@@ -159,7 +153,7 @@ const items = [
     {audio:"f070.mp3",en:"I'm <b>looking forward to</b> seeing you again <b>soon</b>.",es:"Tinc <b>moltes ganes de</b> tornar-te a veure <b>aviat</b>."},
     {audio:"f071.mp3",en:"He <b>shouldn't have said</b> that to her; it was <b>very rude</b>.",es:"<b>No li hauria d'haver dit</b> això; va ser <b>molt groller</b>."},
     {audio:"f072.mp3",en:"We've <b>decided to cancel</b> the meeting because <b>half the team</b> is sick.",es:"Hem <b>decidit cancel·lar</b> la reunió perquè <b>la meitat de l'equip</b> està malalt."},
-    {audio:"f073.mp3",en:"You'd <b>better hurry up</b> if you don't want to <b>miss the train</b>.",es:"<b>Més val que t'afanyis</b> si no vols <b>perdre el tren</b>."},
+    {audio:"f073.mp3",en:"You'd <b>better hurry up</b> if you don't want to <b>miss the train</b>.",es:"<b>M'és val que t'afanyis</b> si no vols <b>perdre el tren</b>."},
     {audio:"f074.mp3",en:"I'm <b>not used to waking up</b> so early <b>on weekends</b>.",es:"<b>No estic acostumat a despertar-me</b> tan d'hora <b>els caps de setmana</b>."},
     {audio:"f075.mp3",en:"She's <b>been working there for</b> ten years and she's <b>still happy</b>.",es:"Fa <b>deu anys que treballa allí</b> i encara <b>és feliç</b>."},
     {audio:"f076.mp3",en:"It's the <b>most beautiful place</b> I've <b>ever seen</b>.",es:"És el <b>lloc més bonic</b> que he <b>vist mai</b>."},
@@ -179,13 +173,25 @@ const progressBar = document.getElementById("progressBar");
 function getFolderName() { return "frases-83-leccion"; }
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
 
-audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
-progressBar.oninput = () => { if (audioObj.duration) audioObj.currentTime = (progressBar.value / 100) * audioObj.duration; };
+// Actualizar barra mientras suena el audio
+audioObj.ontimeupdate = () => {
+    if (audioObj.duration) {
+        progressBar.value = (audioObj.currentTime / audioObj.duration) * 100;
+    }
+};
+
+// Permitir mover la barra manualmente
+progressBar.oninput = () => {
+    if (audioObj.duration) {
+        audioObj.currentTime = (progressBar.value / 100) * audioObj.duration;
+    }
+};
 
 function initBlocks() {
   const container = document.getElementById("blockContainer");
   const numBlocks = Math.ceil(items.length / 10);
   const savedBlock = localStorage.getItem(getFolderName() + "_puntoLibro");
+  
   container.innerHTML = "";
   for (let i = 0; i < numBlocks; i++) {
     const btn = document.createElement("button");
@@ -194,7 +200,9 @@ function initBlocks() {
     btn.onclick = () => loadBlock(i);
     container.appendChild(btn);
   }
-  loadBlock((savedBlock !== null) ? parseInt(savedBlock) : 0);
+  
+  const blockToLoad = (savedBlock !== null) ? parseInt(savedBlock) : 0;
+  loadBlock(blockToLoad);
 }
 
 function loadBlock(b) {
@@ -203,9 +211,9 @@ function loadBlock(b) {
   let temp = [];
   let start = b * 10;
   let end = Math.min(start + 10, items.length);
-  for (let i = start; i < end; i++) temp.push({...items[i]});
+  for (let i = start; i < end; i++) temp.push({...items[i], realIdx: i+1});
   currentBlockData = temp.sort(() => Math.random() - 0.5);
-  document.querySelectorAll(".block").forEach((btn, idx) => btn.classList.toggle("active", idx === b));
+  document.querySelectorAll(".block").forEach((btn, idx) => { btn.classList.toggle("active", idx === b); });
   pos = 0; learnedCount = 0;
   document.getElementById("endMsg").classList.add("hidden");
   update(true);
@@ -218,11 +226,12 @@ function update(fromAction = false) {
     document.getElementById("endMsg").classList.remove("hidden");
     return;
   }
-  progressBar.value = 0;
+  progressBar.value = 0; // Reiniciar barra al cambiar de frase
   const item = currentBlockData[pos];
   document.getElementById("es").classList.add("hidden");
   document.getElementById("en").classList.add("hidden");
-  document.getElementById("starBtn").classList.toggle("active", starredIds.includes(item.audio));
+  const isStarred = starredIds.includes(item.audio);
+  document.getElementById("starBtn").classList.toggle("active", isStarred);
   if (mode === "EN") {
     document.getElementById("langLabel").textContent = "ANGLÈS";
     document.getElementById("en").innerHTML = item.en;
@@ -236,10 +245,26 @@ function update(fromAction = false) {
   document.getElementById("counter").textContent = `${learnedCount} / ${currentBlockData.length + learnedCount}`;
 }
 
-function playAudio(src, speed) { audioObj.src = src; audioObj.playbackRate = speed; audioObj.play().catch(() => {}); }
-function playCurrent(speed) { if (currentBlockData.length > 0) playAudio(currentBlockData[pos].audio, speed); }
+function toggleStar() {
+  const item = currentBlockData[pos];
+  if (starredIds.includes(item.audio)) { starredIds = starredIds.filter(id => id !== item.audio); } 
+  else { starredIds.push(item.audio); }
+  localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
+  update();
+}
+
+function playAudio(src, speed) {
+  audioObj.src = src;
+  audioObj.playbackRate = speed;
+  audioObj.play().catch(() => {});
+}
+
+function playCurrent(speed) {
+  if (currentBlockData.length > 0) playAudio(currentBlockData[pos].audio, speed);
+}
 
 function reveal() {
+  if (currentBlockData.length === 0) return;
   const item = currentBlockData[pos];
   document.getElementById("es").innerHTML = item.es;
   document.getElementById("en").innerHTML = item.en;
@@ -249,78 +274,58 @@ function reveal() {
 }
 
 function know() {
-  learnedCount++; currentBlockData.splice(pos, 1);
+  if (currentBlockData.length === 0) return;
+  learnedCount++;
+  currentBlockData.splice(pos, 1);
   if (pos >= currentBlockData.length) pos = 0;
   update(true);
 }
 
 function nextOne() {
+  if (currentBlockData.length === 0) return;
   pos = (pos + 1) % currentBlockData.length;
   update(true);
 }
 
 function setMode(m) { mode = m; update(true); }
 
-function toggleStar() {
-  const audio = currentBlockData[pos].audio;
-  if (starredIds.includes(audio)) starredIds = starredIds.filter(id => id !== audio);
-  else starredIds.push(audio);
-  localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
-  update();
+function markAsDone(el) {
+    localStorage.setItem(getFolderName(), new Date().toISOString());
+    el.innerHTML = "✓"; el.classList.add('marked');
+    alert("Lliçó completada ✅");
 }
 
-// FUNCIONES PARA LA LISTA DE REPASO
 function toggleList(type) {
   const box = document.getElementById("listBox");
-  if (!box.classList.contains("hidden") && box.dataset.activeType === type) { box.classList.add("hidden"); return; }
+  if (!box.classList.contains("hidden") && box.dataset.activeType === type) { 
+    box.classList.add("hidden"); 
+    return; 
+  }
+  
   box.dataset.activeType = type;
-  renderList(type);
-  box.classList.remove("hidden");
-}
-
-function renderList(type) {
-  const box = document.getElementById("listBox");
   box.innerHTML = type === 'stars' ? "<h3>Frases destacades (★):</h3>" : "<h3>Tota la llista:</h3>";
   
   const listToRender = type === 'stars' 
     ? items.filter(i => starredIds.includes(i.audio))
     : items.slice(currentBlockID * 10, (currentBlockID + 1) * 10);
-
-  if (listToRender.length === 0) {
-    box.innerHTML += "<p style='padding:10px;'>Buit.</p>";
-    return;
+  
+  if (listToRender.length === 0 && type === 'stars') { 
+    box.innerHTML = "<p style='padding:10px;'>Encara no has marcat cap frase per repàs.</p>"; 
   }
 
-  listToRender.forEach((i, index) => {
+  listToRender.forEach((i) => {
     const itemDiv = document.createElement("div");
     itemDiv.className = "list-item";
     itemDiv.innerHTML = `
-      <div class="list-content">
+      <button class="list-audio-btn" onclick="playAudio('${i.audio}', 1.0)">🔊</button>
+      <div>
+        <div style="color:#0f172a; font-weight:800;">${i.en}</div>
         <div style="color:#2563eb; font-weight:700;">${i.es}</div>
-        <div id="revealed-${index}" class="blur" style="font-weight:800; margin-top:4px;">${i.en}</div>
-      </div>
-      <div class="list-actions">
-        <button class="mini-btn btn-audio" onclick="playAudio('${i.audio}', 1.0)">🔊</button>
-        <button class="mini-btn btn-eye" onclick="document.getElementById('revealed-${index}').classList.remove('blur')">👁️</button>
-        <button class="mini-btn btn-ok" onclick="removeFromStars('${i.audio}')">✅</button>
       </div>
     `;
     box.appendChild(itemDiv);
   });
-}
-
-function removeFromStars(audio) {
-  starredIds = starredIds.filter(id => id !== audio);
-  localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
-  const box = document.getElementById("listBox");
-  if (box.dataset.activeType === 'stars') renderList('stars');
-  update();
-}
-
-function markAsDone(el) {
-    localStorage.setItem(getFolderName(), new Date().toISOString());
-    el.innerHTML = "✓"; el.classList.add('marked');
-    alert("Lliçó completada ✅");
+  box.classList.remove("hidden");
 }
 
 if (localStorage.getItem(getFolderName())) { 
