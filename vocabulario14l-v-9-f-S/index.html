@@ -1,0 +1,118 @@
+ <!DOCTYPE html>
+<html lang="es-ES">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrenador de Pronunciación - Local</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .verb-row:nth-child(even) { background-color: #f8fafc; }
+        /* El texto permanece oculto hasta que se pulsa */
+        .btn-audio span { visibility: hidden; }
+        .btn-audio.revealed span { visibility: visible; }
+        .btn-audio.revealed { background-color: #eff6ff; border-color: #60a5fa; }
+        .btn-audio:active { transform: scale(0.95); }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen pb-10">
+
+    <div class="max-w-xl mx-auto bg-white shadow-2xl min-h-screen">
+        <div class="bg-blue-800 p-6 text-white sticky top-0 z-10 shadow-md text-center">
+            <h1 class="text-2xl font-bold uppercase tracking-wider">Pronunciación Pro</h1>
+            <p class="text-blue-100 text-sm">Modo Local: Audios en carpeta</p>
+        </div>
+
+        <div id="container" class="p-2"></div>
+    </div>
+
+<script>
+const verbs = [
+ { esp: "Surgir", v1: "Arise", v2: "Arose", v3: "Arisen" },
+ { esp: "Despertar", v1: "Awake", v2: "Awoke", v3: "Awoken" },
+ { esp: "Ser/Estar", v1: "Be", v2: "Was-Were", v3: "Been" },
+ { esp: "Soportar", v1: "Bear", v2: "Bore", v3: "Born" },
+ { esp: "Empezar", v1: "Begin", v2: "Began", v3: "Begun" },
+ { esp: "Doblar", v1: "Bend", v2: "Bent", v3: "Bent" },
+ { esp: "Morder", v1: "Bite", v2: "Bit", v3: "Bitten" },
+ { esp: "Soplar", v1: "Blow", v2: "Blew", v3: "Blown" },
+ { esp: "Romper", v1: "Break", v2: "Broke", v3: "Broken" },
+ { esp: "Traer", v1: "Bring", v2: "Brought", v3: "Brought" },
+ { esp: "Construir", v1: "Build", v2: "Built", v3: "Built" },
+ { esp: "Comprar", v1: "Buy", v2: "Bought", v3: "Bought" },
+ { esp: "Elegir", v1: "Choose", v2: "Chose", v3: "Chosen" },
+ { esp: "Venir", v1: "Come", v2: "Came", v3: "Come" },
+ { esp: "Hacer", v1: "Do", v2: "Did", v3: "Done" },
+ { esp: "Beber", v1: "Drink", v2: "Drank", v3: "Drunk" },
+ { esp: "Conducir", v1: "Drive", v2: "Drove", v3: "Driven" },
+ { esp: "Comer", v1: "Eat", v2: "Ate", v3: "Eaten" },
+ { esp: "Volar", v1: "Fly", v2: "Flew", v3: "Flown" },
+ { esp: "Olvidar", v1: "Forget", v2: "Forgot", v3: "Forgotten" },
+ { esp: "Dar", v1: "Give", v2: "Gave", v3: "Given" },
+ { esp: "Ir", v1: "Go", v2: "Went", v3: "Gone" },
+ { esp: "Oír", v1: "Hear", v2: "Heard", v3: "Heard" },
+ { esp: "Saber", v1: "Know", v2: "Knew", v3: "Known" },
+ { esp: "Dejar", v1: "Leave", v2: "Left", v3: "Left" },
+ { esp: "Perder", v1: "Lose", v2: "Lost", v3: "Lost" },
+ { esp: "Hacer/Fab.", v1: "Make", v2: "Made", v3: "Made" },
+ { esp: "Pagar", v1: "Pay", v2: "Paid", v3: "Paid" },
+ { esp: "Poner", v1: "Put", v2: "Put", v3: "Put" },
+ { esp: "Leer", v1: "Read", v2: "Read", v3: "Read" },
+ { esp: "Cantar", v1: "Sing", v2: "Sang", v3: "Sung" },
+ { esp: "Dormir", v1: "Sleep", v2: "Slept", v3: "Slept" },
+ { esp: "Hablar", v1: "Speak", v2: "Spoke", v3: "Spoken" },
+ { esp: "Nadar", v1: "Swim", v2: "Swam", v3: "Swum" },
+ { esp: "Tomar", v1: "Take", v2: "Took", v3: "Taken" },
+ { esp: "Enseñar", v1: "Teach", v2: "Taught", v3: "Taught" },
+ { esp: "Pensar", v1: "Think", v2: "Thought", v3: "Thought" },
+ { esp: "Entender", v1: "Understand", v2: "Understood", v3: "Understood" },
+ { esp: "Llevar p.", v1: "Wear", v2: "Wore", v3: "Worn" },
+ { esp: "Escribir", v1: "Write", v2: "Wrote", v3: "Written" }
+];
+
+function playLocalAudio(btn, text) {
+    // Revelar visualmente
+    btn.classList.add('revealed');
+    
+    // El nombre del archivo debe coincidir con el texto descargado
+    // Reemplazamos barras por guiones por si acaso (ej. Was/Were -> Was-Were)
+    const fileName = text.replace("/", "-") + ".mp3";
+    
+    const audio = new Audio(fileName);
+    audio.play().catch(err => {
+        console.error("No se encontró el archivo:", fileName);
+    });
+}
+
+const container = document.getElementById('container');
+
+verbs.forEach(v => {
+    const row = document.createElement('div');
+    row.className = "verb-row p-4 border-b border-slate-100 flex flex-col gap-2";
+
+    const label = document.createElement('div');
+    label.className = "text-xs font-bold text-slate-400 uppercase tracking-tighter";
+    label.textContent = v.esp;
+
+    const grid = document.createElement('div');
+    grid.className = "grid grid-cols-3 gap-2";
+
+    [v.v1, v.v2, v.v3].forEach(form => {
+        const btn = document.createElement('button');
+        btn.type = "button";
+        btn.className = "btn-audio bg-white border-2 border-slate-200 py-4 rounded-xl text-xs font-black shadow-sm text-slate-700 transition-all";
+        
+        const span = document.createElement('span');
+        span.textContent = form;
+        btn.appendChild(span);
+
+        btn.onclick = () => playLocalAudio(btn, form);
+        grid.appendChild(btn);
+    });
+
+    row.appendChild(label);
+    row.appendChild(grid);
+    container.appendChild(row);
+});
+</script>
+</body>
+</html>
