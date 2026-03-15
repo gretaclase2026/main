@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Estudi i Repàs Personalitzat</title>
+<title>Estudi FRASES · Format Blanc</title>
 <style>
 body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
 header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center}
@@ -15,16 +15,17 @@ main{display:flex;justify-content:center;padding:24px}
 .counter{position:absolute;top:18px;left:22px;font-weight:800;color:#2563eb}
 .lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
 .blocks{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:15px 0 20px}
-.block{width:32px;height:32px;border-radius:50%;border:none;background:#f1f5f9;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.block.active{background:#2563eb !important;color:#fff !important}
+.block{width:32px;height:32px;border-radius:50%;border:none;background:#f1f5f9;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.2s}
+.block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1);box-shadow:0 4px 10px rgba(37,99,235,0.3)}
 .audio-container { display: flex; justify-content: center; gap: 15px; margin: 10px 0 10px; align-items: center; }
-.audio-btn{width:70px;height:70px;border-radius:50%;border:none;background:#dbeafe;font-size:28px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.audio-btn{width:75px;height:75px;border-radius:50%;border:none;background:#dbeafe;font-size:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
 .audio-btn.slow{background:#fef08a; font-size:22px;}
-.fail-btn { width:50px; height:50px; border-radius:50%; border:none; background:#fee2e2; color:#dc2626; font-size:22px; cursor:pointer; }
-.progress-wrapper { width: 100%; margin: 15px 0 25px; }
-input[type="range"] { width: 100%; accent-color: #2563eb; }
+.star-btn { background: none; border: none; font-size: 32px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 10px; }
+.star-btn.active { color: #f59e0b; }
+.progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
+input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
 .hidden{display:none}
-.es{font-size:19px;color:#2563eb;margin-top:14px;line-height:1.4;font-weight:600}
+.es{font-size:19px;color:#2563eb;margin-top:14px;line-height:1.4}
 .en{font-size:19px;color:#0f172a;margin-top:14px;font-weight:700;line-height:1.4}
 .buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:22px}
 button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;cursor:pointer}
@@ -34,11 +35,7 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 .list-controls { display: flex; gap: 10px; margin-top: 16px; }
 .list-btn{ flex:1; background:#e9d5ff; border:none; border-radius:16px; padding:14px; font-weight:800; cursor:pointer }
 .review-btn { background: #fef3c7; color: #92400e; }
-.list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px}
-.list-item { display: flex; align-items: center; gap: 10px; padding: 12px 0; border-bottom: 1px solid #eee; text-align: left; }
-.list-audio-btn { background: #dbeafe; border: none; border-radius: 50%; width: 34px; height: 34px; cursor: pointer; flex-shrink: 0; }
-.list-action-btn { background: #f1f5f9; border: none; border-radius: 8px; padding: 6px 10px; font-size: 12px; cursor: pointer; font-weight: 700; }
-.delete-btn { background: #fee2e2; color: #dc2626; }
+.list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
 .check-box-manual { position: absolute; top: 18px; right: 22px; width: 24px; height: 24px; background: #fff; border: 1.5px solid #22c55e; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 14px; }
 .check-box-manual.marked { background: #22c55e !important; color: white !important; }
 </style>
@@ -59,9 +56,9 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
  <div id="langLabel" class="lang">ANGLÈS</div>
  <div id="blockContainer" class="blocks"></div>
  <div class="audio-container">
-  <button class="fail-btn" onclick="addToReview()" title="M'ha costat (afegir a repàs)">⚠️</button>
-  <button class="audio-btn" onclick="playCurrent(1.0)">🔊</button>
-  <button class="audio-btn slow" onclick="playCurrent(0.75)">🐢</button>
+  <button class="star-btn" id="starBtn" onclick="toggleStar()">★</button>
+  <button class="audio-btn" onclick="play(1.0)">🔊</button>
+  <button class="audio-btn slow" onclick="play(0.75)">🐢</button>
  </div>
  <div class="progress-wrapper"><input type="range" id="progressBar" value="0" step="0.1"></div>
  <div id="es" class="es hidden"></div>
@@ -72,15 +69,14 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
   <button class="action next" onclick="nextOne()">Següent</button>
  </div>
  <div class="list-controls">
-    <button class="list-btn" onclick="toggleFullList()">Tota la llista</button>
-    <button class="list-btn review-btn" onclick="toggleReviewList()">Repàs (⚠️)</button>
+    <button class="list-btn" onclick="toggleList('all')">Tota la llista</button>
+    <button class="list-btn review-btn" onclick="toggleList('stars')">Repàs (★)</button>
  </div>
 </div>
 </main>
 <div id="listBox" class="list-box hidden"></div>
 
 <script>
-// AQUÍ VAN TUS FRASES (He mantenido el bloque que tenías)
 const items = [
     {audio:"f001.mp3",en:"It was so dark in the hallway that I had a lot of trouble finding the keyhole with my keys, and I spent several minutes trying to open the door.",es:"Estaba tan oscuro en el pasillo que tuve muchos problemas para encontrar la cerradura con las llaves y pasé varios minutos intentando abrir la puerta."},
     {audio:"f002.mp3",en:"I was walking through the living room in the middle of the night and I couldn't find the light switch, so I accidentally tripped over the dog's bed.",es:"Estaba caminando por el salón en mitad de la noche y no encontraba el interruptor de la luz, así que tropecé accidentalmente con la cama del perro."},
@@ -118,7 +114,7 @@ const items = [
     {audio:"f034.mp3",en:"There was so much rubbish inside the house after the party that we spent the whole morning putting everything into large bags to take them outside.",es:"Había tanta basura dentro de la casa después de la fiesta que pasamos toda la mañana metiéndolo todo en bolsas grandes para sacarlas fuera."},
     {audio:"f035.mp3",en:"Could you please take the bag out of the kitchen bin and put a new one in, because the smell is starting to be quite unpleasant in the whole room?",es:"¿Podrías por favor sacar la bolsa de la papelera de la cocina y poner una nueva, porque el olor está empezando a ser bastante desagradable en toda la habitación?"},
     {audio:"f036.mp3",en:"I was trying to use the stapler to keep all these important documents together, but I think it is broken because the papers keep falling apart every time I try.",es:"Estaba intentando usar la grapadora para mantener todos estos documentos importantes juntos, pero creo que está rota porque los papeles se separan cada vez que lo intento."},
-    {audio:"f037.mp3",en:"I need to find a box of refills because I just used the last staple and I still have a lot of pages that I need to organize before the end of the day.",es:"Necesito encontrar una caja de recambios porque acabo de usar la última grapa y todavía tengo muchas páginas que organizar antes de que el día termine."},
+    {audio:"f037.mp3",en:"I need to find a box of refills because I just used the last staple and I still have a lot of pages that I need to organize before the end of the day.",es:"Necesito encontrar una caja de recambios porque acabo de usar la última grapa y todavía tengo muchas páginas que organizar antes de que termine el día."},
     {audio:"f038.mp3",en:"I used some transparent tape to fix the corner of the map that was starting to tear, so now it looks much better and it won't break any further.",es:"Usé un poco de cinta adhesiva transparente para arreglar la esquina del mapa que empezaba a romperse, así que ahora se ve mucho mejor y no se romperá más."},
     {audio:"f039.mp3",en:"I made a small mistake while I was writing the address on the envelope, but luckily I was using a pencil and I could fix it quickly with an eraser.",es:"Cometí un pequeño error mientras escribía la dirección en el sobre, pero por suerte estaba usando un lápiz y pude arreglarlo rápidamente con una goma."},
     {audio:"f040.mp3",en:"I used a long piece of string to tie the box of old magazines together so they would be easier to carry down to the basement this afternoon.",es:"Usé un trozo largo de cuerda para atar la caja de revistas viejas y que fuera más fácil bajarlas al sótano esta tarde."},
@@ -151,7 +147,7 @@ const items = [
     {audio:"f067.mp3",en:"This frying pan is very dirty after cooking the meat, so I will need to use a rough scrub and a lot of soap to leave it completely clean.",es:"Esta sartén está muy sucia después de cocinar la carne, así que necesitaré usar un estropajo áspero y mucho jabón para dejarla completamente limpia."},
     {audio:"f068.mp3",en:"I am very sad because I dropped some red wine on my new white sofa, and now I am afraid that the stain will stay there forever.",es:"Estoy muy triste porque se me cayó un poco de vino tinto en mi sofá blanco nuevo y ahora temo que la mancha se quede ahí para siempre."},
     {audio:"f069.mp3",en:"I was cleaning the bathroom very carefully, but a drop of liquid fell on my blue trousers and created a permanent bleach stain.",es:"Estaba limpiando el baño con mucho cuidado, pero una gota de líquido cayó sobre mis pantalones azules y creó una mancha permanente de lejía."},
-    {audio:"f070.mp3",en:"El agua del fregadero de la cocina está bajando muy lentamente hoy, así que creo que hay un atasco en las tuberías que necesito arreglar pronto.",es:"El agua del fregadero de la cocina está bajando muy lentamente hoy, así que creo que hay un atasco en las tuberías que necesito arreglar pronto."},
+    {audio:"f070.mp3",en:"The water in the kitchen sink is going down very slowly today, so I think there is a clog in the pipes that I need to fix soon.",es:"El agua del fregadero de la cocina está bajando muy lentamente hoy, así que creo que hay un atasco en las tuberías que necesito arreglar pronto."},
     {audio:"f071.mp3",en:"You should be careful not to drop any food down the drain while you are washing the dishes, because it might cause a bad smell in the kitchen.",es:"Deberías tener cuidado de no dejar caer comida por el desagüe mientras lavas los platos, porque podría provocar un mal olor en la cocina."},
     {audio:"f072.mp3",en:"Every time I wash my black sweater, it comes out of the machine covered in white lint, so I have to spend a lot of time cleaning it.",es:"Cada vez que lavo mi jersey negro, sale de la lavadora cubierto de pelusa blanca, así que tengo que pasar mucho tiempo limpiándolo."},
     {audio:"f073.mp3",en:"I had to spend more than thirty minutes at the bank because they asked me to fill out a very long form with all my personal information.",es:"Tuve que pasar más de treinta minutos en el banco porque me pidieron rellenar un formulario muy largo con toda mi información personal."},
@@ -160,53 +156,75 @@ const items = [
     {audio:"f076.mp3",en:"The jacket I ordered online was too small for me, so I sent it back to the store and now I am waiting for them to give me a full refund.",es:"La chaqueta que pedí por internet me quedaba pequeña, así que la devolví a la tienda y ahora estoy esperando a que me hagan un reembolso completo."}
 ];
 
-let currentBlockData = [], pos = 0, mode = "ES", learnedCount = 0, currentBlockID = 0;
+let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0;
 const audioObj = new Audio();
+const progressBar = document.getElementById("progressBar");
 
 function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "unknown"; }
-let reviewIds = JSON.parse(localStorage.getItem('review_' + getFolderName())) || [];
+
+let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
+
+audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
+progressBar.oninput = () => { if (audioObj.duration) audioObj.currentTime = (progressBar.value / 100) * audioObj.duration; };
 
 function initBlocks() {
   const container = document.getElementById("blockContainer");
   const numBlocks = Math.ceil(items.length / 10);
   const savedBlock = localStorage.getItem(getFolderName() + "_currentBlock");
+  
   container.innerHTML = "";
   for (let i = 0; i < numBlocks; i++) {
     const btn = document.createElement("button");
-    btn.className = "block"; btn.textContent = i + 1;
+    btn.className = "block";
+    btn.textContent = i + 1;
     btn.onclick = () => loadBlock(i);
     container.appendChild(btn);
   }
-  loadBlock(savedBlock !== null ? parseInt(savedBlock) : 0);
+  const btnT = document.createElement("button");
+  btnT.className = "block"; btnT.textContent = "T";
+  btnT.onclick = () => loadBlock('T');
+  container.appendChild(btnT);
+  
+  const blockToLoad = (savedBlock !== null) ? (savedBlock === 'T' ? 'T' : parseInt(savedBlock)) : 0;
+  loadBlock(blockToLoad);
 }
 
 function loadBlock(b) {
   currentBlockID = b;
   localStorage.setItem(getFolderName() + "_currentBlock", b);
-  let start = b * 10, end = Math.min(start + 10, items.length), temp = [];
-  for (let i = start; i < end; i++) temp.push({...items[i], realIdx: i+1});
+  let temp = [];
+  if (b === 'T') {
+    temp = items.map((item, i) => ({...item, realIdx: i+1}));
+  } else {
+    let start = b * 10;
+    let end = Math.min(start + 10, items.length);
+    for (let i = start; i < end; i++) temp.push({...items[i], realIdx: i+1});
+  }
   currentBlockData = temp.sort(() => Math.random() - 0.5);
-  document.querySelectorAll(".block").forEach((btn, idx) => btn.classList.toggle("active", idx === b));
+  document.querySelectorAll(".block").forEach((btn) => {
+    const isThis = (b === 'T' && btn.textContent === 'T') || (parseInt(btn.textContent)-1 === b);
+    btn.classList.toggle("active", isThis);
+  });
   pos = 0; learnedCount = 0;
-  document.getElementById("listBox").classList.add("hidden");
+  if(document.getElementById("listBox")) document.getElementById("listBox").classList.add("hidden");
   update(true);
 }
 
 function update(fromAction = false) {
   if (currentBlockData.length === 0) {
-    document.getElementById("en").textContent = "✔ Bloc completat!";
+    document.getElementById("en").textContent = "🎉 Bloc completat!";
+    document.getElementById("es").textContent = "";
     document.getElementById("en").classList.remove("hidden");
     return;
   }
   const item = currentBlockData[pos];
   document.getElementById("es").classList.add("hidden");
   document.getElementById("en").classList.add("hidden");
-  
+  const isStarred = starredIds.includes(item.audio);
+  document.getElementById("starBtn").classList.toggle("active", isStarred);
   if (mode === "EN") {
     document.getElementById("langLabel").textContent = "ANGLÈS";
-    document.getElementById("en").textContent = item.en;
-    document.getElementById("en").classList.remove("hidden");
-    if (fromAction) play(item.audio, 1.0);
+    if (fromAction) play(1.0);
   } else {
     document.getElementById("langLabel").textContent = "CASTELLÀ";
     document.getElementById("es").textContent = item.es;
@@ -215,25 +233,20 @@ function update(fromAction = false) {
   document.getElementById("counter").textContent = `${learnedCount} / ${currentBlockData.length + learnedCount}`;
 }
 
-function addToReview() {
+function toggleStar() {
   const item = currentBlockData[pos];
-  if (!reviewIds.includes(item.audio)) {
-    reviewIds.push(item.audio);
-    localStorage.setItem('review_' + getFolderName(), JSON.stringify(reviewIds));
-    alert("Afegida a la llista de repàs ⚠️");
-  } else {
-    alert("Aquesta ja és a la llista.");
-  }
+  if (starredIds.includes(item.audio)) { starredIds = starredIds.filter(id => id !== item.audio); } 
+  else { starredIds.push(item.audio); }
+  localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
+  update();
 }
 
-function play(src, speed) {
-  audioObj.src = src;
+function play(speed) {
+  if (currentBlockData.length === 0) return;
+  const item = currentBlockData[pos];
+  if (!audioObj.src.includes(item.audio)) audioObj.src = item.audio;
   audioObj.playbackRate = speed;
   audioObj.play().catch(() => {});
-}
-
-function playCurrent(speed) {
-  if (currentBlockData.length > 0) play(currentBlockData[pos].audio, speed);
 }
 
 function reveal() {
@@ -243,7 +256,7 @@ function reveal() {
   document.getElementById("en").textContent = item.en;
   document.getElementById("es").classList.remove("hidden");
   document.getElementById("en").classList.remove("hidden");
-  if (mode === "ES") play(item.audio, 1.0);
+  if (mode === "ES") play(1.0);
 }
 
 function know() {
@@ -262,72 +275,20 @@ function nextOne() {
 
 function setMode(m) { mode = m; update(true); }
 
-// MOSTRAR LA LISTA COMPLETA DEL BLOQUE
-function toggleFullList() {
+function toggleList(type) {
   const box = document.getElementById("listBox");
-  if (!box.classList.contains("hidden") && box.dataset.type === 'full') { box.classList.add("hidden"); return; }
-  
-  box.dataset.type = 'full';
-  box.innerHTML = "<h3>Frases del bloc actual:</h3>";
-  const start = currentBlockID * 10, end = Math.min(start + 10, items.length);
-  const listToRender = items.slice(start, end);
-
+  if (!box.classList.contains("hidden")) { box.classList.add("hidden"); return; }
+  box.innerHTML = type === 'stars' ? "<h3>Frases destacades (★):</h3>" : "";
+  const listToRender = type === 'stars' 
+    ? items.filter(i => starredIds.includes(i.audio))
+    : (currentBlockID === 'T' ? items : items.slice(currentBlockID * 10, (currentBlockID + 1) * 10));
   listToRender.forEach((i) => {
-    const itemDiv = document.createElement("div");
-    itemDiv.className = "list-item";
-    itemDiv.innerHTML = `
-      <button class="list-audio-btn" onclick="play('${i.audio}', 1.0)">🔊</button>
-      <div>
-        <div style="font-weight:800; color:#0f172a;">${i.en}</div>
-        <div style="font-weight:700; color:#2563eb; font-size: 0.9em;">${i.es}</div>
-      </div>
-    `;
-    box.appendChild(itemDiv);
+    const d = document.createElement("div");
+    d.style.padding = "10px 0"; d.style.borderBottom = "1px solid #eee";
+    d.innerHTML = `<div style="color:#0f172a; font-weight:800;">${i.en}</div><div style="color:#2563eb; font-weight:700;">${i.es}</div>`;
+    box.appendChild(d);
   });
   box.classList.remove("hidden");
-}
-
-// MOSTRAR LA LISTA DE REPASO (ERRORES)
-function toggleReviewList() {
-  const box = document.getElementById("listBox");
-  if (!box.classList.contains("hidden") && box.dataset.type === 'review') { box.classList.add("hidden"); return; }
-  
-  box.dataset.type = 'review';
-  renderReviewList();
-  box.classList.remove("hidden");
-}
-
-function renderReviewList() {
-  const box = document.getElementById("listBox");
-  box.innerHTML = "<h3>Frases per repassar (⚠️):</h3>";
-  const listToRender = items.filter(i => reviewIds.includes(i.audio));
-
-  if (listToRender.length === 0) {
-    box.innerHTML += "<p style='padding:10px;'>No tens frases per repassar.</p>";
-    return;
-  }
-
-  listToRender.forEach((i) => {
-    const idClean = i.audio.replace('.','-');
-    const itemDiv = document.createElement("div");
-    itemDiv.className = "list-item";
-    itemDiv.innerHTML = `
-      <button class="list-audio-btn" onclick="play('${i.audio}', 1.0)">🔊</button>
-      <div style="flex-grow:1">
-        <div style="font-weight:700; color:#2563eb;">${i.es}</div>
-        <div id="hint-${idClean}" style="font-weight:800; color:#0f172a;" class="hidden">${i.en}</div>
-      </div>
-      <button class="list-action-btn" onclick="document.getElementById('hint-${idClean}').classList.toggle('hidden')">👁️</button>
-      <button class="list-action-btn delete-btn" onclick="removeFromReview('${i.audio}')">OK</button>
-    `;
-    box.appendChild(itemDiv);
-  });
-}
-
-function removeFromReview(id) {
-  reviewIds = reviewIds.filter(rid => rid !== id);
-  localStorage.setItem('review_' + getFolderName(), JSON.stringify(reviewIds));
-  renderReviewList();
 }
 
 function markAsDone(el) {

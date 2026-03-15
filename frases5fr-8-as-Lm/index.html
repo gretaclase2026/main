@@ -20,12 +20,13 @@ main{display:flex;justify-content:center;padding:24px}
 .audio-container { display: flex; justify-content: center; gap: 15px; margin: 10px 0 10px; align-items: center; }
 .audio-btn{width:75px;height:75px;border-radius:50%;border:none;background:#dbeafe;font-size:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
 .audio-btn.slow{background:#fef08a; font-size:22px;}
+.fail-btn { width:50px; height:50px; border-radius:50%; border:none; background:#fee2e2; color:#dc2626; font-size:22px; cursor:pointer; }
 .star-btn { background: none; border: none; font-size: 32px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 10px; }
 .star-btn.active { color: #f59e0b !important; }
 .progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
 input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
 .hidden{display:none}
-.es{font-size:19px;color:#2563eb;margin-top:14px;line-height:1.4}
+.es{font-size:19px;color:#2563eb;margin-top:14px;line-height:1.4;font-weight:600}
 .en{font-size:19px;color:#0f172a;margin-top:14px;font-weight:700;line-height:1.4}
 .buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:22px}
 button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;cursor:pointer}
@@ -36,6 +37,10 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 .list-btn{ flex:1; background:#e9d5ff; border:none; border-radius:16px; padding:14px; font-weight:800; cursor:pointer }
 .review-btn { background: #fef3c7; color: #92400e; }
 .list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
+.list-item { display: flex; align-items: center; gap: 10px; padding: 12px 0; border-bottom: 1px solid #eee; }
+.list-audio-btn { background: #dbeafe; border: none; border-radius: 50%; width: 34px; height: 34px; cursor: pointer; flex-shrink: 0; }
+.list-action-btn { background: #f1f5f9; border: none; border-radius: 8px; padding: 6px 10px; font-size: 12px; cursor: pointer; font-weight: 700; }
+.delete-btn { background: #fee2e2; color: #dc2626; }
 .check-box-manual { position: absolute; top: 18px; right: 22px; width: 24px; height: 24px; background: #fff; border: 1.5px solid #22c55e; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 14px; }
 .check-box-manual.marked { background: #22c55e !important; color: white !important; }
 </style>
@@ -56,9 +61,10 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
  <div id="langLabel" class="lang">ANGLÈS</div>
  <div id="blockContainer" class="blocks"></div>
  <div class="audio-container">
+  <button class="fail-btn" onclick="addToReview()" title="Afegir a repàs">⚠️</button>
+  <button class="audio-btn" onclick="playCurrent(1.0)">🔊</button>
+  <button class="audio-btn slow" onclick="playCurrent(0.75)">🐢</button>
   <button class="star-btn" id="starBtn" onclick="toggleStar()">★</button>
-  <button class="audio-btn" onclick="play(1.0)">🔊</button>
-  <button class="audio-btn slow" onclick="play(0.75)">🐢</button>
  </div>
  <div class="progress-wrapper"><input type="range" id="progressBar" value="0" step="0.1"></div>
  <div id="es" class="es hidden"></div>
@@ -69,8 +75,8 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
   <button class="action next" onclick="nextOne()">Següent</button>
  </div>
  <div class="list-controls">
-    <button class="list-btn" onclick="toggleList('all')">Tota la llista</button>
-    <button class="list-btn review-btn" onclick="toggleList('stars')">Repàs (★)</button>
+    <button class="list-btn" onclick="toggleFullList()">Tota la llista</button>
+    <button class="list-btn review-btn" onclick="toggleReviewList()">Repàs (⚠️/★)</button>
  </div>
  <div id="endMsg" class="end hidden" style="margin-top:16px; font-weight:800; color:#16a34a;">✔ Bloc completat!</div>
 </div>
@@ -166,13 +172,13 @@ const items = [
 
 let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0;
 const audioObj = new Audio();
-const progressBar = document.getElementById("progressBar");
 
 function getFolderName() { 
     return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "leccion_actual"; 
 }
 
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
+let reviewIds = JSON.parse(localStorage.getItem('review_' + getFolderName())) || [];
 
 function initBlocks() {
   const container = document.getElementById("blockContainer");
@@ -203,6 +209,7 @@ function loadBlock(b) {
   document.querySelectorAll(".block").forEach((btn, idx) => { btn.classList.toggle("active", idx === b); });
   pos = 0; learnedCount = 0;
   document.getElementById("endMsg").classList.add("hidden");
+  document.getElementById("listBox").classList.add("hidden");
   update(true);
 }
 
@@ -216,11 +223,13 @@ function update(fromAction = false) {
   const item = currentBlockData[pos];
   document.getElementById("es").classList.add("hidden");
   document.getElementById("en").classList.add("hidden");
+  
   const isStarred = starredIds.includes(item.audio);
   document.getElementById("starBtn").classList.toggle("active", isStarred);
+  
   if (mode === "EN") {
     document.getElementById("langLabel").textContent = "ANGLÈS";
-    if (fromAction) play(1.0);
+    if (fromAction) play(item.audio, 1.0);
   } else {
     document.getElementById("langLabel").textContent = "CATALÀ";
     document.getElementById("es").innerHTML = item.es;
@@ -237,12 +246,26 @@ function toggleStar() {
   update();
 }
 
-function play(speed) {
+function addToReview() {
   if (currentBlockData.length === 0) return;
   const item = currentBlockData[pos];
-  audioObj.src = item.audio;
+  if (!reviewIds.includes(item.audio)) {
+    reviewIds.push(item.audio);
+    localStorage.setItem('review_' + getFolderName(), JSON.stringify(reviewIds));
+    alert("Afegida a la llista de repàs ⚠️");
+  } else {
+    alert("Aquesta ja és a la llista.");
+  }
+}
+
+function play(src, speed) {
+  audioObj.src = src;
   audioObj.playbackRate = speed;
   audioObj.play().catch(() => {});
+}
+
+function playCurrent(speed) {
+  if (currentBlockData.length > 0) play(currentBlockData[pos].audio, speed);
 }
 
 function reveal() {
@@ -252,7 +275,7 @@ function reveal() {
   document.getElementById("en").innerHTML = item.en;
   document.getElementById("es").classList.remove("hidden");
   document.getElementById("en").classList.remove("hidden");
-  if (mode === "ES") play(1.0);
+  if (mode === "CA") play(item.audio, 1.0);
 }
 
 function know() {
@@ -271,27 +294,82 @@ function nextOne() {
 
 function setMode(m) { mode = m; update(true); }
 
+// LISTAS
+function toggleFullList() {
+  const box = document.getElementById("listBox");
+  if (!box.classList.contains("hidden") && box.dataset.type === 'full') { box.classList.add("hidden"); return; }
+  
+  box.dataset.type = 'full';
+  box.innerHTML = "<h3>Frases del bloc actual:</h3>";
+  const start = currentBlockID * 10, end = Math.min(start + 10, items.length);
+  const listToRender = items.slice(start, end);
+
+  listToRender.forEach((i) => {
+    const itemDiv = document.createElement("div");
+    itemDiv.className = "list-item";
+    itemDiv.innerHTML = `
+      <button class="list-audio-btn" onclick="play('${i.audio}', 1.0)">🔊</button>
+      <div>
+        <div style="font-weight:800; color:#0f172a;">${i.en}</div>
+        <div style="font-weight:700; color:#2563eb; font-size: 0.9em;">${i.es}</div>
+      </div>
+    `;
+    box.appendChild(itemDiv);
+  });
+  box.classList.remove("hidden");
+}
+
+function toggleReviewList() {
+  const box = document.getElementById("listBox");
+  if (!box.classList.contains("hidden") && box.dataset.type === 'review') { box.classList.add("hidden"); return; }
+  box.dataset.type = 'review';
+  renderReviewList();
+  box.classList.remove("hidden");
+}
+
+function renderReviewList() {
+  const box = document.getElementById("listBox");
+  box.innerHTML = "<h3>Frases per repassar (⚠️ i ★):</h3>";
+  
+  // Combinamos IDs de estrellas y fallos (sin duplicados)
+  const combinedIds = [...new Set([...reviewIds, ...starredIds])];
+  const listToRender = items.filter(i => combinedIds.includes(i.audio));
+
+  if (listToRender.length === 0) {
+    box.innerHTML += "<p style='padding:10px;'>No tens frases per repassar.</p>";
+    return;
+  }
+
+  listToRender.forEach((i) => {
+    const idClean = i.audio.replace('.','-');
+    const isStarred = starredIds.includes(i.audio);
+    const itemDiv = document.createElement("div");
+    itemDiv.className = "list-item";
+    itemDiv.innerHTML = `
+      <button class="list-audio-btn" onclick="play('${i.audio}', 1.0)">🔊</button>
+      <div style="flex-grow:1">
+        <div style="font-weight:700; color:#2563eb;">${i.es}</div>
+        <div id="hint-${idClean}" style="font-weight:800; color:#0f172a;" class="hidden">${i.en}</div>
+      </div>
+      <button class="list-action-btn" onclick="document.getElementById('hint-${idClean}').classList.toggle('hidden')">👁️</button>
+      <button class="list-action-btn delete-btn" onclick="removeFromReview('${i.audio}')">OK</button>
+    `;
+    box.appendChild(itemDiv);
+  });
+}
+
+function removeFromReview(id) {
+  reviewIds = reviewIds.filter(rid => rid !== id);
+  starredIds = starredIds.filter(sid => sid !== id); // También quitamos la estrella al dar por sabida
+  localStorage.setItem('review_' + getFolderName(), JSON.stringify(reviewIds));
+  localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
+  renderReviewList();
+}
+
 function markAsDone(el) {
     localStorage.setItem(getFolderName(), new Date().toISOString());
     el.innerHTML = "✓"; el.classList.add('marked');
     alert("Lliçó completada ✅");
-}
-
-function toggleList(type) {
-  const box = document.getElementById("listBox");
-  if (!box.classList.contains("hidden")) { box.classList.add("hidden"); return; }
-  box.innerHTML = type === 'stars' ? "<h3>Frases destacades (★):</h3>" : "";
-  const listToRender = type === 'stars' 
-    ? items.filter(i => starredIds.includes(i.audio))
-    : items.slice(currentBlockID * 10, (currentBlockID + 1) * 10);
-  if (listToRender.length === 0 && type === 'stars') { box.innerHTML = "<p style='padding:10px;'>Encara no has marcat cap frase.</p>"; }
-  listToRender.forEach((i) => {
-    const d = document.createElement("div");
-    d.style.padding = "10px 0"; d.style.borderBottom = "1px solid #eee";
-    d.innerHTML = `<div style="color:#0f172a; font-weight:800;">${i.en}</div><div style="color:#2563eb; font-weight:700;">${i.es}</div>`;
-    box.appendChild(d);
-  });
-  box.classList.remove("hidden");
 }
 
 if (localStorage.getItem(getFolderName())) { 
