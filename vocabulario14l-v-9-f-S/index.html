@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entrenador de Pronunciación - Local</title>
+    <title>Entrenador de Pronunciación - 100 Verbos (A-Z)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .verb-row:nth-child(even) { background-color: #f8fafc; }
-        /* El texto permanece oculto hasta que se pulsa */
         .btn-audio span { visibility: hidden; }
         .btn-audio.revealed span { visibility: visible; }
         .btn-audio.revealed { background-color: #eff6ff; border-color: #60a5fa; }
@@ -17,9 +16,14 @@
 <body class="bg-slate-100 min-h-screen pb-10">
 
     <div class="max-w-xl mx-auto bg-white shadow-2xl min-h-screen">
-        <div class="bg-blue-800 p-6 text-white sticky top-0 z-10 shadow-md text-center">
-            <h1 class="text-2xl font-bold uppercase tracking-wider">Pronunciación Pro</h1>
-            <p class="text-blue-100 text-sm">Modo Local: Audios en carpeta</p>
+        <div class="bg-blue-800 p-6 text-white sticky top-0 z-10 shadow-md flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold uppercase tracking-wider">Pronunciación Pro</h1>
+                <p class="text-blue-100 text-xs">100 Verbos Ordenados (A-Z)</p>
+            </div>
+            <button onclick="hideAll()" class="bg-blue-700 hover:bg-blue-600 px-3 py-1 rounded-lg text-xs border border-blue-400 transition-all">
+                Ocultar todo
+            </button>
         </div>
 
         <div id="container" class="p-2"></div>
@@ -27,70 +31,129 @@
 
 <script>
 const verbs = [
- { esp: "Surgir", v1: "Arise", v2: "Arose", v3: "Arisen" },
- { esp: "Despertar", v1: "Awake", v2: "Awoke", v3: "Awoken" },
- { esp: "Ser/Estar", v1: "Be", v2: "Was-Were", v3: "Been" },
- { esp: "Soportar", v1: "Bear", v2: "Bore", v3: "Born" },
- { esp: "Empezar", v1: "Begin", v2: "Began", v3: "Begun" },
- { esp: "Doblar", v1: "Bend", v2: "Bent", v3: "Bent" },
- { esp: "Morder", v1: "Bite", v2: "Bit", v3: "Bitten" },
- { esp: "Soplar", v1: "Blow", v2: "Blew", v3: "Blown" },
- { esp: "Romper", v1: "Break", v2: "Broke", v3: "Broken" },
- { esp: "Traer", v1: "Bring", v2: "Brought", v3: "Brought" },
- { esp: "Construir", v1: "Build", v2: "Built", v3: "Built" },
- { esp: "Comprar", v1: "Buy", v2: "Bought", v3: "Bought" },
- { esp: "Elegir", v1: "Choose", v2: "Chose", v3: "Chosen" },
- { esp: "Venir", v1: "Come", v2: "Came", v3: "Come" },
- { esp: "Hacer", v1: "Do", v2: "Did", v3: "Done" },
- { esp: "Beber", v1: "Drink", v2: "Drank", v3: "Drunk" },
- { esp: "Conducir", v1: "Drive", v2: "Drove", v3: "Driven" },
- { esp: "Comer", v1: "Eat", v2: "Ate", v3: "Eaten" },
- { esp: "Volar", v1: "Fly", v2: "Flew", v3: "Flown" },
- { esp: "Olvidar", v1: "Forget", v2: "Forgot", v3: "Forgotten" },
- { esp: "Dar", v1: "Give", v2: "Gave", v3: "Given" },
- { esp: "Ir", v1: "Go", v2: "Went", v3: "Gone" },
- { esp: "Oír", v1: "Hear", v2: "Heard", v3: "Heard" },
- { esp: "Saber", v1: "Know", v2: "Knew", v3: "Known" },
- { esp: "Dejar", v1: "Leave", v2: "Left", v3: "Left" },
- { esp: "Perder", v1: "Lose", v2: "Lost", v3: "Lost" },
- { esp: "Hacer/Fab.", v1: "Make", v2: "Made", v3: "Made" },
- { esp: "Pagar", v1: "Pay", v2: "Paid", v3: "Paid" },
- { esp: "Poner", v1: "Put", v2: "Put", v3: "Put" },
- { esp: "Leer", v1: "Read", v2: "Read", v3: "Read" },
- { esp: "Cantar", v1: "Sing", v2: "Sang", v3: "Sung" },
- { esp: "Dormir", v1: "Sleep", v2: "Slept", v3: "Slept" },
- { esp: "Hablar", v1: "Speak", v2: "Spoke", v3: "Spoken" },
- { esp: "Nadar", v1: "Swim", v2: "Swam", v3: "Swum" },
- { esp: "Tomar", v1: "Take", v2: "Took", v3: "Taken" },
- { esp: "Enseñar", v1: "Teach", v2: "Taught", v3: "Taught" },
- { esp: "Pensar", v1: "Think", v2: "Thought", v3: "Thought" },
- { esp: "Entender", v1: "Understand", v2: "Understood", v3: "Understood" },
- { esp: "Llevar p.", v1: "Wear", v2: "Wore", v3: "Worn" },
- { esp: "Escribir", v1: "Write", v2: "Wrote", v3: "Written" }
-];
+    { esp: "Alimentar", v1: "Feed", v2: "Fed", v3: "Fed" },
+    { esp: "Aprender", v1: "Learn", v2: "Learnt", v3: "Learnt" },
+    { esp: "Apostar", v1: "Bet", v2: "Bet", v3: "Bet" },
+    { esp: "Arise", v1: "Arise", v2: "Arose", v3: "Arisen" },
+    { esp: "Atar", v1: "Bind", v2: "Bound", v3: "Bound" },
+    { esp: "Barrer", v1: "Sweep", v2: "Swept", v3: "Swept" },
+    { esp: "Beber", v1: "Drink", v2: "Drank", v3: "Drunk" },
+    { esp: "Brillar", v1: "Shine", v2: "Shone", v3: "Shone" },
+    { esp: "Caer", v1: "Fall", v2: "Fell", v3: "Fallen" },
+    { esp: "Cantar", v1: "Sing", v2: "Sang", v3: "Sung" },
+    { esp: "Cavar", v1: "Dig", v2: "Dug", v3: "Dug" },
+    { esp: "Cerrar", v1: "Shut", v2: "Shut", v3: "Shut" },
+    { esp: "Coger/Atrapar", v1: "Catch", v2: "Caught", v3: "Caught" },
+    { esp: "Colgar", v1: "Hang", v2: "Hung", v3: "Hung" },
+    { esp: "Comer", v1: "Eat", v2: "Ate", v3: "Eaten" },
+    { esp: "Comprar", v1: "Buy", v2: "Bought", v3: "Bought" },
+    { esp: "Conducir", v1: "Drive", v2: "Drove", v3: "Driven" },
+    { esp: "Congelar", v1: "Freeze", v2: "Froze", v3: "Frozen" },
+    { esp: "Conseguir", v1: "Get", v2: "Got", v3: "Got-Gotten" },
+    { esp: "Construir", v1: "Build", v2: "Built", v3: "Built" },
+    { esp: "Contar/Decir", v1: "Tell", v2: "Told", v3: "Told" },
+    { esp: "Cortar", v1: "Cut", v2: "Cut", v3: "Cut" },
+    { esp: "Costar", v1: "Cost", v2: "Cost", v3: "Cost" },
+    { esp: "Crecer", v1: "Grow", v2: "Grew", v3: "Grown" },
+    { esp: "Dar", v1: "Give", v2: "Gave", v3: "Given" },
+    { esp: "Decir", v1: "Say", v2: "Said", v3: "Said" },
+    { esp: "Dejar/Partir", v1: "Leave", v2: "Left", v3: "Left" },
+    { esp: "Dejar/Permitir", v1: "Let", v2: "Let", v3: "Let" },
+    { esp: "Despertar", v1: "Awake", v2: "Awoke", v3: "Awoken" },
+    { esp: "Despertarse", v1: "Wake", v2: "Woke", v3: "Woken" },
+    { esp: "Dibujar", v1: "Draw", v2: "Drew", v3: "Drawn" },
+    { esp: "Disparar", v1: "Shoot", v2: "Shot", v3: "Shot" },
+    { esp: "Do", v1: "Do", v2: "Did", v3: "Done" },
+    { esp: "Doblar", v1: "Bend", v2: "Bent", v3: "Bent" },
+    { esp: "Dormir", v1: "Sleep", v2: "Slept", v3: "Slept" },
+    { esp: "Elegir", v1: "Choose", v2: "Chose", v3: "Chosen" },
+    { esp: "Empezar", v1: "Begin", v2: "Began", v3: "Begun" },
+    { esp: "Encontrarse", v1: "Meet", v2: "Met", v3: "Met" },
+    { esp: "Encontrar", v1: "Find", v2: "Found", v3: "Found" },
+    { esp: "Enseñar", v1: "Teach", v2: "Taught", v3: "Taught" },
+    { esp: "Entender", v1: "Understand", v2: "Understood", v3: "Understood" },
+    { esp: "Enviar", v1: "Send", v2: "Sent", v3: "Sent" },
+    { esp: "Esconder", v1: "Hide", v2: "Hid", v3: "Hidden" },
+    { esp: "Escribir", v1: "Write", v2: "Wrote", v3: "Written" },
+    { esp: "Estar de pie", v1: "Stand", v2: "Stood", v3: "Stood" },
+    { esp: "Explotar", v1: "Burst", v2: "Burst", v3: "Burst" },
+    { esp: "Fly", v1: "Fly", v2: "Flew", v3: "Flown" },
+    { esp: "Ganar", v1: "Win", v2: "Won", v3: "Won" },
+    { esp: "Gastar/Pasar", v1: "Spend", v2: "Spent", v3: "Spent" },
+    { esp: "Golpear algo", v1: "Hit", v2: "Hit", v3: "Hit" },
+    { esp: "Golpear", v1: "Beat", v2: "Beat", v3: "Beaten" },
+    { esp: "Guardar", v1: "Keep", v2: "Kept", v3: "Kept" },
+    { esp: "Guiar", v1: "Lead", v2: "Led", v3: "Led" },
+    { esp: "Hablar", v1: "Speak", v2: "Spoke", v3: "Spoken" },
+    { esp: "Hacer/Fab.", v1: "Make", v2: "Made", v3: "Made" },
+    { esp: "Herir", v1: "Hurt", v2: "Hurt", v3: "Hurt" },
+    { esp: "Ir", v1: "Go", v2: "Went", v3: "Gone" },
+    { esp: "Lanzar", v1: "Throw", v2: "Threw", v3: "Thrown" },
+    { esp: "Leer", v1: "Read", v2: "Read", v3: "Read" },
+    { esp: "Levantarse", v1: "Rise", v2: "Rose", v3: "Risen" },
+    { esp: "Llegar a ser", v1: "Become", v2: "Became", v3: "Become" },
+    { esp: "Llamar/Sonar", v1: "Ring", v2: "Rang", v3: "Rung" },
+    { esp: "Llevar p.", v1: "Wear", v2: "Wore", v3: "Worn" },
+    { esp: "Luchar", v1: "Fight", v2: "Fought", v3: "Fought" },
+    { esp: "Mean", v1: "Mean", v2: "Meant", v3: "Meant" },
+    { esp: "Montar", v1: "Ride", v2: "Rode", v3: "Ridden" },
+    { esp: "Morder", v1: "Bite", v2: "Bit", v3: "Bitten" },
+    { esp: "Mostrar", v1: "Show", v2: "Showed", v3: "Shown" },
+    { esp: "Nadar", v1: "Swim", v2: "Swam", v3: "Swum" },
+    { esp: "Oír", v1: "Hear", v2: "Heard", v3: "Heard" },
+    { esp: "Oler", v1: "Smell", v2: "Smelt", v3: "Smelt" },
+    { esp: "Olvidar", v1: "Forget", v2: "Forgot", v3: "Forgotten" },
+    { esp: "Pagar", v1: "Pay", v2: "Paid", v3: "Paid" },
+    { esp: "Pegar/Clavar", v1: "Stick", v2: "Stuck", v3: "Stuck" },
+    { esp: "Pensar", v1: "Think", v2: "Thought", v3: "Thought" },
+    { esp: "Perder", v1: "Lose", v2: "Lost", v3: "Lost" },
+    { esp: "Perdonar", v1: "Forgive", v2: "Forgave", v3: "Forgiven" },
+    { esp: "Poner/Extender", v1: "Lay", v2: "Laid", v3: "Laid" },
+    { esp: "Poner", v1: "Put", v2: "Put", v3: "Put" },
+    { esp: "Prestar", v1: "Lend", v2: "Lent", v3: "Lent" },
+    { esp: "Prohibir", v1: "Forbid", v2: "Forbad", v3: "Forbidden" },
+    { esp: "Quemar", v1: "Burn", v2: "Burnt", v3: "Burnt" },
+    { esp: "Robar", v1: "Steal", v2: "Stole", v3: "Stolen" },
+    { esp: "Romper", v1: "Break", v2: "Broke", v3: "Broken" },
+    { esp: "Saber/Conocer", v1: "Know", v2: "Knew", v3: "Known" },
+    { esp: "Sangrar", v1: "Bleed", v2: "Bled", v3: "Bled" },
+    { esp: "See", v1: "See", v2: "Saw", v3: "Seen" },
+    { esp: "Sentarse", v1: "Sit", v2: "Sat", v3: "Sat" },
+    { esp: "Sentir", v1: "Feel", v2: "Felt", v3: "Felt" },
+    { esp: "Ser/Estar", v1: "Be", v2: "Was-Were", v3: "Been" },
+    { esp: "Set", v1: "Set", v2: "Set", v3: "Set" },
+    { esp: "Soportar", v1: "Bear", v2: "Bore", v3: "Born" },
+    { esp: "Soplar", v1: "Blow", v2: "Blew", v3: "Blown" },
+    { esp: "Sujetar", v1: "Hold", v2: "Held", v3: "Held" },
+    { esp: "Take", v1: "Take", v2: "Took", v3: "Taken" },
+    { esp: "Tener", v1: "Have", v2: "Had", v3: "Had" },
+    { esp: "Traer", v1: "Bring", v2: "Brought", v3: "Brought" },
+    { esp: "Tratar", v1: "Deal", v2: "Dealt", v3: "Dealt" },
+    { esp: "Tumbarse", v1: "Lie", v2: "Lay", v3: "Lain" },
+    { esp: "Vender", v1: "Sell", v2: "Sold", v3: "Sold" },
+    { esp: "Venir", v1: "Come", v2: "Came", v3: "Come" }
+].sort((a, b) => a.v1.localeCompare(b.v1)); // Ordenar por la primera columna en inglés
 
 function playLocalAudio(btn, text) {
-    // Revelar visualmente
     btn.classList.add('revealed');
-    
-    // El nombre del archivo debe coincidir con el texto descargado
-    // Reemplazamos barras por guiones por si acaso (ej. Was/Were -> Was-Were)
     const fileName = text.replace("/", "-") + ".mp3";
-    
     const audio = new Audio(fileName);
-    audio.play().catch(err => {
-        console.error("No se encontró el archivo:", fileName);
+    audio.play().catch(() => console.log("Archivo no encontrado: " + fileName));
+}
+
+function hideAll() {
+    document.querySelectorAll('.btn-audio').forEach(btn => {
+        btn.classList.remove('revealed');
     });
 }
 
 const container = document.getElementById('container');
-
 verbs.forEach(v => {
     const row = document.createElement('div');
     row.className = "verb-row p-4 border-b border-slate-100 flex flex-col gap-2";
-
+    
     const label = document.createElement('div');
-    label.className = "text-xs font-bold text-slate-400 uppercase tracking-tighter";
+    label.className = "text-[10px] font-bold text-slate-400 uppercase tracking-tighter";
     label.textContent = v.esp;
 
     const grid = document.createElement('div');
@@ -98,13 +161,10 @@ verbs.forEach(v => {
 
     [v.v1, v.v2, v.v3].forEach(form => {
         const btn = document.createElement('button');
-        btn.type = "button";
-        btn.className = "btn-audio bg-white border-2 border-slate-200 py-4 rounded-xl text-xs font-black shadow-sm text-slate-700 transition-all";
-        
+        btn.className = "btn-audio bg-white border-2 border-slate-200 py-3 rounded-xl text-xs font-black text-slate-700 transition-all shadow-sm";
         const span = document.createElement('span');
         span.textContent = form;
         btn.appendChild(span);
-
         btn.onclick = () => playLocalAudio(btn, form);
         grid.appendChild(btn);
     });
