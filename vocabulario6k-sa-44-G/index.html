@@ -1,107 +1,84 @@
-b<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
-    <title>Estudiar Vocabulari</title>
+    <title>El meu Vocabulari - GitHub</title>
     <style>
-        :root { --p-blue: #d4eaf7; --p-green: #b9fbc0; --p-red: #ffcfd2; --p-yellow: #fbf8cc; --text: #4a4a4a; }
-        body { font-family: 'Segoe UI', sans-serif; background: #faf9f6; color: var(--text); display: flex; flex-direction: column; align-items: center; padding: 20px; }
-        .main-card { background: white; width: 100%; max-width: 450px; padding: 30px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; border: 6px solid var(--p-blue); }
-        select, textarea { width: 100%; padding: 12px; border-radius: 15px; border: 2px solid var(--p-blue); margin-bottom: 15px; font-size: 16px; }
-        h1 { font-size: 2.8em; margin: 15px 0; color: #5b8fb9; }
-        input { width: 80%; padding: 15px; font-size: 1.2em; border-radius: 20px; border: 2px solid #eee; text-align: center; outline: none; margin-bottom: 20px; }
-        .btn { padding: 15px 25px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; transition: 0.2s; }
-        .btn-check { background: var(--p-blue); color: #4a7a96; }
+        :root { --p-pink: #ffcfd2; --p-blue: #d4eaf7; --p-green: #b9fbc0; --p-yellow: #fbf8cc; --text: #4a4a4a; }
+        body { font-family: 'Segoe UI', sans-serif; background: #fff5f6; color: var(--text); display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        .card { background: white; width: 100%; max-width: 550px; padding: 30px; border-radius: 40px; box-shadow: 0 15px 35px rgba(255,182,193,0.3); text-align: center; border: 8px solid var(--p-pink); }
+        .progress-container { width: 100%; height: 18px; background: #ffeef0; border-radius: 10px; margin-bottom: 25px; overflow: hidden; border: 2px solid var(--p-pink); }
+        #bar { height: 100%; width: 0%; transition: width 0.1s linear; }
+        .bg-estudi { background: #4CAF50; transition: width 0.5s !important; }
+        .bg-audio { background: #5b8fb9; }
+        h1 { font-size: 2.2em; margin: 15px 0; color: #d88a8a; min-height: 1.2em; }
+        input[type="text"] { width: 85%; padding: 18px; font-size: 1.2em; border-radius: 25px; border: 3px solid var(--p-pink); text-align: center; outline: none; margin-bottom: 20px; background: #fffafa; }
+        .controls { display: flex; justify-content: center; align-items: center; gap: 15px; flex-wrap: wrap; }
+        .btn { padding: 12px 25px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 1em; }
+        .btn-check { background: var(--p-blue); color: #5b8fb9; }
+        .btn-skip { background: var(--p-yellow); color: #b08d00; }
         .btn-next { background: var(--p-green); color: #3e7e44; }
-        .btn-speaker { background: var(--p-yellow); font-size: 1.8em; width: 55px; height: 55px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; border: none; cursor: pointer; }
-        .tabs { display: flex; gap: 10px; margin-top: 30px; width: 100%; max-width: 450px; }
-        .tab { flex: 1; padding: 10px; border: none; border-radius: 15px 15px 0 0; background: #eee; cursor: pointer; }
-        .tab.active { background: white; font-weight: bold; border: 2px solid #eee; border-bottom: none; }
-        .list-area { background: white; width: 100%; max-width: 450px; border-radius: 0 0 20px 20px; padding: 15px; border: 2px solid #eee; border-top: none; box-sizing: border-box; }
+        .audio-box { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .btn-speaker { background: var(--p-yellow); font-size: 2em; width: 65px; height: 65px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .slow-label { font-size: 1.5em; cursor: pointer; filter: grayscale(1); }
+        .slow-label.active { filter: grayscale(0); transform: scale(1.2); }
+        .list-area { margin-top: 30px; background: white; width: 100%; max-width: 550px; border-radius: 25px; padding: 20px; border: 3px solid var(--p-pink); box-sizing: border-box; }
         table { width: 100%; border-collapse: collapse; }
-        td { padding: 10px; border-bottom: 1px solid #f9f9f9; }
-        .error-local { background: var(--p-red); padding: 15px; border-radius: 15px; font-size: 0.9em; margin-bottom: 20px; }
+        td { padding: 12px; border-bottom: 1px solid #fff0f2; }
     </style>
 </head>
 <body>
-
-    <div class="main-card">
+    <div class="card">
         <div id="setup-section">
-            <select id="selector" onchange="carregarFitxer(this.value)">
-                <option value="">Tria un tema (Només GitHub)</option>
-            </select>
-            
-            <div id="manual-input" class="error-local">
-                <p><b>Estàs en mode local:</b> El navegador no pot llegir els teus fitxers CSV automàticament. Enganxa el contingut del teu Excel aquí per començar:</p>
-                <textarea id="csv-paste" placeholder="Exemple: Poma,apple"></textarea>
-                <button class="btn btn-check" onclick="carregarManual()">Carregar Vocabulari</button>
+            <h2 style="color:#d88a8a">🌸 Carrega el Vocabulari 🌸</h2>
+            <div style="background: var(--p-yellow); padding: 25px; border-radius: 25px; border: 3px dashed #d88a8a; margin: 20px 0;">
+                <input type="file" accept=".csv" id="csvFileInput" onchange="carregarFitxer(this)">
             </div>
+            <p style="font-size: 0.8em; color: gray;">Tria el teu arxiu .csv</p>
         </div>
-
         <div id="joc" style="display:none;">
-            <div id="feedback" style="height:25px; font-weight:bold;"></div>
+            <div class="progress-container"><div id="bar" class="bg-estudi"></div></div>
+            <div id="feedback" style="height:25px; font-weight:bold; margin-bottom: 10px;"></div>
             <h1 id="pregunta">---</h1>
             <input type="text" id="resposta" placeholder="Escriu en anglès..." autocomplete="off">
-            <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
-                <button class="btn-speaker" onclick="sonar()">🔊</button>
-                <button class="btn btn-check" onclick="validar()">Comprovar</button>
+            <div class="controls">
+                <div class="audio-box">
+                    <button class="btn-speaker" onclick="sonar()">🔊</button>
+                    <span id="tortuga" class="slow-label" onclick="toggleSlow()">🐢</span>
+                </div>
+                <button id="btn-comprovar" class="btn btn-check" onclick="validar()">Comprovar</button>
+                <button id="btn-skip" class="btn btn-skip" onclick="saltar()">No la sé</button>
                 <button id="next" class="btn btn-next" style="display:none;" onclick="seguent()">Següent →</button>
             </div>
-            <br>
-            <button onclick="location.reload()" style="background:none; border:none; color:gray; cursor:pointer; font-size:0.8em;">⇠ Canviar de tema</button>
+            <p><a href="#" onclick="location.reload()" style="color:gray; font-size:0.8em; margin-top:20px; display:block;">⇠ Canviar fitxer</a></p>
         </div>
     </div>
-
-    <div id="info-extra" style="display:none; width: 100%; max-width: 450px;">
-        <div class="tabs">
-            <button id="tab-tot" class="tab active" onclick="canviarTab('tot')">Tot el vocabulari</button>
-            <button id="tab-rep" class="tab" onclick="canviarTab('rep')">Per repassar (<span id="num-rep">0</span>)</button>
-        </div>
-        <div class="list-area">
-            <table><tbody id="taula"></tbody></table>
-        </div>
+    <div id="info-extra" style="display:none;" class="list-area">
+        <table><tbody id="taula"></tbody></table>
     </div>
-
 <script>
-    let dades = [];
-    let repàs = [];
-    let i = 0;
+    let dades = [], i = 0, isSlow = false;
+    let audioObject = null;
 
-    // Intentar cargar temas (solo funcionará en GitHub)
-    fetch('temas.txt').then(r => r.text()).then(text => {
-        const menu = document.getElementById('selector');
-        text.split('\n').filter(t => t.trim()).forEach(t => {
-            let o = document.createElement('option');
-            o.value = t.trim() + ".csv";
-            o.textContent = t.trim().toUpperCase();
-            menu.appendChild(o);
-        });
-        document.getElementById('manual-input').style.display = 'none';
-    }).catch(() => {
-        console.log("Estàs treballant en local.");
-    });
-
-    async function carregarFitxer(f) {
-        const res = await fetch(f);
-        processarText(await res.text());
-    }
-
-    function carregarManual() {
-        processarText(document.getElementById('csv-paste').value);
-    }
-
-    function processarText(text) {
-        dades = text.split('\n').filter(l => l.includes(',')).map(l => {
-            const p = l.split(',');
-            return { cat: p[0].trim(), eng: p[1].trim() };
-        });
-        if(dades.length > 0) {
-            document.getElementById('setup-section').style.display = 'none';
-            document.getElementById('joc').style.display = 'block';
-            document.getElementById('info-extra').style.display = 'block';
-            canviarTab('tot');
-            nouRepte();
-        }
+    function carregarFitxer(input) {
+        if (!input.files[0]) return;
+        const reader = new FileReader();
+        reader.readAsText(input.files[0], "UTF-8");
+        reader.onload = (e) => {
+            const lines = e.target.result.split(/\r?\n/);
+            dades = lines.map(line => {
+                const parts = line.split(/[;,]/);
+                if (parts.length >= 2) return { cat: parts[0].trim(), eng: parts[1].trim() };
+                return null;
+            }).filter(item => item && item.cat && item.eng);
+            if (dades.length > 0) {
+                document.getElementById('setup-section').style.display = 'none';
+                document.getElementById('joc').style.display = 'block';
+                document.getElementById('info-extra').style.display = 'block';
+                nouRepte();
+                actualitzarLlista();
+            }
+        };
     }
 
     function nouRepte() {
@@ -109,34 +86,59 @@ b<!DOCTYPE html>
         document.getElementById('resposta').value = "";
         document.getElementById('feedback').innerText = "";
         document.getElementById('next').style.display = 'none';
+        document.getElementById('btn-comprovar').style.display = 'inline-block';
+        document.getElementById('btn-skip').style.display = 'inline-block';
+        const bar = document.getElementById('bar');
+        bar.className = 'bg-estudi';
+        bar.style.width = ((i / dades.length) * 100) + "%";
         document.getElementById('resposta').focus();
     }
 
+    function sonar() {
+        if (audioObject) { audioObject.pause(); audioObject.currentTime = 0; }
+        let nomAudio = dades[i].eng.toLowerCase().trim();
+        audioObject = new Audio("audios/" + nomAudio + ".mp3");
+        audioObject.playbackRate = isSlow ? 0.5 : 1.0;
+        const bar = document.getElementById('bar');
+        audioObject.onplay = () => { bar.className = 'bg-audio'; bar.style.width = "0%"; };
+        audioObject.ontimeupdate = () => {
+            if (audioObject.duration) bar.style.width = (audioObject.currentTime / audioObject.duration) * 100 + "%";
+        };
+        audioObject.onended = () => { setTimeout(nouRepte, 300); };
+        audioObject.play().catch(() => { bar.className = 'bg-estudi'; });
+    }
+
     function validar() {
-        const user = document.getElementById('resposta').value.trim().toLowerCase();
-        const correcte = dades[i].eng.toLowerCase();
-        const f = document.getElementById('feedback');
-        if (user === correcte) {
-            f.innerText = "Molt bé! ✨"; f.style.color = "#3e7e44";
+        if (document.getElementById('resposta').value.trim().toLowerCase() === dades[i].eng.toLowerCase()) {
+            document.getElementById('feedback').innerText = "Molt bé! ✨";
+            document.getElementById('feedback').style.color = "#3e7e44";
             sonar();
-            document.getElementById('next').style.display = 'inline-block';
+            mostrarSeguent();
         } else {
-            f.innerText = "Error ❌"; f.style.color = "#e74c3c";
-            if (!repàs.find(item => item.eng === dades[i].eng)) {
-                repàs.push(dades[i]);
-                document.getElementById('num-rep').innerText = repàs.length;
-            }
+            document.getElementById('feedback').innerText = "❌ Revisa-ho";
+            document.getElementById('feedback').style.color = "#e74c3c";
         }
     }
 
-    function sonar() { new Audio("audios/" + dades[i].eng.toLowerCase() + ".mp3").play(); }
+    function saltar() {
+        document.getElementById('feedback').innerText = "Era: " + dades[i].eng;
+        document.getElementById('feedback').style.color = "#d88a8a";
+        sonar();
+        mostrarSeguent();
+    }
+
+    function mostrarSeguent() {
+        document.getElementById('next').style.display = 'inline-block';
+        document.getElementById('btn-comprovar').style.display = 'none';
+        document.getElementById('btn-skip').style.display = 'none';
+    }
+
+    function toggleSlow() { isSlow = !isSlow; document.getElementById('tortuga').classList.toggle('active', isSlow); }
+
     function seguent() { i = (i + 1) % dades.length; nouRepte(); }
 
-    function canviarTab(tipus) {
-        document.getElementById('tab-tot').classList.toggle('active', tipus === 'tot');
-        document.getElementById('tab-rep').classList.toggle('active', tipus === 'rep');
-        const llista = (tipus === 'tot') ? dades : repàs;
-        document.getElementById('taula').innerHTML = llista.map(item => `<tr><td>${item.cat}</td><td style="color:#4a90e2"><b>${item.eng}</b></td></tr>`).join('');
+    function actualitzarLlista() {
+        document.getElementById('taula').innerHTML = dades.map(item => `<tr><td>${item.cat}</td><td style="color:#d88a8a"><b>${item.eng}</b></td></tr>`).join('');
     }
 
     document.getElementById('resposta').addEventListener('keypress', (e) => {
