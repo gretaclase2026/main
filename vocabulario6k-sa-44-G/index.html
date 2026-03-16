@@ -2,6 +2,7 @@
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Vocabulari</title>
     <style>
         :root { 
@@ -13,32 +14,29 @@
             --p-yellow: #FFF176; 
             --text: #4a4a4a; 
         }
-        body { font-family: 'Segoe UI', sans-serif; background: #fff5f6; color: var(--text); display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        body { font-family: 'Segoe UI', sans-serif; background: #fff5f6; color: var(--text); display: flex; flex-direction: column; align-items: center; padding: 10px; }
         
-        .card { background: white; width: 100%; max-width: 650px; padding: 25px; border-radius: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 8px solid var(--p-pink); text-align: center; }
+        .card { background: white; width: 100%; max-width: 650px; padding: 25px; border-radius: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 8px solid var(--p-pink); text-align: center; box-sizing: border-box; }
         
         .upload-wrapper { position: relative; overflow: hidden; display: inline-block; cursor: pointer; margin: 10px 0; }
         .btn-upload-custom { background: var(--p-pink); color: white; padding: 10px 25px; border-radius: 12px; font-weight: bold; font-size: 0.9em; display: inline-block; }
         #csvFile { position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; height: 100%; width: 100%; }
 
-        /* Barra de configuració */
         .config-bar { background: #fff; padding: 12px 18px; border-radius: 20px; margin-bottom: 20px; border: 2px solid var(--p-pink); display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
         
-        /* Grup Idiomes a l'esquerra */
         .idioma-group { display: flex; flex-direction: column; gap: 4px; }
         .btn-lang { background: var(--p-turquesa-claret); color: #00838f; border: none; padding: 5px 15px; border-radius: 15px; font-size: 0.75em; font-weight: bold; cursor: pointer; min-width: 120px; text-align: center; }
         .btn-lang.active { background: var(--p-turquesa-fort); color: white; }
 
         .input-rango { width: 50px; padding: 5px; font-size: 1em; border-radius: 8px; border: 1px solid #ddd; text-align: center; font-weight: bold; }
         
-        /* Botó netejar a la dreta */
         .netejar-btn { margin-left: auto; color: #ff5252; background: none; border: none; cursor: pointer; font-size: 0.85em; font-weight: bold; }
 
-        #pregunta { font-size: 2.5em; color: var(--p-blue-strong); margin: 15px 0; display: inline-block; vertical-align: middle; }
+        #pregunta { font-size: 2.5em; color: var(--p-blue-strong); margin: 15px 0; display: inline-block; vertical-align: middle; min-height: 1.2em; }
         .star-main { font-size: 2.5em; cursor: pointer; color: #ccc; vertical-align: middle; margin-left: 10px; }
         .star-main.active { color: #FFD700; }
 
-        #resposta { width: 85%; padding: 15px; font-size: 1.8em; border-radius: 20px; border: 3px solid var(--p-pink); text-align: center; outline: none; margin-bottom: 20px; background: #fffafa; font-weight: bold; }
+        #resposta { width: 90%; padding: 15px; font-size: 1.8em; border-radius: 20px; border: 3px solid var(--p-pink); text-align: center; outline: none; margin-bottom: 20px; background: #fffafa; font-weight: bold; box-sizing: border-box; }
         
         .btn-audio { width: 70px; height: 70px; border-radius: 50%; border: none; cursor: pointer; font-size: 2em; display: inline-flex; align-items: center; justify-content: center; margin: 5px; }
         .btn-speaker { background: var(--p-blue-soft); color: #5b8fb9; }
@@ -49,9 +47,9 @@
         .btn-skip { background: var(--p-yellow); color: #856404; }
         .btn-next { background: #b9fbc0; color: #3e7e44; }
 
-        .list-area { width: 100%; max-width: 650px; background: white; margin-top: 25px; border-radius: 25px; padding: 10px 15px; border: 3px solid var(--p-pink); }
+        .list-area { width: 100%; max-width: 650px; background: white; margin-top: 25px; border-radius: 25px; padding: 10px 15px; border: 3px solid var(--p-pink); box-sizing: border-box; }
         table { width: 100%; border-collapse: collapse; font-size: 1.25em; }
-        td { padding: 5px 8px; border-bottom: 1px solid #f9f9f9; text-align: left; }
+        td { padding: 8px; border-bottom: 1px solid #f9f9f9; text-align: left; }
         .star-list { color: #FFD700; font-size: 1.5em; font-weight: bold; }
     </style>
 </head>
@@ -87,7 +85,7 @@
                 <span id="starPregunta" class="star-main" onclick="toggleRepasActual()">★</span>
             </div>
 
-            <input type="text" id="resposta" placeholder="..." autocomplete="off">
+            <input type="text" id="resposta" placeholder="..." autocomplete="off" autofocus>
 
             <div class="controls">
                 <button class="btn-audio btn-speaker" onclick="reproduir(1.0)">🔊</button>
@@ -106,7 +104,7 @@
 
 <script>
     let dadesTotals = [], dadesFiltrades = [], i = 0, repasIds = new Set();
-    let estatError = false, modeJoc = 'cat-eng';
+    let estatError = false, modeJoc = 'cat-eng', revelat = false;
 
     function setMode(m) {
         modeJoc = m;
@@ -148,7 +146,15 @@
         const p = dadesFiltrades[i];
         if (!p) return;
         estatError = false;
-        document.getElementById('pregunta').innerText = (modeJoc === 'cat-eng') ? p.cat : p.eng;
+        revelat = false;
+
+        if (modeJoc === 'cat-eng') {
+            document.getElementById('pregunta').innerText = p.cat;
+        } else {
+            document.getElementById('pregunta').innerText = "???";
+            reproduir(1.0); // Sona automàticament en mode escolta
+        }
+
         document.getElementById('resposta').value = "";
         document.getElementById('feedback').innerText = "";
         document.getElementById('btn-next').style.display = "none";
@@ -171,6 +177,13 @@
         const correcte = (modeJoc === 'cat-eng') ? p.eng : p.cat;
         const textUser = document.getElementById('resposta').value.trim();
         
+        // Revelar paraula si s'està en mode oïda i no s'ha revelat
+        if (modeJoc === 'eng-cat' && !revelat && textUser === "") {
+            document.getElementById('pregunta').innerText = p.eng;
+            revelat = true;
+            return;
+        }
+
         if (textUser === "") { saltar(); return; }
 
         if (textUser.toLowerCase() === correcte.toLowerCase()) {
@@ -182,6 +195,7 @@
             document.getElementById('feedback').innerText = "Era: " + correcte.toUpperCase();
             document.getElementById('feedback').style.color = "red";
             estatError = true;
+            if (modeJoc === 'eng-cat') document.getElementById('pregunta').innerText = p.eng;
         }
     }
 
@@ -194,6 +208,7 @@
         document.getElementById('btn-skip').style.display = "none";
         document.getElementById('btn-next').style.display = "inline-block";
         if (modeJoc === 'cat-eng') reproduir(1.0);
+        if (modeJoc === 'eng-cat') document.getElementById('pregunta').innerText = p.eng;
     }
 
     function seguent() {
