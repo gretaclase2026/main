@@ -15,6 +15,7 @@
             --text: #4a4a4a; 
         }
         body { font-family: 'Segoe UI', sans-serif; background: #fff5f6; color: var(--text); display: flex; flex-direction: column; align-items: center; padding: 10px; }
+        
         .card { background: white; width: 100%; max-width: 650px; padding: 25px; border-radius: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 8px solid var(--p-pink); text-align: center; box-sizing: border-box; }
         
         .config-bar { background: #fff; padding: 12px 18px; border-radius: 20px; margin-bottom: 20px; border: 2px solid var(--p-pink); display: flex; align-items: center; gap: 15px; flex-wrap: wrap; justify-content: center; }
@@ -26,15 +27,15 @@
         .star-main { font-size: 2.5em; cursor: pointer; color: #ccc; vertical-align: middle; margin-left: 10px; }
         .star-main.active { color: #FFD700; }
         
-        #resposta { width: 90%; padding: 15px; font-size: 1.8em; border-radius: 20px; border: 3px solid var(--p-pink); text-align: center; outline: none; margin-bottom: 20px; background: #fffafa; font-weight: bold; }
+        #resposta { width: 90%; padding: 15px; font-size: 1.8em; border-radius: 20px; border: 3px solid var(--p-pink); text-align: center; outline: none; margin-bottom: 20px; background: #fffafa; font-weight: bold; box-sizing: border-box; }
         
         .btn-audio { width: 70px; height: 70px; border-radius: 50%; border: none; font-size: 2em; cursor: pointer; margin: 5px; display: inline-flex; align-items: center; justify-content: center; }
         .btn-speaker { background: var(--p-blue-soft); color: #5b8fb9; }
         .btn-tortuga { background: #f0faff; color: #888; border: 1px solid #d4eaf7; }
 
         .accent-selector { margin: 15px 0; display: flex; justify-content: center; gap: 20px; }
-        .flag-btn { font-size: 2.5em; cursor: pointer; filter: grayscale(1); background: none; border: none; transition: 0.3s; }
-        .flag-btn.active { filter: grayscale(0); transform: scale(1.2); }
+        .flag-btn { font-size: 2.5em; cursor: pointer; filter: grayscale(1); background: none; border: none; transition: 0.3s; opacity: 0.6; }
+        .flag-btn.active { filter: grayscale(0); transform: scale(1.2); opacity: 1; }
 
         .btn { padding: 12px 25px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; margin: 5px; }
         .btn-check { background: var(--p-blue-soft); color: #5b8fb9; }
@@ -44,12 +45,12 @@
         .list-area { width: 100%; max-width: 650px; background: white; margin-top: 25px; border-radius: 25px; padding: 15px; border: 3px solid var(--p-pink); box-sizing: border-box; }
         table { width: 100%; border-collapse: collapse; font-size: 1.2em; }
         td { padding: 8px; border-bottom: 1px solid #f2f2f2; text-align: left; }
-        .star-list { color: #FFD700; font-size: 1.4em; }
+        .star-list { color: #FFD700; font-size: 1.4em; font-weight: bold; }
     </style>
 </head>
 <body onload="carregarDirecte()">
 
-    <div id="joc-pantalla" style="width: 100%; max-width: 650px;">
+    <div id="joc-pantalla" style="width: 100%; max-width: 650px; display: flex; flex-direction: column; align-items: center;">
         <div class="card">
             <div class="config-bar">
                 <div style="display:flex; flex-direction:column; gap:4px;">
@@ -58,22 +59,22 @@
                 </div>
                 <span>De: <input type="number" id="rangoInici" class="input-rango" value="1" onchange="filtrar()"></span>
                 <span>A: <input type="number" id="rangoFi" class="input-rango" value="100" onchange="filtrar()"></span>
-                <label style="cursor:pointer;"><input type="checkbox" id="checkRepas" onchange="filtrar()"> ⭐</label>
-                <button style="border:none; background:none; color:red; font-weight:bold; cursor:pointer;" onclick="desmarcarTot()">Netejar ⭐</button>
+                <label style="cursor:pointer; font-weight:bold;"><input type="checkbox" id="checkRepas" onchange="filtrar()"> ⭐</label>
+                <button style="border:none; background:none; color:red; font-weight:bold; cursor:pointer; font-size:0.8em;" onclick="desmarcarTot()">Netejar ⭐</button>
             </div>
 
-            <div id="feedback" style="height:40px; font-weight:bold; font-size: 1.3em;"></div>
+            <div id="feedback" style="height:45px; font-weight:bold; font-size: 1.3em;"></div>
             
             <div>
                 <h1 id="pregunta">Carregant...</h1>
                 <span id="starPregunta" class="star-main" onclick="toggleRepasActual()">★</span>
             </div>
 
-            <input type="text" id="resposta" autocomplete="off" spellcheck="false" placeholder="...">
+            <input type="text" id="resposta" autocomplete="off" spellcheck="false" placeholder="..." autofocus>
 
             <div class="accent-selector">
-                <button id="accUS" class="flag-btn active" onclick="setAccent('us')">🇺🇸 US</button>
-                <button id="accUK" class="flag-btn" onclick="setAccent('uk')">🇬🇧 UK</button>
+                <button id="accUS" class="flag-btn active" onclick="setAccent('us')">🇺🇸</button>
+                <button id="accUK" class="flag-btn" onclick="setAccent('uk')">🇬🇧</button>
             </div>
 
             <div class="controls">
@@ -97,6 +98,7 @@
 
     async function carregarDirecte() {
         try {
+            // El fitxer ha de dir-se exactament així al teu GitHub
             const res = await fetch('vocabularihomofons.csv');
             const text = await res.text();
             const lines = text.split(/\r?\n/);
@@ -107,7 +109,9 @@
 
             document.getElementById('rangoFi').value = dadesTotals.length;
             filtrar();
-        } catch (e) { document.getElementById('pregunta').innerText = "Error CSV"; }
+        } catch (e) { 
+            document.getElementById('pregunta').innerText = "Error CSV"; 
+        }
     }
 
     function setMode(m) {
@@ -121,17 +125,24 @@
         accentActual = acc;
         document.getElementById('accUS').classList.toggle('active', acc === 'us');
         document.getElementById('accUK').classList.toggle('active', acc === 'uk');
-        reproduir(1.0);
+        // Opcional: reproduir so en canviar d'accent si ja hi ha una paraula
+        if(dadesFiltrades.length > 0) reproduir(1.0);
     }
 
     function filtrar() {
         const inici = parseInt(document.getElementById('rangoInici').value) || 1;
         const fi = parseInt(document.getElementById('rangoFi').value) || dadesTotals.length;
         const nomesRepas = document.getElementById('checkRepas').checked;
+        
         dadesFiltrades = dadesTotals.filter(d => (d.id >= inici && d.id <= fi) && (nomesRepas ? repasIds.has(d.id) : true));
         dadesFiltrades.sort(() => Math.random() - 0.5);
         i = 0;
-        if (dadesFiltrades.length > 0) nouRepte();
+        
+        if (dadesFiltrades.length > 0) {
+            nouRepte();
+        } else {
+            document.getElementById('pregunta').innerText = "Cap paraula";
+        }
         actualitzarTaula();
     }
 
@@ -139,14 +150,20 @@
         const p = dadesFiltrades[i];
         if (!p) return;
         estatError = false; revelat = false;
-        document.getElementById('pregunta').innerText = modeJoc === 'cat-eng' ? p.cat : "???";
+        
+        if (modeJoc === 'cat-eng') {
+            document.getElementById('pregunta').innerText = p.cat;
+        } else {
+            document.getElementById('pregunta').innerText = "???";
+            reproduir(1.0);
+        }
+
         document.getElementById('resposta').value = "";
         document.getElementById('feedback').innerText = "";
         document.getElementById('btn-next').style.display = "none";
         document.getElementById('btn-comprovar').style.display = "inline-block";
         document.getElementById('btn-skip').style.display = "inline-block";
         document.getElementById('starPregunta').classList.toggle('active', repasIds.has(p.id));
-        if (modeJoc === 'eng-cat') { document.getElementById('pregunta').innerText = "???"; reproduir(1.0); }
         document.getElementById('resposta').focus();
     }
 
@@ -157,8 +174,11 @@
 
         if (modeJoc === 'eng-cat' && !revelat && input === "") {
             document.getElementById('pregunta').innerText = p.eng;
-            revelat = true; return;
+            revelat = true; 
+            return;
         }
+
+        if (input === "") { saltar(); return; }
 
         if (input.toLowerCase() === correcte.toLowerCase()) {
             document.getElementById('feedback').innerText = "Molt bé! ✨";
@@ -185,16 +205,22 @@
         if (modeJoc === 'eng-cat') document.getElementById('pregunta').innerText = p.eng;
     }
 
-    function seguent() { i = (i + 1) % dadesFiltrades.length; nouRepte(); }
+    function seguent() { 
+        i = (i + 1) % dadesFiltrades.length; 
+        nouRepte(); 
+    }
 
     function reproduir(vel) {
         const p = dadesFiltrades[i];
         if (!p) return;
         const nomBase = p.eng.toLowerCase().trim();
+        // Cerca fitxer normal per US o amb prefix _uk per a UK
         const fitxer = accentActual === 'uk' ? `${nomBase}_uk.mp3` : `${nomBase}.mp3`;
         const audio = new Audio("audios/" + fitxer);
         audio.playbackRate = vel;
-        audio.play().catch(() => {});
+        audio.play().catch(() => {
+            console.log("No s'ha trobat l'àudio: " + fitxer);
+        });
     }
 
     function toggleRepasActual() {
@@ -205,7 +231,37 @@
         actualitzarTaula();
     }
 
-    function desmarcarTot() { if(confirm("Netejar estrelles?")) { repasIds.clear(); actualitzarTaula(); } }
+    function desmarcarTot() { 
+        if(confirm("Netejar estrelles?")) { 
+            repasIds.clear(); 
+            document.getElementById('checkRepas').checked = false;
+            filtrar(); 
+        } 
+    }
 
     function actualitzarTaula() {
-        document.getElementById('taula-cos').innerHTML = dadesTotals.map(d =>
+        document.getElementById('taula-cos').innerHTML = dadesTotals.map(d => `
+            <tr>
+                <td style="color:#ccc; width:35px; font-size:0.75em;">${d.id}</td>
+                <td style="width:30px; text-align:center;">${repasIds.has(d.id) ? '<span class="star-list">★</span>' : ''}</td>
+                <td style="color:var(--p-blue-strong); font-weight:bold;">${d.eng}</td>
+                <td style="color:#666;">${d.cat}</td>
+            </tr>
+        `).join('');
+    }
+
+    document.getElementById('resposta').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            if (document.getElementById('btn-next').style.display === 'inline-block') { seguent(); return; }
+            if (estatError) { 
+                document.getElementById('resposta').value = ""; 
+                document.getElementById('feedback').innerText = ""; 
+                estatError = false; 
+                return; 
+            }
+            validar();
+        }
+    });
+</script>
+</body>
+</html>
