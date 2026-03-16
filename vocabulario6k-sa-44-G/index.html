@@ -1,300 +1,137 @@
  <!DOCTYPE html>
 <html lang="ca">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Estudi de Vocabulari Pro</title>
-<style>
-body{margin:0;font-family:system-ui, -apple-system, sans-serif;background:#f1f5f9;color:#0f172a}
-header{padding:15px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;flex-direction:column;align-items:center;gap:12px}
-.mode-selector{display:flex;gap:10px}
-.mode-btn{padding:10px 18px;border:none;border-radius:14px;font-weight:700;cursor:pointer;background:#e2e8f0;transition:0.2s}
-.mode-btn.active{background:#2563eb;color:#fff}
-main{display:flex;justify-content:center;padding:20px}
-.card{position:relative;width:100%;max-width:500px;background:#fff;border-radius:28px;padding:35px;box-shadow:0 10px 25px rgba(0,0,0,0.08);text-align:center}
-.counter{position:absolute;top:20px;left:25px;font-weight:800;color:#2563eb;font-size:14px}
-.lang-label{font-size:12px;font-weight:800;color:#64748b;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px}
-.blocks{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:20px}
-.block{width:34px;height:34px;border-radius:50%;border:none;background:#f1f5f9;font-size:12px;font-weight:700;cursor:pointer;transition:0.2s}
-.block.active{background:#2563eb !important;color:#fff}
-.audio-zone{margin:20px 0}
-.audio-btns{display:flex;justify-content:center;align-items:center;gap:15px;margin-bottom:12px}
-.audio-btn{width:65px;height:65px;border-radius:50%;border:none;background:#dbeafe;font-size:26px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.audio-btn.slow{background:#fef08a;width:48px;height:48px;font-size:20px}
-.star-btn{background:none;border:none;font-size:32px;cursor:pointer;color:#cbd5e1}
-.star-btn.active{color:#f59e0b}
-.progress-container{width:100%;height:8px;background:#eee;border-radius:4px;margin:15px 0;cursor:pointer;overflow:hidden}
-#progressBar{height:100%;background:#2563eb;width:0%;transition:width 0.1s linear}
-input[type="text"]{width:100%;padding:18px;font-size:20px;border:2px solid #e5e7eb;border-radius:18px;text-align:center;box-sizing:border-box;margin:12px 0;outline-color:#2563eb}
-.feedback{font-weight:800;margin:12px 0;min-height:26px;font-size:1.1em}
-.example-box{background:#f8fafc;border-radius:18px;padding:18px;margin-top:20px;text-align:left;border:1px solid #e2e8f0;display:none}
-.buttons{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.btn-action{padding:16px;border:none;border-radius:16px;font-weight:800;cursor:pointer;font-size:15px}
-.btn-check{background:#e0f2fe;color:#0369a1}
-.btn-skip{background:#f1f5f9;color:#64748b}
-.btn-next{background:#dcfce7;color:#15803d;grid-column:span 2;display:none}
-.footer-btns{margin-top:25px;display:flex;flex-direction:column;gap:10px}
-.btn-view{background:#f3e8ff;color:#7e22ce;padding:14px;border-radius:14px;border:none;font-weight:700;cursor:pointer}
-.list-area{max-width:500px;margin:15px auto;background:#fff;border-radius:24px;padding:25px;display:none;box-shadow:0 5px 15px rgba(0,0,0,0.05)}
-.list-item{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #f1f5f9}
-.hidden{display:none}
-</style>
+    <meta charset="UTF-8">
+    <title>Estudiar Vocabulari</title>
+    <style>
+        body { font-family: sans-serif; max-width: 600px; margin: 20px auto; padding: 20px; background: #f4f7f6; }
+        .card { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; }
+        select, input { padding: 12px; width: 80%; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; font-size: 16px; }
+        button { padding: 10px 20px; cursor: pointer; background: #28a745; color: white; border: none; border-radius: 5px; font-weight: bold; margin: 5px; }
+        button:hover { background: #218838; }
+        .audio-btn { background: #17a2b8; }
+        .feedback { margin-top: 15px; font-size: 1.2em; font-weight: bold; }
+        .hidden { display: none; }
+        table { width: 100%; margin-top: 20px; border-collapse: collapse; background: white; }
+        td { padding: 10px; border-bottom: 1px solid #eee; text-align: left; }
+    </style>
 </head>
 <body>
 
-<header>
-    <div class="mode-selector">
-        <button id="modeCA" class="mode-btn active" onclick="changeMode('CA')">CAT ➔ ENG</button>
-        <button id="modeAC" class="mode-btn" onclick="changeMode('AC')">ENG ➔ CAT</button>
-    </div>
-    <button class="btn-action" style="background:#2563eb;color:#fff;padding:10px 20px" onclick="document.getElementById('csv-file').click()">📂 Carregar Llista (CSV)</button>
-    <input type="file" id="csv-file" accept=".csv" class="hidden" onchange="handleFile(event)">
-</header>
+<div class="card">
+    <h3>Selecciona un tema per estudiar:</h3>
+    <select id="menu-temas" onchange="cargarCSV(this.value)">
+        <option value="">-- Carregant temes... --</option>
+    </select>
 
-<main>
-<div id="welcome" class="card">
-    <h2>👋 Hola!</h2>
-    <p>Selecciona un fitxer CSV per començar a estudiar.</p>
-</div>
-
-<div id="app" class="card hidden">
-    <div class="counter" id="counter">0 / 0</div>
-    <div class="lang-label" id="langText">TRADUEIX AL ANGLÈS</div>
-    <div id="blockBtns" class="blocks"></div>
-    
-    <h2 id="wordDisplay" style="font-size: 28px; margin: 15px 0;">...</h2>
-
-    <div class="audio-zone">
-        <div class="audio-btns">
-            <button class="star-btn" id="starBtn" onclick="toggleStar()">★</button>
-            <button class="audio-btn" onclick="playAudio(1.0)">🔊</button>
-            <button class="audio-btn slow" onclick="playAudio(0.65)">🐢</button>
-        </div>
-        <div class="progress-container" onclick="seekAudio(event)">
-            <div id="progressBar"></div>
-        </div>
-    </div>
-
-    <input type="text" id="userInput" placeholder="Escriu la resposta..." autocomplete="off">
-    <div id="feedback" class="feedback"></div>
-
-    <div class="buttons" id="controls">
-        <button class="btn-action btn-check" onclick="check()">Comprovar</button>
-        <button class="btn-action btn-skip" onclick="skip()">No ho sé</button>
-    </div>
-    <button class="btn-action btn-next" id="nextBtn" onclick="next()">Següent paraula ➔</button>
-
-    <div id="exampleArea" class="example-box">
-        <div style="font-weight:800;color:#2563eb;font-size:12px;margin-bottom:5px">EXEMPLE:</div>
-        <div id="exEn" style="font-weight:700;margin-bottom:3px"></div>
-        <div id="exCa" style="color:#64748b;font-size:14px"></div>
-    </div>
-
-    <div class="footer-btns">
-        <button class="btn-view" onclick="showList('all')">👁️ Veure tot el bloc</button>
-        <button class="btn-view" style="background:#ffedd5;color:#9a3412" onclick="showList('stars')">⭐ Veure paraules de repàs</button>
+    <div id="zona-juego" class="hidden">
+        <hr>
+        <p>Tradueix a l'anglès:</p>
+        <h1 id="palabra-actual"></h1>
+        <input type="text" id="entrada-usuario" placeholder="Escriu aquí..." autocomplete="off">
+        <br>
+        <button onclick="comprovar()">Comprovar</button>
+        <button class="audio-btn" onclick="reproducir()">Escultar</button>
+        <p id="mensaje" class="feedback"></p>
+        <button id="btn-seguent" class="hidden" onclick="siguiente()" style="background:#007bff">Següent paraula</button>
     </div>
 </div>
-</main>
 
-<div id="listView" class="list-area"></div>
+<div id="lista-completa" class="hidden">
+    <table><tbody id="tabla-cuerpo"></tbody></table>
+</div>
 
 <script>
-let allWords = [], currentBlock = [], currentIndex = 0, currentMode = 'CA';
-let audioPlayer = new Audio();
-let starredWords = JSON.parse(localStorage.getItem('vocab_stars_v2')) || [];
+    let vocabulario = [];
+    let indice = 0;
 
-// Actualizar barra de progreso
-audioPlayer.ontimeupdate = () => {
-    if(audioPlayer.duration) {
-        const pct = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-        document.getElementById('progressBar').style.width = pct + '%';
-    }
-};
-
-function handleFile(e) {
-    const file = e.target.files[0];
-    if(!file) return;
-    const reader = new FileReader();
-    reader.onload = (event) => {
-        const content = event.target.result;
-        const lines = content.split(/\r?\n/);
-        allWords = [];
-        
-        lines.forEach(line => {
-            if(!line.trim()) return;
-            const sep = line.includes(';') ? ';' : ',';
-            const p = line.split(sep);
-            
-            if(p.length >= 2 && p[1].trim()){
-                const en = p[1].trim();
-                allWords.push({
-                    ca: p[0].trim(),
-                    en: en,
-                    exEn: p[3] ? p[3].trim() : '',
-                    exCa: p[4] ? p[4].trim() : '',
-                    audioFile: en.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9 ]/g, "").replace(/\s+/g, "") + ".mp3"
-                });
-            }
-        });
-
-        if(allWords.length > 0) {
-            document.getElementById('welcome').classList.add('hidden');
-            document.getElementById('app').classList.remove('hidden');
-            renderBlockButtons();
-        } else {
-            alert("El fitxer està buit o no té el format correcte.");
+    // 1. Cargar la lista maestra al abrir la web
+    async function cargarListaMaestra() {
+        try {
+            const respuesta = await fetch('temas.txt');
+            const texto = await respuesta.text();
+            const lineas = texto.split('\n').filter(l => l.trim() !== "");
+            const menu = document.getElementById('menu-temas');
+            menu.innerHTML = '<option value="">-- Tria un tema --</option>';
+            lineas.forEach(tema => {
+                let opt = document.createElement('option');
+                opt.value = tema.trim() + ".csv";
+                opt.innerText = tema.trim().toUpperCase();
+                menu.appendChild(opt);
+            });
+        } catch (e) {
+            alert("Error cargando temas.txt. Asegúrate de que el archivo existe.");
         }
-    };
-    reader.readAsText(file);
-}
-
-function renderBlockButtons() {
-    const container = document.getElementById('blockBtns');
-    container.innerHTML = '';
-    const totalBlocks = Math.ceil(allWords.length / 10);
-    for(let i=0; i<totalBlocks; i++) {
-        const btn = document.createElement('button');
-        btn.className = 'block';
-        btn.innerText = i + 1;
-        btn.onclick = () => loadBlock(i);
-        container.appendChild(btn);
     }
-    loadBlock(0);
-}
 
-function loadBlock(blockIdx) {
-    const start = blockIdx * 10;
-    currentBlock = allWords.slice(start, start + 10).sort(() => Math.random() - 0.5);
-    document.querySelectorAll('.block').forEach((b, i) => b.classList.toggle('active', i === blockIdx));
-    currentIndex = 0;
-    showWord();
-}
-
-function changeMode(m) {
-    currentMode = m;
-    document.getElementById('modeCA').classList.toggle('active', m === 'CA');
-    document.getElementById('modeAC').classList.toggle('active', m === 'AC');
-    document.getElementById('langText').innerText = m === 'CA' ? 'TRADUEIX AL ANGLÈS' : 'TRADUEIX AL CATALÀ';
-    showWord();
-}
-
-function showWord() {
-    const item = currentBlock[currentIndex];
-    if(!item) return;
-    document.getElementById('wordDisplay').innerText = (currentMode === 'CA') ? item.ca : item.en;
-    document.getElementById('userInput').value = '';
-    document.getElementById('userInput').disabled = false;
-    document.getElementById('feedback').innerText = '';
-    document.getElementById('exampleArea').style.display = 'none';
-    document.getElementById('nextBtn').style.display = 'none';
-    document.getElementById('controls').style.display = 'grid';
-    document.getElementById('counter').innerText = `${currentIndex + 1} / ${currentBlock.length}`;
-    document.getElementById('starBtn').classList.toggle('active', starredWords.includes(item.en));
-    document.getElementById('progressBar').style.width = '0%';
-    document.getElementById('userInput').focus();
-}
-
-function check() {
-    const userVal = document.getElementById('userInput').value.trim().toLowerCase();
-    const correctVal = (currentMode === 'CA' ? currentBlock[currentIndex].en : currentBlock[currentIndex].ca).toLowerCase();
-    
-    if(userVal === correctVal) {
-        displayResult(true);
-    } else {
-        const fb = document.getElementById('feedback');
-        fb.innerText = '❌ Torna-ho a provar';
-        fb.style.color = '#ef4444';
-    }
-}
-
-function skip() {
-    document.getElementById('userInput').value = (currentMode === 'CA' ? currentBlock[currentIndex].en : currentBlock[currentIndex].ca);
-    displayResult(false);
-}
-
-function displayResult(isCorrect) {
-    const item = currentBlock[currentIndex];
-    document.getElementById('userInput').disabled = true;
-    document.getElementById('controls').style.display = 'none';
-    document.getElementById('nextBtn').style.display = 'block';
-    
-    const fb = document.getElementById('feedback');
-    fb.innerText = isCorrect ? '✅ Correcte!' : 'La resposta és: ' + (currentMode === 'CA' ? item.en : item.ca);
-    fb.style.color = isCorrect ? "#22c55e" : "#2563eb";
-    
-    if(item.exEn) {
-        document.getElementById('exampleArea').style.display = 'block';
-        document.getElementById('exEn').innerText = item.exEn;
-        document.getElementById('exCa').innerText = item.exCa;
-    }
-    playAudio(1.0);
-}
-
-function playAudio(speed) {
-    audioPlayer.src = currentBlock[currentIndex].audioFile;
-    audioPlayer.playbackRate = speed;
-    audioPlayer.play().catch(() => console.log("Àudio no trobat: " + audioPlayer.src));
-}
-
-function seekAudio(e) {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const pos = (e.clientX - rect.left) / rect.width;
-    if(audioPlayer.duration) audioPlayer.currentTime = pos * audioPlayer.duration;
-}
-
-function toggleStar() {
-    const en = currentBlock[currentIndex].en;
-    if(starredWords.includes(en)) {
-        starredWords = starredWords.filter(s => s !== en);
-    } else {
-        starredWords.push(en);
-    }
-    localStorage.setItem('vocab_stars_v2', JSON.stringify(starredWords));
-    document.getElementById('starBtn').classList.toggle('active');
-}
-
-function next() {
-    currentIndex++;
-    if(currentIndex < currentBlock.length) {
-        showWord();
-    } else {
-        alert("🎉 Bloc completat!");
-    }
-}
-
-function showList(type) {
-    const view = document.getElementById('listView');
-    if(view.style.display === 'block' && view.dataset.type === type) {
-        view.style.display = 'none';
-        return;
-    }
-    view.style.display = 'block';
-    view.dataset.type = type;
-    
-    const listToShow = (type === 'all') ? currentBlock : allWords.filter(w => starredWords.includes(w.en));
-    view.innerHTML = `<h3 style="margin-top:0">${type === 'all' ? 'Bloc Actual' : 'Paraules de Repàs'}</h3>`;
-    
-    if(listToShow.length === 0) {
-        view.innerHTML += '<p>No hi ha paraules aquí.</p>';
-    } else {
-        listToShow.forEach(w => {
-            view.innerHTML += `
-                <div class="list-item">
-                    <div><b>${w.ca}</b><br><small style="color:#64748b">${w.en}</small></div>
-                    <button class="audio-btn" style="width:35px;height:35px;font-size:16px" onclick="audioPlayer.src='${w.audioFile}';audioPlayer.play()">🔊</button>
-                </div>`;
+    // 2. Cargar el archivo CSV seleccionado
+    async function cargarCSV(archivo) {
+        if (!archivo) return;
+        const respuesta = await fetch(archivo);
+        const texto = await respuesta.text();
+        const lineas = texto.split('\n').filter(l => l.includes(','));
+        
+        vocabulario = lineas.map(l => {
+            const partes = l.split(',');
+            return { cat: partes[0].trim(), eng: partes[1].trim() };
         });
-    }
-}
 
-// Control del teclado
-document.getElementById('userInput').onkeypress = (e) => {
-    if(e.key === 'Enter') {
-        if(document.getElementById('nextBtn').style.display === 'block') next();
-        else check();
+        document.getElementById('zona-juego').classList.remove('hidden');
+        document.getElementById('lista-completa').classList.remove('hidden');
+        mostrarLista();
+        indice = 0;
+        mostrarPalabra();
     }
-};
+
+    function mostrarPalabra() {
+        document.getElementById('palabra-actual').innerText = vocabulario[indice].cat;
+        document.getElementById('entrada-usuario').value = "";
+        document.getElementById('mensaje').innerText = "";
+        document.getElementById('btn-seguent').classList.add('hidden');
+        document.getElementById('entrada-usuario').focus();
+    }
+
+    function comprovar() {
+        const user = document.getElementById('entrada-usuario').value.trim().toLowerCase();
+        const correct = vocabulario[indice].eng.toLowerCase();
+        const msj = document.getElementById('mensaje');
+        
+        if (user === correct) {
+            msj.innerText = "Correcte! ✨";
+            msj.style.color = "green";
+            reproducir();
+            document.getElementById('btn-seguent').classList.remove('hidden');
+        } else {
+            msj.innerText = "Torna-ho a intentar ❌";
+            msj.style.color = "red";
+        }
+    }
+
+    function reproducir() {
+        const audio = new Audio("audios/" + vocabulario[indice].eng.toLowerCase() + ".mp3");
+        audio.play().catch(() => console.log("Audio no trobat"));
+    }
+
+    function siguiente() {
+        indice = (indice + 1) % vocabulario.length;
+        mostrarPalabra();
+    }
+
+    function mostrarLista() {
+        const cuerpo = document.getElementById('tabla-cuerpo');
+        cuerpo.innerHTML = vocabulario.map(i => `<tr><td>${i.cat}</td><td><b>${i.eng}</b></td></tr>`).join('');
+    }
+
+    // Detectar tecla Enter
+    document.getElementById('entrada-usuario').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            if (document.getElementById('btn-seguent').classList.contains('hidden')) comprovar();
+            else siguiente();
+        }
+    });
+
+    // Iniciar
+    cargarListaMaestra();
 </script>
 </body>
 </html>
