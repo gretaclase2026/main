@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Vocabulari - Control Total</title>
+    <title>Vocabulari</title>
     <style>
         :root { 
             --p-pink: #ffcfd2; 
@@ -18,9 +18,8 @@
         
         .card { background: white; width: 100%; max-width: 650px; padding: 25px; border-radius: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 8px solid var(--p-pink); text-align: center; box-sizing: border-box; }
         
-        /* Botó de càrrega més gran per al polze del mòbil */
-        .upload-wrapper { position: relative; overflow: hidden; display: inline-block; cursor: pointer; margin: 20px 0; }
-        .btn-upload-custom { background: var(--p-pink); color: white; padding: 15px 35px; border-radius: 15px; font-weight: bold; font-size: 1.1em; display: inline-block; }
+        .upload-wrapper { position: relative; overflow: hidden; display: inline-block; cursor: pointer; margin: 10px 0; }
+        .btn-upload-custom { background: var(--p-pink); color: white; padding: 10px 25px; border-radius: 12px; font-weight: bold; font-size: 0.9em; display: inline-block; }
         #csvFile { position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; height: 100%; width: 100%; }
 
         .config-bar { background: #fff; padding: 12px 18px; border-radius: 20px; margin-bottom: 20px; border: 2px solid var(--p-pink); display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
@@ -30,6 +29,7 @@
         .btn-lang.active { background: var(--p-turquesa-fort); color: white; }
 
         .input-rango { width: 50px; padding: 5px; font-size: 1em; border-radius: 8px; border: 1px solid #ddd; text-align: center; font-weight: bold; }
+        
         .netejar-btn { margin-left: auto; color: #ff5252; background: none; border: none; cursor: pointer; font-size: 0.85em; font-weight: bold; }
 
         #pregunta { font-size: 2.5em; color: var(--p-blue-strong); margin: 15px 0; display: inline-block; vertical-align: middle; min-height: 1.2em; }
@@ -59,9 +59,8 @@
         <div id="setup">
             <div class="upload-wrapper">
                 <div class="btn-upload-custom">TRIAR FITXER</div>
-                <input type="file" id="csvFile" accept="*" onchange="carregarFitxer(this)">
+                <input type="file" id="csvFile" accept=".csv" onchange="carregarFitxer(this)">
             </div>
-            <p style="font-size: 0.9em; color: #888;">Tria el llistat que vulguis practicar avui</p>
         </div>
 
         <div id="joc" style="display:none;">
@@ -70,9 +69,12 @@
                     <button id="btnCat" class="btn-lang active" onclick="setMode('cat-eng')">CAT → ENG</button>
                     <button id="btnEng" class="btn-lang" onclick="setMode('eng-cat')">ENG → CAT</button>
                 </div>
+
                 <span>De: <input type="number" id="rangoInici" class="input-rango" value="1" onchange="filtrar()"></span>
                 <span>A: <input type="number" id="rangoFi" class="input-rango" value="100" onchange="filtrar()"></span>
+                
                 <label style="cursor:pointer; font-weight:bold;"><input type="checkbox" id="checkRepas" onchange="filtrar()"> ⭐</label>
+                
                 <button class="netejar-btn" onclick="desmarcarTot()">Netejar ⭐</button>
             </div>
 
@@ -83,8 +85,7 @@
                 <span id="starPregunta" class="star-main" onclick="toggleRepasActual()">★</span>
             </div>
 
-            <input type="text" id="resposta" placeholder="..." autocomplete="off" autofocus 
-                   autocorrect="off" autocapitalize="none" spellcheck="false">
+            <input type="text" id="resposta" placeholder="..." autocomplete="off" autofocus>
 
             <div class="controls">
                 <button class="btn-audio btn-speaker" onclick="reproduir(1.0)">🔊</button>
@@ -105,10 +106,16 @@
     let dadesTotals = [], dadesFiltrades = [], i = 0, repasIds = new Set();
     let estatError = false, modeJoc = 'cat-eng', revelat = false;
 
+    function setMode(m) {
+        modeJoc = m;
+        document.getElementById('btnCat').classList.toggle('active', modeJoc === 'cat-eng');
+        document.getElementById('btnEng').classList.toggle('active', modeJoc === 'eng-cat');
+        filtrar();
+    }
+
     function carregarFitxer(input) {
         if (!input.files[0]) return;
         const reader = new FileReader();
-        // Intentem llegir el fitxer
         reader.readAsText(input.files[0], "UTF-8"); 
         reader.onload = (e) => {
             const lines = e.target.result.split(/\r?\n/);
@@ -116,26 +123,12 @@
                 const p = l.split(';');
                 return (p[0] && p[1]) ? { id: idx + 1, cat: p[0].trim(), eng: p[1].trim() } : null;
             }).filter(item => item);
-            
-            if (dadesTotals.length === 0) {
-                alert("El fitxer sembla buit o no té el format correcte (paraula;traducció)");
-                return;
-            }
-
             document.getElementById('rangoFi').value = dadesTotals.length;
             document.getElementById('setup').style.display = 'none';
             document.getElementById('joc').style.display = 'block';
             document.getElementById('llista-container').style.display = 'block';
             filtrar();
         };
-    }
-
-    // Tota la resta de funcions (filtrar, nouRepte, validar, etc.) es mantenen igual que t'agradaven
-    function setMode(m) {
-        modeJoc = m;
-        document.getElementById('btnCat').classList.toggle('active', modeJoc === 'cat-eng');
-        document.getElementById('btnEng').classList.toggle('active', modeJoc === 'eng-cat');
-        filtrar();
     }
 
     function filtrar() {
@@ -152,13 +145,16 @@
     function nouRepte() {
         const p = dadesFiltrades[i];
         if (!p) return;
-        estatError = false; revelat = false;
+        estatError = false;
+        revelat = false;
+
         if (modeJoc === 'cat-eng') {
             document.getElementById('pregunta').innerText = p.cat;
         } else {
             document.getElementById('pregunta').innerText = "???";
-            reproduir(1.0);
+            reproduir(1.0); // Sona automàticament en mode escolta
         }
+
         document.getElementById('resposta').value = "";
         document.getElementById('feedback').innerText = "";
         document.getElementById('btn-next').style.display = "none";
@@ -180,11 +176,16 @@
         const p = dadesFiltrades[i];
         const correcte = (modeJoc === 'cat-eng') ? p.eng : p.cat;
         const textUser = document.getElementById('resposta').value.trim();
+        
+        // Revelar paraula si s'està en mode oïda i no s'ha revelat
         if (modeJoc === 'eng-cat' && !revelat && textUser === "") {
             document.getElementById('pregunta').innerText = p.eng;
-            revelat = true; return;
+            revelat = true;
+            return;
         }
+
         if (textUser === "") { saltar(); return; }
+
         if (textUser.toLowerCase() === correcte.toLowerCase()) {
             document.getElementById('feedback').innerText = "Molt bé! ✨";
             document.getElementById('feedback').style.color = "green";
@@ -210,7 +211,10 @@
         if (modeJoc === 'eng-cat') document.getElementById('pregunta').innerText = p.eng;
     }
 
-    function seguent() { i = (i + 1) % dadesFiltrades.length; nouRepte(); }
+    function seguent() {
+        i = (i + 1) % dadesFiltrades.length;
+        nouRepte();
+    }
 
     function reproduir(vel) {
         const audio = new Audio("audios/" + dadesFiltrades[i].eng.toLowerCase().trim() + ".mp3");
@@ -218,7 +222,9 @@
         audio.play().catch(() => {});
     }
 
-    function desmarcarTot() { if(confirm("Netejar estrelles?")) { repasIds.clear(); filtrar(); } }
+    function desmarcarTot() {
+        if(confirm("Netejar totes les estrelles?")) { repasIds.clear(); filtrar(); }
+    }
 
     function actualitzarTaula() {
         document.getElementById('taula-cos').innerHTML = dadesTotals.map(d => `
@@ -234,7 +240,12 @@
     document.getElementById('resposta').addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             if (document.getElementById('btn-next').style.display === 'inline-block') { seguent(); return; }
-            if (estatError) { document.getElementById('resposta').value = ""; document.getElementById('feedback').innerText = ""; estatError = false; return; }
+            if (estatError) { 
+                document.getElementById('resposta').value = ""; 
+                document.getElementById('feedback').innerText = ""; 
+                estatError = false; 
+                return; 
+            }
             validar();
         }
     });
