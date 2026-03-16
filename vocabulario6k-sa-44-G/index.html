@@ -2,149 +2,236 @@
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
-    <title>El meu Vocabulari - GitHub</title>
+    <title>Vocabulari</title>
     <style>
-        :root { --p-pink: #ffcfd2; --p-blue: #d4eaf7; --p-green: #b9fbc0; --p-yellow: #fbf8cc; --text: #4a4a4a; }
+        :root { 
+            --p-pink: #ffcfd2; 
+            --p-blue-soft: #d4eaf7; 
+            --p-blue-strong: #2196F3; 
+            --p-turquesa-claret: #e0f7f9; 
+            --p-turquesa-fort: #40c4ff; 
+            --p-yellow: #FFF176; 
+            --text: #4a4a4a; 
+        }
         body { font-family: 'Segoe UI', sans-serif; background: #fff5f6; color: var(--text); display: flex; flex-direction: column; align-items: center; padding: 20px; }
-        .card { background: white; width: 100%; max-width: 550px; padding: 30px; border-radius: 40px; box-shadow: 0 15px 35px rgba(255,182,193,0.3); text-align: center; border: 8px solid var(--p-pink); }
-        .progress-container { width: 100%; height: 18px; background: #ffeef0; border-radius: 10px; margin-bottom: 25px; overflow: hidden; border: 2px solid var(--p-pink); }
-        #bar { height: 100%; width: 0%; transition: width 0.1s linear; }
-        .bg-estudi { background: #4CAF50; transition: width 0.5s !important; }
-        .bg-audio { background: #5b8fb9; }
-        h1 { font-size: 2.2em; margin: 15px 0; color: #d88a8a; min-height: 1.2em; }
-        input[type="text"] { width: 85%; padding: 18px; font-size: 1.2em; border-radius: 25px; border: 3px solid var(--p-pink); text-align: center; outline: none; margin-bottom: 20px; background: #fffafa; }
-        .controls { display: flex; justify-content: center; align-items: center; gap: 15px; flex-wrap: wrap; }
-        .btn { padding: 12px 25px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 1em; }
-        .btn-check { background: var(--p-blue); color: #5b8fb9; }
-        .btn-skip { background: var(--p-yellow); color: #b08d00; }
-        .btn-next { background: var(--p-green); color: #3e7e44; }
-        .audio-box { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-        .btn-speaker { background: var(--p-yellow); font-size: 2em; width: 65px; height: 65px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        .slow-label { font-size: 1.5em; cursor: pointer; filter: grayscale(1); }
-        .slow-label.active { filter: grayscale(0); transform: scale(1.2); }
-        .list-area { margin-top: 30px; background: white; width: 100%; max-width: 550px; border-radius: 25px; padding: 20px; border: 3px solid var(--p-pink); box-sizing: border-box; }
-        table { width: 100%; border-collapse: collapse; }
-        td { padding: 12px; border-bottom: 1px solid #fff0f2; }
+        
+        .card { background: white; width: 100%; max-width: 650px; padding: 25px; border-radius: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 8px solid var(--p-pink); text-align: center; }
+        
+        .upload-wrapper { position: relative; overflow: hidden; display: inline-block; cursor: pointer; margin: 10px 0; }
+        .btn-upload-custom { background: var(--p-pink); color: white; padding: 10px 25px; border-radius: 12px; font-weight: bold; font-size: 0.9em; display: inline-block; }
+        #csvFile { position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; height: 100%; width: 100%; }
+
+        /* Barra de configuració */
+        .config-bar { background: #fff; padding: 12px 18px; border-radius: 20px; margin-bottom: 20px; border: 2px solid var(--p-pink); display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
+        
+        /* Grup Idiomes a l'esquerra */
+        .idioma-group { display: flex; flex-direction: column; gap: 4px; }
+        .btn-lang { background: var(--p-turquesa-claret); color: #00838f; border: none; padding: 5px 15px; border-radius: 15px; font-size: 0.75em; font-weight: bold; cursor: pointer; min-width: 120px; text-align: center; }
+        .btn-lang.active { background: var(--p-turquesa-fort); color: white; }
+
+        .input-rango { width: 50px; padding: 5px; font-size: 1em; border-radius: 8px; border: 1px solid #ddd; text-align: center; font-weight: bold; }
+        
+        /* Botó netejar a la dreta */
+        .netejar-btn { margin-left: auto; color: #ff5252; background: none; border: none; cursor: pointer; font-size: 0.85em; font-weight: bold; }
+
+        #pregunta { font-size: 2.5em; color: var(--p-blue-strong); margin: 15px 0; display: inline-block; vertical-align: middle; }
+        .star-main { font-size: 2.5em; cursor: pointer; color: #ccc; vertical-align: middle; margin-left: 10px; }
+        .star-main.active { color: #FFD700; }
+
+        #resposta { width: 85%; padding: 15px; font-size: 1.8em; border-radius: 20px; border: 3px solid var(--p-pink); text-align: center; outline: none; margin-bottom: 20px; background: #fffafa; font-weight: bold; }
+        
+        .btn-audio { width: 70px; height: 70px; border-radius: 50%; border: none; cursor: pointer; font-size: 2em; display: inline-flex; align-items: center; justify-content: center; margin: 5px; }
+        .btn-speaker { background: var(--p-blue-soft); color: #5b8fb9; }
+        .btn-tortuga { background: #f0faff; color: #888; border: 1px solid #d4eaf7; }
+
+        .btn { padding: 12px 25px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; margin: 5px; }
+        .btn-check { background: var(--p-blue-soft); color: #5b8fb9; }
+        .btn-skip { background: var(--p-yellow); color: #856404; }
+        .btn-next { background: #b9fbc0; color: #3e7e44; }
+
+        .list-area { width: 100%; max-width: 650px; background: white; margin-top: 25px; border-radius: 25px; padding: 10px 15px; border: 3px solid var(--p-pink); }
+        table { width: 100%; border-collapse: collapse; font-size: 1.25em; }
+        td { padding: 5px 8px; border-bottom: 1px solid #f9f9f9; text-align: left; }
+        .star-list { color: #FFD700; font-size: 1.5em; font-weight: bold; }
     </style>
 </head>
 <body>
+
     <div class="card">
-        <div id="setup-section">
-            <h2 style="color:#d88a8a">🌸 Carrega el Vocabulari 🌸</h2>
-            <div style="background: var(--p-yellow); padding: 25px; border-radius: 25px; border: 3px dashed #d88a8a; margin: 20px 0;">
-                <input type="file" accept=".csv" id="csvFileInput" onchange="carregarFitxer(this)">
+        <div id="setup">
+            <div class="upload-wrapper">
+                <div class="btn-upload-custom">TRIAR FITXER</div>
+                <input type="file" id="csvFile" accept=".csv" onchange="carregarFitxer(this)">
             </div>
-            <p style="font-size: 0.8em; color: gray;">Tria el teu arxiu .csv</p>
         </div>
+
         <div id="joc" style="display:none;">
-            <div class="progress-container"><div id="bar" class="bg-estudi"></div></div>
-            <div id="feedback" style="height:25px; font-weight:bold; margin-bottom: 10px;"></div>
-            <h1 id="pregunta">---</h1>
-            <input type="text" id="resposta" placeholder="Escriu en anglès..." autocomplete="off">
-            <div class="controls">
-                <div class="audio-box">
-                    <button class="btn-speaker" onclick="sonar()">🔊</button>
-                    <span id="tortuga" class="slow-label" onclick="toggleSlow()">🐢</span>
+            <div class="config-bar">
+                <div class="idioma-group">
+                    <button id="btnCat" class="btn-lang active" onclick="setMode('cat-eng')">CAT → ENG</button>
+                    <button id="btnEng" class="btn-lang" onclick="setMode('eng-cat')">ENG → CAT</button>
                 </div>
+
+                <span>De: <input type="number" id="rangoInici" class="input-rango" value="1" onchange="filtrar()"></span>
+                <span>A: <input type="number" id="rangoFi" class="input-rango" value="100" onchange="filtrar()"></span>
+                
+                <label style="cursor:pointer; font-weight:bold;"><input type="checkbox" id="checkRepas" onchange="filtrar()"> ⭐</label>
+                
+                <button class="netejar-btn" onclick="desmarcarTot()">Netejar ⭐</button>
+            </div>
+
+            <div id="feedback" style="height:45px; font-weight:bold; font-size: 1.35em;"></div>
+            
+            <div>
+                <h1 id="pregunta">---</h1>
+                <span id="starPregunta" class="star-main" onclick="toggleRepasActual()">★</span>
+            </div>
+
+            <input type="text" id="resposta" placeholder="..." autocomplete="off">
+
+            <div class="controls">
+                <button class="btn-audio btn-speaker" onclick="reproduir(1.0)">🔊</button>
+                <button class="btn-audio btn-tortuga" onclick="reproduir(0.5)">🐢</button>
+                <br>
                 <button id="btn-comprovar" class="btn btn-check" onclick="validar()">Comprovar</button>
                 <button id="btn-skip" class="btn btn-skip" onclick="saltar()">No la sé</button>
-                <button id="next" class="btn btn-next" style="display:none;" onclick="seguent()">Següent →</button>
+                <button id="btn-next" class="btn btn-next" style="display:none;" onclick="seguent()">Següent →</button>
             </div>
-            <p><a href="#" onclick="location.reload()" style="color:gray; font-size:0.8em; margin-top:20px; display:block;">⇠ Canviar fitxer</a></p>
         </div>
     </div>
-    <div id="info-extra" style="display:none;" class="list-area">
-        <table><tbody id="taula"></tbody></table>
+
+    <div id="llista-container" class="list-area" style="display:none;">
+        <table><tbody id="taula-cos"></tbody></table>
     </div>
+
 <script>
-    let dades = [], i = 0, isSlow = false;
-    let audioObject = null;
+    let dadesTotals = [], dadesFiltrades = [], i = 0, repasIds = new Set();
+    let estatError = false, modeJoc = 'cat-eng';
+
+    function setMode(m) {
+        modeJoc = m;
+        document.getElementById('btnCat').classList.toggle('active', modeJoc === 'cat-eng');
+        document.getElementById('btnEng').classList.toggle('active', modeJoc === 'eng-cat');
+        filtrar();
+    }
 
     function carregarFitxer(input) {
         if (!input.files[0]) return;
         const reader = new FileReader();
-        reader.readAsText(input.files[0], "UTF-8");
+        reader.readAsText(input.files[0], "UTF-8"); 
         reader.onload = (e) => {
             const lines = e.target.result.split(/\r?\n/);
-            dades = lines.map(line => {
-                const parts = line.split(/[;,]/);
-                if (parts.length >= 2) return { cat: parts[0].trim(), eng: parts[1].trim() };
-                return null;
-            }).filter(item => item && item.cat && item.eng);
-            if (dades.length > 0) {
-                document.getElementById('setup-section').style.display = 'none';
-                document.getElementById('joc').style.display = 'block';
-                document.getElementById('info-extra').style.display = 'block';
-                nouRepte();
-                actualitzarLlista();
-            }
+            dadesTotals = lines.map((l, idx) => {
+                const p = l.split(';');
+                return (p[0] && p[1]) ? { id: idx + 1, cat: p[0].trim(), eng: p[1].trim() } : null;
+            }).filter(item => item);
+            document.getElementById('rangoFi').value = dadesTotals.length;
+            document.getElementById('setup').style.display = 'none';
+            document.getElementById('joc').style.display = 'block';
+            document.getElementById('llista-container').style.display = 'block';
+            filtrar();
         };
+    }
+
+    function filtrar() {
+        const inici = parseInt(document.getElementById('rangoInici').value) || 1;
+        const fi = parseInt(document.getElementById('rangoFi').value) || dadesTotals.length;
+        const nomesRepas = document.getElementById('checkRepas').checked;
+        dadesFiltrades = dadesTotals.filter(d => (d.id >= inici && d.id <= fi) && (nomesRepas ? repasIds.has(d.id) : true));
+        dadesFiltrades.sort(() => Math.random() - 0.5);
+        i = 0;
+        if (dadesFiltrades.length > 0) nouRepte();
+        actualitzarTaula();
     }
 
     function nouRepte() {
-        document.getElementById('pregunta').innerText = dades[i].cat;
+        const p = dadesFiltrades[i];
+        if (!p) return;
+        estatError = false;
+        document.getElementById('pregunta').innerText = (modeJoc === 'cat-eng') ? p.cat : p.eng;
         document.getElementById('resposta').value = "";
         document.getElementById('feedback').innerText = "";
-        document.getElementById('next').style.display = 'none';
-        document.getElementById('btn-comprovar').style.display = 'inline-block';
-        document.getElementById('btn-skip').style.display = 'inline-block';
-        const bar = document.getElementById('bar');
-        bar.className = 'bg-estudi';
-        bar.style.width = ((i / dades.length) * 100) + "%";
+        document.getElementById('btn-next').style.display = "none";
+        document.getElementById('btn-comprovar').style.display = "inline-block";
+        document.getElementById('btn-skip').style.display = "inline-block";
+        document.getElementById('starPregunta').classList.toggle('active', repasIds.has(p.id));
         document.getElementById('resposta').focus();
     }
 
-    function sonar() {
-        if (audioObject) { audioObject.pause(); audioObject.currentTime = 0; }
-        let nomAudio = dades[i].eng.toLowerCase().trim();
-        audioObject = new Audio("audios/" + nomAudio + ".mp3");
-        audioObject.playbackRate = isSlow ? 0.5 : 1.0;
-        const bar = document.getElementById('bar');
-        audioObject.onplay = () => { bar.className = 'bg-audio'; bar.style.width = "0%"; };
-        audioObject.ontimeupdate = () => {
-            if (audioObject.duration) bar.style.width = (audioObject.currentTime / audioObject.duration) * 100 + "%";
-        };
-        audioObject.onended = () => { setTimeout(nouRepte, 300); };
-        audioObject.play().catch(() => { bar.className = 'bg-estudi'; });
+    function toggleRepasActual() {
+        const p = dadesFiltrades[i];
+        if (repasIds.has(p.id)) repasIds.delete(p.id);
+        else repasIds.add(p.id);
+        document.getElementById('starPregunta').classList.toggle('active', repasIds.has(p.id));
+        actualitzarTaula();
     }
 
     function validar() {
-        if (document.getElementById('resposta').value.trim().toLowerCase() === dades[i].eng.toLowerCase()) {
+        const p = dadesFiltrades[i];
+        const correcte = (modeJoc === 'cat-eng') ? p.eng : p.cat;
+        const textUser = document.getElementById('resposta').value.trim();
+        
+        if (textUser === "") { saltar(); return; }
+
+        if (textUser.toLowerCase() === correcte.toLowerCase()) {
             document.getElementById('feedback').innerText = "Molt bé! ✨";
-            document.getElementById('feedback').style.color = "#3e7e44";
-            sonar();
-            mostrarSeguent();
+            document.getElementById('feedback').style.color = "green";
+            if (modeJoc === 'cat-eng') reproduir(1.0);
+            setTimeout(seguent, 800);
         } else {
-            document.getElementById('feedback').innerText = "❌ Revisa-ho";
-            document.getElementById('feedback').style.color = "#e74c3c";
+            document.getElementById('feedback').innerText = "Era: " + correcte.toUpperCase();
+            document.getElementById('feedback').style.color = "red";
+            estatError = true;
         }
     }
 
     function saltar() {
-        document.getElementById('feedback').innerText = "Era: " + dades[i].eng;
-        document.getElementById('feedback').style.color = "#d88a8a";
-        sonar();
-        mostrarSeguent();
+        const p = dadesFiltrades[i];
+        const correcte = (modeJoc === 'cat-eng') ? p.eng : p.cat;
+        document.getElementById('feedback').innerText = correcte.toUpperCase();
+        document.getElementById('feedback').style.color = "var(--p-blue-strong)";
+        document.getElementById('btn-comprovar').style.display = "none";
+        document.getElementById('btn-skip').style.display = "none";
+        document.getElementById('btn-next').style.display = "inline-block";
+        if (modeJoc === 'cat-eng') reproduir(1.0);
     }
 
-    function mostrarSeguent() {
-        document.getElementById('next').style.display = 'inline-block';
-        document.getElementById('btn-comprovar').style.display = 'none';
-        document.getElementById('btn-skip').style.display = 'none';
+    function seguent() {
+        i = (i + 1) % dadesFiltrades.length;
+        nouRepte();
     }
 
-    function toggleSlow() { isSlow = !isSlow; document.getElementById('tortuga').classList.toggle('active', isSlow); }
-
-    function seguent() { i = (i + 1) % dades.length; nouRepte(); }
-
-    function actualitzarLlista() {
-        document.getElementById('taula').innerHTML = dades.map(item => `<tr><td>${item.cat}</td><td style="color:#d88a8a"><b>${item.eng}</b></td></tr>`).join('');
+    function reproduir(vel) {
+        const audio = new Audio("audios/" + dadesFiltrades[i].eng.toLowerCase().trim() + ".mp3");
+        audio.playbackRate = vel;
+        audio.play().catch(() => {});
     }
 
-    document.getElementById('resposta').addEventListener('keypress', (e) => {
+    function desmarcarTot() {
+        if(confirm("Netejar totes les estrelles?")) { repasIds.clear(); filtrar(); }
+    }
+
+    function actualitzarTaula() {
+        document.getElementById('taula-cos').innerHTML = dadesTotals.map(d => `
+            <tr>
+                <td style="color:#ccc; width:35px; font-size:0.75em;">${d.id}</td>
+                <td style="width:30px; text-align:center;">${repasIds.has(d.id) ? '<span class="star-list">★</span>' : ''}</td>
+                <td style="color:var(--p-blue-strong); font-weight:bold;">${d.eng}</td>
+                <td style="color:#666;">${d.cat}</td>
+            </tr>
+        `).join('');
+    }
+
+    document.getElementById('resposta').addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
-            if (document.getElementById('next').style.display === 'none') validar();
-            else seguent();
+            if (document.getElementById('btn-next').style.display === 'inline-block') { seguent(); return; }
+            if (estatError) { 
+                document.getElementById('resposta').value = ""; 
+                document.getElementById('feedback').innerText = ""; 
+                estatError = false; 
+                return; 
+            }
+            validar();
         }
     });
 </script>
