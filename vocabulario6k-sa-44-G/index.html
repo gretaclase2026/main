@@ -225,9 +225,23 @@
     function seguent() { i = (i + 1) % dadesFiltrades.length; nouRepte(); }
 
     function reproduir(vel) {
-        const audio = new Audio("audios/" + dadesFiltrades[i].eng.toLowerCase().trim() + ".mp3");
+        const paraula = dadesFiltrades[i].eng.trim();
+        // Intentem primer amb el nom tal qual (per si té majúscules com a la Tanda 5)
+        let audio = new Audio("audios/" + paraula + ".mp3");
+        
+        audio.onerror = () => {
+            // Si falla (per exemple a GitHub que és case-sensitive), intentem en minúscules
+            let audioMin = new Audio("audios/" + paraula.toLowerCase() + ".mp3");
+            audioMin.playbackRate = vel;
+            audioMin.play().catch(() => {
+                console.log("No s'ha trobat l'àudio: " + paraula);
+            });
+        };
+
         audio.playbackRate = vel;
-        audio.play().catch(() => {});
+        audio.play().catch(() => {
+            // El catch dispara l'onerror en molts navegadors si el fitxer no existeix
+        });
     }
 
     function desmarcarTot() { if(confirm("Netejar estrelles?")) { repasIds.clear(); filtrar(); } }
