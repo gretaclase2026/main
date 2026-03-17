@@ -1,91 +1,90 @@
-﻿ 
-Abolir,Abolish,Acción
-Apenas,Barely,Adverbio
-Hacia atrás,Backwards,Dirección
-Retrocedió/Respaldó,Backed up,Acción
-Mostrar (dientes),Bared,Acción
-Debajo de,Beneath,Posición
-Ardiendo,Blazing,Efecto
-Hoja/Filo,Blade,Objeto
-Sonrojarse,Blushed,Reacción
-Vínculo/Lazo,Bond,Relación
-Molestando,Bothering,Acción
-Ramo de flores,Bouquet,Objeto
-Inclinarse/Reverencia,Bowed,Respeto
-El más valiente,Bravest,Adjetivo
-Moratones,Bruises,Cuerpo
-Chocado/Golpeado,Bumped,Acción
-Tallado/Esculpido,Carved,Acción
-Aplausos/Vítores,Cheers,Reacción
-Chocando/Enfrentándose,Clashing,Combate
-Garras,Claws,Lobo
-Agarrado con fuerza,Clutched,Acción
-Sujetando fuerte,Clutching,Acción
-Desplomarse,Collapsed,Estado
-Concursantes,Contestants,Persona
-Arrugado/Desmoronado,Crumpled,Acción
-Daga/Puñal,Dagger,Objeto
-Sordo,Deaf,Estado
-Negar,Deny,Acción
-Esquivar,Dodged,Combate
-Caído/Soltado,Dropped,Acción
-El más tonto,Dumbest,Adjetivo
-Aleteo,Flutter,Sensación
-Hizo un gesto,Gestured,Acción
-Mirar con odio,Glared,Expresión
-Brilló,Glowed,Efecto
-Rendirse,Giving up,Acción
-Gemir/Gruñir (dolor),Groaned,Reacción
-Gruñó,Growled,Lobo
-Tragar saliva,Gulped,Reacción
-Odio,Hatred,Emoción
-Siseó (rabia),Hissed,Acción
-Aulló,Howled,Lobo
-Tirón/Imbécil,Jerk,Acción/Persona
-Dar un rodillazo,Kneed,Combate
-Nudillos,Knuckles,Cuerpo
-Vueltas (correr),Laps,Deporte
-Correa,Leash,Objeto
-Bajar/Agachar,Lowered,Acción
-Arremeter/Lanzarse,Lunged,Combate
-Gesticular con la boca,Mouthed,Acción
-Inmovilizar,Pinned,Combate
-Abalanzarse,Pounced,Combate
-Presa,Prey,Caza
-Adecuado/Apropiado,Proper,Adjetivo
-Puñetazo,Punch,Combate
-Golpeado (puño),Punched,Combate
-Ronroneando,Purring,Lobo
-Empujado/Expulsado,Pushed,Acción
-Rabia/Ira,Rage,Emoción
-Rodar/Girar (ojos),Rolled,Acción
-Enrollado/Subirse mangas,Rolled up,Acción
-Dispersos,Scattered,Acción
-Moverse torpemente,Scrambled,Acción
-Hecho añicos,Shattered,Efecto
-Transformación,Shift,Lobo
-Transformado,Shifted,Lobo
-Portazo/Golpe seco,Slammed,Acción
-Deslizado,Slid,Acción
-Sonreír con suficiencia,Smirked,Expresión
-Rompido/Perder nervios,Snapped,Acción
-Gruñir (dientes),Snarled,Lobo
-Sollozar,Sobbed,Emoción
-Escupió/Desprecio,Spat,Acción
-Difundir/Extender,Spread,Acción
-Apretó,Squeezed,Acción
-Apuñalado,Stabbed,Combate
-Acechando,Stalking,Acción
-Agitado/Removido,Stirred,Acción
-Fuerza,Strength,Atributo
-Terco/Testarudo,Stubborn,Adjetivo
-Tropezar,Stumbled,Acción
-Oleada/Subidón,Surge,Sensación
-Derribar/Taclear,Tackled,Combate
-Cargado/Grueso,Thick,Adjetivo
-Detallista/Considerado,Thoughtful,Adjetivo
-Hacer tropezar,Tripped,Acción
-Mueca de dolor,Wince,Reacción
-Gusano,Worm,Insulto
-Herida,Wound,Cuerpo
-Tirón brusco,Yanked,Acción
+﻿ Abolir;Abolish
+Apenas;Barely
+Hacia atrás;Backwards
+Retrocedió;Backed up
+Mostrar dientes;Bared
+Debajo de;Beneath
+Ardiendo;Blazing
+Filo;Blade
+Sonrojarse;Blushed
+Vínculo;Bond
+Molestando;Bothering
+Ramo;Bouquet
+Inclinarse;Bowed
+Valiente;Bravest
+Moratones;Bruises
+Chocado;Bumped
+Tallado;Carved
+Vítores;Cheers
+Chocando;Clashing
+Garras;Claws
+Agarrado;Clutched
+Sujetando;Clutching
+Desplomarse;Collapsed
+Concursantes;Contestants
+Arrugado;Crumpled
+Daga;Dagger
+Sordo;Deaf
+Negar;Deny
+Esquivar;Dodged
+Soltado;Dropped
+Tonto;Dumbest
+Aleteo;Flutter
+Gesto;Gestured
+Mirar con odio;Glared
+Brilló;Glowed
+Rendirse;Giving up
+Gemir;Groaned
+Gruñó;Growled
+Tragar saliva;Gulped
+Odio;Hatred
+Siseó;Hissed
+Aulló;Howled
+Imbécil;Jerk
+Rodillazo;Kneed
+Nudillos;Knuckles
+Vueltas;Laps
+Correa;Leash
+Agachó;Lowered
+Lanzarse;Lunged
+Gesticular;Mouthed
+Inmovilizar;Pinned
+Abalanzarse;Pounced
+Presa;Prey
+Adecuado;Proper
+Puñetazo;Punch
+Golpeado;Punched
+Ronroneando;Purring
+Expulsado;Pushed
+Rabia;Rage
+Girar ojos;Rolled
+Enrollado;Rolled up
+Dispersos;Scattered
+A gatas;Scrambled
+Añicos;Shattered
+Transformación;Shift
+Transformado;Shifted
+Portazo;Slammed
+Deslizado;Slid
+Sonreír suficiencia;Smirked
+Rompido;Snapped
+Gruñir;Snarled
+Sollozar;Sobbed
+Escupió;Spat
+Difundir;Spread
+Apretó;Squeezed
+Apuñalado;Stabbed
+Acechando;Stalking
+Agitado;Stirred
+Fuerza;Strength
+Terco;Stubborn
+Tropezar;Stumbled
+Oleada;Surge
+Derribar;Tackled
+Cargado;Thick
+Detallista;Thoughtful
+Hacer tropezar;Tripped
+Mueca dolor;Wince
+Gusano;Worm
+Herida;Wound
+Tirón brusco;Yanked
