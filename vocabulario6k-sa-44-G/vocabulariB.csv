@@ -1,121 +1,99 @@
-﻿abandonar;abandon;;She had to abandon the project.;Ella va haver d'abandonar el projecte.
-abreujar;abbreviate;;"We abbreviate ""Doctor"" as ""Dr.""";"Abreugem ""Doctor"" com a ""Dr."""
-segrestar;abduct;;;
-encoratjar;abet;;;
-detestar;abhor;;;
-obeir;abide;;;
-abolir;abolish;;They want to abolish the death penalty.;Volen abolir la pena de mort.
-absorbir;absorb;;The sponge absorbs water.;L'esponja absorbeix l'aigua.
-abstracte;abstract;;;
-accelerar;accelerate;;;
-accentuar;accentuate;;;
-acceptar;accept;;I accept your invitation.;Accepto la teva invitaci¢.
-acollir;accommodate;;;
-acompanyar;accompany;;She accompanied me to the station.;Em va acompanyar a l'estaci¢.
-aconseguir;accomplish;;;
-acordar;accord;;;
-compte;account;;;
-acumular;accumulate;;;
-acusar;accuse;;They accused him of stealing.;El van acusar de robar.
-aconseguir / assolir;achieve;;He achieved his goal.;Va aconseguir el seu objectiu.
-reconeixer;acknowledge;;She acknowledged her mistake.;Va reconŠixer el seu error.
-adquirir;acquire;;I acquired a new skill.;Vaig adquirir una nova habilitat.
-absoldre;acquit;;;
-activar;activate;;;
-adaptar;adapt;;We must adapt to new situations.;Ens hem d'adaptar a noves situacions.
-dirigir-se a / tractar (tema);address;;He addressed the audience.;Es va adre‡ar al p£blic.
-adherir;adhere;;;
-ajornar;adjourn;;;
-ajustar  ;adjust;;I adjusted the mirror.;Vaig ajustar el mirall.
-administrar;administer;;;
-admirar;admire;;I admire her courage.;Admiro el seu coratge.
-admetre;admit;;He admitted the truth.;Va admetre la veritat.
-amonestar;admonish;;;
-adoptar;adopt;;They adopted a child.;Van adoptar un nen.
-adorar;adore;;;
-avançar;advance;;;
-aconsellar;advise;;She advised me to rest.;Em va aconsellar que descans‚s.
-defensar;advocate;;;
-afectar;affect;;The weather affects my mood.;El temps afecta el meu estat d?…nim.
-afiliar;affiliate;;;
-afirmar;affirm;;;
-afegir;affix;;;
-afligir;afflict;;;
-permetre s (economicament);afford;;I can?t afford a new car.;No em puc permetre un cotxe nou.
-agreujar;aggravate;;;
-agregar;aggregate;;;
-agonitzar;agonize;;;
-estar d acord;agree;;We agree on the plan.;Estem d?acord amb el pla.
-ajudar;aid;;;
-patir;ail;;;
-apuntar / objectiu;aim;;He aims to win the race.;Intenta guanyar la cursa.
-airejar;air;;;
-alarmar;alarm;;;
-alertar;alert;;;
-alienar;alienate;;;
-alinear;align;;;
-al.legar;allege;;;
-alleujar;alleviate;;;
-assignar;allocate;;;
-permetre;allow;;Smoking is not allowed here.;No es permet fumar aqu¡.
-al.ludir;allude;;;
-aliar-se;ally;;;
-alterar / modificar;alter;;She altered her dress.;Va modificar el seu vestit.
-alternar;alternate;;;
-amalgamar;amalgamate;;;
-sorprendre;amaze;;;
-caminar;amble;;;
-esmenar;amend;;;
-amplificar;amplify;;;
-divertir;amuse;;He amused the kids with magic.;Va entretenir els nens amb m…gia.
-analitzar;analyze;;Scientists analyze the data.;Els cient¡fics analitzen les dades.
-ancorar;anchor;;;
-enfadar;anger;;;
-inclinar;angle;;;
-animar;animate;;;
-anunciar;announce;;They announced the winner.;Van anunciar el guanyador.
-molestar / fer enfadar;annoy;;The noise annoyed me.;El soroll em va molestar.
-anul.lar;annul;;;
-ungir;anoint;;;
-respondre / contestar;answer;;She answered the phone.;Va respondre el telŠfon.
-anticipar;anticipate;;I anticipate problems.;Anticipo problemes.
-demanar perdo;apologize;;He apologized for being late.;Va demanar perd¢ per arribar tard.
-apelUlar / agradar;appeal;;The idea appeals to me.;La idea m agrada.
-apareixer/parecer;appear;;He appeared suddenly.;Va apareixer de sobte.
-apaivagar;appease;;;
-aplaudir;applaud;;;
-sol.licitar / aplicar;apply;;I applied for a job.;Vaig sollicitar una feina.
-nomenar / designar;appoint;;They appointed a new manager.;Van nomenar un nou director.
-avaluar;appraise;;;
-valorar / agrair;appreciate;;I appreciate your help.;Aprecio la teva ajuda.
-acostar-se / enfocar;approach;;A storm is approaching.;S'acosta una tempesta.
-aprovar;approve;;Did they approve the plan?;Van aprovar el pla?
-discutir;argue;;They argued all night.;Van discutir tota la nit.
-sorgir;arise;;;
-organitzar;arrange;;I arranged the meeting.;Vaig organitzar la reuni¢.
-arrestar;arrest;;The police arrested him.;La policia el va arrestar.
-arribar;arrive;;We arrived late.;Vam arribar tard.
-articular;articulate;;;
-demanar / preguntar;ask;;I asked a question.;Vaig fer una pregunta.
-reunir / muntar;assemble;;They assembled in the hall.;Es van reunir a la sala.
-afirmar;assert;;;
-avaluar;assess;;We assessed the damage.;Vam avaluar els danys.
-assignar;assign;;He assigned me a task.;Em va assignar una tasca.
-ajudar / assistir;assist;;Can you assist me?;Em pots ajudar?
-associar;associate;;;
-suposar;assume;;I assumed he was right.;Vaig suposar que tenia ra0.
-assegurar;assure;;I assure you everything is fine.;T'asseguro que tot est… be.
-sorprendre;astonish;;His answer astonished me.;La seva resposta em va sorprendre.
-adjuntar / enganxar;attach;;I attached the file to the email.;Vaig adjuntar l'arxiu al correu.
-atacar;attack;;;
-assolir;attain;;;
-intentar;attempt;;;
-assistir;attend;;;
-atreure;attract;;;
-atribuir;attribute;;;
-autoritzar;authorize;;;
-evitar;avoid;;;
-evitar;avoid;;;
-despertar;awake;;;
-despertar-se;awaken;;;
-atorgar;award;;;
+Bake	Cuinar al forn	A1
+Bark	Lladrar	A1
+Behave	Comportar-se	A1
+Belong	Pert�nyer	A1
+Borrow	Demanar prestat	A1
+Brush	Cepillar	A1
+Burn	Cremar	A1
+Back	Donar suport / Retrocedir	A2
+Balance	Equilibrar	A2
+Ban	Prohibir	A2
+Bathe	Banyar-se	A2
+Beg	Suplicar / Demanar	A2
+Believe	Creure	A2
+Blame	Culpar	A2
+Bless	Beneir	A2
+Blink	Parpellejar	A2
+Boil	Bullir	A2
+Book	Reservar	A2
+Bounce	Botar / Rebotar	A2
+Brake	Frenar	A2
+Breathe	Respirar	A2
+Bump	Topar / Donar un cop	A2
+Bury	Enterrar	A2
+Buzz	Zumzejar	A2
+Bare	Nuar / Revelar	B1
+Battle	Lluitar	B1
+Beam	Somriure radiantment / Emetre	B1
+Benefit	Beneficiar	B1
+Blind	Cegar	B1
+Blot	Eixugar / Taca	B1
+Blush	Enrojolar-se	B1
+Boast	Presumir / Alardear	B1
+Bomb	Bombardejar	B1
+Border	Limitar amb	B1
+Bother	Molestar	B1
+Bow	Inclinar-se	B1
+Box	Boxejar	B1
+Branch	Ramificar-se	B1
+Brighten	Il�luminar / Alegrar	B1
+Broaden	Ampliar	B1
+Bruise	Fer-se un blau	B1
+Bubble	Borbollejar	B1
+Buckle	Abrochar / Doblegar-se	B1
+Babble	Balbucejar	B2
+Baffle	Desconcertar	B2
+Baggage	Facturar (equipatge)	B2
+Bait	Atreure / Posar esquer	B2
+Banish	Desterrar	B2
+Bankrupt	Fer fallida	B2
+Barb	Posar pues	B2
+Bargain	Negociar / Regatejar	B2
+Barrel	Anar a tota velocitat	B2
+Barter	Intercanviar / Baratar	B2
+Bash	Colpejar fort	B2
+Bask	Gaudir / Prendre el sol	B2
+Batten	Refor�ar	B2
+Batter	Colpejar repetidament	B2
+Bawl	Plorar a crits	B2
+Bay	Udolar	B2
+Beckon	Fer senyal	B2
+Beef	Queixar-se / Refor�ar	B2
+Befriend	Fer-se amic	B2
+Beguile	Enganyar / Seduir	B2
+Belch	Rutllar	B2
+Belie	Desmentir	B2
+Belittle	Menystenir	B2
+Bellow	Bramar	B2
+Bemoan	Lamentar	B2
+Bemuse	Confondre	B2
+Bequeath	Llegar	B2
+Berate	Escridassar	B2
+Besiege	Assetjar	B2
+Bestow	Atorgar	B2
+Betray	Trair	B2
+Bewilder	Atabalar	B2
+Bewitch	Embruixar	B2
+Bias	Influenciar	B2
+Bide	Esperar (el moment)	B2
+Bill	Facturar	B2
+Billow	Onlejar / Inflar-se	B2
+Bind (Reg)	Enquadernar (�s espec�fic)	B2
+Blacken	Ennegrir	B2
+Blanch	Blanquejar	B2
+Blast	Explotar	B2
+Blaze	Cremar amb flama	B2
+Bleach	Decolorar	B2
+Blend	Barrejar	B2
+Bless	Beneir	B2
+Block	Bloquejar	B2
+Bloom	Florir	B2
+Blossom	Florir / Prosperar	B2
+Blunder	Cometre un error	B2
+Blunt	Esmussar	B2
+Blur	Desdibuixar	B2
+Blurt	Deixar anar (sense pensar)	B2
+Board	Pujar a bord	B2
+Bolster	Refor�ar	B2
+Bolt	Sortir corrents	B2
+Boost	Impulsar	B2
