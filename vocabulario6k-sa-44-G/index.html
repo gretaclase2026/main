@@ -18,7 +18,6 @@
         
         .card { background: white; width: 100%; max-width: 650px; padding: 25px; border-radius: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 8px solid var(--p-pink); text-align: center; box-sizing: border-box; }
         
-        /* Contenedor para botones en dos columnas */
         .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
         
         .menu-btn { background: white; border: 3px solid var(--p-pink); padding: 15px 10px; border-radius: 20px; width: 100%; font-size: 1.1em; font-weight: bold; color: var(--p-blue-strong); cursor: pointer; box-sizing: border-box; }
@@ -79,7 +78,7 @@
             <button class="menu-btn" onclick="carregarLlista('vocabulariU.csv')">Lletra U</button>
             <button class="menu-btn" onclick="carregarLlista('vocabulariV.csv')">Lletra V</button>
             <button class="menu-btn" onclick="carregarLlista('vocabulariW.csv')">Lletra W</button>
-            <button class="menu-btn" onclick="carregarLlista('vocabularixy.csv')">Lletres X i Y</button>
+            <button class="menu-btn" onclick="carregarLlista('vocabulariXY.csv')">Lletres X i Y</button>
             <button class="menu-btn" onclick="carregarLlista('vocabulariZ.csv')">Lletra Z</button>
         </div>
     </div>
@@ -129,6 +128,12 @@
     async function carregarLlista(nomFitxer) {
         try {
             const response = await fetch(nomFitxer);
+            
+            if (!response.ok) {
+                alert("No s'ha pogut trobar l'arxiu: " + nomFitxer + "\nRevisa que el nom sigui exactament igual a GitHub.");
+                return;
+            }
+
             const text = await response.text();
             const lines = text.split(/\r?\n/);
             dadesTotals = lines.map((l, idx) => {
@@ -136,11 +141,16 @@
                 return (p[0] && p[1]) ? { id: idx + 1, cat: p[0].trim(), eng: p[1].trim() } : null;
             }).filter(item => item);
             
+            if (dadesTotals.length === 0) {
+                alert("L'arxiu està buit o té un format incorrecte.");
+                return;
+            }
+
             document.getElementById('rangoFi').value = dadesTotals.length;
             document.getElementById('setup').style.display = 'none';
             document.getElementById('joc').style.display = 'flex';
             filtrar();
-        } catch (e) { alert("Error carregant el fitxer de GitHub"); }
+        } catch (e) { alert("Error carregant el fitxer."); }
     }
 
     function setMode(m) {
