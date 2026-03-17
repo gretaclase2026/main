@@ -18,10 +18,8 @@
         
         .card { background: white; width: 100%; max-width: 650px; padding: 25px; border-radius: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 8px solid var(--p-pink); text-align: center; box-sizing: border-box; }
         
-        /* Contenedor para botones en dos columnas */
-        .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
-        
-        .menu-btn { background: white; border: 3px solid var(--p-pink); padding: 15px 10px; border-radius: 20px; width: 100%; font-size: 1.1em; font-weight: bold; color: var(--p-blue-strong); cursor: pointer; box-sizing: border-box; }
+        /* Disseny del Menú Inicial */
+        .menu-btn { background: white; border: 3px solid var(--p-pink); padding: 20px; margin: 10px 0; border-radius: 20px; width: 100%; font-size: 1.4em; font-weight: bold; color: var(--p-blue-strong); cursor: pointer; display: block; }
         .menu-btn:active { background: var(--p-pink); color: white; }
 
         .config-bar { background: #fff; padding: 12px 18px; border-radius: 20px; margin-bottom: 20px; border: 2px solid var(--p-pink); display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
@@ -56,35 +54,11 @@
 
     <div class="card" id="setup">
         <h2 style="color: var(--p-blue-strong)">Tria la lliçó:</h2>
-        <div class="grid-menu">
-            <button class="menu-btn" onclick="carregarLlista('vocabulariA.csv')">Lletra A</button>
-            <button class="menu-btn" onclick="carregarLlista('vocabulariB.csv')">Lletra B</button>
-            <button class="menu-btn" onclick="carregarLlista('vocabulariC.csv')">Lletra C</button>
-            <button class="menu-btn" onclick="carregarLlista('vocabulariD.csv')">Lletra D</button>
-            <button class="menu-btn" onclick="carregarLlista('vocabulariE.csv')">Lletra E</button>
-            <button class="menu-btn" onclick="carregarLlista('vocabulariF.csv')">Lletra F</button>
-            <button class="menu-btn" onclick="carregarLlista('vocabulariG.csv')">Lletra G</button>
-            <button class="menu-btn" onclick="carregarLlista('vocabulariH.csv')">Lletra H</button>
-            <button class="menu-btn" onclick="carregarLlista('vocabulariI.csv')">Lletra I</button>
-            <button class="menu-btn" onclick="carregarLlista('vocabulariJK.csv')">Lletres J i K</button>
-            <button class="menu-btn" onclick="carregarLlista('vocabulariL.csv')">Lletra L</button>
-            <button class="menu-btn" onclick="carregarLlista('vocabulariM.csv')">Lletra M</button>
-            <button class="menu-btn" onclick="carregarLlista('vocabulariN.csv')">Lletra N</button>
-            <button class="menu-btn" onclick="carregarLlista('vocabulariO.csv')">Lletra O</button>
-            <button class="menu-btn" onclick="carregarLlista('vocabulariP.csv')">Lletra P</button>
-            <button class="menu-btn" onclick="carregarLlista('vocabulariQ.csv')">Lletra Q</button>
-            <button class="menu-btn" onclick="carregarLlista('vocabulariR.csv')">Lletra R</button>
-            <button class="menu-btn" onclick="carregarLlista('vocabulariS.csv')">Lletra S</button>
-            <button class="menu-btn" onclick="carregarLlista('vocabulariT.csv')">Lletra T</button>
-            <button class="menu-btn" onclick="carregarLlista('vocabulariU.csv')">Lletra U</button>
-            <button class="menu-btn" onclick="carregarLlista('vocabulariV.csv')">Lletra V</button>
-            <button class="menu-btn" onclick="carregarLlista('vocabulariW.csv')">Lletra W</button>
-            <button class="menu-btn" onclick="carregarLlista('vocabularixy.csv')">Lletres X i Y</button>
-            <button class="menu-btn" onclick="carregarLlista('vocabulariZ.csv')">Lletra Z</button>
-        </div>
+        <button class="menu-btn" onclick="carregarLlista('vocabulariA.csv')">Lletra A</button>
+        <button class="menu-btn" onclick="carregarLlista('vocabularijk.csv')">Lletres J i K</button>
     </div>
 
-    <div id="joc" style="display:none; width: 100%; max-width: 650px; flex-direction: column; align-items: center;">
+    <div id="joc" style="display:none; width: 100%; max-width: 650px; display: flex; flex-direction: column; align-items: center;">
         <div class="card">
             <div class="config-bar">
                 <div class="idioma-group">
