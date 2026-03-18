@@ -12,24 +12,24 @@
         .menu-btn { background: white; border: 3px solid var(--p-pink); padding: 12px; border-radius: 15px; font-size: 1em; font-weight: bold; color: var(--p-blue-strong); cursor: pointer; }
         .config-bar { background: #fff; padding: 8px; border-radius: 15px; margin-bottom: 10px; border: 2px solid var(--p-pink); display: flex; align-items: center; gap: 5px; justify-content: center; font-size: 0.9em; }
         .config-bar input { width: 40px; padding: 4px; border-radius: 5px; border: 1px solid var(--p-pink); text-align: center; font-weight: bold; }
-        #pregunta { font-size: 2.2em; color: var(--p-blue-strong); margin: 5px 0; font-weight: bold; }
-        #resposta { width: 95%; padding: 12px; font-size: 1.5em; border-radius: 15px; border: 3px solid var(--p-pink); text-align: center; outline: none; }
-        .btn { padding: 10px 15px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; margin: 3px; }
-        .star-btn { font-size: 2.2em; cursor: pointer; color: #ccc; background:none; border:none; line-height:1; }
+        #pregunta { font-size: 2em; color: var(--p-blue-strong); margin: 10px 0; font-weight: bold; }
+        #resposta { width: 95%; padding: 12px; font-size: 1.4em; border-radius: 15px; border: 3px solid var(--p-pink); text-align: center; outline: none; }
+        .btn { padding: 10px 15px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; margin: 3px; font-size: 0.9em; }
+        .star-btn { font-size: 2em; cursor: pointer; color: #ccc; background:none; border:none; line-height:1; }
         .star-btn.active { color: #ffb703; }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        td { padding: 8px 2px; border-bottom: 1px solid #eee; text-align: left; font-size: 0.85em; }
-        .col-tools { display: flex; align-items: center; gap: 5px; min-width: 70px; }
-        .num-word { color: #bbb; font-weight: bold; width: 20px; font-size: 0.8em; }
-        .star-list { color: #ffb703; width: 15px; text-align: center; }
-        .btn-audio { background:none; border:none; cursor:pointer; font-size: 1.4em; padding:5px; }
+        td { padding: 6px 2px; border-bottom: 1px solid #eee; text-align: left; font-size: 0.8em; }
+        .col-tools { display: flex; align-items: center; gap: 4px; min-width: 110px; }
+        .num-word { color: #bbb; font-weight: bold; width: 18px; font-size: 0.75em; }
+        .star-list { color: #ffb703; font-size: 1.1em; width: 15px; text-align: center; }
+        .btn-audio { background:none; border:none; cursor:pointer; font-size: 1.2em; padding:0; }
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
     <div class="card" id="p-fitxer">
-        <h1 style="color:var(--telegram-blue)">VOCABULARI</h1>
+        <h1 style="color:var(--telegram-blue); margin:10px;">VOCABULARI</h1>
         <div class="grid-menu">
             <button class="menu-btn" onclick="carregarCSV('vocabulariGrups.csv')">GRUPS</button>
             <button class="menu-btn" onclick="carregarCSV('vocabulariTemes.csv')">TEMES</button>
@@ -37,7 +37,7 @@
     </div>
 
     <div class="card hidden" id="p-grups">
-        <h2 style="color: var(--p-blue-strong)">Tria categoria:</h2>
+        <h2 style="color: var(--p-blue-strong); margin:10px;">Tria categoria:</h2>
         <div id="grid-selector" class="grid-menu"></div>
         <button onclick="location.reload()" style="background:none; border:none; color:#999; margin-top:15px; cursor:pointer;">🔙 Tornar</button>
     </div>
@@ -45,7 +45,7 @@
     <div id="p-estudi" class="hidden" style="width: 100%; max-width: 650px;">
         
         <div class="card">
-            <h2 id="titol-estudi" style="color:var(--p-blue-strong); margin:0 0 10px 0; font-size:1.2em;"></h2>
+            <h2 id="titol-estudi" style="color:var(--p-blue-strong); margin:0 0 10px 0; font-size:1.1em;"></h2>
             
             <div class="config-bar">
                 <button class="btn" style="background:var(--p-blue-soft); padding:5px 10px;" onclick="canviarIdioma()"><b id="txt-idioma">ESP</b></button>
@@ -56,18 +56,12 @@
 
             <div style="display:flex; justify-content:space-between; align-items:center;">
                 <button id="star-main" class="star-btn" onclick="toggleEstrellaActual()">★</button>
-                <div id="feedback" style="font-weight:bold; font-size:1.2em;"></div>
-                <div style="font-size:0.9em; font-weight:bold; color:green;">OK: <span id="count-ok">0</span></div>
+                <div id="feedback" style="font-weight:bold; font-size:1em;"></div>
+                <div style="font-size:0.8em; font-weight:bold;">OK: <span id="count-ok" style="color:green">0</span></div>
             </div>
 
             <h1 id="pregunta">---</h1>
-            
-            <div style="margin-bottom: 10px;">
-                <button class="btn-audio" onclick="reproduirActual(1.0)">🔊</button>
-                <button class="btn-audio" onclick="reproduirActual(0.5)">🐢</button>
-            </div>
-
-            <input type="text" id="resposta" placeholder="..." autocomplete="off">
+            <input type="text" id="resposta" placeholder="Escriu aquí..." autocomplete="off">
             
             <div style="margin-top:10px;">
                 <button class="btn" style="background:var(--p-blue-soft)" onclick="validar()">Comprovar</button>
@@ -77,8 +71,8 @@
         </div>
 
         <div class="card" style="padding:10px;">
-            <p style="margin:0 0 5px 0; font-size:0.8em; color:#999; font-weight:bold;">LLISTA DE PARAULES:</p>
-            <div style="max-height: 350px; overflow-y: auto;">
+            <p style="margin:0; font-size:0.8em; color:#999; font-weight:bold;">LLISTA DEL GRUP (NUMERADA):</p>
+            <div style="max-height: 400px; overflow-y: auto;">
                 <table id="taula-joc"></table>
             </div>
         </div>
@@ -127,6 +121,7 @@
         const d = parseInt(document.getElementById('row-desde').value) - 1;
         const f = parseInt(document.getElementById('row-fins').value);
         let base = dadesCat.slice(d, f);
+        
         if (modoRepas) base = base.filter(item => repasIds.has(item.id));
         
         dadesJoc = base.sort(() => Math.random() - 0.5);
@@ -136,7 +131,10 @@
     }
 
     function nouRepte() {
-        if (dadesJoc.length === 0) return;
+        if (dadesJoc.length === 0) {
+            document.getElementById('pregunta').innerText = "Cap paraula!";
+            return;
+        }
         if (index >= dadesJoc.length) { dadesJoc.sort(() => Math.random() - 0.5); index = 0; }
         errorActive = false;
         const p = dadesJoc[index];
@@ -176,14 +174,11 @@
 
     function seguent() { index++; nouRepte(); }
 
-    function reproduirActual(vel) {
-        if (dadesJoc[index]) reproducir(dadesJoc[index].eng, vel);
-    }
-
     function reproducir(t, vel) {
         window.speechSynthesis.cancel();
         const m = new SpeechSynthesisUtterance(t); 
-        m.lang = 'en-US'; m.rate = vel;
+        m.lang = 'en-US'; 
+        m.rate = vel;
         window.speechSynthesis.speak(m);
     }
 
@@ -214,7 +209,8 @@
                 <td class="col-tools">
                     <span class="num-word">${i+1}</span>
                     <span class="star-list">${repasIds.has(d.id)?'★':''}</span>
-                    <button class="btn-audio" style="font-size:1.1em;" onclick="reproducir('${d.eng.replace(/'/g,"\\'")}', 1.0)">🔊</button>
+                    <button class="btn-audio" onclick="reproducir('${d.eng.replace(/'/g,"\\'")}', 1.0)">🔊</button>
+                    <button class="btn-audio" onclick="reproducir('${d.eng.replace(/'/g,"\\'")}', 0.5)">🐢</button>
                 </td>
                 <td style="color:var(--p-blue-strong); font-weight:bold;">${d.eng}</td>
                 <td style="color:#666;">${d.esp}</td>
