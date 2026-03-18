@@ -1,0 +1,126 @@
+ <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Vocabulari Grups i Temes</title>
+    <style>
+        :root { 
+            --p-blue-pastel: #DBEAFE; 
+            --p-green-pastel: #DCFCE7; 
+            --telegram-blue: #24A1DE; 
+            --text: #4a4a4a; 
+            --bg-p-pink: #fff5f6;
+        }
+        
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg-p-pink); color: var(--text); display: flex; flex-direction: column; align-items: center; padding: 10px; margin: 0; }
+        
+        .card { background: white; width: 100%; max-width: 650px; padding: 25px; border-radius: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 8px solid var(--p-blue-pastel); text-align: center; box-sizing: border-box; margin-top: 20px; }
+        
+        h1.titulo-app { color: var(--telegram-blue); font-size: 2.5em; font-weight: bold; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px; }
+
+        .main-menu { display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; }
+        
+        /* Botones Principales Suavizados */
+        .btn-main { 
+            padding: 15px 35px; 
+            font-size: 1.2em; 
+            font-weight: 600; 
+            border: 2px solid transparent; 
+            border-radius: 25px; 
+            cursor: pointer; 
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            flex: 1;
+        }
+        
+        .btn-grups { background: var(--p-blue-pastel); color: #4b6cb7; }
+        .btn-temes { background: var(--p-green-pastel); color: #52a447; }
+        
+        .btn-main:hover { opacity: 0.8; transform: translateY(-2px); }
+        .btn-main:active { transform: scale(0.98); }
+
+        #selector-container { display: none; margin-top: 20px; background: #f8fafc; padding: 20px; border-radius: 25px; border: 1px dashed var(--p-blue-pastel); }
+        .grid-selector { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; margin-top: 15px; }
+        .btn-sel { padding: 10px; border: none; border-radius: 15px; background: white; cursor: pointer; font-weight: bold; border: 1px solid #e2e8f0; color: #475569; }
+        .btn-sel:hover { background: var(--p-blue-pastel); border-color: var(--telegram-blue); }
+
+        .zona-joc { display: none; margin-top: 20px; padding: 20px; border-radius: 30px; background: #fafafa; }
+        .pregunta { font-size: 2.2em; font-weight: bold; margin: 20px 0; color: var(--text); }
+        input[type="text"] { width: 85%; padding: 15px; border-radius: 20px; border: 2px solid var(--p-blue-pastel); font-size: 1.2em; text-align: center; outline: none; }
+        
+        .feedback { margin: 15px 0; font-weight: bold; font-size: 1.1em; min-height: 1.5em; }
+        .btn-next { display: none; padding: 12px 25px; background: var(--telegram-blue); color: white; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; }
+        
+        .stats { margin-bottom: 15px; display: flex; justify-content: center; gap: 30px; font-weight: bold; color: #94a3b8; font-size: 0.9em; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; border-radius: 20px; overflow: hidden; }
+        th { background: #f1f5f9; padding: 12px; text-align: left; color: #64748b; font-size: 0.8em; text-transform: uppercase; }
+        td { padding: 12px; border-bottom: 1px solid #f1f5f9; text-align: left; background: white; }
+        .col-eng { color: var(--telegram-blue); font-weight: 600; }
+        .btn-mini-audio { border: none; background: none; cursor: pointer; font-size: 1.2em; opacity: 0.5; }
+        .btn-mini-audio:hover { opacity: 1; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1 class="titulo-app">VOCABULARI</h1>
+        
+        <div class="main-menu">
+            <button class="btn-main btn-grups" onclick="cargarMaestro('vocabulariGrups.csv')">GRUPS</button>
+            <button class="btn-main btn-temes" onclick="cargarMaestro('vocabulariTemes.csv')">TEMES</button>
+        </div>
+
+        <div id="selector-container">
+            <p style="margin:0; font-weight:bold; color:#64748b;">¿Qué quieres repasar hoy?</p>
+            <div id="grid-selector" class="grid-selector"></div>
+        </div>
+
+        <div id="zona-joc" class="zona-joc">
+            <div class="stats">
+                <span>BIEN: <span id="count-ok" style="color:#22c55e">0</span></span>
+                <span>FALTAN: <span id="count-rest">0</span></span>
+            </div>
+            
+            <div id="pregunta" class="pregunta">---</div>
+            <input type="text" id="resposta" placeholder="Respuesta..." autocomplete="off">
+            <div id="feedback" class="feedback"></div>
+            <button id="btn-next" class="btn-next" onclick="seguent()">Siguiente</button>
+        </div>
+
+        <div id="lista-container" style="margin-top:40px;">
+            <table id="tabla-estudio">
+                <thead>
+                    <tr><th>Inglés</th><th>Español</th><th></th></tr>
+                </thead>
+                <tbody id="taula-cos"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        let dadesTotals = [];
+        let dadesFiltrades = [];
+        let indexActual = 0;
+        let acertos = 0;
+
+        function reproducir(palabra) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(palabra);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.9;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        async function cargarMaestro(nombreArchivo) {
+            try {
+                const response = await fetch(nombreArchivo);
+                if (!response.ok) throw new Error();
+                const text = await response.text();
+                const lineas = text.split('\n').filter(l => l.trim() !== '' && !l.startsWith('Grupo'));
+                
+                dadesTotals = lineas.map(linea => {
+                    const columnas = linea.split(';');
+                    if (columnas.length < 3) return null;
+                    return { grupo: columnas[0].trim(), esp: columnas[1].trim(), eng: columnas
