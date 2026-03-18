@@ -16,11 +16,9 @@
         
         .card { background: white; width: 100%; max-width: 600px; padding: 20px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 6px solid var(--p-pink); text-align: center; box-sizing: border-box; margin-bottom: 20px; }
         
-        /* Menú Inicial Rosa Pastel */
         .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
-        .menu-btn { background: white; border: 3px solid var(--p-pink); padding: 12px; border-radius: 15px; font-weight: bold; color: var(--p-blue-strong); cursor: pointer; font-size: 1em; }
+        .menu-btn { background: white; border: 3px solid var(--p-pink); padding: 12px; border-radius: 15px; font-weight: bold; color: var(--p-blue-strong); cursor: pointer; font-size: 0.9em; text-transform: uppercase; line-height: 1.2; }
         
-        /* Joc */
         #solucio-text { font-size: 2.2em; font-weight: bold; color: var(--p-red); min-height: 1.2em; margin-bottom: 5px; text-transform: uppercase; }
         #feedback { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; height: 1.2em; }
         #pregunta { font-size: 2em; margin: 10px 0; color: var(--p-blue-strong); font-weight: bold; }
@@ -33,24 +31,17 @@
         .audio-controls { margin: 10px 0; display: flex; justify-content: center; gap: 15px; }
         .icon-btn { background: none; border: none; cursor: pointer; font-size: 1.8em; }
 
-        /* Botó Comprovar Blau Pastel */
         .btn-main { background: var(--p-blue-soft); color: var(--p-blue-strong); padding: 12px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; width: 80%; font-size: 1.1em; }
         
-        /* LLISTA SENSE FINESTRA (Molt compacta) */
         .list-container { width: 100%; max-width: 600px; background: white; border-radius: 25px; border: 6px solid var(--p-pink); padding: 8px; box-sizing: border-box; margin-bottom: 40px; }
         .list-table { width: 100%; border-collapse: collapse; }
-        .list-table td { 
-            padding: 4px 2px; /* Espai mínim entre línies */
-            border-bottom: 1px solid #fce4e6; 
-            text-align: left; 
-            font-size: 1.15em; /* Lletra gran */
-        }
+        .list-table td { padding: 6px 4px; border-bottom: 1px solid #fce4e6; text-align: left; font-size: 1.1em; }
         .num { color: #ccc; font-weight: bold; width: 25px; font-size: 0.8em; text-align: center; }
         .txt-eng { color: var(--p-blue-strong); font-weight: bold; }
-        .txt-cas { color: #888; font-size: 0.9em; }
+        .txt-cat { color: #888; font-size: 0.95em; }
         
         .config-bar { display: flex; align-items: center; gap: 8px; justify-content: center; margin-bottom: 15px; font-size: 0.85em; font-weight: bold; }
-        .config-bar input { width: 35px; padding: 3px; border: 2px solid var(--p-pink); border-radius: 6px; text-align: center; }
+        .config-bar input { width: 40px; padding: 3px; border: 2px solid var(--p-pink); border-radius: 6px; text-align: center; }
 
         .hidden { display: none !important; }
     </style>
@@ -58,7 +49,7 @@
 <body>
 
     <div class="card" id="p-fitxer">
-        <h1 style="color:var(--p-blue-strong); margin: 0 0 20px 0;">VOCABULARI</h1>
+        <h1 style="color:var(--p-blue-strong); margin-bottom:20px;">VOCABULARI</h1>
         <div class="grid-menu">
             <button class="menu-btn" onclick="carregarCSV('vocabulariGrups.csv')">GRUPS</button>
             <button class="menu-btn" onclick="carregarCSV('vocabulariTemes.csv')">TEMES</button>
@@ -66,26 +57,23 @@
     </div>
 
     <div class="card hidden" id="p-grups">
-        <h2 style="color: var(--p-blue-strong); margin-top:0;">Tria Categoria</h2>
+        <h2 style="color: var(--p-blue-strong)">Tria Categoria</h2>
         <div id="grid-selector" class="grid-menu"></div>
         <button onclick="location.reload()" style="background:none; border:none; color:#bbb; margin-top:20px; cursor:pointer;">🔙 Tornar</button>
     </div>
 
     <div id="p-estudi" class="hidden" style="width: 100%; max-width: 600px; display: flex; flex-direction: column; align-items: center;">
-        
         <div class="card">
             <div class="config-bar">
                 <span id="titol-estudi" style="color: var(--p-blue-strong);"></span>
-                <span onclick="canviarIdioma()" style="cursor:pointer; background:var(--p-blue-soft); padding:2px 6px; border-radius:5px;">[<b id="txt-idioma">CAT</b>]</span>
-                <span id="btn-repas" onclick="toggleRepas()" style="cursor:pointer; background:#eee; padding:2px 6px; border-radius:5px;">⭐ OFF</span>
+                <span onclick="canviarIdioma()" style="cursor:pointer; background:var(--p-blue-soft); padding:2px 8px; border-radius:5px;">[<b id="txt-idioma">CAT</b>]</span>
+                <span id="btn-repas" onclick="toggleRepas()" style="cursor:pointer; background:#eee; padding:2px 8px; border-radius:5px;">⭐ OFF</span>
                 <span>R: <input type="number" id="row-desde" value="1" onchange="actualitzarRang()">-<input type="number" id="row-fins" value="100" onchange="actualitzarRang()"></span>
             </div>
 
             <button id="star-main" class="star-btn" onclick="toggleEstrellaActual()">★</button>
-            
             <div id="solucio-text"></div>
             <div id="feedback"></div>
-            
             <div id="pregunta">---</div>
 
             <div class="audio-controls">
@@ -94,9 +82,8 @@
             </div>
 
             <input type="text" id="resposta" placeholder="..." autocomplete="off">
-            
             <div style="margin-top:15px;">
-                <button class="btn-main" onclick="validar()">Comprovar (Intro)</button>
+                <button class="btn-main" onclick="validar()">Comprovar</button>
             </div>
             <button onclick="location.reload()" style="background:none; border:none; color:#bbb; margin-top:15px; cursor:pointer; font-size: 0.8em;">🔙 Menú Principal</button>
         </div>
@@ -114,54 +101,94 @@
     async function carregarCSV(nom) {
         try {
             const r = await fetch(nom);
+            if (!r.ok) throw new Error();
             const t = await r.text();
-            dadesTotals = t.split(/\r?\n/).filter(l => l.trim() !== '').map((l, i) => {
+            
+            // Netegem el text de caràcters especials de Windows (\r)
+            const lines = t.replace(/\r/g, "").split("\n");
+            dadesTotals = [];
+            
+            lines.forEach((l, i) => {
                 const p = l.split(';');
-                return { id: i + nom, cat: p[0]?.trim(), eng: p[1]?.trim(), esp: p[2]?.trim() };
-            }).filter(d => d.eng && d.cat && d.cat.toLowerCase() !== 'category');
+                if (p.length >= 3) {
+                    const catName = p[0].trim();
+                    // Evitem capçaleres o línies buides
+                    if (catName && catName.toLowerCase() !== 'category') {
+                        dadesTotals.push({
+                            id: i + nom,
+                            cat: catName,
+                            eng: p[1].trim(),
+                            esp: p[2].trim() // Aquí realment hi ha el Català ara
+                        });
+                    }
+                }
+            });
 
-            const cats = [...new Set(dadesTotals.map(d => d.cat))];
+            // Treure duplicats de categories i ordenar
+            const cats = [...new Set(dadesTotals.map(d => d.cat))].sort();
             const grid = document.getElementById('grid-selector');
             grid.innerHTML = '';
+            
             cats.forEach(c => {
                 const b = document.createElement('button');
-                b.className = 'menu-btn'; b.innerText = c;
+                b.className = 'menu-btn';
+                b.innerText = c;
                 b.onclick = () => carregarCategoria(c);
                 grid.appendChild(b);
             });
+
             document.getElementById('p-fitxer').classList.add('hidden');
             document.getElementById('p-grups').classList.remove('hidden');
-        } catch (e) { alert("Error carregant el fitxer. Assegura't que es diu " + nom); }
+        } catch (e) { 
+            alert("No s'ha pogut llegir el fitxer. Revisa que es digui exactament: " + nom); 
+        }
     }
 
     function carregarCategoria(c) {
         dadesCat = dadesTotals.filter(d => d.cat === c);
         document.getElementById('titol-estudi').innerText = c;
         document.getElementById('row-fins').value = dadesCat.length;
+        document.getElementById('row-desde').value = 1;
         document.getElementById('p-grups').classList.add('hidden');
         document.getElementById('p-estudi').classList.remove('hidden');
         actualitzarRang();
     }
 
     function actualitzarRang() {
-        const d = Math.max(0, parseInt(document.getElementById('row-desde').value) - 1);
-        const f = parseInt(document.getElementById('row-fins').value);
+        let d = parseInt(document.getElementById('row-desde').value) - 1;
+        let f = parseInt(document.getElementById('row-fins').value);
         let base = dadesCat.slice(d, f);
-        if (modoRepas) base = base.filter(item => repasIds.has(item.id));
-        dadesJoc = [...base].sort(() => Math.random() - 0.5);
+        
+        if (modoRepas) {
+            dadesJoc = base.filter(item => repasIds.has(item.id));
+        } else {
+            dadesJoc = [...base];
+        }
+        
+        dadesJoc.sort(() => Math.random() - 0.5);
         index = 0;
         nouRepte();
         actualitzarTaula(base);
     }
 
     function nouRepte() {
-        if (dadesJoc.length === 0) { document.getElementById('pregunta').innerText = "(Sense paraules)"; return; }
+        if (dadesJoc.length === 0) {
+            document.getElementById('pregunta').innerText = modoRepas ? "No hi ha estrelles" : "Sense dades";
+            return;
+        }
         if (index >= dadesJoc.length) { dadesJoc.sort(() => Math.random() - 0.5); index = 0; }
-        errorActive = false; correctActive = false;
+        
+        errorActive = false;
+        correctActive = false;
         const p = dadesJoc[index];
+        
+        // CAT: Pregunta en Català -> Resposta en Anglès
+        // ENG: Pregunta en Anglès -> Resposta en Català
         document.getElementById('pregunta').innerText = (idioma === 'CAT') ? p.esp : p.eng;
+        
         const r = document.getElementById('resposta');
-        r.value = ""; r.style.color = "var(--text)";
+        r.value = "";
+        r.style.color = "var(--text)";
         document.getElementById('feedback').innerText = "";
         document.getElementById('solucio-text').innerText = "";
         document.getElementById('star-main').classList.toggle('active', repasIds.has(p.id));
@@ -172,10 +199,12 @@
         if (dadesJoc.length === 0 || errorActive || correctActive) return;
         const p = dadesJoc[index];
         const user = document.getElementById('resposta').value.trim().toLowerCase();
+        
+        // L'usuari ha d'escriure p.eng si l'idioma és CAT, o p.esp si l'idioma és ENG
         const ok = (idioma === 'CAT') ? p.eng.toLowerCase() : p.esp.toLowerCase();
         
         reproduir(p.eng, 1.0);
-        document.getElementById('solucio-text').innerText = p.eng.toUpperCase();
+        document.getElementById('solucio-text').innerText = (idioma === 'CAT') ? p.eng.toUpperCase() : p.esp.toUpperCase();
 
         if (user === ok) {
             document.getElementById('feedback').innerText = "MOLT BÉ ✨";
@@ -190,15 +219,30 @@
     }
 
     function seguent() { index++; nouRepte(); }
-    function reproduirActual(vel) { if (dadesJoc[index]) reproduir(dadesJoc[index].eng, vel); document.getElementById('resposta').focus(); }
-    function reproduir(t, vel) { window.speechSynthesis.cancel(); const m = new SpeechSynthesisUtterance(t); m.lang = 'en-US'; m.rate = vel; window.speechSynthesis.speak(m); }
+    
+    function reproduirActual(vel) { 
+        if (dadesJoc[index]) reproduir(dadesJoc[index].eng, vel); 
+        document.getElementById('resposta').focus(); 
+    }
+    
+    function reproduir(t, vel) { 
+        window.speechSynthesis.cancel(); 
+        const m = new SpeechSynthesisUtterance(t); 
+        m.lang = 'en-US'; 
+        m.rate = vel; 
+        window.speechSynthesis.speak(m); 
+    }
 
     function toggleEstrellaActual() {
-        const id = dadesJoc[index].id;
-        repasIds.has(id) ? repasIds.delete(id) : repasIds.add(id);
-        localStorage.setItem('repasIds', JSON.stringify([...repasIds]));
-        document.getElementById('star-main').classList.toggle('active', repasIds.has(id));
-        actualitzarTaula(dadesCat.slice(parseInt(document.getElementById('row-desde').value)-1, parseInt(document.getElementById('row-fins').value)));
+        if (dadesJoc[index]) {
+            const id = dadesJoc[index].id;
+            repasIds.has(id) ? repasIds.delete(id) : repasIds.add(id);
+            localStorage.setItem('repasIds', JSON.stringify([...repasIds]));
+            document.getElementById('star-main').classList.toggle('active', repasIds.has(id));
+            const d = parseInt(document.getElementById('row-desde').value) - 1;
+            const f = parseInt(document.getElementById('row-fins').value);
+            actualitzarTaula(dadesCat.slice(d, f));
+        }
     }
 
     function canviarIdioma() { 
@@ -219,8 +263,11 @@
                 <td class="num">${i+1}</td>
                 <td style="color:${repasIds.has(d.id)?'#fbbc04':'#eee'}; font-size:1.4em; width:30px;">★</td>
                 <td class="txt-eng">${d.eng}</td>
-                <td class="txt-cas">${d.esp}</td>
-                <td style="text-align:right;"><button style="background:none; border:none; cursor:pointer; font-size:1.2em;" onclick="reproduir('${d.eng.replace(/'/g,"\\'")}', 1.0)">🔊</button></td>
+                <td class="txt-cat">${d.esp}</td>
+                <td style="text-align:right;">
+                    <button style="background:none; border:none; cursor:pointer; font-size:1.2em;" 
+                    onclick="reproduir('${d.eng.replace(/'/g,"\\'")}', 1.0)">🔊</button>
+                </td>
             </tr>
         `).join('');
     }
