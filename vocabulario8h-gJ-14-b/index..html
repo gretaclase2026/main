@@ -14,41 +14,37 @@
             --text: #4a4a4a; 
         }
         body { font-family: 'Segoe UI', sans-serif; background: #fff5f6; color: var(--text); display: flex; flex-direction: column; align-items: center; padding: 10px; margin:0; }
-        
         .card { background: white; width: 100%; max-width: 600px; padding: 15px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 6px solid var(--p-pink); text-align: center; box-sizing: border-box; margin-bottom: 15px; position: relative; }
         
         .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
-        .menu-btn { background: white; border: 3px solid var(--p-pink); padding: 12px; border-radius: 15px; font-weight: bold; color: var(--p-blue-strong); cursor: pointer; font-size: 0.9em; text-transform: uppercase; }
         
+        /* DISEÑO DEL BOTÓN CON MARCADOR DE PROGRESO */
+        .menu-item { display: flex; background: white; border: 3px solid var(--p-pink); border-radius: 15px; overflow: hidden; align-items: stretch; height: 55px; position: relative; }
+        .menu-btn-text { flex: 1; border: none; background: none; font-weight: bold; color: var(--p-blue-strong); cursor: pointer; text-transform: uppercase; font-size: 0.85em; padding-left: 10px; text-align: left; display: flex; align-items: center; }
+        .menu-btn-mark { width: 45px; border: none; border-left: 2px solid var(--p-pink); background: #fff9fa; cursor: pointer; font-size: 1.2em; color: #eee; display: flex; align-items: center; justify-content: center; }
+        .menu-btn-mark.active { color: #f06292; background: #fff0f5; } /* Color rosado para el marcapáginas */
+        .has-stars { position: absolute; top: 2px; left: 5px; color: #fbbc04; font-size: 0.7em; }
+
         .config-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; font-size: 0.95em; font-weight: bold; padding: 0 5px; }
         .config-bar input { width: 42px; padding: 4px; border: 2px solid var(--p-pink); border-radius: 6px; text-align: center; color: var(--p-blue-strong); font-weight: bold; background: white; outline: none; }
+        .lang-toggle { cursor: pointer; color: var(--p-blue-strong); font-size: 1.1em; }
         
         #btn-repas { cursor: pointer; background: #eee; padding: 4px 12px; border-radius: 8px; }
         #btn-repas.on { background: var(--p-green-pastel); }
-
         .star-main { font-size: 2.5em; cursor: pointer; color: #eee; background: none; border: none; padding: 0; line-height: 1; margin-left: 10px; outline: none; }
         .star-main.active { color: #fbbc04; }
-
-        #feedback-container { font-size: 1.2em; font-weight: bold; min-height: 1.4em; margin-bottom: 5px; display: flex; justify-content: center; align-items: center; gap: 8px; }
-        #pregunta { font-size: 2em; margin: 10px 0; color: var(--p-blue-strong); font-weight: bold; min-height: 1.2em; }
-        #resposta { width: 95%; padding: 12px; font-size: 1.5em; border-radius: 15px; border: 3px solid var(--p-pink); text-align: center; outline: none; box-sizing: border-box; }
-
-        .audio-controls { margin: 10px 0; display: flex; justify-content: center; gap: 15px; }
-        .icon-btn { background: none; border: none; cursor: pointer; font-size: 1.8em; }
-
-        .btn-main { background: var(--p-blue-soft); color: var(--p-blue-strong); padding: 12px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; width: 80%; font-size: 1.1em; }
         
+        #pregunta { font-size: 2.5em; margin: 10px 0; color: var(--p-blue-strong); font-weight: bold; }
+        #resposta { width: 95%; padding: 12px; font-size: 1.5em; border-radius: 15px; border: 3px solid var(--p-pink); text-align: center; outline: none; box-sizing: border-box; }
+        .btn-main { background: var(--p-blue-soft); color: var(--p-blue-strong); padding: 12px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; width: 80%; font-size: 1.1em; }
         .back-btn { background: none; border: none; color: black; font-weight: bold; cursor: pointer; font-size: 1em; margin-top: 15px; }
-
+        
         .list-container { width: 100%; max-width: 600px; background: white; border-radius: 25px; border: 6px solid var(--p-pink); padding: 5px; box-sizing: border-box; margin-bottom: 40px; }
         .list-table { width: 100%; border-collapse: collapse; }
         .list-table td { padding: 6px 4px; border-bottom: 1px solid #fce4e6; vertical-align: middle; }
-        
-        .star-list { font-size: 1.4em; width: 30px; text-align: center; color: #eee; background: none; cursor: pointer; }
+        .star-list { font-size: 1.4em; width: 30px; text-align: center; color: #eee; }
         .star-list.active { color: #fbbc04; }
-
-        .txt-eng { color: var(--p-blue-strong); font-weight: bold; }
-        .txt-cat { color: #888; font-size: 0.95em; }
+        
         .hidden { display: none !important; }
     </style>
 </head>
@@ -57,8 +53,8 @@
     <div class="card" id="p-fitxer">
         <h1 style="color:var(--p-blue-strong); margin-bottom:20px;">VOCABULARI</h1>
         <div class="grid-menu">
-            <button class="menu-btn" onclick="carregarCSV('vocabulariGrups.csv')">GRUPS</button>
-            <button class="menu-btn" onclick="carregarCSV('vocabulariTemes.csv')">TEMES</button>
+            <button class="menu-btn-text" style="border:3px solid var(--p-pink); border-radius:15px; justify-content:center;" onclick="carregarCSV('vocabulariGrups.csv')">GRUPS</button>
+            <button class="menu-btn-text" style="border:3px solid var(--p-pink); border-radius:15px; justify-content:center;" onclick="carregarCSV('vocabulariTemes.csv')">TEMES</button>
         </div>
     </div>
 
@@ -71,43 +67,30 @@
     <div id="p-estudi" class="hidden" style="width: 100%; max-width: 600px; display: flex; flex-direction: column; align-items: center;">
         <div class="card">
             <div class="config-bar">
-                <span onclick="canviarIdioma()" style="cursor:pointer; color:var(--p-blue-strong); font-size:1.1em;"><b id="txt-idioma">CAT</b></span>
+                <span onclick="canviarIdioma()" class="lang-toggle"><b id="txt-idioma">CAT</b></span>
                 <div style="display: flex; align-items: center; gap: 8px;">
                     <span id="btn-repas" onclick="toggleRepas()">⭐ OFF</span>
-                    <span style="display: flex; align-items: center; gap: 3px;">
-                        <input type="number" id="row-desde" value="1" onchange="actualitzarRang()"> - <input type="number" id="row-fins" value="100" onchange="actualitzarRang()">
-                    </span>
+                    <input type="number" id="row-desde" value="1" onchange="actualitzarRang()"> - <input type="number" id="row-fins" value="100" onchange="actualitzarRang()">
                 </div>
                 <button id="star-main" class="star-main" onclick="toggleEstrellaActual()">★</button>
             </div>
-            
-            <div id="feedback-container">
-                <span id="feedback-label"></span>
-                <span id="solucio-text"></span>
-            </div>
-            
+            <div id="feedback-container" style="min-height:2em; font-weight:bold;"><span id="feedback-label"></span><span id="solucio-text"></span></div>
             <div id="pregunta">---</div>
-
-            <div class="audio-controls">
-                <button class="icon-btn" onclick="reproduirActual(1.0)">🔊</button>
-                <button class="icon-btn" onclick="reproduirActual(0.5)">🐢</button>
+            <div style="margin: 10px 0; display: flex; justify-content: center; gap: 15px;">
+                <button style="background:none; border:none; cursor:pointer; font-size:1.8em;" onclick="reproduirActual(1.0)">🔊</button>
+                <button style="background:none; border:none; cursor:pointer; font-size:1.8em;" onclick="reproduirActual(0.5)">🐢</button>
             </div>
-
             <input type="text" id="resposta" placeholder="..." autocomplete="off">
-            <div style="margin-top:15px;">
-                <button class="btn-main" onclick="validar()">Comprovar</button>
-            </div>
+            <div style="margin-top:15px;"><button class="btn-main" onclick="validar()">Comprovar</button></div>
             <button class="back-btn" onclick="location.reload()">🔙 Back</button>
         </div>
-
-        <div class="list-container">
-            <table class="list-table" id="taula-joc"></table>
-        </div>
+        <div class="list-container"><table class="list-table" id="taula-joc"></table></div>
     </div>
 
 <script>
     let dadesTotals = [], dadesCat = [], dadesJoc = [], index = 0;
     let repasIds = new Set(JSON.parse(localStorage.getItem('repasIds') || '[]'));
+    let temasEnProgreso = new Set(JSON.parse(localStorage.getItem('temasEnProgreso') || '[]'));
     let idioma = 'CAT', modoRepas = false, errorActive = false, correctActive = false;
 
     async function carregarCSV(nom) {
@@ -122,21 +105,47 @@
                     dadesTotals.push({ id: i + nom, cat: p[0].trim(), eng: p[1].trim(), esp: p[2].trim() });
                 }
             });
-            const cats = [...new Set(dadesTotals.map(d => d.cat))].sort();
-            const grid = document.getElementById('grid-selector'); grid.innerHTML = '';
-            cats.forEach(c => {
-                const b = document.createElement('button'); b.className = 'menu-btn'; b.innerText = c;
-                b.onclick = () => carregarCategoria(c); grid.appendChild(b);
-            });
-            document.getElementById('p-fitxer').classList.add('hidden');
-            document.getElementById('p-grups').classList.remove('hidden');
-        } catch (e) { alert("Error arxiu"); }
+            mostrarMenu();
+        } catch (e) { alert("Error"); }
+    }
+
+    function mostrarMenu() {
+        const cats = [...new Set(dadesTotals.map(d => d.cat))].sort();
+        const grid = document.getElementById('grid-selector'); grid.innerHTML = '';
+        cats.forEach(c => {
+            const container = document.createElement('div'); container.className = 'menu-item';
+            
+            // Si la categoría tiene alguna estrella dentro, mostramos un aviso visual pequeñito
+            const tieneEstrellas = dadesTotals.some(d => d.cat === c && repasIds.has(d.id));
+            if (tieneEstrellas) {
+                const starIcon = document.createElement('span'); starIcon.className = 'has-stars';
+                starIcon.innerText = '★'; container.appendChild(starIcon);
+            }
+
+            const btnText = document.createElement('button'); btnText.className = 'menu-btn-text';
+            btnText.innerText = c; btnText.onclick = () => carregarCategoria(c);
+            
+            const btnMark = document.createElement('button'); 
+            btnMark.className = 'menu-btn-mark' + (temasEnProgreso.has(c) ? ' active' : '');
+            btnMark.innerText = '🔖'; // Icono de marcapáginas
+            btnMark.onclick = () => toggleMarcadorTema(c, btnMark);
+            
+            container.appendChild(btnText); container.appendChild(btnMark);
+            grid.appendChild(container);
+        });
+        document.getElementById('p-fitxer').classList.add('hidden');
+        document.getElementById('p-grups').classList.remove('hidden');
+    }
+
+    function toggleMarcadorTema(c, el) {
+        temasEnProgreso.has(c) ? temasEnProgreso.delete(c) : temasEnProgreso.add(c);
+        localStorage.setItem('temasEnProgreso', JSON.stringify([...temasEnProgreso]));
+        el.classList.toggle('active');
     }
 
     function carregarCategoria(c) {
         dadesCat = dadesTotals.filter(d => d.cat === c);
         document.getElementById('row-fins').value = dadesCat.length;
-        document.getElementById('row-desde').value = 1;
         document.getElementById('p-grups').classList.add('hidden');
         document.getElementById('p-estudi').classList.remove('hidden');
         actualitzarRang();
@@ -156,18 +165,10 @@
         if (index >= dadesJoc.length) { dadesJoc.sort(() => Math.random() - 0.5); index = 0; }
         errorActive = false; correctActive = false;
         const p = dadesJoc[index];
-        
-        // MODO DICTADO: Si es inglés, ocultamos el texto y suena audio
-        if (idioma === 'ENG') {
-            document.getElementById('pregunta').innerText = "???";
-            reproduir(p.eng, 1.0);
-        } else {
-            document.getElementById('pregunta').innerText = p.esp;
-        }
-
+        if (idioma === 'ENG') { document.getElementById('pregunta').innerText = "🎧 Escucha..."; reproduir(p.eng, 1.0); }
+        else { document.getElementById('pregunta').innerText = p.esp; }
         document.getElementById('resposta').value = "";
-        document.getElementById('feedback-label').innerText = "";
-        document.getElementById('solucio-text').innerText = "";
+        document.getElementById('feedback-label').innerText = ""; document.getElementById('solucio-text').innerText = "";
         document.getElementById('star-main').classList.toggle('active', repasIds.has(p.id));
         document.getElementById('resposta').focus();
     }
@@ -176,27 +177,18 @@
         if (dadesJoc.length === 0 || errorActive || correctActive) return;
         const p = dadesJoc[index];
         const user = document.getElementById('resposta').value.trim().toLowerCase();
-        const ok = (idioma === 'CAT') ? p.eng.toLowerCase() : p.esp.toLowerCase();
-        
-        // Al validar, siempre mostramos el texto de la pregunta (por si estaba oculto)
-        document.getElementById('pregunta').innerText = (idioma === 'CAT') ? p.esp : p.eng;
-        
+        const ok = p.eng.toLowerCase();
+        document.getElementById('pregunta').innerText = p.eng;
         reproduir(p.eng, 1.0);
         if (user === ok) {
-            mostrarFeedback("CORRECTE: ", "green", p);
-            correctActive = true; 
+            document.getElementById('feedback-label').innerText = "CORRECTE: "; document.getElementById('feedback-label').style.color = "green";
+            document.getElementById('solucio-text').innerText = p.eng.toUpperCase(); document.getElementById('solucio-text').style.color = "green";
+            correctActive = true; setTimeout(seguent, 1000);
         } else {
-            mostrarFeedback("INCORRECTE: ", "var(--p-red)", p);
+            document.getElementById('feedback-label').innerText = "INCORRECTE: "; document.getElementById('feedback-label').style.color = "var(--p-red)";
+            document.getElementById('solucio-text').innerText = p.eng.toUpperCase(); document.getElementById('solucio-text').style.color = "var(--p-red)";
             errorActive = true;
         }
-    }
-
-    function mostrarFeedback(label, color, p) {
-        document.getElementById('feedback-label').innerText = label;
-        document.getElementById('feedback-label').style.color = color;
-        const sol = (idioma === 'CAT') ? p.eng.toUpperCase() : p.esp.toUpperCase();
-        document.getElementById('solucio-text').innerText = sol;
-        document.getElementById('solucio-text').style.color = color;
     }
 
     function seguent() { index++; nouRepte(); }
@@ -204,49 +196,32 @@
     function reproduir(t, vel) { window.speechSynthesis.cancel(); const m = new SpeechSynthesisUtterance(t); m.lang = 'en-US'; m.rate = vel; window.speechSynthesis.speak(m); }
 
     function toggleEstrellaActual() {
-        if (dadesJoc[index]) toggleIdRepas(dadesJoc[index].id);
-    }
-
-    function toggleIdRepas(id) {
+        const id = dadesJoc[index].id;
         repasIds.has(id) ? repasIds.delete(id) : repasIds.add(id);
         localStorage.setItem('repasIds', JSON.stringify([...repasIds]));
-        if (dadesJoc[index] && dadesJoc[index].id === id) {
-            document.getElementById('star-main').classList.toggle('active', repasIds.has(id));
-        }
+        document.getElementById('star-main').classList.toggle('active', repasIds.has(id));
         actualitzarTaula(dadesCat.slice(parseInt(document.getElementById('row-desde').value)-1, parseInt(document.getElementById('row-fins').value)));
     }
 
     function canviarIdioma() { idioma = (idioma === 'CAT') ? 'ENG' : 'CAT'; document.getElementById('txt-idioma').innerText = idioma; nouRepte(); }
-    function toggleRepas() { modoRepas = !modoRepas; document.getElementById('btn-repas').innerText = modoRepas ? "⭐ ON" : "⭐ OFF"; document.getElementById('btn-repas').classList.toggle('on', modoRepas); actualitzarRang(); }
+    function toggleRepas() { modoRepas = !modoRepas; const btn = document.getElementById('btn-repas'); btn.innerText = modoRepas ? "⭐ ON" : "⭐ OFF"; btn.classList.toggle('on', modoRepas); actualitzarRang(); }
 
     function actualitzarTaula(llista) {
         document.getElementById('taula-joc').innerHTML = llista.map((d, i) => `
             <tr>
-                <td style="color:#ccc; font-weight:bold; width:25px; text-align:center;">${i+1}</td>
-                <td class="star-list ${repasIds.has(d.id)?'active':''}" onclick="toggleIdRepas('${d.id}')">★</td>
-                <td style="width:30px; text-align:center;">
-                    <button style="background:none; border:none; cursor:pointer; font-size:1.2em;" onclick="reproduir('${d.eng.replace(/'/g,"\\'")}', 1.0)">🔊</button>
-                </td>
-                <td class="txt-eng">${d.eng}</td>
-                <td class="txt-cat">${d.esp}</td>
+                <td style="color:#ccc; font-size:0.8em;">${i+1}</td>
+                <td class="star-list ${repasIds.has(d.id)?'active':''}">★</td>
+                <td><button style="background:none; border:none; cursor:pointer;" onclick="reproduir('${d.eng.replace(/'/g,"\\'")}', 1.0)">🔊</button></td>
+                <td style="color:var(--p-blue-strong); font-weight:bold;">${d.eng}</td>
+                <td style="color:#888; font-size:0.9em;">${d.esp}</td>
             </tr>
         `).join('');
     }
 
     document.getElementById('resposta').addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            if (!errorActive && !correctActive) { 
-                validar(); 
-            } else {
-                seguent(); 
-            }
-        }
-        if (e.key === ' ') { 
-            if (errorActive || correctActive) {
-                e.preventDefault();
-                seguent();
-            }
+        if (e.key === 'Enter' || e.key === ' ') {
+            if (errorActive || correctActive) { e.preventDefault(); if(correctActive) seguent(); else nouRepte(); }
+            else if (e.key === 'Enter') { validar(); }
         }
     });
 </script>
