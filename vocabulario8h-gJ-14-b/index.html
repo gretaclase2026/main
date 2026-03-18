@@ -20,37 +20,41 @@
         .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
         .menu-btn { background: white; border: 3px solid var(--p-pink); padding: 12px; border-radius: 15px; font-weight: bold; color: var(--p-blue-strong); cursor: pointer; font-size: 0.9em; text-transform: uppercase; }
         
-        /* Barra de config en una sola línia */
-        .config-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; font-size: 0.9em; font-weight: bold; padding: 0 5px; }
-        .config-bar input { width: 40px; padding: 3px; border: 2px solid var(--p-pink); border-radius: 6px; text-align: center; color: var(--p-blue-strong); font-weight: bold; background: white; }
-        .lang-toggle { cursor: pointer; color: var(--p-blue-strong); min-width: 40px; }
+        /* Barra config una sola línia */
+        .config-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; font-size: 0.95em; font-weight: bold; padding: 0 10px; }
+        .config-bar input { width: 45px; padding: 4px; border: 2px solid var(--p-pink); border-radius: 6px; text-align: center; color: var(--p-blue-strong); font-weight: bold; background: white; outline: none; }
+        .lang-toggle { cursor: pointer; color: var(--p-blue-strong); font-size: 1.1em; }
         
-        #feedback-container { font-size: 1.3em; font-weight: bold; min-height: 1.4em; margin-bottom: 5px; display: flex; justify-content: center; align-items: center; gap: 8px; }
-        #solucio-text { text-transform: uppercase; }
+        #feedback-container { font-size: 1.3em; font-weight: bold; min-height: 1.5em; margin-bottom: 5px; display: flex; justify-content: center; align-items: center; gap: 8px; }
         
-        #pregunta { font-size: 1.8em; margin: 8px 0; color: var(--p-blue-strong); font-weight: bold; }
+        #pregunta { font-size: 2em; margin: 10px 0; color: var(--p-blue-strong); font-weight: bold; }
         
-        #resposta { width: 95%; padding: 12px; font-size: 1.4em; border-radius: 15px; border: 3px solid var(--p-pink); text-align: center; outline: none; box-sizing: border-box; }
+        #resposta { width: 95%; padding: 12px; font-size: 1.5em; border-radius: 15px; border: 3px solid var(--p-pink); text-align: center; outline: none; box-sizing: border-box; }
 
-        /* Estrella de dalt amb fons verd fix */
+        /* Estrella GRAN amb fons verd pastel */
         .star-main-container { margin-bottom: 10px; }
-        .star-btn { font-size: 2.2em; cursor: pointer; color: #ccc; background: var(--p-green-soft); border: 2px solid #d0e7d4; border-radius: 50%; width: 55px; height: 55px; line-height: 53px; display: inline-block; transition: transform 0.1s; }
+        .star-btn { font-size: 2.2em; cursor: pointer; color: #ccc; background: var(--p-green-soft); border: 2px solid #d0e7d4; border-radius: 50%; width: 60px; height: 60px; line-height: 58px; display: inline-block; }
         .star-btn.active { color: #fbbc04; }
 
-        .audio-controls { margin: 8px 0; display: flex; justify-content: center; gap: 15px; }
+        .audio-controls { margin: 10px 0; display: flex; justify-content: center; gap: 15px; }
         .icon-btn { background: none; border: none; cursor: pointer; font-size: 1.8em; }
 
         .btn-main { background: var(--p-blue-soft); color: var(--p-blue-strong); padding: 12px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; width: 80%; font-size: 1.1em; }
         
-        .back-btn { background: none; border: none; color: black; font-weight: bold; cursor: pointer; font-size: 0.95em; margin-top: 10px; }
+        /* Botó BACK en negre i sense fons */
+        .back-btn { background: none; border: none; color: black; font-weight: bold; cursor: pointer; font-size: 1em; margin-top: 15px; display: inline-flex; align-items: center; gap: 5px; }
 
-        /* Llista */
-        .list-container { width: 100%; max-width: 600px; background: white; border-radius: 25px; border: 6px solid var(--p-pink); padding: 5px; box-sizing: border-box; margin-bottom: 40px; }
+        /* Llista optimitzada */
+        .list-container { width: 100%; max-width: 600px; background: white; border-radius: 25px; border: 6px solid var(--p-pink); padding: 8px; box-sizing: border-box; margin-bottom: 40px; }
         .list-table { width: 100%; border-collapse: collapse; }
-        .list-table td { padding: 4px 2px; border-bottom: 1px solid #fce4e6; text-align: left; font-size: 1.05em; vertical-align: middle; }
-        .num { color: #ccc; font-weight: bold; width: 22px; font-size: 0.75em; text-align: center; }
-        .txt-eng { color: var(--p-blue-strong); font-weight: bold; }
-        .txt-cat { color: #888; font-size: 0.9em; }
+        .list-table td { padding: 6px 4px; border-bottom: 1px solid #fce4e6; vertical-align: middle; }
+        .num { color: #ccc; font-weight: bold; width: 25px; font-size: 0.8em; text-align: center; }
+        
+        /* Estrella de la llista SENSE fons */
+        .star-list { font-size: 1.4em; width: 30px; text-align: center; cursor: default; }
+        
+        .txt-eng { color: var(--p-blue-strong); font-weight: bold; font-size: 1.1em; }
+        .txt-cat { color: #888; font-size: 1em; }
 
         .hidden { display: none !important; }
     </style>
@@ -75,8 +79,8 @@
         <div class="card">
             <div class="config-bar">
                 <span onclick="canviarIdioma()" class="lang-toggle"><b id="txt-idioma">CAT</b></span>
-                <span id="btn-repas" onclick="toggleRepas()" style="cursor:pointer; background:#eee; padding:2px 8px; border-radius:5px;">⭐ OFF</span>
-                <span style="display: flex; align-items: center; gap: 3px;">
+                <span id="btn-repas" onclick="toggleRepas()" style="cursor:pointer; background:#eee; padding:2px 10px; border-radius:8px;">⭐ OFF</span>
+                <span style="display: flex; align-items: center; gap: 5px;">
                     <input type="number" id="row-desde" value="1" onchange="actualitzarRang()"> 
                     - 
                     <input type="number" id="row-fins" value="100" onchange="actualitzarRang()">
@@ -228,9 +232,9 @@
         document.getElementById('taula-joc').innerHTML = llista.map((d, i) => `
             <tr>
                 <td class="num">${i+1}</td>
-                <td style="color:${repasIds.has(d.id)?'#fbbc04':'#eee'}; font-size:1.3em; width:28px; text-align:center;">★</td>
+                <td class="star-list" style="color:${repasIds.has(d.id)?'#fbbc04':'#eee'};">★</td>
                 <td style="width:35px; text-align:center;">
-                    <button style="background:none; border:none; cursor:pointer; font-size:1.1em;" 
+                    <button style="background:none; border:none; cursor:pointer; font-size:1.2em;" 
                     onclick="reproduir('${d.eng.replace(/'/g,"\\'")}', 1.0)">🔊</button>
                 </td>
                 <td class="txt-eng">${d.eng}</td>
