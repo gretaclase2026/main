@@ -3,51 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Vocabulari - Grups i Temes</title>
+    <title>Vocabulari PRO</title>
     <style>
         :root { 
-            --p-pink: #ffcfd2; 
-            --p-blue-soft: #d4eaf7; 
-            --p-blue-strong: #2196F3; 
-            --p-turquesa-claret: #e0f7f9; 
-            --p-turquesa-fort: #40c4ff; 
-            --p-yellow: #FFF176; 
-            --telegram-blue: #24A1DE;
-            --text: #4a4a4a; 
+            --p-pink: #ffcfd2; --p-blue-soft: #d4eaf7; --p-blue-strong: #2196F3; 
+            --p-turquesa-claret: #e0f7f9; --p-turquesa-fort: #40c4ff; --p-yellow: #FFF176; 
+            --telegram-blue: #24A1DE; --text: #4a4a4a; 
         }
-        body { font-family: 'Segoe UI', sans-serif; background: #fff5f6; color: var(--text); display: flex; flex-direction: column; align-items: center; padding: 10px; }
+        body { font-family: 'Segoe UI', sans-serif; background: #fff5f6; color: var(--text); display: flex; flex-direction: column; align-items: center; padding: 10px; margin:0; }
+        .card { background: white; width: 100%; max-width: 650px; padding: 20px; border-radius: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 8px solid var(--p-pink); text-align: center; box-sizing: border-box; margin-top: 10px; }
+        h1.titulo-app { color: var(--telegram-blue); font-size: 2em; margin: 10px 0; text-transform: uppercase; }
         
-        .card { background: white; width: 100%; max-width: 650px; padding: 25px; border-radius: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 8px solid var(--p-pink); text-align: center; box-sizing: border-box; }
-        
-        h1.titulo-app { color: var(--telegram-blue); font-size: 2.2em; font-weight: bold; margin-bottom: 20px; text-transform: uppercase; }
-
-        .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; }
-        
-        .menu-btn { background: white; border: 3px solid var(--p-pink); padding: 20px 10px; border-radius: 25px; width: 100%; font-size: 1.3em; font-weight: bold; color: var(--p-blue-strong); cursor: pointer; box-sizing: border-box; transition: 0.2s; }
+        .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+        .menu-btn { background: white; border: 3px solid var(--p-pink); padding: 15px; border-radius: 20px; font-size: 1.1em; font-weight: bold; color: var(--p-blue-strong); cursor: pointer; transition: 0.2s; }
         .menu-btn:active { background: var(--p-pink); color: white; }
 
-        /* Estilo para los botones de subgrupos */
-        .btn-sel { background: #f0f9ff; border: 2px solid var(--p-blue-soft); padding: 12px; border-radius: 15px; font-weight: bold; color: #444; cursor: pointer; }
-        .btn-sel:active { background: var(--p-blue-soft); }
-
-        .config-bar { background: #fff; padding: 12px 18px; border-radius: 20px; margin-bottom: 20px; border: 2px solid var(--p-pink); display: flex; align-items: center; gap: 15px; flex-wrap: wrap; justify-content: center; }
+        .config-bar { background: #fff; padding: 10px; border-radius: 20px; margin-bottom: 15px; border: 2px solid var(--p-pink); display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; font-size: 0.9em; }
         
-        #pregunta { font-size: 2.5em; color: var(--p-blue-strong); margin: 15px 0; min-height: 1.2em; font-weight: bold; }
-        #resposta { width: 90%; padding: 15px; font-size: 1.8em; border-radius: 20px; border: 3px solid var(--p-pink); text-align: center; outline: none; margin-bottom: 20px; font-weight: bold; }
+        #pregunta { font-size: 2.2em; color: var(--p-blue-strong); margin: 15px 0; font-weight: bold; }
+        #resposta { width: 90%; padding: 12px; font-size: 1.5em; border-radius: 15px; border: 3px solid var(--p-pink); text-align: center; outline: none; margin-bottom: 15px; }
         
-        .btn-audio { width: 70px; height: 70px; border-radius: 50%; border: none; cursor: pointer; font-size: 2em; display: inline-flex; align-items: center; justify-content: center; margin: 5px; }
-        .btn-speaker { background: var(--p-blue-soft); color: #5b8fb9; }
-        
-        .btn { padding: 12px 25px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; margin: 5px; font-size: 1em; }
+        .btn-audio { width: 60px; height: 60px; border-radius: 50%; border: none; cursor: pointer; font-size: 1.5em; background: var(--p-blue-soft); color: #5b8fb9; }
+        .btn { padding: 10px 20px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; margin: 5px; }
         .btn-check { background: var(--p-blue-soft); color: #5b8fb9; }
         .btn-next { background: #b9fbc0; color: #3e7e44; }
-        
-        .list-area { width: 100%; max-width: 650px; background: white; margin-top: 25px; border-radius: 25px; padding: 15px; border: 3px solid var(--p-pink); box-sizing: border-box; }
-        table { width: 100%; border-collapse: collapse; font-size: 1.1em; }
-        td { padding: 10px; border-bottom: 1px solid #f2f2f2; text-align: left; }
-        .col-eng { color: var(--telegram-blue); font-weight: bold; }
+        .btn-nola { background: #ffe5d9; color: #d90429; }
+        .btn-star { background: none; border: none; font-size: 1.5em; cursor: pointer; color: #ccc; }
+        .btn-star.active { color: #ffb703; }
 
-        .btn-back-menu { margin-top: 20px; border: none; background: transparent; color: #000; cursor: pointer; font-size: 1.5em; font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        td { padding: 8px; border-bottom: 1px solid #eee; text-align: left; font-size: 0.95em; }
+        .star-list { color: #ffb703; font-weight: bold; }
+        .btn-back-menu { margin-top: 15px; border: none; background: transparent; font-weight: bold; cursor: pointer; font-size: 1.2em; }
     </style>
 </head>
 <body>
@@ -55,8 +42,8 @@
     <div class="card" id="setup">
         <h1 class="titulo-app">VOCABULARI</h1>
         <div class="grid-menu">
-            <button class="menu-btn" onclick="carregarArxiuMaestre('vocabulariGrups.csv')">GRUPS</button>
-            <button class="menu-btn" onclick="carregarArxiuMaestre('vocabulariTemes.csv')">TEMES</button>
+            <button class="menu-btn" onclick="carregarCSV('vocabulariGrups.csv')">GRUPS</button>
+            <button class="menu-btn" onclick="carregarCSV('vocabulariTemes.csv')">TEMES</button>
         </div>
     </div>
 
@@ -69,152 +56,181 @@
     <div id="joc" style="display:none; width: 100%; max-width: 650px; flex-direction: column; align-items: center;">
         <div class="card">
             <div class="config-bar">
-                <span>Correctes: <span id="count-ok" style="color:green; font-weight:bold;">0</span></span>
-                <span style="margin-left:20px;">Resten: <span id="count-rest" style="font-weight:bold;">0</span></span>
+                <button class="btn" onclick="canviarIdioma()">Pregunta en: <b id="txt-idioma">ESP</b></button>
+                <span>Desde: <input type="number" id="row-desde" value="1" style="width:40px"></span>
+                <span>Fins: <input type="number" id="row-fins" value="1000" style="width:40px"></span>
+                <button class="btn" id="btn-repas" onclick="toggleModoRepas()">Modo Estrella: OFF</button>
             </div>
 
-            <div id="feedback" style="height:45px; font-weight:bold; font-size: 1.35em;"></div>
-            
-            <h1 id="pregunta">---</h1>
-            <input type="text" id="resposta" placeholder="..." autocomplete="off" autofocus>
+            <div style="display:flex; justify-content: space-between; align-items: center;">
+                <button id="star-btn" class="btn-star" onclick="toggleEstrellaActual()">★</button>
+                <div>Correctes: <b id="count-ok" style="color:green">0</b> | Resten: <b id="count-rest">0</b></div>
+            </div>
 
-            <div class="controls">
-                <button class="btn-audio btn-speaker" onclick="reproduirActual()">🔊</button>
-                <br>
+            <div id="feedback" style="height:35px; font-weight:bold; margin-top:10px;"></div>
+            <h1 id="pregunta">---</h1>
+            <input type="text" id="resposta" placeholder="..." autocomplete="off">
+
+            <div>
+                <button class="btn-audio" onclick="reproducir(1.0)">🔊</button><br>
                 <button id="btn-comprovar" class="btn btn-check" onclick="validar()">Comprovar</button>
+                <button id="btn-nola" class="btn btn-nola" onclick="noLaSe()">No la sé</button>
                 <button id="btn-next" class="btn btn-next" style="display:none;" onclick="seguent()">Següent →</button>
             </div>
-            
             <button onclick="location.reload()" class="btn-back-menu">🔙 Menú</button>
         </div>
 
-        <div id="llista-container" class="list-area">
+        <div class="card" style="margin-top:20px; border-radius:20px;">
             <table><tbody id="taula-cos"></tbody></table>
         </div>
     </div>
 
 <script>
-    let dadesTotals = [], dadesFiltrades = [], index = 0, acertos = 0;
+    let dadesTotals = [], dadesJoc = [], index = 0, acertos = 0;
+    let repasIds = new Set(JSON.parse(localStorage.getItem('repasIds') || '[]'));
+    let idiomaPregunta = 'ESP'; // 'ESP' o 'ENG'
+    let modoRepas = false;
 
-    // 1. CARGAR EL ARCHIVO CSV
-    async function carregarArxiuMaestre(nomFitxer) {
+    async function carregarCSV(nom) {
         try {
-            const response = await fetch(nomFitxer);
-            const text = await response.text();
-            const lines = text.split(/\r?\n/).filter(l => l.trim() !== '');
-            
-            // Convertimos el CSV en objetos (Grupo; Cat; Eng)
-            dadesTotals = lines.map(l => {
+            const r = await fetch(nom);
+            const t = await r.text();
+            const lines = t.split(/\r?\n/).filter(l => l.trim() !== '');
+            dadesTotals = lines.map((l, i) => {
                 const p = l.split(';');
-                if (p.length >= 3) {
-                    return { grup: p[0].trim(), cat: p[1].trim(), eng: p[2].trim() };
-                }
-                return null;
-            }).filter(item => item);
-
+                return { id: i, grup: p[0], esp: p[1], eng: p[2] };
+            }).filter(d => d.esp);
             mostrarSelector();
-        } catch (e) { 
-            alert("No s'ha pogut trobar el fitxer: " + nomFitxer); 
-        }
+        } catch (e) { alert("Error al carregar l'arxiu"); }
     }
 
-    // 2. MOSTRAR LOS BOTONES DE LOS GRUPOS (Escuela, Salud, etc.)
     function mostrarSelector() {
-        const grupsUnics = [...new Set(dadesTotals.map(d => d.grup))];
+        const grups = [...new Set(dadesTotals.map(d => d.grup))];
         const grid = document.getElementById('grid-selector');
         grid.innerHTML = '';
-        
-        grupsUnics.forEach(g => {
-            const btn = document.createElement('button');
-            btn.className = 'menu-btn';
-            btn.innerText = g;
-            btn.onclick = () => iniciarJoc(g);
-            grid.appendChild(btn);
+        grups.forEach(g => {
+            const b = document.createElement('button');
+            b.className = 'menu-btn';
+            b.innerText = g;
+            b.onclick = () => iniciar(g);
+            grid.appendChild(b);
         });
-
         document.getElementById('setup').style.display = 'none';
         document.getElementById('selector-container').style.display = 'block';
     }
 
-    // 3. FILTRAR POR EL GRUPO ELEGIDO E INICIAR
-    function iniciarJoc(grupSeleccionat) {
-        dadesFiltrades = dadesTotals.filter(d => d.grup === grupSeleccionat);
-        dadesFiltrades.sort(() => Math.random() - 0.5);
+    function iniciar(g) {
+        const desde = parseInt(document.getElementById('row-desde').value) - 1;
+        const fins = parseInt(document.getElementById('row-fins').value);
         
-        index = 0;
-        acertos = 0;
-        
+        let temp = dadesTotals.filter(d => d.grup === g);
+        temp = temp.slice(desde, fins);
+
+        if (modoRepas) {
+            temp = temp.filter(d => repasIds.has(d.id));
+        }
+
+        if (temp.length === 0) {
+            alert("No hi ha paraules en aquest rang o amb estrella.");
+            return;
+        }
+
+        dadesJoc = temp.sort(() => Math.random() - 0.5);
+        index = 0; acertos = 0;
         document.getElementById('selector-container').style.display = 'none';
         document.getElementById('joc').style.display = 'flex';
-        
         nouRepte();
         actualitzarTaula();
     }
 
     function nouRepte() {
-        if (index >= dadesFiltrades.length) {
+        if (index >= dadesJoc.length) {
             document.getElementById('pregunta').innerText = "Fi! 🎉";
             document.getElementById('resposta').style.display = 'none';
             return;
         }
-        
-        const p = dadesFiltrades[index];
-        document.getElementById('pregunta').innerText = p.cat;
+        const p = dadesJoc[index];
+        document.getElementById('pregunta').innerText = (idiomaPregunta === 'ESP') ? p.esp : p.eng;
         document.getElementById('resposta').value = "";
         document.getElementById('resposta').disabled = false;
         document.getElementById('feedback').innerText = "";
         document.getElementById('btn-next').style.display = "none";
         document.getElementById('btn-comprovar').style.display = "inline-block";
+        document.getElementById('btn-nola').style.display = "inline-block";
         document.getElementById('count-ok').innerText = acertos;
-        document.getElementById('count-rest').innerText = dadesFiltrades.length - index;
+        document.getElementById('count-rest').innerText = dadesJoc.length - index;
+        document.getElementById('star-btn').classList.toggle('active', repasIds.has(p.id));
         document.getElementById('resposta').focus();
     }
 
     function validar() {
-        const p = dadesFiltrades[index];
-        const textUser = document.getElementById('resposta').value.trim().toLowerCase();
+        const p = dadesJoc[index];
+        const user = document.getElementById('resposta').value.trim().toLowerCase();
+        const correct = (idiomaPregunta === 'ESP') ? p.eng.toLowerCase() : p.esp.toLowerCase();
         
-        if (textUser === p.eng.toLowerCase()) {
+        if (user === correct) {
             document.getElementById('feedback').innerText = "Molt bé! ✨";
             document.getElementById('feedback').style.color = "green";
             acertos++;
-            reproduirActual();
+            reproducir(1.0);
             setTimeout(seguent, 800);
         } else {
-            document.getElementById('feedback').innerText = "Era: " + p.eng.toUpperCase();
+            document.getElementById('feedback').innerText = "Era: " + correct.toUpperCase();
             document.getElementById('feedback').style.color = "red";
             document.getElementById('btn-comprovar').style.display = "none";
+            document.getElementById('btn-nola').style.display = "none";
             document.getElementById('btn-next').style.display = "inline-block";
             document.getElementById('resposta').disabled = true;
+            reproducir(1.0);
         }
     }
 
-    function seguent() {
-        index++;
-        nouRepte();
+    function noLaSe() {
+        const p = dadesJoc[index];
+        const correct = (idiomaPregunta === 'ESP') ? p.eng : p.esp;
+        document.getElementById('feedback').innerText = "Solució: " + correct.toUpperCase();
+        document.getElementById('feedback').style.color = "orange";
+        document.getElementById('btn-comprovar').style.display = "none";
+        document.getElementById('btn-nola').style.display = "none";
+        document.getElementById('btn-next').style.display = "inline-block";
+        reproducir(1.0);
     }
 
-    function reproduirActual() {
-        const paraula = dadesFiltrades[index].eng;
-        const msg = new SpeechSynthesisUtterance(paraula);
+    function seguent() { index++; nouRepte(); }
+
+    function reproducir(vel) {
+        const p = dadesJoc[index];
+        const msg = new SpeechSynthesisUtterance(p.eng);
         msg.lang = 'en-US';
+        msg.rate = vel;
         window.speechSynthesis.speak(msg);
     }
 
-    function reproduirParaula(p) {
-        const msg = new SpeechSynthesisUtterance(p);
-        msg.lang = 'en-US';
-        window.speechSynthesis.speak(msg);
+    function toggleEstrellaActual() {
+        const id = dadesJoc[index].id;
+        if (repasIds.has(id)) repasIds.delete(id);
+        else repasIds.add(id);
+        localStorage.setItem('repasIds', JSON.stringify([...repasIds]));
+        document.getElementById('star-btn').classList.toggle('active', repasIds.has(id));
+        actualitzarTaula();
+    }
+
+    function canviarIdioma() {
+        idiomaPregunta = (idiomaPregunta === 'ESP') ? 'ENG' : 'ESP';
+        document.getElementById('txt-idioma').innerText = idiomaPregunta;
+    }
+
+    function toggleModoRepas() {
+        modoRepas = !modoRepas;
+        document.getElementById('btn-repas').innerText = "Modo Estrella: " + (modoRepas ? "ON" : "OFF");
     }
 
     function actualitzarTaula() {
-        document.getElementById('taula-cos').innerHTML = dadesFiltrades.map(d => `
+        document.getElementById('taula-cos').innerHTML = dadesJoc.map(d => `
             <tr>
-                <td class="col-eng">
-                    <button style="background:none; border:none; cursor:pointer;" onclick="reproduirParaula('${d.eng}')">🔊</button>
-                    ${d.eng}
-                </td>
-                <td style="color:#666;">${d.cat}</td>
+                <td>${repasIds.has(d.id) ? '<span class="star-list">★</span>' : ''}</td>
+                <td style="color:var(--telegram-blue); font-weight:bold;">${d.eng}</td>
+                <td style="color:#666;">${d.esp}</td>
             </tr>
         `).join('');
     }
@@ -223,6 +239,10 @@
         if (e.key === 'Enter') {
             if (document.getElementById('btn-next').style.display === 'inline-block') {
                 seguent();
+            } else if (document.getElementById('resposta').disabled) {
+                document.getElementById('resposta').disabled = false;
+                document.getElementById('resposta').value = "";
+                document.getElementById('resposta').focus();
             } else {
                 validar();
             }
