@@ -11,30 +11,24 @@
             --telegram-blue: #24A1DE; --text: #4a4a4a; 
         }
         body { font-family: 'Segoe UI', sans-serif; background: #fff5f6; color: var(--text); display: flex; flex-direction: column; align-items: center; padding: 10px; margin:0; }
-        .card { background: white; width: 100%; max-width: 650px; padding: 20px; border-radius: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 8px solid var(--p-pink); text-align: center; box-sizing: border-box; margin-top: 10px; }
-        h1.titulo-app { color: var(--telegram-blue); font-size: 2em; margin: 10px 0; text-transform: uppercase; }
-        
-        .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
-        .menu-btn { background: white; border: 3px solid var(--p-pink); padding: 15px; border-radius: 20px; font-size: 1.1em; font-weight: bold; color: var(--p-blue-strong); cursor: pointer; transition: 0.2s; }
+        .card { background: white; width: 100%; max-width: 650px; padding: 25px; border-radius: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 8px solid var(--p-pink); text-align: center; box-sizing: border-box; margin-top: 10px; }
+        h1.titulo-app { color: var(--telegram-blue); font-size: 2.2em; font-weight: bold; margin-bottom: 20px; text-transform: uppercase; }
+        .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; }
+        .menu-btn { background: white; border: 3px solid var(--p-pink); padding: 20px; border-radius: 25px; font-size: 1.3em; font-weight: bold; color: var(--p-blue-strong); cursor: pointer; transition: 0.2s; }
         .menu-btn:active { background: var(--p-pink); color: white; }
-
-        .config-bar { background: #fff; padding: 10px; border-radius: 20px; margin-bottom: 15px; border: 2px solid var(--p-pink); display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; font-size: 0.9em; }
-        
-        #pregunta { font-size: 2.2em; color: var(--p-blue-strong); margin: 15px 0; font-weight: bold; }
-        #resposta { width: 90%; padding: 12px; font-size: 1.5em; border-radius: 15px; border: 3px solid var(--p-pink); text-align: center; outline: none; margin-bottom: 15px; }
-        
-        .btn-audio { width: 60px; height: 60px; border-radius: 50%; border: none; cursor: pointer; font-size: 1.5em; background: var(--p-blue-soft); color: #5b8fb9; }
-        .btn { padding: 10px 20px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; margin: 5px; }
+        .config-bar { background: #fff; padding: 12px; border-radius: 20px; margin-bottom: 20px; border: 2px solid var(--p-pink); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        #pregunta { font-size: 2.5em; color: var(--p-blue-strong); margin: 15px 0; font-weight: bold; }
+        #resposta { width: 90%; padding: 15px; font-size: 1.8em; border-radius: 20px; border: 3px solid var(--p-pink); text-align: center; outline: none; margin-bottom: 20px; }
+        .btn { padding: 12px 25px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; margin: 5px; }
         .btn-check { background: var(--p-blue-soft); color: #5b8fb9; }
         .btn-next { background: #b9fbc0; color: #3e7e44; }
         .btn-nola { background: #ffe5d9; color: #d90429; }
-        .btn-star { background: none; border: none; font-size: 1.5em; cursor: pointer; color: #ccc; }
-        .btn-star.active { color: #ffb703; }
-
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        td { padding: 8px; border-bottom: 1px solid #eee; text-align: left; font-size: 0.95em; }
+        .star-btn { font-size: 2.5em; cursor: pointer; color: #ccc; background:none; border:none; padding:0; line-height:1; }
+        .star-btn.active { color: #ffb703; }
         .star-list { color: #ffb703; font-weight: bold; }
-        .btn-back-menu { margin-top: 15px; border: none; background: transparent; font-weight: bold; cursor: pointer; font-size: 1.2em; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        td { padding: 10px; border-bottom: 1px solid #eee; text-align: left; }
+        .btn-back-menu { margin-top: 20px; border: none; background: transparent; font-weight: bold; cursor: pointer; font-size: 1.5em; }
     </style>
 </head>
 <body>
@@ -56,23 +50,22 @@
     <div id="joc" style="display:none; width: 100%; max-width: 650px; flex-direction: column; align-items: center;">
         <div class="card">
             <div class="config-bar">
-                <button class="btn" onclick="canviarIdioma()">Pregunta en: <b id="txt-idioma">ESP</b></button>
-                <span>Desde: <input type="number" id="row-desde" value="1" style="width:40px"></span>
-                <span>Fins: <input type="number" id="row-fins" value="1000" style="width:40px"></span>
-                <button class="btn" id="btn-repas" onclick="toggleModoRepas()">Modo Estrella: OFF</button>
+                <button class="btn btn-check" onclick="canviarIdioma()">Pregunta: <b id="txt-idioma">ESP</b></button>
+                <span>Fins a: <input type="number" id="row-fins" value="1000" style="width:50px"></span>
+                <button class="btn" id="btn-repas" onclick="toggleRepas()" style="background:#eee">⭐ Repàs: OFF</button>
             </div>
 
-            <div style="display:flex; justify-content: space-between; align-items: center;">
-                <button id="star-btn" class="btn-star" onclick="toggleEstrellaActual()">★</button>
-                <div>Correctes: <b id="count-ok" style="color:green">0</b> | Resten: <b id="count-rest">0</b></div>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:0 10px;">
+                <button id="star-main" class="star-btn" onclick="toggleEstrellaActual()">★</button>
+                <div>Correctes: <b id="count-ok" style="color:green">0</b> | Falten: <b id="count-rest">0</b></div>
             </div>
 
-            <div id="feedback" style="height:35px; font-weight:bold; margin-top:10px;"></div>
+            <div id="feedback" style="height:40px; font-weight:bold; font-size:1.3em; margin-top:10px;"></div>
             <h1 id="pregunta">---</h1>
             <input type="text" id="resposta" placeholder="..." autocomplete="off">
 
-            <div>
-                <button class="btn-audio" onclick="reproducir(1.0)">🔊</button><br>
+            <div class="controls">
+                <button class="btn btn-check" onclick="reproducirActual()">🔊</button><br>
                 <button id="btn-comprovar" class="btn btn-check" onclick="validar()">Comprovar</button>
                 <button id="btn-nola" class="btn btn-nola" onclick="noLaSe()">No la sé</button>
                 <button id="btn-next" class="btn btn-next" style="display:none;" onclick="seguent()">Següent →</button>
@@ -88,7 +81,7 @@
 <script>
     let dadesTotals = [], dadesJoc = [], index = 0, acertos = 0;
     let repasIds = new Set(JSON.parse(localStorage.getItem('repasIds') || '[]'));
-    let idiomaPregunta = 'ESP'; // 'ESP' o 'ENG'
+    let idioma = 'ESP'; 
     let modoRepas = false;
 
     async function carregarCSV(nom) {
@@ -98,10 +91,10 @@
             const lines = t.split(/\r?\n/).filter(l => l.trim() !== '');
             dadesTotals = lines.map((l, i) => {
                 const p = l.split(';');
-                return { id: i, grup: p[0], esp: p[1], eng: p[2] };
-            }).filter(d => d.esp);
+                return { id: i + nom, grup: p[0], esp: p[1], eng: p[2] };
+            }).filter(d => d.esp && d.eng);
             mostrarSelector();
-        } catch (e) { alert("Error al carregar l'arxiu"); }
+        } catch (e) { alert("No s'ha trobat el fitxer: " + nom); }
     }
 
     function mostrarSelector() {
@@ -120,22 +113,19 @@
     }
 
     function iniciar(g) {
-        const desde = parseInt(document.getElementById('row-desde').value) - 1;
         const fins = parseInt(document.getElementById('row-fins').value);
-        
-        let temp = dadesTotals.filter(d => d.grup === g);
-        temp = temp.slice(desde, fins);
+        let filtrat = dadesTotals.filter(d => d.grup === g).slice(0, fins);
 
         if (modoRepas) {
-            temp = temp.filter(d => repasIds.has(d.id));
+            filtrat = filtrat.filter(d => repasIds.has(d.id));
         }
 
-        if (temp.length === 0) {
-            alert("No hi ha paraules en aquest rang o amb estrella.");
+        if (filtrat.length === 0) {
+            alert("No hi ha paraules per estudiar (comprova si has marcat estrelles).");
             return;
         }
 
-        dadesJoc = temp.sort(() => Math.random() - 0.5);
+        dadesJoc = filtrat.sort(() => Math.random() - 0.5);
         index = 0; acertos = 0;
         document.getElementById('selector-container').style.display = 'none';
         document.getElementById('joc').style.display = 'flex';
@@ -145,12 +135,14 @@
 
     function nouRepte() {
         if (index >= dadesJoc.length) {
-            document.getElementById('pregunta').innerText = "Fi! 🎉";
+            document.getElementById('pregunta').innerText = "🎉 Fi!";
             document.getElementById('resposta').style.display = 'none';
+            document.getElementById('btn-comprovar').style.display = "none";
+            document.getElementById('btn-nola').style.display = "none";
             return;
         }
         const p = dadesJoc[index];
-        document.getElementById('pregunta').innerText = (idiomaPregunta === 'ESP') ? p.esp : p.eng;
+        document.getElementById('pregunta').innerText = (idioma === 'ESP') ? p.esp : p.eng;
         document.getElementById('resposta').value = "";
         document.getElementById('resposta').disabled = false;
         document.getElementById('feedback').innerText = "";
@@ -159,50 +151,50 @@
         document.getElementById('btn-nola').style.display = "inline-block";
         document.getElementById('count-ok').innerText = acertos;
         document.getElementById('count-rest').innerText = dadesJoc.length - index;
-        document.getElementById('star-btn').classList.toggle('active', repasIds.has(p.id));
+        document.getElementById('star-main').classList.toggle('active', repasIds.has(p.id));
         document.getElementById('resposta').focus();
     }
 
     function validar() {
         const p = dadesJoc[index];
         const user = document.getElementById('resposta').value.trim().toLowerCase();
-        const correct = (idiomaPregunta === 'ESP') ? p.eng.toLowerCase() : p.esp.toLowerCase();
+        const correcte = (idioma === 'ESP') ? p.eng.toLowerCase() : p.esp.toLowerCase();
         
-        if (user === correct) {
+        if (user === correcte) {
             document.getElementById('feedback').innerText = "Molt bé! ✨";
             document.getElementById('feedback').style.color = "green";
             acertos++;
-            reproducir(1.0);
+            reproducirActual();
             setTimeout(seguent, 800);
         } else {
-            document.getElementById('feedback').innerText = "Era: " + correct.toUpperCase();
+            document.getElementById('feedback').innerText = "ERA: " + correcte.toUpperCase();
             document.getElementById('feedback').style.color = "red";
             document.getElementById('btn-comprovar').style.display = "none";
             document.getElementById('btn-nola').style.display = "none";
             document.getElementById('btn-next').style.display = "inline-block";
             document.getElementById('resposta').disabled = true;
-            reproducir(1.0);
+            reproducirActual();
         }
     }
 
     function noLaSe() {
         const p = dadesJoc[index];
-        const correct = (idiomaPregunta === 'ESP') ? p.eng : p.esp;
-        document.getElementById('feedback').innerText = "Solució: " + correct.toUpperCase();
+        const solucio = (idioma === 'ESP') ? p.eng : p.esp;
+        document.getElementById('feedback').innerText = "SOLUCIÓ: " + solucio.toUpperCase();
         document.getElementById('feedback').style.color = "orange";
         document.getElementById('btn-comprovar').style.display = "none";
         document.getElementById('btn-nola').style.display = "none";
         document.getElementById('btn-next').style.display = "inline-block";
-        reproducir(1.0);
+        document.getElementById('resposta').disabled = true;
+        reproducirActual();
     }
 
     function seguent() { index++; nouRepte(); }
 
-    function reproducir(vel) {
+    function reproducirActual() {
         const p = dadesJoc[index];
         const msg = new SpeechSynthesisUtterance(p.eng);
         msg.lang = 'en-US';
-        msg.rate = vel;
         window.speechSynthesis.speak(msg);
     }
 
@@ -211,24 +203,25 @@
         if (repasIds.has(id)) repasIds.delete(id);
         else repasIds.add(id);
         localStorage.setItem('repasIds', JSON.stringify([...repasIds]));
-        document.getElementById('star-btn').classList.toggle('active', repasIds.has(id));
+        document.getElementById('star-main').classList.toggle('active', repasIds.has(id));
         actualitzarTaula();
     }
 
     function canviarIdioma() {
-        idiomaPregunta = (idiomaPregunta === 'ESP') ? 'ENG' : 'ESP';
-        document.getElementById('txt-idioma').innerText = idiomaPregunta;
+        idioma = (idioma === 'ESP') ? 'ENG' : 'ESP';
+        document.getElementById('txt-idioma').innerText = idioma;
     }
 
-    function toggleModoRepas() {
+    function toggleRepas() {
         modoRepas = !modoRepas;
-        document.getElementById('btn-repas').innerText = "Modo Estrella: " + (modoRepas ? "ON" : "OFF");
+        document.getElementById('btn-repas').innerText = "⭐ Repàs: " + (modoRepas ? "ON" : "OFF");
+        document.getElementById('btn-repas').style.background = modoRepas ? "#FFF176" : "#eee";
     }
 
     function actualitzarTaula() {
         document.getElementById('taula-cos').innerHTML = dadesJoc.map(d => `
             <tr>
-                <td>${repasIds.has(d.id) ? '<span class="star-list">★</span>' : ''}</td>
+                <td style="width:30px;">${repasIds.has(d.id) ? '<span class="star-list">★</span>' : ''}</td>
                 <td style="color:var(--telegram-blue); font-weight:bold;">${d.eng}</td>
                 <td style="color:#666;">${d.esp}</td>
             </tr>
@@ -240,9 +233,14 @@
             if (document.getElementById('btn-next').style.display === 'inline-block') {
                 seguent();
             } else if (document.getElementById('resposta').disabled) {
+                // Quan falles, el primer Intro neteja per tornar a provar
                 document.getElementById('resposta').disabled = false;
                 document.getElementById('resposta').value = "";
                 document.getElementById('resposta').focus();
+                document.getElementById('btn-next').style.display = "none";
+                document.getElementById('btn-comprovar').style.display = "inline-block";
+                document.getElementById('btn-nola').style.display = "inline-block";
+                document.getElementById('feedback').innerText = "";
             } else {
                 validar();
             }
