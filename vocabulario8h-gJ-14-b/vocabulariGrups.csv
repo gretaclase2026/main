@@ -1,260 +1,537 @@
-﻿Escuela;Llevar a cabo;Conduct
-Escuela;Controversia;Controversy
-Escuela;Apto;Eligible
-Escuela;Ámbito;Scope
-Escuela;Asignar;Assign
-Escuela;Coincidir;Coincide
-Escuela;Comparable;Comparable
-Escuela;Componente;Component
-Escuela;Criterios;Criteria
-Escuela;Curva;Curve
-Escuela;Sacar conclusión;Draw a conclusion
-Escuela;Encontrar;Encounter
-Escuela;Error;Error
-Escuela;Ensayo;Essay
-Escuela;Retroalimentación;Feedback
-Escuela;Fijo;Fixed
-Escuela;Formular;Formulate
-Escuela;Fundamental;Fundamental
-Escuela;Nota;Grade
-Escuela;Hipótesis;Hypothesis
-Escuela;Índice;Index
-Escuela;Aprendizaje;Learning
-Escuela;Conferencia;Lecture
-Escuela;Manual;Manual
-Escuela;Nota;Note
-Escuela;Objetivo;Objective
-Escuela;Superar;Overcome
-Escuela;Presentación;Presentation
-Escuela;Citar;Quote
-Escuela;Investigación;Research
-Escuela;Revisar;Review
-Escuela;Tarea;Task
-Escuela;Libro de texto;Textbook
-Escuela;Tesis;Thesis
-Escuela;Seminario;Seminar
-Escuela;Pizarra;Whiteboard
-Escuela;Educar;Educate
-Escuela;Instituto;High school
-Escuela;Decano;Dean
-Escuela;Recitación;Recitation
-Escuela;Aprobar;Pass exam
-Escuela;Rector;Rector
-Escuela;Imaginación;Imagination
-Escuela;Conocimiento;Knowledge
-Escuela;Límites;Limits
-Escuela;Literatura;Literature
-Escuela;Resultados;Results
-Escuela;Teoría;Theory
-Escuela;Académico;Academic
-Escuela;Analizar;Analyse
-Escuela;Hallazgos;Findings
-Escuela;Trastorno aprendizaje;Learning disorder
-Escuela;Primaria;Primary school
-Escuela;Secundaria;Secondary school
-Escuela;Hacer un curso;Take a course
-Escuela;Averiguar;Find out
-Escuela;Biblioteca;Library
-Escuela;Guardería;Nursery
-Escuela;Tema;Topic
-Escuela;Universidad;University
-Escuela;Laboral;Work-related
-Escuela;Concentrarse;Concentrate
-Escuela;Mixto;Mixed
-Escuela;Discutir;Argue
-Escuela;Evaluación;Assessment
-Escuela;Tarea;Assignment
-Escuela;Asistencia;Attendance
-Escuela;Ser inteligente;Be brainy
-Escuela;Lluvia de ideas;Brainstorm
-Escuela;Recreo;Break
-Escuela;Terminar clases;Break up
-Escuela;Certificado;Certificate
-Escuela;Copiar;Cheat
-Escuela;Química;Chemistry
-Escuela;Entrenador;Coach
-Escuela;Universidad;College
-Escuela;Obligatorio;Compulsory
-Escuela;Plan estudios;Curriculum
-Escuela;Título;Degree
-Escuela;Abandono escolar;Dropout
-Escuela;Matricularse;Enroll
-Escuela;Bachiller;Bachelor
-Escuela;Informática;Computer science
-Escuela;Educación superior;Higher education
-Escuela;Humanidades;Humanities
-Escuela;Posgrado;Postgraduate
-Escuela;Clase particular;Private lesson
-Escuela;Boletín;Report card
-Escuela;Beca;Scholarship
-Escuela;Año escolar;School year
-Escuela;Préstamo;Student loan
-Escuela;Autodidacta;Teach-yourself book
-Escuela;Doctorado;PhD
-Escuela;Letras;Liberal arts
-Escuela;Residencia;Dormitory
-Escuela;Tutor;Form master
-Escuela;Instituto;Institute
-Escuela;Maestría;Master's degree
-Escuela;Campo estudio;Field of study
-Escuela;Estantería;Bookshelf
-Escuela;Fecha límite;Deadline
-Escuela;Tutorías;Tutorials
-Escuela;A distancia;Distance learning
-Escuela;Primaria;Elementary school
-Escuela;Derecho;Law school
-Escuela;Hacer pellas;Skip classes
-Escuela;Extenso;Extensive
-Escuela;Eje horizontal;Horizontal axis
-Escuela;Participación;Participation
-Escuela;Patrón;Pattern
-Escuela;Dato;Piece of data
-Escuela;Precisar;Pinpoint
-Escuela;Requerir;Require
-Escuela;Repaso;Revision
-Escuela;Sector;Sector
-Escuela;Cambio;Shift
-Escuela;Variable;Variable
-Escuela;Eje vertical;Vertical axis
-Escuela;Punto de vista;Viewpoint
-Escuela;Generalizado;Widespread
-Escuela;Recordar;Keep in mind
-Escuela;Relativamente;Relatively
-Escuela;Unisex;Single-sex
-Escuela;Tema;Theme
-Escuela;Primaria superior;Junior school
-Escuela;Fondos;Funding
-Escuela;Mitad curso;Mid-term
-Escuela;Esfuerzo;Struggle
-Escuela;Conciencia;Awareness
-Escuela;Gráfico barras;Bar chart
-Escuela;Estar listo;Be all set
-Escuela;Tocar fondo;Bottom out
-Escuela;Aclaración;Clarification
-Escuela;Salir a la luz;Come to light
-Escuela;Proponer;Come up with
-Escuela;Comentar;Comment on
-Escuela;Relacionado con;Concerned with
-Escuela;Constantemente;Consistently
-Escuela;Constantemente;Constantly
-Escuela;Corresponder;Correspond to
-Escuela;Rechazar;Decline to
-Escuela;Demostrar;Demonstrate
-Escuela;Determinar;Determine
-Escuela;Desviación;Deviation
-Escuela;Mostrar;Display
-Escuela;Desproporcionado;Disproportionate
-Escuela;Examinar;Examine
-Escuela;Excepcionalmente;Exceptionally
-Escuela;Excluir;Exclude
-Escuela;Hallazgo;Finding
-Escuela;Fluctuar;Fluctuate
-Escuela;Recopilar;Gather
-Escuela;Altura;Height
-Escuela;Resaltar;Highlight
-Escuela;Ilustración;Illustration
-Escuela;Indicación;Indication
-Escuela;Interpretación;Interpretation
-Escuela;Investigar;Investigate
-Escuela;Magnitud;Magnitude
-Escuela;Mayoría;Majority
-Escuela;Minoría;Minority
-Escuela;Notable;Notable
-Escuela;Evidente;Noticeable
-Escuela;Proporción;Proportion
-Escuela;Cuestionario;Questionnaire
-Escuela;Clasificar;Rank
-Escuela;Tasa;Rate
-Escuela;Proporción;Ratio
-Escuela;Relevancia;Relevance
-Escuela;Muestra;Sample
-Escuela;Estadística;Statistics
-Escuela;Encuesta;Survey
-Escuela;Tendencia;Tendency
-Escuela;Experimentar;Undergo
-Conectores;Bajo ninguna circunstancia;Under no circumstances
-Conectores;De lo contrario;Otherwise
-Conectores;Como puede esperarse;As can be expected
-Conectores;En su mayor parte;For the most part
-Conectores;En la mayoría de los casos;In most cases
-Conectores;Dicho de manera sencilla;To put it more simply
-Conectores;En cambio;Conversely
-Conectores;Por mucho que;However much
-Conectores;No obstante;Nevertheless
-Conectores;Dicho esto;That said
-Conectores;Aparte de;Apart from
-Conectores;Como señalado;As noted
-Conectores;En otro lugar;Elsewhere
-Conectores;Menos de;Fewer than
-Conectores;Quizás;Perhaps
-Conectores;Posiblemente;Possibly
-Conectores;Ligeramente;Slightly
-Conectores;Solo piénsalo;Just think about it
-Conectores;Si me preguntas;If you ask me
-Conectores;Lo que es más;What is more
-Conectores;Sobre todo;Above all
-Conectores;Así como;As well as
-Conectores;En conclusión;In conclusion
-Conectores;En breve;In brief
-Conectores;En general;Overall
-Conectores;En este caso;In this case
-Conectores;Como consecuencia;As a consequence
-Conectores;Así;Thus
-Conectores;Por tanto;Hence
-Conectores;Por esto;For this reason
-Conectores;Obviamente;Obviously
-Conectores;Seguramente;Surely
-Conectores;Después de todo;After all
-Conectores;En conjunto;On the whole
-Conectores;En particular;In particular
-Conectores;Más bien;Rather
-Conectores;Alternativamente;Alternatively
-Conectores;Al contrario;On the contrary
-Conectores;Aunque;Even though
-Conectores;Además de eso;On top of that
-Conectores;En definitiva;All in all
-Conectores;A pesar de;In spite of
-Conectores;Debido a que;Due to the fact that
-Conectores;Mientras que;Whilst
-Conectores;Si / ya sea;Whether
-Conectores;La realidad;The reality is
-Conectores;Francamente;Quite frankly
-Conectores;Estimo;I reckon
-Conectores;A mi parecer;To my mind
-Conectores;Aparentemente;Apparently
-Conectores;En contraste;In contrast
-Conectores;En línea con;In line with
-Conectores;Indicación de;Indication of
-Conectores;Hasta cierto punto;To some extent
-Conectores;Centrándose en;With a focus on
-Conectores;Con la excepción de;With the exception of
-Conectores;En cierto sentido;To a certain extent
-Conectores;Sin duda;Undoubtedly
-Conectores;Mientras que;Whereas
-Conectores;Con respecto a;With regard to
-Conectores;Con respecto a;With respect to
-Conectores;Además;Furthermore
-Conectores;Concluir;To conclude
-Conectores;Además;Moreover
-Conectores;Del mismo modo;In the same way
-Conectores;No solo sino también;Not only but also
-Conectores;Asimismo;Likewise
-Conectores;Correspondientemente;Correspondingly
-Conectores;En lo que a mí respecta;As far as I am concerned
-Conectores;Con referencia a;With reference to
-Conectores;Resumir;To summarise
-Conectores;De todos modos;Anyway
-Conectores;Por norma;As a rule
-Conectores;Como puede verse;As can be seen
-Conectores;Y así sucesivamente;And so on
-Hogar;Lavavajillas;Dishwasher
-Hogar;Planta baja;Ground floor
-Hogar;Gotera;Leak
-Hogar;Funda almohada;Pillowslip
-Hogar;Ático;Attic
-Hogar;Ropa cama;Bedclothes
-Hogar;Candelabro;Chandelier
-Hogar;Perchero;Coat rack
-Hogar;Cafetera;Coffee maker
-Hogar;Mesa baja;Coffee table
-Hogar;Comedor;
+﻿ Category;English;Spanish
+Análisis de Datos;Conduct;Llevar a cabo
+Análisis de Datos;Controversy;Controversia
+Análisis de Datos;Eligible;Apto
+Análisis de Datos;Scope;Ámbito / Alcance
+Análisis de Datos;Assign;Asignar
+Análisis de Datos;Coincide;Coincidir
+Análisis de Datos;Comparable;Comparable
+Análisis de Datos;Component;Componente
+Análisis de Datos;Criteria;Criterios
+Análisis de Datos;Curve;Curva
+Análisis de Datos;Draw a conclusion;Sacar una conclusión
+Análisis de Datos;Encounter;Encontrar / Topar
+Análisis de Datos;Error;Error
+Análisis de Datos;Essay;Ensayo
+Análisis de Datos;Feedback;Retroalimentación
+Análisis de Datos;Fixed;Fijo
+Análisis de Datos;Formulate;Formular
+Análisis de Datos;Fundamental;Fundamental
+Análisis de Datos;Grade;Nota / Calificación
+Análisis de Datos;Hypothesis;Hipótesis
+Análisis de Datos;Index;Índice
+Análisis de Datos;Learning;Aprendizaje
+Análisis de Datos;Lecture;Conferencia / Clase
+Análisis de Datos;Manual;Manual
+Análisis de Datos;Note;Nota
+Análisis de Datos;Objective;Objetivo
+Análisis de Datos;Overcome;Superar
+Análisis de Datos;Presentation;Presentación
+Análisis de Datos;Quote;Citar
+Análisis de Datos;Research;Investigación
+Análisis de Datos;Review;Revisar
+Análisis de Datos;Task;Tarea
+Análisis de Datos;Textbook;Libro de texto
+Análisis de Datos;Thesis;Tesis
+Análisis de Datos;Analyse;Analizar
+Análisis de Datos;Findings;Hallazgos
+Análisis de Datos;Assessment;Evaluación
+Análisis de Datos;Awareness;Conciencia
+Análisis de Datos;Bar chart;Gráfico de barras
+Análisis de Datos;Clarification;Aclaración
+Análisis de Datos;Come to light;Salir a la luz
+Análisis de Datos;Come up with;Ocurrírsele algo
+Análisis de Datos;Comment on;Comentar sobre
+Análisis de Datos;Concerned with;Relacionado con
+Análisis de Datos;Consistently;Constantemente
+Análisis de Datos;Constantly;Constantemente
+Análisis de Datos;Correspond to;Corresponder a
+Análisis de Datos;Decline to;Negarse a / Disminuir
+Análisis de Datos;Demonstrate;Demostrar
+Análisis de Datos;Determine;Determinar
+Análisis de Datos;Deviation;Desviación
+Análisis de Datos;Display;Mostrar
+Análisis de Datos;Disproportionate;Desproporcionado
+Análisis de Datos;Examine;Examinar
+Análisis de Datos;Exceptionally;Excepcionalmente
+Análisis de Datos;Exclude;Excluir
+Análisis de Datos;Fluctuate;Fluctuar
+Análisis de Datos;Gather;Reunir / Recopilar
+Análisis de Datos;Highlight;Destacar
+Análisis de Datos;Illustration;Ilustración
+Análisis de Datos;Indication;Indicación
+Análisis de Datos;Interpretation;Interpretación
+Análisis de Datos;Investigate;Investigar
+Análisis de Datos;Magnitude;Magnitud
+Análisis de Datos;Majority;Mayoría
+Análisis de Datos;Minority;Minoría
+Análisis de Datos;Notable;Notable
+Análisis de Datos;Noticeable;Perceptible
+Análisis de Datos;Proportion;Proporción
+Análisis de Datos;Questionnaire;Cuestionario
+Análisis de Datos;Rank;Clasificar
+Análisis de Datos;Rate;Tasa / Ritmo
+Análisis de Datos;Ratio;Proporción / Razón
+Análisis de Datos;Relevance;Relevancia
+Análisis de Datos;Sample;Muestra
+Análisis de Datos;Statistics;Estadísticas
+Análisis de Datos;Survey;Encuesta
+Análisis de Datos;Tendency;Tendencia
+Análisis de Datos;Undergo;Experimentar
+Universidad;Seminar;Seminario
+Universidad;Whiteboard;Pizarra
+Universidad;Educate;Educar
+Universidad;High school;Instituto
+Universidad;Dean;Decano
+Universidad;Recitation;Recitación
+Universidad;Pass exam;Aprobar examen
+Universidad;Rector;Rector
+Universidad;Academic;Académico
+Universidad;Learning disorder;Trastorno de aprendizaje
+Universidad;Primary school;Escuela primaria
+Universidad;Secondary school;Escuela secundaria
+Universidad;Take a course;Hacer un curso
+Universidad;Find out;Averiguar
+Universidad;Library;Biblioteca
+Universidad;Nursery school;Guardería
+Universidad;Topic;Tema
+Universidad;University;Universidad
+Universidad;Work-related;Relacionado con el trabajo
+Universidad;Concentrate;Concentrarse
+Universidad;Mixed;Mixto / Coeducativo
+Universidad;Argue;Discutir / Argumentar
+Universidad;Assignment;Tarea / Trabajo
+Universidad;Attendance;Asistencia
+Universidad;Be brainy;Ser inteligente
+Universidad;Brainstorm;Lluvia de ideas
+Universidad;Break;Recreo
+Universidad;Break up;Terminar las clases
+Universidad;Certificate;Certificado
+Universidad;Cheat;Copiar / Hacer trampa
+Universidad;Chemistry;Química
+Universidad;Coach;Entrenador
+Universidad;College;Universidad / Facultad
+Universidad;Compulsory;Obligatorio
+Universidad;Curriculum;Plan de estudios
+Universidad;Degree;Título / Grado
+Universidad;Dropout;Abandono escolar
+Universidad;Enroll;Matricularse
+Universidad;Bachelor;Bachiller
+Universidad;Computer science;Informática
+Universidad;Higher education;Educación superior
+Universidad;Humanities;Humanidades
+Universidad;Postgraduate;Postgraduado
+Universidad;Private lesson;Clase particular
+Universidad;Report card;Boletín de calificaciones
+Universidad;Scholarship;Beca
+Universidad;School year;Año escolar
+Universidad;Student loan;Préstamo estudiantil
+Universidad;Teach-yourself book;Libro autodidacta
+Universidad;PhD;Doctorado
+Universidad;Liberal arts;Artes liberales / Letras
+Universidad;Dormitory;Residencia / Dormitorio
+Universidad;Form master;Tutor
+Universidad;Institute;Instituto
+Universidad;Master's degree;Título de Máster
+Universidad;Field of study;Campo de estudio
+Universidad;Bookshelf;Estantería
+Universidad;Deadline;Fecha límite
+Universidad;Tutorials;Tutorías
+Universidad;Distance learning;Educación a distancia
+Universidad;Elementary school;Escuela primaria
+Universidad;Law school;Facultad de Derecho
+Universidad;Skip classes;Hacer pellas / Faltar
+Conectores;Under no circumstances;Bajo ninguna circunstancia
+Conectores;Otherwise;De lo contrario
+Conectores;As can be expected;Como puede esperarse
+Conectores;For the most part;En su mayor parte
+Conectores;In most cases;En la mayoría de los casos
+Conectores;To put it more simply;Dicho de manera sencilla
+Conectores;Conversely;En cambio
+Conectores;However much;Por mucho que
+Conectores;Nevertheless;No obstante
+Conectores;That said;Dicho esto
+Conectores;Apart from;Aparte de
+Conectores;As noted;Como se ha señalado
+Conectores;Elsewhere;En otro lugar
+Conectores;Fewer than;Menos de
+Conectores;Perhaps;Quizás
+Conectores;Possibly;Posiblemente
+Conectores;Slightly;Ligeramente
+Conectores;Just think about it;Solo piénsalo
+Conectores;If you ask me;Si me preguntas
+Conectores;What is more;Lo que es más
+Conectores;Above all;Sobre todo
+Conectores;As well as;Así como
+Conectores;In conclusion;En conclusión
+Conectores;In brief;En breve
+Conectores;Overall;En general
+Conectores;In this case;En este caso
+Conectores;As a consequence;Como consecuencia
+Conectores;Thus;Así / Por lo tanto
+Conectores;Hence;Por lo tanto
+Conectores;For this reason;Por esta razón
+Conectores;Obviously;Obviamente
+Conectores;Surely;Seguramente
+Conectores;After all;Después de todo
+Conectores;On the whole;En conjunto
+Conectores;In particular;En particular
+Conectores;Rather;Más bien
+Conectores;Alternatively;Alternativamente
+Conectores;On the contrary;Por el contrario
+Conectores;Even though;Aunque
+Conectores;On top of that;Además de eso
+Conectores;All in all;En definitiva
+Conectores;In spite of;A pesar de
+Conectores;Due to the fact that;Debido a que
+Conectores;Whilst;Mientras que / Pese a que
+Conectores;Whether;Si / Ya sea
+Conectores;The reality is;La realidad es
+Conectores;Quite frankly;Francamente
+Conectores;I reckon;Estimo / Creo
+Conectores;To my mind;A mi parecer
+Conectores;Apparently;Aparentemente
+Conectores;In contrast;En contraste
+Conectores;In line with;En línea con
+Conectores;To some extent;Hasta cierto punto
+Conectores;With a focus on;Centrándose en
+Conectores;With the exception of;Con la excepción de
+Conectores;To a certain extent;Hasta cierto punto
+Conectores;Undoubtedly;Sin duda
+Conectores;Whereas;Mientras que
+Conectores;With regard to;Con respecto a
+Conectores;With respect to;Con respecto a
+Conectores;Furthermore;Además
+Conectores;To conclude;Para concluir
+Conectores;Moreover;Además
+Conectores;In the same way;De la misma forma
+Conectores;Not only but also;No solo sino también
+Conectores;Likewise;Asimismo
+Conectores;Correspondingly;Correspondientemente
+Conectores;As far as I am concerned;En lo que a mí respecta
+Conectores;With reference to;Con referencia a
+Conectores;To summarise;Para resumir
+Conectores;Anyway;De todos modos
+Conectores;As a rule;Por norma
+Conectores;As can be seen;Como puede verse
+Conectores;And so on;Y así sucesivamente
+Hogar;Dishwasher;Lavavajillas
+Hogar;Ground floor;Planta baja
+Hogar;Leak;Gotera / Fuga
+Hogar;Pillowslip;Funda de almohada
+Hogar;Attic;Ático
+Hogar;Bedclothes;Ropa de cama
+Hogar;Chandelier;Candelabro
+Hogar;Coat rack;Perchero
+Hogar;Coffee maker;Cafetera
+Hogar;Coffee table;Mesa baja
+Hogar;Dining room;Comedor
+Hogar;Doorbell;Timbre
+Hogar;Doormat;Felpudo
+Hogar;Electric cooker;Cocina eléctrica
+Hogar;Fence;Valla
+Hogar;Fireplace;Chimenea
+Hogar;Garbage can;Cubo de basura
+Hogar;Gas cooker;Cocina de gas
+Hogar;Light bulb;Bombilla
+Hogar;Living room;Sala de estar
+Hogar;Plug;Enchufe
+Hogar;Morsel;Bocado
+Hogar;Delicious;Delicioso
+Ciudad;Fire station;Estación de bomberos
+Ciudad;Pavement;Acera
+Ciudad;Traffic jam;Atasco
+Ciudad;Dump;Vertedero
+Ciudad;Avenue;Avenida
+Ciudad;Cemetery;Cementerio
+Ciudad;Motel;Motel
+Ciudad;Bystreet;Callejuela
+Ciudad;Intersection;Cruce / Intersección
+Ciudad;Lane;Carril
+Ciudad;Turnpike;Peaje
+Ciudad;Art gallery;Galería de arte
+Ciudad;Business district;Centro financiero
+Ciudad;City hall;Ayuntamiento
+Ciudad;City map;Mapa de la ciudad
+Ciudad;boarding pass;tarjeta de embarque
+Ciudad;customs;aduana
+Ciudad;full board;pensión completa
+Ciudad;receipt;recibo
+Ciudad;checkout;caja
+Ciudad;snap up;comprar rápido/agotar
+Ciudad;bargain hunting;busqueda de gangas
+Ciudad;shopping spree;compra compulsiva
+Ropa;Mittens;Mitones
+Ropa;Fur coat;Abrigo de piel
+Ropa;Nightdress;Camisón
+Ropa;Sleeve;Manga
+Ropa;Swimming trunks;Bañador
+Ropa;Underwear;Ropa interior
+Ropa;Backpack;Mochila
+Ropa;Hoodie;Sudadera con capucha
+Ropa;Outerwear;Ropa de abrigo
+Ropa;Shoelaces;Cordones
+Ropa;Casual wear;Ropa informal
+Ropa;Come off;Quitarse
+Ropa;Dress up;Arreglarse
+Ropa;Earrings;Pendientes
+Ropa;Get dressed;Vestirse
+Ropa;Lace up;Atarse los cordones
+Ropa;Necklace;Collar
+Ropa;Put on;Ponerse
+Ropa;Ornate;Ornamentado
+Salud;Dizziness;Mareo
+Salud;Fracture;Fractura
+Salud;Prescription;Receta médica
+Salud;Sore throat;Dolor de garganta
+Salud;Sprain;Esguince
+Salud;Sunstroke;Insolación
+Salud;Syringe;Jeringa
+Salud;Trauma;Trauma
+Salud;Vaccination;Vacuna
+Salud;X-ray;Rayos X
+Salud;Ointment;Ungüento
+Salud;Powder;Polvos
+Salud;Surgeon;Cirujano
+Salud;Filling;Empaste
+Salud;Examine;Examinar
+Salud;Alcoholism;Alcoholismo
+Salud;Epidemic;Epidemia
+Salud;Runny nose;Moqueo
+Salud;Pneumonia;Neumonía
+Salud;Short-sighted;Miope
+Salud;Far-sighted;Hipermétrope
+Salud;Squint-eyed;Bizco
+Salud;Heart attack;Infarto
+Salud;Hepatitis;Hepatitis
+Salud;Seasickness;Mareo en barco
+Salud;Faint;Desmayo
+Salud;Vomiting;Vómitos
+Salud;Labour;Parto
+Salud;Abortion;Aborto
+Salud;Breathe in;Inspirar
+Salud;Breathe out;Espirar
+Salud;Disabled person;Discapacitado
+Salud;illness;enfermedad
+Salud;injury;lesión
+Salud;itchy;que pica
+Salud;medical check-up;reconocimiento médico
+Salud;painkiller;analgésico
+Salud;rash;erupción
+Salud;swelling;hinchazón
+Salud;bruise;moratón
+Salud;first aid;primeros auxilios
+Comida;Sugar bowl;Azucarero
+Comida;Tablecloth;Mantel
+Comida;Bistro;Bistró
+Comida;Vegetarian;Vegetariano
+Comida;Spill;Derramar
+Comida;Be on a diet;Estar a dieta
+Comida;Wine list;Carta de vinos
+Comida;Book a table;Reservar mesa
+Comida;Pay the bill;Pagar la cuenta
+Comida;Main course;Plato principal
+Comida;Ice cube;Cubito de hielo
+Comida;Mouth watering;Apetitoso
+Comida;Greek salad;Ensalada griega
+Comida;Ginger;Jengibre
+Comida;Herring;Arenque
+Comida;Trout;Trucha
+Comida;Turkey;Pavo
+Comida;Olive;Aceituna
+Comida;Lettuce;Lechuga
+Comida;Caviar;Caviar
+Comida;Beetroot;Remolacha
+Comida;Aubergine;Berenjena
+Comida;Turnip;Nabo
+Comida;Greens;Verdura
+Comida;Raisin;Pasa
+Comida;Cinnamon;Canela
+Comida;Sesame;Sésamo
+Comida;radish;rábano
+Comida;veal;ternera
+Comida;apricot;albaricoque
+Comida;cod;bacalao
+Comida;eel;anguila
+Comida;mussel;mejillón
+Comida;mutton;carne de cordero
+Comida;prawn;langostino/gamba
+Comida;corkscrew;sacacorchos
+Comida;grater;rallador
+Comida;kettle;hervidor
+Comida;ladle;cucharón
+Comida;skimmer;espumadera
+Comida;whisk;batir
+Comida;knead;amasar
+Comida;parsley;perejil
+Comida;pumpkin;calabaza
+Comida;zucchini;calabacín
+Caracter;Compelling;Convincente
+Caracter;Consistent;Coherente
+Caracter;Cultured;Culto
+Caracter;Docile;Dócil
+Caracter;Eloquent;Elocuente
+Caracter;Fearful;Miedoso
+Caracter;Frank;Franco
+Caracter;Jealous;Celoso
+Caracter;Modest;Modesto
+Caracter;Outstanding;Excepcional
+Caracter;Reasonable;Razonable
+Caracter;Respectful;Respetuoso
+Caracter;Sleepyhead;Dormilón
+Caracter;Sloven;Desaliñado
+Caracter;Sluggish;Perezoso
+Caracter;Sly;Astuto
+Caracter;Stingy;Tacaño
+Caracter;Temper;Carácter
+Caracter;Trait;Rasgo
+Caracter;Carefree;Despreocupado
+Caracter;Thrifty;Ahorrativo
+Caracter;Hilarious;Divertidísimo
+Caracter;Attentive;Atento
+Caracter;Hostile;Hostil
+Caracter;Arrogant;Arrogante
+Sentimientos;Disgusted;Disgustado
+Sentimientos;Wonderful;Maravilloso
+Sentimientos;Euphoria;Euforia
+Sentimientos;Amazing;Increíble
+Sentimientos;Intimacy;Intimidad
+Sentimientos;Relaxing;Relajante
+Sentimientos;Attractive;Atractivo
+Sentimientos;Envious;Envidioso
+Sentimientos;Disappointed;Decepcionado
+Sentimientos;Hopeless;Desesperanzado
+Sentimientos;Indifferent;Indiferente
+Sentimientos;Uneasy;Inquieto
+Sentimientos;Worthless;Sin valor
+Sentimientos;Tempted;Tentado
+Sentimientos;Scared;Asustado
+Sentimientos;Thirsty;Sediento
+Sentimientos;Exhausted;Agotado
+Sentimientos;Frightened;Asustado
+Sentimientos;Dissatisfied;Insatisfecho
+Sentimientos;amazed;alucinado
+Sentimientos;annoyed;fastidiado
+Sentimientos;anxious;ansioso
+Sentimientos;ashamed;avergonzado
+Sentimientos;astonished;asombrado
+Sentimientos;bewildered;desconcertado
+Sentimientos;bitter;amargo/resentido
+Sentimientos;delighted;encantado
+Sentimientos;eager;entusiasmado
+Sentimientos;fed up;harto
+Sentimientos;gloomy;melancólico
+Sentimientos;heartbroken;desconsolado
+Sentimientos;homesick;nostalgia de casa
+Sentimientos;overwhelmed;abrumado
+Sentimientos;puzzled;extrañado/confuso
+Sentimientos;thrilled;emocionado/vibrante
+Sentimientos;weary;fatigado
+Sentimientos;greedy;codicioso
+Trabajo;Lunch time;Hora del almuerzo
+Trabajo;Managing director;Director general
+Trabajo;Occupation;Ocupación
+Trabajo;Pay rise;Aumento de sueldo
+Trabajo;Perk;Beneficio / Extra
+Trabajo;Professional;Profesional
+Trabajo;Retirement;Jubilación
+Trabajo;Selection;Selección
+Trabajo;Self-employed;Autónomo
+Trabajo;Fill out;Rellenar
+Trabajo;Volunteer;Voluntario
+Trabajo;Well-paid;Bien pagado
+Trabajo;Work experience;Experiencia laboral
+Trabajo;Working hours;Horario laboral
+Trabajo;Workload;Carga de trabajo
+Trabajo;Workplace;Lugar de trabajo
+Trabajo;Challenge;Desafío
+Trabajo;Human resources;Recursos Humanos
+Trabajo;Work abroad;Trabajar fuera
+Trabajo;Team building;Trabajo en equipo
+Trabajo;Payroll;Nómina
+Trabajo;Job satisfaction;Satisfacción laboral
+Trabajo;Unemployed;Desempleado
+Trabajo;Blue-collar;Obrero / Trabajador manual
+Trabajo;Be bombarded with;Estar bombardeado con
+Trabajo;accountant;contable
+Trabajo;bricklayer;albañil
+Trabajo;butcher;carnicero
+Trabajo;cashier;cajero
+Trabajo;dressmaker;modista
+Trabajo;fishmonger;pescadero
+Trabajo;headmaster;director de escuela
+Trabajo;lifeguard;socorrista
+Trabajo;plumber;fontanero
+Trabajo;porter;conserje/mozo
+Trabajo;carpenter;carpintero
+Trabajo;electrician;electricista
+Medio Ambiente;Wildlife;Vida salvaje
+Medio Ambiente;Renewable;Renovable
+Medio Ambiente;Pollutant;Contaminante
+Medio Ambiente;Overpopulation;Superpoblación
+Medio Ambiente;Organic;Orgánico
+Medio Ambiente;Layer;Capa
+Medio Ambiente;Global warming;Calentamiento global
+Medio Ambiente;Greenhouse;Invernadero
+Medio Ambiente;Environmentalist;Ecologista
+Medio Ambiente;Emission;Emisión
+Medio Ambiente;Disposable;Desechable
+Medio Ambiente;Biodegradable;Biodegradable
+Medio Ambiente;Carbon footprint;Huella de carbono
+Medio Ambiente;Acid rain;Lluvia ácida
+Medio Ambiente;Toxic waste;Residuos tóxicos
+Medio Ambiente;Ozone;Ozono
+Medio Ambiente;Pesticide;Pesticida
+Medio Ambiente;Ecosystem;Ecosistema
+Medio Ambiente;Deforestation;Deforestación
+Medio Ambiente;drought;sequía
+Medio Ambiente;flood;inundación
+Medio Ambiente;frost;escarcha
+Medio Ambiente;mist;neblina
+Medio Ambiente;dew;rocío
+Medio Ambiente;hail;granizo
+Cuerpo;Cuticle;Cutícula
+Cuerpo;Fatigue;Fatiga
+Cuerpo;Pancreas;Páncreas
+Cuerpo;Ring finger;Dedo anular
+Cuerpo;chin;mentón
+Cuerpo;eyelid;párpado
+Cuerpo;forearm;antebrazo
+Cuerpo;forehead;frente
+Cuerpo;heel;talón
+Cuerpo;jaw;mandíbula
+Cuerpo;joint;articulación
+Cuerpo;little finger;dedo meñique
+Cuerpo;liver;hígado
+Cuerpo;kidney;riñón
+Cuerpo;nostril;orificio nasal
+Cuerpo;skull;cráneo
+Cuerpo;thumb;pulgar
+Cuerpo;blood vessel;vaso sanguíneo
+Cuerpo;waist;cintura
+Cuerpo;buttocks;nalgas
+Cuerpo;spine;columna vertebral
+Cuerpo;biceps;bíceps
+Cuerpo;breast;seno/pecho
+Cuerpo;vein;vena
+Cuerpo;artery;arteria
+Cuerpo;flank;costado
+Cuerpo;skeleton;esqueleto
+Cuerpo;bronchus;bronquio
+Cuerpo;cheekbone;pómulo
+Cuerpo;trachea;tráquea
+Jerga;Come up;Proponer
+Jerga;Be beat;Estar agotado
+Jerga;Hang out;Pasar el rato
+Jerga;Chill out;Relajarse
+Jerga;Be amped;Estar entusiasta
+Deportes;hang-gliding;ala delta
+Deportes;hiking;senderismo
+Deportes;scuba diving;submarinismo
+Deportes;weightlifting;halterofilia
+Deportes;rowing;remo
+Deportes;wrestling;lucha libre
+Relaciones;acquaintance;conocido
+Relaciones;toddler;niño pequeño
+Relaciones;widow;viuda
+Relaciones;guardian;tutor
