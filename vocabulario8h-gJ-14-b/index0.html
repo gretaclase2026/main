@@ -10,51 +10,49 @@
             --p-blue-soft: #d4eaf7; 
             --p-blue-strong: #2196F3; 
             --p-red: #d93025;
-            --p-green-soft: #e2f3e5; 
+            --p-green-pastel: #c8e6c9; 
             --text: #4a4a4a; 
         }
         body { font-family: 'Segoe UI', sans-serif; background: #fff5f6; color: var(--text); display: flex; flex-direction: column; align-items: center; padding: 10px; margin:0; }
         
-        .card { background: white; width: 100%; max-width: 600px; padding: 15px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 6px solid var(--p-pink); text-align: center; box-sizing: border-box; margin-bottom: 20px; position: relative; }
+        .card { background: white; width: 100%; max-width: 600px; padding: 15px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 6px solid var(--p-pink); text-align: center; box-sizing: border-box; margin-bottom: 15px; position: relative; }
         
         .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
         .menu-btn { background: white; border: 3px solid var(--p-pink); padding: 12px; border-radius: 15px; font-weight: bold; color: var(--p-blue-strong); cursor: pointer; font-size: 0.9em; text-transform: uppercase; }
         
-        /* Barra config una sola línia */
-        .config-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; font-size: 0.95em; font-weight: bold; padding: 0 10px; }
-        .config-bar input { width: 45px; padding: 4px; border: 2px solid var(--p-pink); border-radius: 6px; text-align: center; color: var(--p-blue-strong); font-weight: bold; background: white; outline: none; }
+        .config-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; font-size: 0.95em; font-weight: bold; padding: 0 5px; }
+        .config-bar input { width: 42px; padding: 4px; border: 2px solid var(--p-pink); border-radius: 6px; text-align: center; color: var(--p-blue-strong); font-weight: bold; background: white; outline: none; }
         .lang-toggle { cursor: pointer; color: var(--p-blue-strong); font-size: 1.1em; }
         
-        #feedback-container { font-size: 1.3em; font-weight: bold; min-height: 1.5em; margin-bottom: 5px; display: flex; justify-content: center; align-items: center; gap: 8px; }
-        
-        #pregunta { font-size: 2em; margin: 10px 0; color: var(--p-blue-strong); font-weight: bold; }
-        
-        #resposta { width: 95%; padding: 12px; font-size: 1.5em; border-radius: 15px; border: 3px solid var(--p-pink); text-align: center; outline: none; box-sizing: border-box; }
+        /* BOTÓN ON/OFF: VERDE PASTEL SOLO CUANDO ESTÁ ON */
+        #btn-repas { cursor: pointer; background: #eee; padding: 4px 12px; border-radius: 8px; transition: background 0.3s; }
+        #btn-repas.on { background: var(--p-green-pastel); }
 
-        /* Estrella GRAN amb fons verd pastel */
-        .star-main-container { margin-bottom: 10px; }
-        .star-btn { font-size: 2.2em; cursor: pointer; color: #ccc; background: var(--p-green-soft); border: 2px solid #d0e7d4; border-radius: 50%; width: 60px; height: 60px; line-height: 58px; display: inline-block; }
-        .star-btn.active { color: #fbbc04; }
+        /* ESTRELLA DE ARRIBA: SIN CÍRCULO, SIN FONDO, A UN LADO */
+        .star-main { font-size: 2.5em; cursor: pointer; color: #eee; background: none; border: none; padding: 0; line-height: 1; margin-left: 10px; outline: none; }
+        .star-main.active { color: #fbbc04; }
+
+        #feedback-container { font-size: 1.2em; font-weight: bold; min-height: 1.4em; margin-bottom: 5px; display: flex; justify-content: center; align-items: center; gap: 8px; }
+        #pregunta { font-size: 2em; margin: 10px 0; color: var(--p-blue-strong); font-weight: bold; }
+        #resposta { width: 95%; padding: 12px; font-size: 1.5em; border-radius: 15px; border: 3px solid var(--p-pink); text-align: center; outline: none; box-sizing: border-box; }
 
         .audio-controls { margin: 10px 0; display: flex; justify-content: center; gap: 15px; }
         .icon-btn { background: none; border: none; cursor: pointer; font-size: 1.8em; }
 
         .btn-main { background: var(--p-blue-soft); color: var(--p-blue-strong); padding: 12px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; width: 80%; font-size: 1.1em; }
         
-        /* Botó BACK en negre i sense fons */
-        .back-btn { background: none; border: none; color: black; font-weight: bold; cursor: pointer; font-size: 1em; margin-top: 15px; display: inline-flex; align-items: center; gap: 5px; }
+        /* BACK NEGRO Y SIN FONDO */
+        .back-btn { background: none; border: none; color: black; font-weight: bold; cursor: pointer; font-size: 1em; margin-top: 15px; outline: none; }
 
-        /* Llista optimitzada */
-        .list-container { width: 100%; max-width: 600px; background: white; border-radius: 25px; border: 6px solid var(--p-pink); padding: 8px; box-sizing: border-box; margin-bottom: 40px; }
+        /* LISTA: ESTRELLAS SIN FONDO */
+        .list-container { width: 100%; max-width: 600px; background: white; border-radius: 25px; border: 6px solid var(--p-pink); padding: 5px; box-sizing: border-box; margin-bottom: 40px; }
         .list-table { width: 100%; border-collapse: collapse; }
         .list-table td { padding: 6px 4px; border-bottom: 1px solid #fce4e6; vertical-align: middle; }
         .num { color: #ccc; font-weight: bold; width: 25px; font-size: 0.8em; text-align: center; }
-        
-        /* Estrella de la llista SENSE fons */
-        .star-list { font-size: 1.4em; width: 30px; text-align: center; cursor: default; }
-        
-        .txt-eng { color: var(--p-blue-strong); font-weight: bold; font-size: 1.1em; }
-        .txt-cat { color: #888; font-size: 1em; }
+        .star-list { font-size: 1.4em; width: 30px; text-align: center; color: #eee; background: none; }
+        .star-list.active { color: #fbbc04; }
+        .txt-eng { color: var(--p-blue-strong); font-weight: bold; }
+        .txt-cat { color: #888; font-size: 0.95em; }
 
         .hidden { display: none !important; }
     </style>
@@ -79,16 +77,17 @@
         <div class="card">
             <div class="config-bar">
                 <span onclick="canviarIdioma()" class="lang-toggle"><b id="txt-idioma">CAT</b></span>
-                <span id="btn-repas" onclick="toggleRepas()" style="cursor:pointer; background:#eee; padding:2px 10px; border-radius:8px;">⭐ OFF</span>
-                <span style="display: flex; align-items: center; gap: 5px;">
-                    <input type="number" id="row-desde" value="1" onchange="actualitzarRang()"> 
-                    - 
-                    <input type="number" id="row-fins" value="100" onchange="actualitzarRang()">
-                </span>
-            </div>
+                
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span id="btn-repas" onclick="toggleRepas()">⭐ OFF</span>
+                    <span style="display: flex; align-items: center; gap: 3px;">
+                        <input type="number" id="row-desde" value="1" onchange="actualitzarRang()"> 
+                        - 
+                        <input type="number" id="row-fins" value="100" onchange="actualitzarRang()">
+                    </span>
+                </div>
 
-            <div class="star-main-container">
-                <div id="star-main" class="star-btn" onclick="toggleEstrellaActual()">★</div>
+                <button id="star-main" class="star-main" onclick="toggleEstrellaActual()">★</button>
             </div>
             
             <div id="feedback-container">
@@ -133,13 +132,10 @@
                 }
             });
             const cats = [...new Set(dadesTotals.map(d => d.cat))].sort();
-            const grid = document.getElementById('grid-selector');
-            grid.innerHTML = '';
+            const grid = document.getElementById('grid-selector'); grid.innerHTML = '';
             cats.forEach(c => {
-                const b = document.createElement('button');
-                b.className = 'menu-btn'; b.innerText = c;
-                b.onclick = () => carregarCategoria(c);
-                grid.appendChild(b);
+                const b = document.createElement('button'); b.className = 'menu-btn'; b.innerText = c;
+                b.onclick = () => carregarCategoria(c); grid.appendChild(b);
             });
             document.getElementById('p-fitxer').classList.add('hidden');
             document.getElementById('p-grups').classList.remove('hidden');
@@ -161,9 +157,7 @@
         let base = dadesCat.slice(d, f);
         dadesJoc = modoRepas ? base.filter(item => repasIds.has(item.id)) : [...base];
         dadesJoc.sort(() => Math.random() - 0.5);
-        index = 0;
-        nouRepte();
-        actualitzarTaula(base);
+        index = 0; nouRepte(); actualitzarTaula(base);
     }
 
     function nouRepte() {
@@ -173,7 +167,6 @@
         const p = dadesJoc[index];
         document.getElementById('pregunta').innerText = (idioma === 'CAT') ? p.esp : p.eng;
         document.getElementById('resposta').value = "";
-        document.getElementById('resposta').style.color = "var(--text)";
         document.getElementById('feedback-label').innerText = "";
         document.getElementById('solucio-text').innerText = "";
         document.getElementById('star-main').classList.toggle('active', repasIds.has(p.id));
@@ -185,23 +178,22 @@
         const p = dadesJoc[index];
         const user = document.getElementById('resposta').value.trim().toLowerCase();
         const ok = (idioma === 'CAT') ? p.eng.toLowerCase() : p.esp.toLowerCase();
-        
         reproduir(p.eng, 1.0);
-
         if (user === ok) {
-            document.getElementById('feedback-label').innerText = "CORRECTE: ";
-            document.getElementById('feedback-label').style.color = "green";
-            document.getElementById('solucio-text').innerText = (idioma === 'CAT') ? p.eng.toUpperCase() : p.esp.toUpperCase();
-            document.getElementById('solucio-text').style.color = "green";
-            correctActive = true;
-            setTimeout(seguent, 1000);
+            mostrarFeedback("CORRECTE: ", "green", p);
+            correctActive = true; setTimeout(seguent, 1000);
         } else {
-            document.getElementById('feedback-label').innerText = "INCORRECTE: ";
-            document.getElementById('feedback-label').style.color = "var(--p-red)";
-            document.getElementById('solucio-text').innerText = (idioma === 'CAT') ? p.eng.toUpperCase() : p.esp.toUpperCase();
-            document.getElementById('solucio-text').style.color = "var(--p-red)";
+            mostrarFeedback("INCORRECTE: ", "var(--p-red)", p);
             errorActive = true;
         }
+    }
+
+    function mostrarFeedback(label, color, p) {
+        document.getElementById('feedback-label').innerText = label;
+        document.getElementById('feedback-label').style.color = color;
+        const sol = (idioma === 'CAT') ? p.eng.toUpperCase() : p.esp.toUpperCase();
+        document.getElementById('solucio-text').innerText = sol;
+        document.getElementById('solucio-text').style.color = color;
     }
 
     function seguent() { index++; nouRepte(); }
@@ -216,24 +208,22 @@
         actualitzarTaula(dadesCat.slice(parseInt(document.getElementById('row-desde').value)-1, parseInt(document.getElementById('row-fins').value)));
     }
 
-    function canviarIdioma() { 
-        idioma = (idioma === 'CAT') ? 'ENG' : 'CAT'; 
-        document.getElementById('txt-idioma').innerText = idioma; 
-        nouRepte(); 
-    }
+    function canviarIdioma() { idioma = (idioma === 'CAT') ? 'ENG' : 'CAT'; document.getElementById('txt-idioma').innerText = idioma; nouRepte(); }
     
     function toggleRepas() { 
         modoRepas = !modoRepas; 
-        document.getElementById('btn-repas').innerText = modoRepas ? "⭐ ON" : "⭐ OFF"; 
-        actualitzarRang();
+        const btn = document.getElementById('btn-repas');
+        btn.innerText = modoRepas ? "⭐ ON" : "⭐ OFF"; 
+        btn.classList.toggle('on', modoRepas);
+        actualitzarRang(); 
     }
 
     function actualitzarTaula(llista) {
         document.getElementById('taula-joc').innerHTML = llista.map((d, i) => `
             <tr>
                 <td class="num">${i+1}</td>
-                <td class="star-list" style="color:${repasIds.has(d.id)?'#fbbc04':'#eee'};">★</td>
-                <td style="width:35px; text-align:center;">
+                <td class="star-list ${repasIds.has(d.id)?'active':''}">★</td>
+                <td style="width:30px; text-align:center;">
                     <button style="background:none; border:none; cursor:pointer; font-size:1.2em;" 
                     onclick="reproduir('${d.eng.replace(/'/g,"\\'")}', 1.0)">🔊</button>
                 </td>
@@ -246,11 +236,8 @@
     document.getElementById('resposta').addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
             if (errorActive || correctActive) { 
-                e.preventDefault(); 
-                if(correctActive) seguent(); else nouRepte();
-            } else if (e.key === 'Enter') { 
-                validar(); 
-            }
+                e.preventDefault(); if(correctActive) seguent(); else nouRepte();
+            } else if (e.key === 'Enter') { validar(); }
         }
     });
 </script>

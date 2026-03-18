@@ -22,13 +22,10 @@
         
         .config-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; font-size: 0.95em; font-weight: bold; padding: 0 5px; }
         .config-bar input { width: 42px; padding: 4px; border: 2px solid var(--p-pink); border-radius: 6px; text-align: center; color: var(--p-blue-strong); font-weight: bold; background: white; outline: none; }
-        .lang-toggle { cursor: pointer; color: var(--p-blue-strong); font-size: 1.1em; }
         
-        /* BOTÓN ON/OFF: VERDE PASTEL SOLO CUANDO ESTÁ ON */
-        #btn-repas { cursor: pointer; background: #eee; padding: 4px 12px; border-radius: 8px; transition: background 0.3s; }
+        #btn-repas { cursor: pointer; background: #eee; padding: 4px 12px; border-radius: 8px; }
         #btn-repas.on { background: var(--p-green-pastel); }
 
-        /* ESTRELLA DE ARRIBA: SIN CÍRCULO, SIN FONDO, A UN LADO */
         .star-main { font-size: 2.5em; cursor: pointer; color: #eee; background: none; border: none; padding: 0; line-height: 1; margin-left: 10px; outline: none; }
         .star-main.active { color: #fbbc04; }
 
@@ -41,19 +38,17 @@
 
         .btn-main { background: var(--p-blue-soft); color: var(--p-blue-strong); padding: 12px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; width: 80%; font-size: 1.1em; }
         
-        /* BACK NEGRO Y SIN FONDO */
-        .back-btn { background: none; border: none; color: black; font-weight: bold; cursor: pointer; font-size: 1em; margin-top: 15px; outline: none; }
+        .back-btn { background: none; border: none; color: black; font-weight: bold; cursor: pointer; font-size: 1em; margin-top: 15px; }
 
-        /* LISTA: ESTRELLAS SIN FONDO */
         .list-container { width: 100%; max-width: 600px; background: white; border-radius: 25px; border: 6px solid var(--p-pink); padding: 5px; box-sizing: border-box; margin-bottom: 40px; }
         .list-table { width: 100%; border-collapse: collapse; }
         .list-table td { padding: 6px 4px; border-bottom: 1px solid #fce4e6; vertical-align: middle; }
-        .num { color: #ccc; font-weight: bold; width: 25px; font-size: 0.8em; text-align: center; }
-        .star-list { font-size: 1.4em; width: 30px; text-align: center; color: #eee; background: none; }
+        
+        .star-list { font-size: 1.4em; width: 30px; text-align: center; color: #eee; background: none; cursor: pointer; }
         .star-list.active { color: #fbbc04; }
+
         .txt-eng { color: var(--p-blue-strong); font-weight: bold; }
         .txt-cat { color: #888; font-size: 0.95em; }
-
         .hidden { display: none !important; }
     </style>
 </head>
@@ -76,17 +71,13 @@
     <div id="p-estudi" class="hidden" style="width: 100%; max-width: 600px; display: flex; flex-direction: column; align-items: center;">
         <div class="card">
             <div class="config-bar">
-                <span onclick="canviarIdioma()" class="lang-toggle"><b id="txt-idioma">CAT</b></span>
-                
+                <span onclick="canviarIdioma()" style="cursor:pointer; color:var(--p-blue-strong); font-size:1.1em;"><b id="txt-idioma">CAT</b></span>
                 <div style="display: flex; align-items: center; gap: 8px;">
                     <span id="btn-repas" onclick="toggleRepas()">⭐ OFF</span>
                     <span style="display: flex; align-items: center; gap: 3px;">
-                        <input type="number" id="row-desde" value="1" onchange="actualitzarRang()"> 
-                        - 
-                        <input type="number" id="row-fins" value="100" onchange="actualitzarRang()">
+                        <input type="number" id="row-desde" value="1" onchange="actualitzarRang()"> - <input type="number" id="row-fins" value="100" onchange="actualitzarRang()">
                     </span>
                 </div>
-
                 <button id="star-main" class="star-main" onclick="toggleEstrellaActual()">★</button>
             </div>
             
@@ -181,7 +172,7 @@
         reproduir(p.eng, 1.0);
         if (user === ok) {
             mostrarFeedback("CORRECTE: ", "green", p);
-            correctActive = true; setTimeout(seguent, 1000);
+            correctActive = true; 
         } else {
             mostrarFeedback("INCORRECTE: ", "var(--p-red)", p);
             errorActive = true;
@@ -202,30 +193,28 @@
 
     function toggleEstrellaActual() {
         const id = dadesJoc[index].id;
+        toggleIdRepas(id);
+    }
+
+    function toggleIdRepas(id) {
         repasIds.has(id) ? repasIds.delete(id) : repasIds.add(id);
         localStorage.setItem('repasIds', JSON.stringify([...repasIds]));
-        document.getElementById('star-main').classList.toggle('active', repasIds.has(id));
+        if (dadesJoc[index] && dadesJoc[index].id === id) {
+            document.getElementById('star-main').classList.toggle('active', repasIds.has(id));
+        }
         actualitzarTaula(dadesCat.slice(parseInt(document.getElementById('row-desde').value)-1, parseInt(document.getElementById('row-fins').value)));
     }
 
     function canviarIdioma() { idioma = (idioma === 'CAT') ? 'ENG' : 'CAT'; document.getElementById('txt-idioma').innerText = idioma; nouRepte(); }
-    
-    function toggleRepas() { 
-        modoRepas = !modoRepas; 
-        const btn = document.getElementById('btn-repas');
-        btn.innerText = modoRepas ? "⭐ ON" : "⭐ OFF"; 
-        btn.classList.toggle('on', modoRepas);
-        actualitzarRang(); 
-    }
+    function toggleRepas() { modoRepas = !modoRepas; document.getElementById('btn-repas').innerText = modoRepas ? "⭐ ON" : "⭐ OFF"; document.getElementById('btn-repas').classList.toggle('on', modoRepas); actualitzarRang(); }
 
     function actualitzarTaula(llista) {
         document.getElementById('taula-joc').innerHTML = llista.map((d, i) => `
             <tr>
-                <td class="num">${i+1}</td>
-                <td class="star-list ${repasIds.has(d.id)?'active':''}">★</td>
+                <td style="color:#ccc; font-weight:bold; width:25px; text-align:center;">${i+1}</td>
+                <td class="star-list ${repasIds.has(d.id)?'active':''}" onclick="toggleIdRepas('${d.id}')">★</td>
                 <td style="width:30px; text-align:center;">
-                    <button style="background:none; border:none; cursor:pointer; font-size:1.2em;" 
-                    onclick="reproduir('${d.eng.replace(/'/g,"\\'")}', 1.0)">🔊</button>
+                    <button style="background:none; border:none; cursor:pointer; font-size:1.2em;" onclick="reproduir('${d.eng.replace(/'/g,"\\'")}', 1.0)">🔊</button>
                 </td>
                 <td class="txt-eng">${d.eng}</td>
                 <td class="txt-cat">${d.esp}</td>
@@ -233,11 +222,21 @@
         `).join('');
     }
 
+    // CONTROL DE TECLADO PARA AMBOS (ESPACIO E INTRO)
     document.getElementById('resposta').addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            if (errorActive || correctActive) { 
-                e.preventDefault(); if(correctActive) seguent(); else nouRepte();
-            } else if (e.key === 'Enter') { validar(); }
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            if (!errorActive && !correctActive) { 
+                validar(); 
+            } else {
+                seguent(); 
+            }
+        }
+        if (e.key === ' ') { 
+            if (errorActive || correctActive) {
+                e.preventDefault();
+                seguent();
+            }
         }
     });
 </script>
