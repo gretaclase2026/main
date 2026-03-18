@@ -7,14 +7,13 @@
     <style>
         :root { 
             --p-pink: #ffcfd2; --p-blue-soft: #d4eaf7; --p-blue-strong: #2196F3; 
-            --p-turquesa-claret: #e0f7f9; --p-turquesa-fort: #40c4ff; --p-yellow: #FFF176; 
             --telegram-blue: #24A1DE; --text: #4a4a4a; 
         }
         body { font-family: 'Segoe UI', sans-serif; background: #fff5f6; color: var(--text); display: flex; flex-direction: column; align-items: center; padding: 10px; margin:0; }
         .card { background: white; width: 100%; max-width: 650px; padding: 25px; border-radius: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 8px solid var(--p-pink); text-align: center; box-sizing: border-box; margin-top: 10px; }
         h1.titulo-app { color: var(--telegram-blue); font-size: 2.2em; font-weight: bold; margin-bottom: 20px; text-transform: uppercase; }
-        .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; }
-        .menu-btn { background: white; border: 3px solid var(--p-pink); padding: 20px; border-radius: 25px; font-size: 1.3em; font-weight: bold; color: var(--p-blue-strong); cursor: pointer; transition: 0.2s; }
+        .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+        .menu-btn { background: white; border: 3px solid var(--p-pink); padding: 15px; border-radius: 20px; font-size: 1.1em; font-weight: bold; color: var(--p-blue-strong); cursor: pointer; transition: 0.2s; }
         .menu-btn:active { background: var(--p-pink); color: white; }
         .config-bar { background: #fff; padding: 12px; border-radius: 20px; margin-bottom: 20px; border: 2px solid var(--p-pink); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center; }
         #pregunta { font-size: 2.5em; color: var(--p-blue-strong); margin: 15px 0; font-weight: bold; }
@@ -25,9 +24,9 @@
         .btn-nola { background: #ffe5d9; color: #d90429; }
         .star-btn { font-size: 2.5em; cursor: pointer; color: #ccc; background:none; border:none; padding:0; line-height:1; }
         .star-btn.active { color: #ffb703; }
-        .star-list { color: #ffb703; font-weight: bold; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         td { padding: 10px; border-bottom: 1px solid #eee; text-align: left; }
+        .btn-mini-audio { background:none; border:none; cursor:pointer; font-size:1.2em; margin-right:5px; }
         .btn-back-menu { margin-top: 20px; border: none; background: transparent; font-weight: bold; cursor: pointer; font-size: 1.5em; }
     </style>
 </head>
@@ -43,6 +42,10 @@
 
     <div class="card" id="selector-container" style="display:none;">
         <h2 style="color: var(--p-blue-strong)">Tria un grup:</h2>
+        <div class="config-bar">
+            <span>Des de: <input type="number" id="row-desde" value="1" style="width:45px"></span>
+            <span>Fins a: <input type="number" id="row-fins" value="1000" style="width:45px"></span>
+        </div>
         <div id="grid-selector" class="grid-menu"></div>
         <button onclick="location.reload()" class="btn-back-menu">🔙 Tornar</button>
     </div>
@@ -51,11 +54,10 @@
         <div class="card">
             <div class="config-bar">
                 <button class="btn btn-check" onclick="canviarIdioma()">Pregunta: <b id="txt-idioma">ESP</b></button>
-                <span>Fins a: <input type="number" id="row-fins" value="1000" style="width:50px"></span>
                 <button class="btn" id="btn-repas" onclick="toggleRepas()" style="background:#eee">⭐ Repàs: OFF</button>
             </div>
 
-            <div style="display:flex; justify-content:space-between; align-items:center; padding:0 10px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
                 <button id="star-main" class="star-btn" onclick="toggleEstrellaActual()">★</button>
                 <div>Correctes: <b id="count-ok" style="color:green">0</b> | Falten: <b id="count-rest">0</b></div>
             </div>
@@ -65,7 +67,6 @@
             <input type="text" id="resposta" placeholder="..." autocomplete="off">
 
             <div class="controls">
-                <button class="btn btn-check" onclick="reproducirActual()">🔊</button><br>
                 <button id="btn-comprovar" class="btn btn-check" onclick="validar()">Comprovar</button>
                 <button id="btn-nola" class="btn btn-nola" onclick="noLaSe()">No la sé</button>
                 <button id="btn-next" class="btn btn-next" style="display:none;" onclick="seguent()">Següent →</button>
@@ -81,8 +82,7 @@
 <script>
     let dadesTotals = [], dadesJoc = [], index = 0, acertos = 0;
     let repasIds = new Set(JSON.parse(localStorage.getItem('repasIds') || '[]'));
-    let idioma = 'ESP'; 
-    let modoRepas = false;
+    let idioma = 'ESP'; let modoRepas = false;
 
     async function carregarCSV(nom) {
         try {
@@ -91,10 +91,10 @@
             const lines = t.split(/\r?\n/).filter(l => l.trim() !== '');
             dadesTotals = lines.map((l, i) => {
                 const p = l.split(';');
-                return { id: i + nom, grup: p[0], esp: p[1], eng: p[2] };
+                return { id: i + nom, grup: p[0], eng: p[1], esp: p[2] };
             }).filter(d => d.esp && d.eng);
             mostrarSelector();
-        } catch (e) { alert("No s'ha trobat el fitxer: " + nom); }
+        } catch (e) { alert("Error al carregar l'arxiu"); }
     }
 
     function mostrarSelector() {
@@ -113,17 +113,12 @@
     }
 
     function iniciar(g) {
-        const fins = parseInt(document.getElementById('row-fins').value);
-        let filtrat = dadesTotals.filter(d => d.grup === g).slice(0, fins);
+        const d = parseInt(document.getElementById('row-desde').value) - 1;
+        const f = parseInt(document.getElementById('row-fins').value);
+        let filtrat = dadesTotals.filter(item => item.grup === g).slice(d, f);
 
-        if (modoRepas) {
-            filtrat = filtrat.filter(d => repasIds.has(d.id));
-        }
-
-        if (filtrat.length === 0) {
-            alert("No hi ha paraules per estudiar (comprova si has marcat estrelles).");
-            return;
-        }
+        if (modoRepas) filtrat = filtrat.filter(item => repasIds.has(item.id));
+        if (filtrat.length === 0) return alert("Cap paraula trobada.");
 
         dadesJoc = filtrat.sort(() => Math.random() - 0.5);
         index = 0; acertos = 0;
@@ -135,10 +130,8 @@
 
     function nouRepte() {
         if (index >= dadesJoc.length) {
-            document.getElementById('pregunta').innerText = "🎉 Fi!";
+            document.getElementById('pregunta').innerText = "Fi! 🎉";
             document.getElementById('resposta').style.display = 'none';
-            document.getElementById('btn-comprovar').style.display = "none";
-            document.getElementById('btn-nola').style.display = "none";
             return;
         }
         const p = dadesJoc[index];
@@ -164,7 +157,7 @@
             document.getElementById('feedback').innerText = "Molt bé! ✨";
             document.getElementById('feedback').style.color = "green";
             acertos++;
-            reproducirActual();
+            reproducir(p.eng);
             setTimeout(seguent, 800);
         } else {
             document.getElementById('feedback').innerText = "ERA: " + correcte.toUpperCase();
@@ -173,35 +166,32 @@
             document.getElementById('btn-nola').style.display = "none";
             document.getElementById('btn-next').style.display = "inline-block";
             document.getElementById('resposta').disabled = true;
-            reproducirActual();
+            reproducir(p.eng);
         }
     }
 
     function noLaSe() {
         const p = dadesJoc[index];
-        const solucio = (idioma === 'ESP') ? p.eng : p.esp;
-        document.getElementById('feedback').innerText = "SOLUCIÓ: " + solucio.toUpperCase();
+        document.getElementById('feedback').innerText = "SOLUCIÓ: " + p.eng.toUpperCase();
         document.getElementById('feedback').style.color = "orange";
         document.getElementById('btn-comprovar').style.display = "none";
         document.getElementById('btn-nola').style.display = "none";
         document.getElementById('btn-next').style.display = "inline-block";
         document.getElementById('resposta').disabled = true;
-        reproducirActual();
+        reproducir(p.eng);
     }
 
     function seguent() { index++; nouRepte(); }
 
-    function reproducirActual() {
-        const p = dadesJoc[index];
-        const msg = new SpeechSynthesisUtterance(p.eng);
+    function reproducir(txt) {
+        const msg = new SpeechSynthesisUtterance(txt);
         msg.lang = 'en-US';
         window.speechSynthesis.speak(msg);
     }
 
     function toggleEstrellaActual() {
         const id = dadesJoc[index].id;
-        if (repasIds.has(id)) repasIds.delete(id);
-        else repasIds.add(id);
+        if (repasIds.has(id)) repasIds.delete(id); else repasIds.add(id);
         localStorage.setItem('repasIds', JSON.stringify([...repasIds]));
         document.getElementById('star-main').classList.toggle('active', repasIds.has(id));
         actualitzarTaula();
@@ -221,8 +211,8 @@
     function actualitzarTaula() {
         document.getElementById('taula-cos').innerHTML = dadesJoc.map(d => `
             <tr>
-                <td style="width:30px;">${repasIds.has(d.id) ? '<span class="star-list">★</span>' : ''}</td>
-                <td style="color:var(--telegram-blue); font-weight:bold;">${d.eng}</td>
+                <td style="width:30px;">${repasIds.has(d.id) ? '<span style="color:#ffb703">★</span>' : ''}</td>
+                <td><button class="btn-mini-audio" onclick="reproducir('${d.eng}')">🔊</button> <b style="color:var(--telegram-blue)">${d.eng}</b></td>
                 <td style="color:#666;">${d.esp}</td>
             </tr>
         `).join('');
@@ -233,7 +223,6 @@
             if (document.getElementById('btn-next').style.display === 'inline-block') {
                 seguent();
             } else if (document.getElementById('resposta').disabled) {
-                // Quan falles, el primer Intro neteja per tornar a provar
                 document.getElementById('resposta').disabled = false;
                 document.getElementById('resposta').value = "";
                 document.getElementById('resposta').focus();
