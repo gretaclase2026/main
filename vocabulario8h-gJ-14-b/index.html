@@ -30,7 +30,7 @@
         .star-main.active { color: #fbbc04; }
 
         #feedback-container { font-size: 1.2em; font-weight: bold; min-height: 1.4em; margin-bottom: 5px; display: flex; justify-content: center; align-items: center; gap: 8px; }
-        #pregunta { font-size: 2em; margin: 10px 0; color: var(--p-blue-strong); font-weight: bold; }
+        #pregunta { font-size: 2em; margin: 10px 0; color: var(--p-blue-strong); font-weight: bold; min-height: 1.2em; }
         #resposta { width: 95%; padding: 12px; font-size: 1.5em; border-radius: 15px; border: 3px solid var(--p-pink); text-align: center; outline: none; box-sizing: border-box; }
 
         .audio-controls { margin: 10px 0; display: flex; justify-content: center; gap: 15px; }
@@ -156,7 +156,15 @@
         if (index >= dadesJoc.length) { dadesJoc.sort(() => Math.random() - 0.5); index = 0; }
         errorActive = false; correctActive = false;
         const p = dadesJoc[index];
-        document.getElementById('pregunta').innerText = (idioma === 'CAT') ? p.esp : p.eng;
+        
+        // MODO DICTADO: Si es inglés, ocultamos el texto y suena audio
+        if (idioma === 'ENG') {
+            document.getElementById('pregunta').innerText = "???";
+            reproduir(p.eng, 1.0);
+        } else {
+            document.getElementById('pregunta').innerText = p.esp;
+        }
+
         document.getElementById('resposta').value = "";
         document.getElementById('feedback-label').innerText = "";
         document.getElementById('solucio-text').innerText = "";
@@ -169,6 +177,10 @@
         const p = dadesJoc[index];
         const user = document.getElementById('resposta').value.trim().toLowerCase();
         const ok = (idioma === 'CAT') ? p.eng.toLowerCase() : p.esp.toLowerCase();
+        
+        // Al validar, siempre mostramos el texto de la pregunta (por si estaba oculto)
+        document.getElementById('pregunta').innerText = (idioma === 'CAT') ? p.esp : p.eng;
+        
         reproduir(p.eng, 1.0);
         if (user === ok) {
             mostrarFeedback("CORRECTE: ", "green", p);
@@ -192,8 +204,7 @@
     function reproduir(t, vel) { window.speechSynthesis.cancel(); const m = new SpeechSynthesisUtterance(t); m.lang = 'en-US'; m.rate = vel; window.speechSynthesis.speak(m); }
 
     function toggleEstrellaActual() {
-        const id = dadesJoc[index].id;
-        toggleIdRepas(id);
+        if (dadesJoc[index]) toggleIdRepas(dadesJoc[index].id);
     }
 
     function toggleIdRepas(id) {
@@ -222,7 +233,6 @@
         `).join('');
     }
 
-    // CONTROL DE TECLADO PARA AMBOS (ESPACIO E INTRO)
     document.getElementById('resposta').addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
