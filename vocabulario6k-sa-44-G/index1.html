@@ -18,7 +18,6 @@
         
         .card { background: white; width: 100%; max-width: 650px; padding: 25px; border-radius: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 8px solid var(--p-pink); text-align: center; box-sizing: border-box; }
         
-        /* Contenedor para botones en dos columnas */
         .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
         
         .menu-btn { background: white; border: 3px solid var(--p-pink); padding: 15px 10px; border-radius: 20px; width: 100%; font-size: 1.1em; font-weight: bold; color: var(--p-blue-strong); cursor: pointer; box-sizing: border-box; }
@@ -50,6 +49,22 @@
         table { width: 100%; border-collapse: collapse; font-size: 1.25em; }
         td { padding: 8px; border-bottom: 1px solid #f9f9f9; text-align: left; }
         .star-list { color: #FFD700; font-size: 1.5em; font-weight: bold; }
+
+        .btn-mini-audio { background: none; border: none; cursor: pointer; font-size: 1em; padding: 0 5px; }
+
+        /* Estilo limpio para el botón de volver al menú */
+        .btn-back-menu {
+            margin-top: 25px;
+            border: none;
+            background: transparent;
+            color: var(--p-blue-strong);
+            cursor: pointer;
+            font-size: 1.6em;
+            font-weight: bold;
+            padding: 10px;
+            display: inline-block;
+        }
+        .btn-back-menu:active { opacity: 0.6; }
     </style>
 </head>
 <body>
@@ -114,7 +129,8 @@
                 <button id="btn-skip" class="btn btn-skip" onclick="saltar()">No la sé</button>
                 <button id="btn-next" class="btn btn-next" style="display:none;" onclick="seguent()">Següent →</button>
             </div>
-            <button onclick="location.reload()" style="margin-top:15px; border:none; background:none; color:var(--p-blue-strong); cursor:pointer;">🔙 Menú</button>
+            
+            <button onclick="location.reload()" class="btn-back-menu">🔙 Menú</button>
         </div>
 
         <div id="llista-container" class="list-area">
@@ -224,13 +240,11 @@
 
     function seguent() { i = (i + 1) % dadesFiltrades.length; nouRepte(); }
 
-    function reproduir(vel) {
-        const paraula = dadesFiltrades[i].eng.trim();
-        // Intentem primer amb el nom tal qual (per si té majúscules com a la Tanda 5)
+    function reproduir(vel, paraulaEspecifica = null) {
+        const paraula = paraulaEspecifica || dadesFiltrades[i].eng.trim();
         let audio = new Audio("audios/" + paraula + ".mp3");
         
         audio.onerror = () => {
-            // Si falla (per exemple a GitHub que és case-sensitive), intentem en minúscules
             let audioMin = new Audio("audios/" + paraula.toLowerCase() + ".mp3");
             audioMin.playbackRate = vel;
             audioMin.play().catch(() => {
@@ -239,9 +253,7 @@
         };
 
         audio.playbackRate = vel;
-        audio.play().catch(() => {
-            // El catch dispara l'onerror en molts navegadors si el fitxer no existeix
-        });
+        audio.play().catch(() => {});
     }
 
     function desmarcarTot() { if(confirm("Netejar estrelles?")) { repasIds.clear(); filtrar(); } }
@@ -251,7 +263,10 @@
             <tr>
                 <td style="color:#ccc; width:35px; font-size:0.75em;">${d.id}</td>
                 <td style="width:30px; text-align:center;">${repasIds.has(d.id) ? '<span class="star-list">★</span>' : ''}</td>
-                <td style="color:var(--p-blue-strong); font-weight:bold;">${d.eng}</td>
+                <td style="color:var(--p-blue-strong); font-weight:bold;">
+                    <button class="btn-mini-audio" onclick="reproduir(1.0, '${d.eng.replace(/'/g, "\\'")}')">🔊</button>
+                    ${d.eng}
+                </td>
                 <td style="color:#666;">${d.cat}</td>
             </tr>
         `).join('');

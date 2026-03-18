@@ -18,7 +18,6 @@
         
         .card { background: white; width: 100%; max-width: 650px; padding: 25px; border-radius: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 8px solid var(--p-pink); text-align: center; box-sizing: border-box; }
         
-        /* Contenedor para botones en dos columnas */
         .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
         
         .menu-btn { background: white; border: 3px solid var(--p-pink); padding: 15px 10px; border-radius: 20px; width: 100%; font-size: 1.1em; font-weight: bold; color: var(--p-blue-strong); cursor: pointer; box-sizing: border-box; }
@@ -51,8 +50,21 @@
         td { padding: 8px; border-bottom: 1px solid #f9f9f9; text-align: left; }
         .star-list { color: #FFD700; font-size: 1.5em; font-weight: bold; }
 
-        /* Estilo para el altavoz de la lista */
         .btn-mini-audio { background: none; border: none; cursor: pointer; font-size: 1em; padding: 0 5px; }
+
+        /* Estilo para el botón de volver al menú: más grande, letras negras y sin recuadro */
+        .btn-back-menu {
+            margin-top: 25px;
+            border: none;
+            background: transparent;
+            color: #000000; /* Letras en NEGRO */
+            cursor: pointer;
+            font-size: 1.8em; /* Más grande */
+            font-weight: bold;
+            padding: 10px;
+            display: inline-block;
+        }
+        .btn-back-menu:active { opacity: 0.6; }
     </style>
 </head>
 <body>
@@ -117,7 +129,8 @@
                 <button id="btn-skip" class="btn btn-skip" onclick="saltar()">No la sé</button>
                 <button id="btn-next" class="btn btn-next" style="display:none;" onclick="seguent()">Següent →</button>
             </div>
-            <button onclick="location.reload()" style="margin-top:25px; border:none; background:none; color:var(--p-blue-strong); cursor:pointer; font-size: 1.4em; font-weight: bold;">🔙 Menú</button>
+            
+            <button onclick="location.reload()" class="btn-back-menu">🔙 Menú</button>
         </div>
 
         <div id="llista-container" class="list-area">
