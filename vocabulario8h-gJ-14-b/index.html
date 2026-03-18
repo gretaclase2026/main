@@ -1,237 +1,233 @@
  <!DOCTYPE html>
-<html lang="es">
+<html lang="ca">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Vocabulari Grups i Temes</title>
+    <title>Vocabulari - Grups i Temes</title>
     <style>
         :root { 
-            --p-blue-pastel: #DBEAFE; 
-            --p-green-pastel: #DCFCE7; 
-            --telegram-blue: #24A1DE; 
+            --p-pink: #ffcfd2; 
+            --p-blue-soft: #d4eaf7; 
+            --p-blue-strong: #2196F3; 
+            --p-turquesa-claret: #e0f7f9; 
+            --p-turquesa-fort: #40c4ff; 
+            --p-yellow: #FFF176; 
+            --telegram-blue: #24A1DE;
             --text: #4a4a4a; 
-            --bg-p-pink: #fff5f6;
         }
+        body { font-family: 'Segoe UI', sans-serif; background: #fff5f6; color: var(--text); display: flex; flex-direction: column; align-items: center; padding: 10px; }
         
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg-p-pink); color: var(--text); display: flex; flex-direction: column; align-items: center; padding: 10px; margin: 0; }
+        .card { background: white; width: 100%; max-width: 650px; padding: 25px; border-radius: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 8px solid var(--p-pink); text-align: center; box-sizing: border-box; }
         
-        .card { background: white; width: 100%; max-width: 650px; padding: 25px; border-radius: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 8px solid var(--p-blue-pastel); text-align: center; box-sizing: border-box; margin-top: 20px; }
-        
-        h1.titulo-app { color: var(--telegram-blue); font-size: 2.5em; font-weight: bold; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px; }
+        h1.titulo-app { color: var(--telegram-blue); font-size: 2.2em; font-weight: bold; margin-bottom: 20px; text-transform: uppercase; }
 
-        .main-menu { display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; }
+        .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; }
         
-        .btn-main { 
-            padding: 15px 35px; 
-            font-size: 1.2em; 
-            font-weight: 600; 
-            border: none; 
-            border-radius: 25px; 
-            cursor: pointer; 
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            flex: 1;
-        }
-        
-        .btn-grups { background: var(--p-blue-pastel); color: #1e40af; }
-        .btn-temes { background: var(--p-green-pastel); color: #166534; }
-        
-        .btn-main:hover { opacity: 0.8; transform: translateY(-2px); }
+        .menu-btn { background: white; border: 3px solid var(--p-pink); padding: 20px 10px; border-radius: 25px; width: 100%; font-size: 1.3em; font-weight: bold; color: var(--p-blue-strong); cursor: pointer; box-sizing: border-box; transition: 0.2s; }
+        .menu-btn:active { background: var(--p-pink); color: white; }
 
-        #selector-container { display: none; margin-top: 20px; background: #f8fafc; padding: 20px; border-radius: 25px; border: 2px solid var(--p-blue-pastel); }
-        .grid-selector { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; margin-top: 15px; }
-        .btn-sel { padding: 12px; border: 1px solid #cbd5e1; border-radius: 15px; background: white; cursor: pointer; font-weight: bold; color: #475569; }
-        .btn-sel:hover { background: var(--p-blue-pastel); }
+        /* Estilo para los botones de subgrupos */
+        .btn-sel { background: #f0f9ff; border: 2px solid var(--p-blue-soft); padding: 12px; border-radius: 15px; font-weight: bold; color: #444; cursor: pointer; }
+        .btn-sel:active { background: var(--p-blue-soft); }
 
-        .zona-joc { display: none; margin-top: 20px; padding: 20px; border-radius: 30px; background: #fafafa; border: 1px solid #f1f5f9; }
-        .pregunta { font-size: 2.2em; font-weight: bold; margin: 20px 0; color: #1e3a8a; }
-        input[type="text"] { width: 85%; padding: 15px; border-radius: 20px; border: 2px solid var(--p-blue-pastel); font-size: 1.2em; text-align: center; outline: none; }
+        .config-bar { background: #fff; padding: 12px 18px; border-radius: 20px; margin-bottom: 20px; border: 2px solid var(--p-pink); display: flex; align-items: center; gap: 15px; flex-wrap: wrap; justify-content: center; }
         
-        .feedback { margin: 15px 0; font-weight: bold; font-size: 1.1em; min-height: 1.5em; }
-        .btn-next { display: none; padding: 12px 25px; background: var(--telegram-blue); color: white; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; }
+        #pregunta { font-size: 2.5em; color: var(--p-blue-strong); margin: 15px 0; min-height: 1.2em; font-weight: bold; }
+        #resposta { width: 90%; padding: 15px; font-size: 1.8em; border-radius: 20px; border: 3px solid var(--p-pink); text-align: center; outline: none; margin-bottom: 20px; font-weight: bold; }
         
-        .stats { margin-bottom: 15px; display: flex; justify-content: center; gap: 30px; font-weight: bold; color: #64748b; }
+        .btn-audio { width: 70px; height: 70px; border-radius: 50%; border: none; cursor: pointer; font-size: 2em; display: inline-flex; align-items: center; justify-content: center; margin: 5px; }
+        .btn-speaker { background: var(--p-blue-soft); color: #5b8fb9; }
         
-        table { width: 100%; border-collapse: collapse; margin-top: 30px; border-radius: 20px; overflow: hidden; }
-        th { background: #f1f5f9; padding: 12px; text-align: left; color: #64748b; font-size: 0.8em; }
-        td { padding: 12px; border-bottom: 1px solid #f1f5f9; text-align: left; background: white; }
-        .col-eng { color: var(--telegram-blue); font-weight: 600; }
-        .btn-mini-audio { border: none; background: none; cursor: pointer; font-size: 1.2em; }
+        .btn { padding: 12px 25px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; margin: 5px; font-size: 1em; }
+        .btn-check { background: var(--p-blue-soft); color: #5b8fb9; }
+        .btn-next { background: #b9fbc0; color: #3e7e44; }
+        
+        .list-area { width: 100%; max-width: 650px; background: white; margin-top: 25px; border-radius: 25px; padding: 15px; border: 3px solid var(--p-pink); box-sizing: border-box; }
+        table { width: 100%; border-collapse: collapse; font-size: 1.1em; }
+        td { padding: 10px; border-bottom: 1px solid #f2f2f2; text-align: left; }
+        .col-eng { color: var(--telegram-blue); font-weight: bold; }
+
+        .btn-back-menu { margin-top: 20px; border: none; background: transparent; color: #000; cursor: pointer; font-size: 1.5em; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <div class="card">
+    <div class="card" id="setup">
         <h1 class="titulo-app">VOCABULARI</h1>
-        
-        <div class="main-menu">
-            <button class="btn-main btn-grups" onclick="cargarMaestro('vocabulariGrups.csv')">GRUPS</button>
-            <button class="btn-main btn-temes" onclick="cargarMaestro('vocabulariTemes.csv')">TEMES</button>
-        </div>
-
-        <div id="selector-container">
-            <p style="margin:0; font-weight:bold; color:#475569;">Selecciona un grupo:</p>
-            <div id="grid-selector" class="grid-selector"></div>
-        </div>
-
-        <div id="zona-joc" class="zona-joc">
-            <div class="stats">
-                <span>BIEN: <span id="count-ok" style="color:#22c55e">0</span></span>
-                <span>FALTAN: <span id="count-rest">0</span></span>
-            </div>
-            
-            <div id="pregunta" class="pregunta">---</div>
-            <input type="text" id="resposta" placeholder="Respuesta..." autocomplete="off">
-            <div id="feedback" class="feedback"></div>
-            <button id="btn-next" class="btn-next" onclick="seguent()">Siguiente</button>
-        </div>
-
-        <div id="lista-container">
-            <table id="tabla-estudio">
-                <thead>
-                    <tr><th>Inglés</th><th>Español</th><th></th></tr>
-                </thead>
-                <tbody id="taula-cos"></tbody>
-            </table>
+        <div class="grid-menu">
+            <button class="menu-btn" onclick="carregarArxiuMaestre('vocabulariGrups.csv')">GRUPS</button>
+            <button class="menu-btn" onclick="carregarArxiuMaestre('vocabulariTemes.csv')">TEMES</button>
         </div>
     </div>
 
-    <script>
-        let dadesTotals = [];
-        let dadesFiltrades = [];
-        let indexActual = 0;
-        let acertos = 0;
+    <div class="card" id="selector-container" style="display:none;">
+        <h2 style="color: var(--p-blue-strong)">Tria un grup:</h2>
+        <div id="grid-selector" class="grid-menu"></div>
+        <button onclick="location.reload()" class="btn-back-menu">🔙 Tornar</button>
+    </div>
 
-        function reproducir(palabra) {
-            window.speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance(palabra);
-            utterance.lang = 'en-US';
-            utterance.rate = 0.9;
-            window.speechSynthesis.speak(utterance);
-        }
+    <div id="joc" style="display:none; width: 100%; max-width: 650px; flex-direction: column; align-items: center;">
+        <div class="card">
+            <div class="config-bar">
+                <span>Correctes: <span id="count-ok" style="color:green; font-weight:bold;">0</span></span>
+                <span style="margin-left:20px;">Resten: <span id="count-rest" style="font-weight:bold;">0</span></span>
+            </div>
 
-        async function cargarMaestro(nombreArchivo) {
-            console.log("Intentando cargar:", nombreArchivo);
-            try {
-                const response = await fetch(nombreArchivo);
-                if (!response.ok) throw new Error("No se encuentra el archivo: " + nombreArchivo);
-                
-                const text = await response.text();
-                // Limpiamos retornos de carro extraños (\r)
-                const lineas = text.replace(/\r/g, '').split('\n').filter(l => l.trim() !== '' && !l.includes('Grupo;'));
-                
-                console.log("Líneas leídas:", lineas.length);
+            <div id="feedback" style="height:45px; font-weight:bold; font-size: 1.35em;"></div>
+            
+            <h1 id="pregunta">---</h1>
+            <input type="text" id="resposta" placeholder="..." autocomplete="off" autofocus>
 
-                dadesTotals = lineas.map(linea => {
-                    // Intentamos separar por punto y coma, si no, por coma
-                    let columnas = linea.includes(';') ? linea.split(';') : linea.split(',');
-                    if (columnas.length < 3) return null;
-                    return { grupo: columnas[0].trim(), esp: columnas[1].trim(), eng: columnas[2].trim() };
-                }).filter(d => d !== null);
+            <div class="controls">
+                <button class="btn-audio btn-speaker" onclick="reproduirActual()">🔊</button>
+                <br>
+                <button id="btn-comprovar" class="btn btn-check" onclick="validar()">Comprovar</button>
+                <button id="btn-next" class="btn btn-next" style="display:none;" onclick="seguent()">Següent →</button>
+            </div>
+            
+            <button onclick="location.reload()" class="btn-back-menu">🔙 Menú</button>
+        </div>
 
-                if (dadesTotals.length > 0) {
-                    mostrarSelector();
-                } else {
-                    alert("El archivo está vacío o el formato no es correcto (Grupo;Español;Inglés)");
+        <div id="llista-container" class="list-area">
+            <table><tbody id="taula-cos"></tbody></table>
+        </div>
+    </div>
+
+<script>
+    let dadesTotals = [], dadesFiltrades = [], index = 0, acertos = 0;
+
+    // 1. CARGAR EL ARCHIVO CSV
+    async function carregarArxiuMaestre(nomFitxer) {
+        try {
+            const response = await fetch(nomFitxer);
+            const text = await response.text();
+            const lines = text.split(/\r?\n/).filter(l => l.trim() !== '');
+            
+            // Convertimos el CSV en objetos (Grupo; Cat; Eng)
+            dadesTotals = lines.map(l => {
+                const p = l.split(';');
+                if (p.length >= 3) {
+                    return { grup: p[0].trim(), cat: p[1].trim(), eng: p[2].trim() };
                 }
+                return null;
+            }).filter(item => item);
 
-            } catch (err) {
-                alert("ERROR: " + err.message + "\n\nRevisa que el archivo esté en GitHub con el mismo nombre exacto.");
-            }
+            mostrarSelector();
+        } catch (e) { 
+            alert("No s'ha pogut trobar el fitxer: " + nomFitxer); 
         }
+    }
 
-        function mostrarSelector() {
-            const gruposUnicos = [...new Set(dadesTotals.map(d => d.grupo))];
-            const grid = document.getElementById('grid-selector');
-            grid.innerHTML = '';
-            
-            gruposUnicos.forEach(grupo => {
-                const btn = document.createElement('button');
-                btn.className = 'btn-sel';
-                btn.innerText = grupo;
-                btn.onclick = () => filtrarPorGrupo(grupo);
-                grid.appendChild(btn);
-            });
-            
-            document.getElementById('selector-container').style.display = 'block';
-            document.getElementById('zona-joc').style.display = 'none';
-            document.getElementById('taula-cos').innerHTML = '';
-        }
-
-        function filtrarPorGrupo(grupo) {
-            dadesFiltrades = dadesTotals.filter(d => d.grupo === grupo);
-            dadesFiltrades.sort(() => Math.random() - 0.5);
-            
-            document.getElementById('selector-container').style.display = 'none';
-            document.getElementById('zona-joc').style.display = 'block';
-            
-            indexActual = 0;
-            acertos = 0;
-            actualizarInterfaz();
-            actualizarTabla();
-        }
-
-        function actualizarInterfaz() {
-            const input = document.getElementById('resposta');
-            if (indexActual < dadesFiltrades.length) {
-                document.getElementById('pregunta').innerText = dadesFiltrades[indexActual].esp;
-                input.style.display = 'inline-block';
-                input.value = '';
-                input.disabled = false;
-                document.getElementById('feedback').innerText = '';
-                document.getElementById('btn-next').style.display = 'none';
-                document.getElementById('count-ok').innerText = acertos;
-                document.getElementById('count-rest').innerText = dadesFiltrades.length - indexActual;
-                setTimeout(() => input.focus(), 150);
-            } else {
-                document.getElementById('pregunta').innerText = "¡Hecho! ✨";
-                input.style.display = 'none';
-                document.getElementById('feedback').innerText = "Has completado el grupo.";
-            }
-        }
-
-        function actualizarTabla() {
-            const cos = document.getElementById('taula-cos');
-            cos.innerHTML = dadesFiltrades.map(d => `
-                <tr>
-                    <td class="col-eng">${d.eng}</td>
-                    <td>${d.esp}</td>
-                    <td><button class="btn-mini-audio" onclick="reproducir('${d.eng}')">🔊</button></td>
-                </tr>
-            `).join('');
-        }
-
-        function corregir() {
-            if (indexActual >= dadesFiltrades.length || document.getElementById('resposta').disabled) return;
-            
-            const user = document.getElementById('resposta').value.trim().toLowerCase();
-            const correct = dadesFiltrades[indexActual].eng.toLowerCase();
-            const feedback = document.getElementById('feedback');
-
-            if (user === correct) {
-                feedback.innerText = "¡Correcto!";
-                feedback.style.color = "#22c55e";
-                acertos++;
-                document.getElementById('resposta').disabled = true;
-                reproducir(dadesFiltrades[indexActual].eng);
-                setTimeout(seguent, 800);
-            } else {
-                feedback.innerText = "Era: " + dadesFiltrades[indexActual].eng;
-                feedback.style.color = "#ef4444";
-                document.getElementById('resposta').disabled = true;
-                document.getElementById('btn-next').style.display = 'inline-block';
-                reproducir(dadesFiltrades[indexActual].eng);
-            }
-        }
-
-        function seguent() {
-            indexActual++;
-            actualizarInterfaz();
-        }
-
-        document.getElementById('resposta').addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') corregir();
+    // 2. MOSTRAR LOS BOTONES DE LOS GRUPOS (Escuela, Salud, etc.)
+    function mostrarSelector() {
+        const grupsUnics = [...new Set(dadesTotals.map(d => d.grup))];
+        const grid = document.getElementById('grid-selector');
+        grid.innerHTML = '';
+        
+        grupsUnics.forEach(g => {
+            const btn = document.createElement('button');
+            btn.className = 'menu-btn';
+            btn.innerText = g;
+            btn.onclick = () => iniciarJoc(g);
+            grid.appendChild(btn);
         });
-    </script>
+
+        document.getElementById('setup').style.display = 'none';
+        document.getElementById('selector-container').style.display = 'block';
+    }
+
+    // 3. FILTRAR POR EL GRUPO ELEGIDO E INICIAR
+    function iniciarJoc(grupSeleccionat) {
+        dadesFiltrades = dadesTotals.filter(d => d.grup === grupSeleccionat);
+        dadesFiltrades.sort(() => Math.random() - 0.5);
+        
+        index = 0;
+        acertos = 0;
+        
+        document.getElementById('selector-container').style.display = 'none';
+        document.getElementById('joc').style.display = 'flex';
+        
+        nouRepte();
+        actualitzarTaula();
+    }
+
+    function nouRepte() {
+        if (index >= dadesFiltrades.length) {
+            document.getElementById('pregunta').innerText = "Fi! 🎉";
+            document.getElementById('resposta').style.display = 'none';
+            return;
+        }
+        
+        const p = dadesFiltrades[index];
+        document.getElementById('pregunta').innerText = p.cat;
+        document.getElementById('resposta').value = "";
+        document.getElementById('resposta').disabled = false;
+        document.getElementById('feedback').innerText = "";
+        document.getElementById('btn-next').style.display = "none";
+        document.getElementById('btn-comprovar').style.display = "inline-block";
+        document.getElementById('count-ok').innerText = acertos;
+        document.getElementById('count-rest').innerText = dadesFiltrades.length - index;
+        document.getElementById('resposta').focus();
+    }
+
+    function validar() {
+        const p = dadesFiltrades[index];
+        const textUser = document.getElementById('resposta').value.trim().toLowerCase();
+        
+        if (textUser === p.eng.toLowerCase()) {
+            document.getElementById('feedback').innerText = "Molt bé! ✨";
+            document.getElementById('feedback').style.color = "green";
+            acertos++;
+            reproduirActual();
+            setTimeout(seguent, 800);
+        } else {
+            document.getElementById('feedback').innerText = "Era: " + p.eng.toUpperCase();
+            document.getElementById('feedback').style.color = "red";
+            document.getElementById('btn-comprovar').style.display = "none";
+            document.getElementById('btn-next').style.display = "inline-block";
+            document.getElementById('resposta').disabled = true;
+        }
+    }
+
+    function seguent() {
+        index++;
+        nouRepte();
+    }
+
+    function reproduirActual() {
+        const paraula = dadesFiltrades[index].eng;
+        const msg = new SpeechSynthesisUtterance(paraula);
+        msg.lang = 'en-US';
+        window.speechSynthesis.speak(msg);
+    }
+
+    function reproduirParaula(p) {
+        const msg = new SpeechSynthesisUtterance(p);
+        msg.lang = 'en-US';
+        window.speechSynthesis.speak(msg);
+    }
+
+    function actualitzarTaula() {
+        document.getElementById('taula-cos').innerHTML = dadesFiltrades.map(d => `
+            <tr>
+                <td class="col-eng">
+                    <button style="background:none; border:none; cursor:pointer;" onclick="reproduirParaula('${d.eng}')">🔊</button>
+                    ${d.eng}
+                </td>
+                <td style="color:#666;">${d.cat}</td>
+            </tr>
+        `).join('');
+    }
+
+    document.getElementById('resposta').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            if (document.getElementById('btn-next').style.display === 'inline-block') {
+                seguent();
+            } else {
+                validar();
+            }
+        }
+    });
+</script>
 </body>
 </html>
