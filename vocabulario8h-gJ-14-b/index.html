@@ -21,45 +21,42 @@
 
         .main-menu { display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; }
         
-        /* Botones Principales Suavizados */
         .btn-main { 
             padding: 15px 35px; 
             font-size: 1.2em; 
             font-weight: 600; 
-            border: 2px solid transparent; 
+            border: none; 
             border-radius: 25px; 
             cursor: pointer; 
             transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             flex: 1;
         }
         
-        .btn-grups { background: var(--p-blue-pastel); color: #4b6cb7; }
-        .btn-temes { background: var(--p-green-pastel); color: #52a447; }
+        .btn-grups { background: var(--p-blue-pastel); color: #1e40af; }
+        .btn-temes { background: var(--p-green-pastel); color: #166534; }
         
         .btn-main:hover { opacity: 0.8; transform: translateY(-2px); }
-        .btn-main:active { transform: scale(0.98); }
 
-        #selector-container { display: none; margin-top: 20px; background: #f8fafc; padding: 20px; border-radius: 25px; border: 1px dashed var(--p-blue-pastel); }
+        #selector-container { display: none; margin-top: 20px; background: #f8fafc; padding: 20px; border-radius: 25px; border: 2px solid var(--p-blue-pastel); }
         .grid-selector { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; margin-top: 15px; }
-        .btn-sel { padding: 10px; border: none; border-radius: 15px; background: white; cursor: pointer; font-weight: bold; border: 1px solid #e2e8f0; color: #475569; }
-        .btn-sel:hover { background: var(--p-blue-pastel); border-color: var(--telegram-blue); }
+        .btn-sel { padding: 12px; border: 1px solid #cbd5e1; border-radius: 15px; background: white; cursor: pointer; font-weight: bold; color: #475569; }
+        .btn-sel:hover { background: var(--p-blue-pastel); }
 
-        .zona-joc { display: none; margin-top: 20px; padding: 20px; border-radius: 30px; background: #fafafa; }
-        .pregunta { font-size: 2.2em; font-weight: bold; margin: 20px 0; color: var(--text); }
+        .zona-joc { display: none; margin-top: 20px; padding: 20px; border-radius: 30px; background: #fafafa; border: 1px solid #f1f5f9; }
+        .pregunta { font-size: 2.2em; font-weight: bold; margin: 20px 0; color: #1e3a8a; }
         input[type="text"] { width: 85%; padding: 15px; border-radius: 20px; border: 2px solid var(--p-blue-pastel); font-size: 1.2em; text-align: center; outline: none; }
         
         .feedback { margin: 15px 0; font-weight: bold; font-size: 1.1em; min-height: 1.5em; }
         .btn-next { display: none; padding: 12px 25px; background: var(--telegram-blue); color: white; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; }
         
-        .stats { margin-bottom: 15px; display: flex; justify-content: center; gap: 30px; font-weight: bold; color: #94a3b8; font-size: 0.9em; }
+        .stats { margin-bottom: 15px; display: flex; justify-content: center; gap: 30px; font-weight: bold; color: #64748b; }
         
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; border-radius: 20px; overflow: hidden; }
-        th { background: #f1f5f9; padding: 12px; text-align: left; color: #64748b; font-size: 0.8em; text-transform: uppercase; }
+        table { width: 100%; border-collapse: collapse; margin-top: 30px; border-radius: 20px; overflow: hidden; }
+        th { background: #f1f5f9; padding: 12px; text-align: left; color: #64748b; font-size: 0.8em; }
         td { padding: 12px; border-bottom: 1px solid #f1f5f9; text-align: left; background: white; }
         .col-eng { color: var(--telegram-blue); font-weight: 600; }
-        .btn-mini-audio { border: none; background: none; cursor: pointer; font-size: 1.2em; opacity: 0.5; }
-        .btn-mini-audio:hover { opacity: 1; }
+        .btn-mini-audio { border: none; background: none; cursor: pointer; font-size: 1.2em; }
     </style>
 </head>
 <body>
@@ -73,7 +70,7 @@
         </div>
 
         <div id="selector-container">
-            <p style="margin:0; font-weight:bold; color:#64748b;">¿Qué quieres repasar hoy?</p>
+            <p style="margin:0; font-weight:bold; color:#475569;">Selecciona un grupo:</p>
             <div id="grid-selector" class="grid-selector"></div>
         </div>
 
@@ -89,7 +86,7 @@
             <button id="btn-next" class="btn-next" onclick="seguent()">Siguiente</button>
         </div>
 
-        <div id="lista-container" style="margin-top:40px;">
+        <div id="lista-container">
             <table id="tabla-estudio">
                 <thead>
                     <tr><th>Inglés</th><th>Español</th><th></th></tr>
@@ -114,13 +111,127 @@
         }
 
         async function cargarMaestro(nombreArchivo) {
+            console.log("Intentando cargar:", nombreArchivo);
             try {
                 const response = await fetch(nombreArchivo);
-                if (!response.ok) throw new Error();
-                const text = await response.text();
-                const lineas = text.split('\n').filter(l => l.trim() !== '' && !l.startsWith('Grupo'));
+                if (!response.ok) throw new Error("No se encuentra el archivo: " + nombreArchivo);
                 
+                const text = await response.text();
+                // Limpiamos retornos de carro extraños (\r)
+                const lineas = text.replace(/\r/g, '').split('\n').filter(l => l.trim() !== '' && !l.includes('Grupo;'));
+                
+                console.log("Líneas leídas:", lineas.length);
+
                 dadesTotals = lineas.map(linea => {
-                    const columnas = linea.split(';');
+                    // Intentamos separar por punto y coma, si no, por coma
+                    let columnas = linea.includes(';') ? linea.split(';') : linea.split(',');
                     if (columnas.length < 3) return null;
-                    return { grupo: columnas[0].trim(), esp: columnas[1].trim(), eng: columnas
+                    return { grupo: columnas[0].trim(), esp: columnas[1].trim(), eng: columnas[2].trim() };
+                }).filter(d => d !== null);
+
+                if (dadesTotals.length > 0) {
+                    mostrarSelector();
+                } else {
+                    alert("El archivo está vacío o el formato no es correcto (Grupo;Español;Inglés)");
+                }
+
+            } catch (err) {
+                alert("ERROR: " + err.message + "\n\nRevisa que el archivo esté en GitHub con el mismo nombre exacto.");
+            }
+        }
+
+        function mostrarSelector() {
+            const gruposUnicos = [...new Set(dadesTotals.map(d => d.grupo))];
+            const grid = document.getElementById('grid-selector');
+            grid.innerHTML = '';
+            
+            gruposUnicos.forEach(grupo => {
+                const btn = document.createElement('button');
+                btn.className = 'btn-sel';
+                btn.innerText = grupo;
+                btn.onclick = () => filtrarPorGrupo(grupo);
+                grid.appendChild(btn);
+            });
+            
+            document.getElementById('selector-container').style.display = 'block';
+            document.getElementById('zona-joc').style.display = 'none';
+            document.getElementById('taula-cos').innerHTML = '';
+        }
+
+        function filtrarPorGrupo(grupo) {
+            dadesFiltrades = dadesTotals.filter(d => d.grupo === grupo);
+            dadesFiltrades.sort(() => Math.random() - 0.5);
+            
+            document.getElementById('selector-container').style.display = 'none';
+            document.getElementById('zona-joc').style.display = 'block';
+            
+            indexActual = 0;
+            acertos = 0;
+            actualizarInterfaz();
+            actualizarTabla();
+        }
+
+        function actualizarInterfaz() {
+            const input = document.getElementById('resposta');
+            if (indexActual < dadesFiltrades.length) {
+                document.getElementById('pregunta').innerText = dadesFiltrades[indexActual].esp;
+                input.style.display = 'inline-block';
+                input.value = '';
+                input.disabled = false;
+                document.getElementById('feedback').innerText = '';
+                document.getElementById('btn-next').style.display = 'none';
+                document.getElementById('count-ok').innerText = acertos;
+                document.getElementById('count-rest').innerText = dadesFiltrades.length - indexActual;
+                setTimeout(() => input.focus(), 150);
+            } else {
+                document.getElementById('pregunta').innerText = "¡Hecho! ✨";
+                input.style.display = 'none';
+                document.getElementById('feedback').innerText = "Has completado el grupo.";
+            }
+        }
+
+        function actualizarTabla() {
+            const cos = document.getElementById('taula-cos');
+            cos.innerHTML = dadesFiltrades.map(d => `
+                <tr>
+                    <td class="col-eng">${d.eng}</td>
+                    <td>${d.esp}</td>
+                    <td><button class="btn-mini-audio" onclick="reproducir('${d.eng}')">🔊</button></td>
+                </tr>
+            `).join('');
+        }
+
+        function corregir() {
+            if (indexActual >= dadesFiltrades.length || document.getElementById('resposta').disabled) return;
+            
+            const user = document.getElementById('resposta').value.trim().toLowerCase();
+            const correct = dadesFiltrades[indexActual].eng.toLowerCase();
+            const feedback = document.getElementById('feedback');
+
+            if (user === correct) {
+                feedback.innerText = "¡Correcto!";
+                feedback.style.color = "#22c55e";
+                acertos++;
+                document.getElementById('resposta').disabled = true;
+                reproducir(dadesFiltrades[indexActual].eng);
+                setTimeout(seguent, 800);
+            } else {
+                feedback.innerText = "Era: " + dadesFiltrades[indexActual].eng;
+                feedback.style.color = "#ef4444";
+                document.getElementById('resposta').disabled = true;
+                document.getElementById('btn-next').style.display = 'inline-block';
+                reproducir(dadesFiltrades[indexActual].eng);
+            }
+        }
+
+        function seguent() {
+            indexActual++;
+            actualizarInterfaz();
+        }
+
+        document.getElementById('resposta').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') corregir();
+        });
+    </script>
+</body>
+</html>
