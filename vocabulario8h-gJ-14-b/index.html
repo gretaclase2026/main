@@ -14,51 +14,51 @@
         }
         body { font-family: 'Segoe UI', sans-serif; background: #fff5f6; color: var(--text); display: flex; flex-direction: column; align-items: center; padding: 10px; margin:0; }
         
-        /* TARGETA PRINCIPAL ROSA PASTEL */
         .card { background: white; width: 100%; max-width: 600px; padding: 20px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 6px solid var(--p-pink); text-align: center; box-sizing: border-box; margin-bottom: 20px; }
         
+        /* Menú Inicial Rosa Pastel */
         .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
-        .menu-btn { background: white; border: 3px solid var(--p-pink); padding: 15px; border-radius: 15px; font-weight: bold; color: var(--p-blue-strong); cursor: pointer; font-size: 1.1em; }
+        .menu-btn { background: white; border: 3px solid var(--p-pink); padding: 12px; border-radius: 15px; font-weight: bold; color: var(--p-blue-strong); cursor: pointer; font-size: 1em; }
         
-        .config-bar { display: flex; align-items: center; gap: 10px; justify-content: center; margin-bottom: 15px; font-size: 0.9em; font-weight: bold; }
-        .config-bar input { width: 40px; padding: 4px; border: 2px solid var(--p-pink); border-radius: 8px; text-align: center; }
-        
-        /* JOC */
+        /* Joc */
         #solucio-text { font-size: 2.2em; font-weight: bold; color: var(--p-red); min-height: 1.2em; margin-bottom: 5px; text-transform: uppercase; }
         #feedback { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; height: 1.2em; }
         #pregunta { font-size: 2em; margin: 10px 0; color: var(--p-blue-strong); font-weight: bold; }
         
-        #resposta { width: 95%; padding: 12px; font-size: 1.5em; border-radius: 15px; border: 3px solid var(--p-pink); text-align: center; outline: none; }
+        #resposta { width: 95%; padding: 12px; font-size: 1.5em; border-radius: 15px; border: 3px solid var(--p-pink); text-align: center; outline: none; box-sizing: border-box; }
 
-        .star-btn { font-size: 2.8em; cursor: pointer; color: #eee; background:none; border:none; line-height: 1; transition: 0.2s; }
+        .star-btn { font-size: 2.8em; cursor: pointer; color: #eee; background:none; border:none; line-height: 1; }
         .star-btn.active { color: #fbbc04; }
 
         .audio-controls { margin: 10px 0; display: flex; justify-content: center; gap: 15px; }
         .icon-btn { background: none; border: none; cursor: pointer; font-size: 1.8em; }
 
-        /* BOTO COMPROVAR BLAU PASTEL */
+        /* Botó Comprovar Blau Pastel */
         .btn-main { background: var(--p-blue-soft); color: var(--p-blue-strong); padding: 12px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; width: 80%; font-size: 1.1em; }
         
-        /* LLISTA INTEGRADA A LA PAGINA (Sense finestra fixa) */
-        .list-container { width: 100%; max-width: 600px; background: white; border-radius: 25px; border: 6px solid var(--p-pink); padding: 15px; box-sizing: border-box; margin-bottom: 30px; }
+        /* LLISTA SENSE FINESTRA (Molt compacta) */
+        .list-container { width: 100%; max-width: 600px; background: white; border-radius: 25px; border: 6px solid var(--p-pink); padding: 8px; box-sizing: border-box; margin-bottom: 40px; }
         .list-table { width: 100%; border-collapse: collapse; }
         .list-table td { 
-            padding: 6px 4px; 
+            padding: 4px 2px; /* Espai mínim entre línies */
             border-bottom: 1px solid #fce4e6; 
             text-align: left; 
-            font-size: 1.15em; 
+            font-size: 1.15em; /* Lletra gran */
         }
-        .num { color: #bbb; font-weight: bold; width: 30px; font-size: 0.8em; }
-        .txt-eng { color: var(--p-blue-strong); font-weight: bold; } 
-        .txt-cas { color: #777; font-size: 0.95em; }
+        .num { color: #ccc; font-weight: bold; width: 25px; font-size: 0.8em; text-align: center; }
+        .txt-eng { color: var(--p-blue-strong); font-weight: bold; }
+        .txt-cas { color: #888; font-size: 0.9em; }
         
+        .config-bar { display: flex; align-items: center; gap: 8px; justify-content: center; margin-bottom: 15px; font-size: 0.85em; font-weight: bold; }
+        .config-bar input { width: 35px; padding: 3px; border: 2px solid var(--p-pink); border-radius: 6px; text-align: center; }
+
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
     <div class="card" id="p-fitxer">
-        <h1 style="color:var(--p-blue-strong); margin-bottom:20px;">VOCABULARI</h1>
+        <h1 style="color:var(--p-blue-strong); margin: 0 0 20px 0;">VOCABULARI</h1>
         <div class="grid-menu">
             <button class="menu-btn" onclick="carregarCSV('vocabulariGrups.csv')">GRUPS</button>
             <button class="menu-btn" onclick="carregarCSV('vocabulariTemes.csv')">TEMES</button>
@@ -66,9 +66,9 @@
     </div>
 
     <div class="card hidden" id="p-grups">
-        <h2 style="color: var(--p-blue-strong)">Tria Categoria</h2>
+        <h2 style="color: var(--p-blue-strong); margin-top:0;">Tria Categoria</h2>
         <div id="grid-selector" class="grid-menu"></div>
-        <button onclick="location.reload()" style="background:none; border:none; color:#999; margin-top:20px; cursor:pointer;">🔙 Tornar</button>
+        <button onclick="location.reload()" style="background:none; border:none; color:#bbb; margin-top:20px; cursor:pointer;">🔙 Tornar</button>
     </div>
 
     <div id="p-estudi" class="hidden" style="width: 100%; max-width: 600px; display: flex; flex-direction: column; align-items: center;">
@@ -76,9 +76,9 @@
         <div class="card">
             <div class="config-bar">
                 <span id="titol-estudi" style="color: var(--p-blue-strong);"></span>
-                <span onclick="canviarIdioma()" style="cursor:pointer; background:var(--p-blue-soft); padding:2px 8px; border-radius:5px;">[<b id="txt-idioma">CAS</b>]</span>
-                <span id="btn-repas" onclick="toggleRepas()" style="cursor:pointer; background:#eee; padding:2px 8px; border-radius:5px;">⭐ OFF</span>
-                <span>R: <input type="number" id="row-desde" value="1" onchange="actualitzarRang()"> - <input type="number" id="row-fins" value="100" onchange="actualitzarRang()"></span>
+                <span onclick="canviarIdioma()" style="cursor:pointer; background:var(--p-blue-soft); padding:2px 6px; border-radius:5px;">[<b id="txt-idioma">CAT</b>]</span>
+                <span id="btn-repas" onclick="toggleRepas()" style="cursor:pointer; background:#eee; padding:2px 6px; border-radius:5px;">⭐ OFF</span>
+                <span>R: <input type="number" id="row-desde" value="1" onchange="actualitzarRang()">-<input type="number" id="row-fins" value="100" onchange="actualitzarRang()"></span>
             </div>
 
             <button id="star-main" class="star-btn" onclick="toggleEstrellaActual()">★</button>
@@ -109,31 +109,29 @@
 <script>
     let dadesTotals = [], dadesCat = [], dadesJoc = [], index = 0;
     let repasIds = new Set(JSON.parse(localStorage.getItem('repasIds') || '[]'));
-    let idioma = 'CAS', modoRepas = false, errorActive = false, correctActive = false;
+    let idioma = 'CAT', modoRepas = false, errorActive = false, correctActive = false;
 
     async function carregarCSV(nom) {
-        const r = await fetch(nom);
-        const t = await r.text();
-        dadesTotals = t.split(/\r?\n/).filter(l => l.trim() !== '').map((l, i) => {
-            const p = l.split(';');
-            return { id: i + nom, cat: p[0]?.trim(), eng: p[1]?.trim(), esp: p[2]?.trim() };
-        }).filter(d => {
-            if (!d.eng || !d.cat) return false;
-            const c = d.cat.toLowerCase();
-            return c !== 'category' && !c.includes('análisis');
-        });
+        try {
+            const r = await fetch(nom);
+            const t = await r.text();
+            dadesTotals = t.split(/\r?\n/).filter(l => l.trim() !== '').map((l, i) => {
+                const p = l.split(';');
+                return { id: i + nom, cat: p[0]?.trim(), eng: p[1]?.trim(), esp: p[2]?.trim() };
+            }).filter(d => d.eng && d.cat && d.cat.toLowerCase() !== 'category');
 
-        const cats = [...new Set(dadesTotals.map(d => d.cat))];
-        const grid = document.getElementById('grid-selector');
-        grid.innerHTML = '';
-        cats.forEach(c => {
-            const b = document.createElement('button');
-            b.className = 'menu-btn'; b.innerText = c;
-            b.onclick = () => carregarCategoria(c);
-            grid.appendChild(b);
-        });
-        document.getElementById('p-fitxer').classList.add('hidden');
-        document.getElementById('p-grups').classList.remove('hidden');
+            const cats = [...new Set(dadesTotals.map(d => d.cat))];
+            const grid = document.getElementById('grid-selector');
+            grid.innerHTML = '';
+            cats.forEach(c => {
+                const b = document.createElement('button');
+                b.className = 'menu-btn'; b.innerText = c;
+                b.onclick = () => carregarCategoria(c);
+                grid.appendChild(b);
+            });
+            document.getElementById('p-fitxer').classList.add('hidden');
+            document.getElementById('p-grups').classList.remove('hidden');
+        } catch (e) { alert("Error carregant el fitxer. Assegura't que es diu " + nom); }
     }
 
     function carregarCategoria(c) {
@@ -146,10 +144,94 @@
     }
 
     function actualitzarRang() {
-        const d = parseInt(document.getElementById('row-desde').value) - 1;
+        const d = Math.max(0, parseInt(document.getElementById('row-desde').value) - 1);
         const f = parseInt(document.getElementById('row-fins').value);
         let base = dadesCat.slice(d, f);
         if (modoRepas) base = base.filter(item => repasIds.has(item.id));
-        dadesJoc = base.sort(() => Math.random() - 0.5);
+        dadesJoc = [...base].sort(() => Math.random() - 0.5);
         index = 0;
-        nouRep
+        nouRepte();
+        actualitzarTaula(base);
+    }
+
+    function nouRepte() {
+        if (dadesJoc.length === 0) { document.getElementById('pregunta').innerText = "(Sense paraules)"; return; }
+        if (index >= dadesJoc.length) { dadesJoc.sort(() => Math.random() - 0.5); index = 0; }
+        errorActive = false; correctActive = false;
+        const p = dadesJoc[index];
+        document.getElementById('pregunta').innerText = (idioma === 'CAT') ? p.esp : p.eng;
+        const r = document.getElementById('resposta');
+        r.value = ""; r.style.color = "var(--text)";
+        document.getElementById('feedback').innerText = "";
+        document.getElementById('solucio-text').innerText = "";
+        document.getElementById('star-main').classList.toggle('active', repasIds.has(p.id));
+        r.focus();
+    }
+
+    function validar() {
+        if (dadesJoc.length === 0 || errorActive || correctActive) return;
+        const p = dadesJoc[index];
+        const user = document.getElementById('resposta').value.trim().toLowerCase();
+        const ok = (idioma === 'CAT') ? p.eng.toLowerCase() : p.esp.toLowerCase();
+        
+        reproduir(p.eng, 1.0);
+        document.getElementById('solucio-text').innerText = p.eng.toUpperCase();
+
+        if (user === ok) {
+            document.getElementById('feedback').innerText = "MOLT BÉ ✨";
+            document.getElementById('feedback').style.color = "green";
+            correctActive = true;
+            setTimeout(seguent, 1000);
+        } else {
+            document.getElementById('feedback').innerText = "ERROR ❌";
+            document.getElementById('feedback').style.color = "var(--p-red)";
+            errorActive = true;
+        }
+    }
+
+    function seguent() { index++; nouRepte(); }
+    function reproduirActual(vel) { if (dadesJoc[index]) reproduir(dadesJoc[index].eng, vel); document.getElementById('resposta').focus(); }
+    function reproduir(t, vel) { window.speechSynthesis.cancel(); const m = new SpeechSynthesisUtterance(t); m.lang = 'en-US'; m.rate = vel; window.speechSynthesis.speak(m); }
+
+    function toggleEstrellaActual() {
+        const id = dadesJoc[index].id;
+        repasIds.has(id) ? repasIds.delete(id) : repasIds.add(id);
+        localStorage.setItem('repasIds', JSON.stringify([...repasIds]));
+        document.getElementById('star-main').classList.toggle('active', repasIds.has(id));
+        actualitzarTaula(dadesCat.slice(parseInt(document.getElementById('row-desde').value)-1, parseInt(document.getElementById('row-fins').value)));
+    }
+
+    function canviarIdioma() { 
+        idioma = (idioma === 'CAT') ? 'ENG' : 'CAT'; 
+        document.getElementById('txt-idioma').innerText = idioma; 
+        nouRepte(); 
+    }
+    
+    function toggleRepas() { 
+        modoRepas = !modoRepas; 
+        document.getElementById('btn-repas').innerText = modoRepas ? "⭐ ON" : "⭐ OFF"; 
+        actualitzarRang();
+    }
+
+    function actualitzarTaula(llista) {
+        document.getElementById('taula-joc').innerHTML = llista.map((d, i) => `
+            <tr>
+                <td class="num">${i+1}</td>
+                <td style="color:${repasIds.has(d.id)?'#fbbc04':'#eee'}; font-size:1.4em; width:30px;">★</td>
+                <td class="txt-eng">${d.eng}</td>
+                <td class="txt-cas">${d.esp}</td>
+                <td style="text-align:right;"><button style="background:none; border:none; cursor:pointer; font-size:1.2em;" onclick="reproduir('${d.eng.replace(/'/g,"\\'")}', 1.0)">🔊</button></td>
+            </tr>
+        `).join('');
+    }
+
+    document.getElementById('resposta').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            if (errorActive) { e.preventDefault(); nouRepte(); }
+            else if (correctActive) { e.preventDefault(); seguent(); }
+            else if (e.key === 'Enter') { validar(); }
+        }
+    });
+</script>
+</body>
+</html>
