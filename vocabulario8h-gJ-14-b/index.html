@@ -7,29 +7,29 @@
     <style>
         :root { --p-pink: #ffcfd2; --p-blue-soft: #d4eaf7; --p-blue-strong: #2196F3; --telegram-blue: #24A1DE; --text: #4a4a4a; }
         body { font-family: 'Segoe UI', sans-serif; background: #fff5f6; color: var(--text); display: flex; flex-direction: column; align-items: center; padding: 10px; margin:0; }
-        .card { background: white; width: 100%; max-width: 650px; padding: 20px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 6px solid var(--p-pink); text-align: center; box-sizing: border-box; margin-top: 10px; }
+        .card { background: white; width: 100%; max-width: 650px; padding: 15px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 6px solid var(--p-pink); text-align: center; box-sizing: border-box; margin-bottom: 10px; }
         .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
         .menu-btn { background: white; border: 3px solid var(--p-pink); padding: 12px; border-radius: 15px; font-size: 1em; font-weight: bold; color: var(--p-blue-strong); cursor: pointer; }
-        .config-bar { background: #fff; padding: 10px; border-radius: 20px; margin-bottom: 10px; border: 2px solid var(--p-pink); display: flex; align-items: center; gap: 8px; justify-content: center; }
-        .config-bar input { width: 45px; padding: 5px; border-radius: 8px; border: 2px solid var(--p-pink); text-align: center; }
-        #pregunta { font-size: 2.2em; color: var(--p-blue-strong); margin: 10px 0; font-weight: bold; }
-        #resposta { width: 95%; padding: 12px; font-size: 1.5em; border-radius: 15px; border: 3px solid var(--p-pink); text-align: center; outline: none; }
-        .btn { padding: 10px 20px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; margin: 4px; }
-        .star-btn { font-size: 2.2em; cursor: pointer; color: #ccc; background:none; border:none; line-height:1; }
+        .config-bar { background: #fff; padding: 8px; border-radius: 15px; margin-bottom: 10px; border: 2px solid var(--p-pink); display: flex; align-items: center; gap: 5px; justify-content: center; font-size: 0.9em; }
+        .config-bar input { width: 40px; padding: 4px; border-radius: 5px; border: 1px solid var(--p-pink); text-align: center; font-weight: bold; }
+        #pregunta { font-size: 2em; color: var(--p-blue-strong); margin: 10px 0; font-weight: bold; }
+        #resposta { width: 95%; padding: 12px; font-size: 1.4em; border-radius: 15px; border: 3px solid var(--p-pink); text-align: center; outline: none; }
+        .btn { padding: 10px 15px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; margin: 3px; font-size: 0.9em; }
+        .star-btn { font-size: 2em; cursor: pointer; color: #ccc; background:none; border:none; line-height:1; }
         .star-btn.active { color: #ffb703; }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        td { padding: 8px 2px; border-bottom: 1px solid #eee; text-align: left; font-size: 0.85em; }
-        .col-tools { display: flex; align-items: center; gap: 5px; min-width: 80px; }
-        .num-word { color: #bbb; font-weight: bold; width: 20px; }
-        .star-list { color: #ffb703; width: 15px; }
-        .btn-mini-audio { background:none; border:none; cursor:pointer; font-size: 1.2em; padding:0; }
+        td { padding: 6px 2px; border-bottom: 1px solid #eee; text-align: left; font-size: 0.8em; }
+        .col-tools { display: flex; align-items: center; gap: 4px; min-width: 110px; }
+        .num-word { color: #bbb; font-weight: bold; width: 18px; font-size: 0.75em; }
+        .star-list { color: #ffb703; font-size: 1.1em; width: 15px; text-align: center; }
+        .btn-audio { background:none; border:none; cursor:pointer; font-size: 1.2em; padding:0; }
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
     <div class="card" id="p-fitxer">
-        <h1 style="color:var(--telegram-blue)">VOCABULARI</h1>
+        <h1 style="color:var(--telegram-blue); margin:10px;">VOCABULARI</h1>
         <div class="grid-menu">
             <button class="menu-btn" onclick="carregarCSV('vocabulariGrups.csv')">GRUPS</button>
             <button class="menu-btn" onclick="carregarCSV('vocabulariTemes.csv')">TEMES</button>
@@ -37,43 +37,45 @@
     </div>
 
     <div class="card hidden" id="p-grups">
-        <h2 style="color: var(--p-blue-strong)">Tria categoria:</h2>
+        <h2 style="color: var(--p-blue-strong); margin:10px;">Tria categoria:</h2>
         <div id="grid-selector" class="grid-menu"></div>
         <button onclick="location.reload()" style="background:none; border:none; color:#999; margin-top:15px; cursor:pointer;">🔙 Tornar</button>
     </div>
 
-    <div class="card hidden" id="p-config">
-        <h2 id="titol-cat" style="color: var(--p-blue-strong); margin:5px 0;"></h2>
-        <div class="config-bar">
-            <span>Des de: <input type="number" id="row-desde" value="1"></span>
-            <span>Fins a: <input type="number" id="row-fins" value="100"></span>
-        </div>
-        <button class="menu-btn" style="background: var(--p-blue-strong); color:white; width:100%;" onclick="prepararJoc()">COMENÇAR A PRACTICAR</button>
-        <div style="margin-top:15px; max-height: 250px; overflow-y: auto;">
-            <table><tbody id="taula-previa"></tbody></table>
-        </div>
-    </div>
-
-    <div id="p-joc" class="hidden" style="width: 100%; max-width: 650px; flex-direction: column; align-items: center;">
+    <div id="p-estudi" class="hidden" style="width: 100%; max-width: 650px;">
+        
         <div class="card">
+            <h2 id="titol-estudi" style="color:var(--p-blue-strong); margin:0 0 10px 0; font-size:1.1em;"></h2>
+            
             <div class="config-bar">
-                <button class="btn" style="background:var(--p-blue-soft)" onclick="canviarIdioma()">Pregunta: <b id="txt-idioma">ESP</b></button>
-                <button class="btn" id="btn-repas" style="background:#eee" onclick="toggleRepas()">⭐ Repàs: OFF</button>
+                <button class="btn" style="background:var(--p-blue-soft); padding:5px 10px;" onclick="canviarIdioma()"><b id="txt-idioma">ESP</b></button>
+                <button class="btn" id="btn-repas" style="background:#eee; padding:5px 10px;" onclick="toggleRepas()">⭐ Repàs: OFF</button>
+                <span>D: <input type="number" id="row-desde" value="1" onchange="actualitzarRang()"></span>
+                <span>F: <input type="number" id="row-fins" value="100" onchange="actualitzarRang()"></span>
             </div>
+
             <div style="display:flex; justify-content:space-between; align-items:center;">
                 <button id="star-main" class="star-btn" onclick="toggleEstrellaActual()">★</button>
-                <div style="font-size:0.9em;">OK: <b id="count-ok" style="color:green">0</b></div>
+                <div id="feedback" style="font-weight:bold; font-size:1em;"></div>
+                <div style="font-size:0.8em; font-weight:bold;">OK: <span id="count-ok" style="color:green">0</span></div>
             </div>
-            <div id="feedback" style="height:35px; font-weight:bold; font-size:1.2em;"></div>
+
             <h1 id="pregunta">---</h1>
-            <input type="text" id="resposta" placeholder="..." autocomplete="off">
+            <input type="text" id="resposta" placeholder="Escriu aquí..." autocomplete="off">
+            
             <div style="margin-top:10px;">
                 <button class="btn" style="background:var(--p-blue-soft)" onclick="validar()">Comprovar</button>
                 <button class="btn" style="background:#ffe5d9" onclick="noLaSe()">No la sé</button>
             </div>
-            <button onclick="location.reload()" style="background:none; border:none; color:#999; margin-top:10px; cursor:pointer;">🔙 Menú</button>
+            <button onclick="location.reload()" style="background:none; border:none; color:#bbb; margin-top:10px; font-size:0.8em;">🔙 Menú Principal</button>
         </div>
-        <div class="card" style="margin-top:10px; padding:10px;"><table id="taula-joc"></table></div>
+
+        <div class="card" style="padding:10px;">
+            <p style="margin:0; font-size:0.8em; color:#999; font-weight:bold;">LLISTA DEL GRUP (NUMERADA):</p>
+            <div style="max-height: 400px; overflow-y: auto;">
+                <table id="taula-joc"></table>
+            </div>
+        </div>
     </div>
 
 <script>
@@ -86,8 +88,12 @@
         const t = await r.text();
         dadesTotals = t.split(/\r?\n/).filter(l => l.trim() !== '').map((l, i) => {
             const p = l.split(';');
-            return { id: i + nom, cat: p[0], eng: p[1]?.trim(), esp: p[2]?.trim() };
-        }).filter(d => d.eng && d.cat.toLowerCase() !== 'category' && d.cat.toLowerCase() !== 'análisis de datos');
+            return { id: i + nom, cat: p[0]?.trim(), eng: p[1]?.trim(), esp: p[2]?.trim() };
+        }).filter(d => {
+            if (!d.eng || !d.cat) return false;
+            const c = d.cat.toLowerCase();
+            return c !== 'category' && !c.includes('análisis');
+        });
 
         const cats = [...new Set(dadesTotals.map(d => d.cat))];
         const grid = document.getElementById('grid-selector');
@@ -95,42 +101,40 @@
         cats.forEach(c => {
             const b = document.createElement('button');
             b.className = 'menu-btn'; b.innerText = c;
-            b.onclick = () => {
-                dadesCat = dadesTotals.filter(d => d.cat === c);
-                document.getElementById('titol-cat').innerText = c;
-                document.getElementById('row-fins').value = dadesCat.length;
-                actualitzarLlistaConfig();
-                document.getElementById('p-grups').classList.add('hidden');
-                document.getElementById('p-config').classList.remove('hidden');
-            };
+            b.onclick = () => carregarCategoria(c);
             grid.appendChild(b);
         });
         document.getElementById('p-fitxer').classList.add('hidden');
         document.getElementById('p-grups').classList.remove('hidden');
     }
 
-    function actualitzarLlistaConfig() {
-        document.getElementById('taula-previa').innerHTML = dadesCat.map((d, i) => `
-            <tr><td class="num-word">${i+1}</td><td style="color:var(--p-blue-strong)">${d.eng}</td><td>${d.esp}</td></tr>
-        `).join('');
+    function carregarCategoria(c) {
+        dadesCat = dadesTotals.filter(d => d.cat === c);
+        document.getElementById('titol-estudi').innerText = c;
+        document.getElementById('row-fins').value = dadesCat.length;
+        document.getElementById('p-grups').classList.add('hidden');
+        document.getElementById('p-estudi').classList.remove('hidden');
+        actualitzarRang();
     }
 
-    function prepararJoc() {
+    function actualitzarRang() {
         const d = parseInt(document.getElementById('row-desde').value) - 1;
         const f = parseInt(document.getElementById('row-fins').value);
         let base = dadesCat.slice(d, f);
+        
         if (modoRepas) base = base.filter(item => repasIds.has(item.id));
-        if (base.length === 0) return alert("Cap paraula seleccionada");
-
+        
         dadesJoc = base.sort(() => Math.random() - 0.5);
-        index = 0; acertos = 0;
-        document.getElementById('p-config').classList.add('hidden');
-        document.getElementById('p-joc').classList.remove('hidden');
+        index = 0;
         nouRepte();
-        actualitzarTaulaJoc(base);
+        actualitzarTaula(base);
     }
 
     function nouRepte() {
+        if (dadesJoc.length === 0) {
+            document.getElementById('pregunta').innerText = "Cap paraula!";
+            return;
+        }
         if (index >= dadesJoc.length) { dadesJoc.sort(() => Math.random() - 0.5); index = 0; }
         errorActive = false;
         const p = dadesJoc[index];
@@ -138,25 +142,27 @@
         const r = document.getElementById('resposta');
         r.value = ""; r.style.color = "var(--text)";
         document.getElementById('feedback').innerText = "";
-        document.getElementById('count-ok').innerText = acertos;
         document.getElementById('star-main').classList.toggle('active', repasIds.has(p.id));
         r.focus();
     }
 
     function validar() {
+        if (dadesJoc.length === 0) return;
         const p = dadesJoc[index];
         const user = document.getElementById('resposta').value.trim().toLowerCase();
         const ok = (idioma === 'ESP') ? p.eng.toLowerCase() : p.esp.toLowerCase();
+        
         if (user === ok) {
-            acertos++; reproducir(p.eng);
-            document.getElementById('feedback').innerText = "✨ Molt bé!";
+            acertos++; reproducir(p.eng, 1.0);
+            document.getElementById('feedback').innerText = "✨ OK!";
             document.getElementById('feedback').style.color = "green";
+            document.getElementById('count-ok').innerText = acertos;
             setTimeout(seguent, 600);
         } else {
-            document.getElementById('feedback').innerText = "ERA: " + ok.toUpperCase();
+            document.getElementById('feedback').innerText = ok.toUpperCase();
             document.getElementById('feedback').style.color = "red";
             document.getElementById('resposta').style.color = "red";
-            errorActive = true; reproducir(p.eng);
+            errorActive = true; reproducir(p.eng, 1.0);
         }
     }
 
@@ -168,8 +174,11 @@
 
     function seguent() { index++; nouRepte(); }
 
-    function reproducir(t) {
-        const m = new SpeechSynthesisUtterance(t); m.lang = 'en-US';
+    function reproducir(t, vel) {
+        window.speechSynthesis.cancel();
+        const m = new SpeechSynthesisUtterance(t); 
+        m.lang = 'en-US'; 
+        m.rate = vel;
         window.speechSynthesis.speak(m);
     }
 
@@ -178,17 +187,33 @@
         repasIds.has(id) ? repasIds.delete(id) : repasIds.add(id);
         localStorage.setItem('repasIds', JSON.stringify([...repasIds]));
         document.getElementById('star-main').classList.toggle('active', repasIds.has(id));
-        actualitzarTaulaJoc(dadesJoc);
+        actualitzarTaula(dadesJoc);
     }
 
-    function canviarIdioma() { idioma = (idioma === 'ESP') ? 'ENG' : 'ESP'; document.getElementById('txt-idioma').innerText = idioma; nouRepte(); }
-    function toggleRepas() { modoRepas = !modoRepas; document.getElementById('btn-repas').innerText = "⭐ Repàs: " + (modoRepas ? "ON" : "OFF"); document.getElementById('btn-repas').style.background = modoRepas ? "#FFF176" : "#eee"; }
+    function canviarIdioma() { 
+        idioma = (idioma === 'ESP') ? 'ENG' : 'ESP'; 
+        document.getElementById('txt-idioma').innerText = idioma; 
+        nouRepte(); 
+    }
+    
+    function toggleRepas() { 
+        modoRepas = !modoRepas; 
+        document.getElementById('btn-repas').innerText = "⭐ Repàs: " + (modoRepas ? "ON" : "OFF"); 
+        document.getElementById('btn-repas').style.background = modoRepas ? "#FFF176" : "#eee";
+        actualitzarRang();
+    }
 
-    function actualitzarTaulaJoc(llista) {
+    function actualitzarTaula(llista) {
         document.getElementById('taula-joc').innerHTML = llista.map((d, i) => `
             <tr>
-                <td class="col-tools"><span class="num-word">${i+1}</span><span class="star-list">${repasIds.has(d.id)?'★':''}</span><button class="btn-mini-audio" onclick="reproducir('${d.eng.replace(/'/g,"\\'")}')">🔊</button></td>
-                <td style="color:var(--telegram-blue); font-weight:bold;">${d.eng}</td><td>${d.esp}</td>
+                <td class="col-tools">
+                    <span class="num-word">${i+1}</span>
+                    <span class="star-list">${repasIds.has(d.id)?'★':''}</span>
+                    <button class="btn-audio" onclick="reproducir('${d.eng.replace(/'/g,"\\'")}', 1.0)">🔊</button>
+                    <button class="btn-audio" onclick="reproducir('${d.eng.replace(/'/g,"\\'")}', 0.5)">🐢</button>
+                </td>
+                <td style="color:var(--p-blue-strong); font-weight:bold;">${d.eng}</td>
+                <td style="color:#666;">${d.esp}</td>
             </tr>
         `).join('');
     }
