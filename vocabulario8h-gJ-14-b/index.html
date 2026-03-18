@@ -14,44 +14,43 @@
         }
         body { font-family: 'Segoe UI', sans-serif; background: #fff5f6; color: var(--text); display: flex; flex-direction: column; align-items: center; padding: 10px; margin:0; }
         
+        /* TARGETA PRINCIPAL ROSA PASTEL */
         .card { background: white; width: 100%; max-width: 600px; padding: 20px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 6px solid var(--p-pink); text-align: center; box-sizing: border-box; margin-bottom: 20px; }
         
-        /* Menú inicial Rosa Pastel */
         .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
         .menu-btn { background: white; border: 3px solid var(--p-pink); padding: 15px; border-radius: 15px; font-weight: bold; color: var(--p-blue-strong); cursor: pointer; font-size: 1.1em; }
         
-        /* Barra superior */
         .config-bar { display: flex; align-items: center; gap: 10px; justify-content: center; margin-bottom: 15px; font-size: 0.9em; font-weight: bold; }
         .config-bar input { width: 40px; padding: 4px; border: 2px solid var(--p-pink); border-radius: 8px; text-align: center; }
         
-        /* Joc */
+        /* JOC */
         #solucio-text { font-size: 2.2em; font-weight: bold; color: var(--p-red); min-height: 1.2em; margin-bottom: 5px; text-transform: uppercase; }
         #feedback { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; height: 1.2em; }
         #pregunta { font-size: 2em; margin: 10px 0; color: var(--p-blue-strong); font-weight: bold; }
         
         #resposta { width: 95%; padding: 12px; font-size: 1.5em; border-radius: 15px; border: 3px solid var(--p-pink); text-align: center; outline: none; }
 
-        .star-btn { font-size: 2.8em; cursor: pointer; color: #eee; background:none; border:none; line-height: 1; }
+        .star-btn { font-size: 2.8em; cursor: pointer; color: #eee; background:none; border:none; line-height: 1; transition: 0.2s; }
         .star-btn.active { color: #fbbc04; }
 
         .audio-controls { margin: 10px 0; display: flex; justify-content: center; gap: 15px; }
         .icon-btn { background: none; border: none; cursor: pointer; font-size: 1.8em; }
 
-        /* Botó Comprovar Color Pastel */
-        .btn-main { background: var(--p-blue-soft); color: var(--p-blue-strong); padding: 12px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; width: 80%; font-size: 1em; }
+        /* BOTO COMPROVAR BLAU PASTEL */
+        .btn-main { background: var(--p-blue-soft); color: var(--p-blue-strong); padding: 12px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; width: 80%; font-size: 1.1em; }
         
-        /* LLISTA SENSE FINESTRA (Puja tota la pàgina) */
-        .list-container { width: 100%; max-width: 600px; background: white; border-radius: 25px; border: 6px solid var(--p-pink); padding: 10px; box-sizing: border-box; margin-bottom: 30px; }
+        /* LLISTA INTEGRADA A LA PAGINA (Sense finestra fixa) */
+        .list-container { width: 100%; max-width: 600px; background: white; border-radius: 25px; border: 6px solid var(--p-pink); padding: 15px; box-sizing: border-box; margin-bottom: 30px; }
         .list-table { width: 100%; border-collapse: collapse; }
         .list-table td { 
-            padding: 5px 2px; /* Menys espai entre línies */
+            padding: 6px 4px; 
             border-bottom: 1px solid #fce4e6; 
             text-align: left; 
-            font-size: 1.1em; /* Lletra una mica més gran */
+            font-size: 1.15em; 
         }
         .num { color: #bbb; font-weight: bold; width: 30px; font-size: 0.8em; }
-        .txt-eng { color: var(--p-blue-strong); font-weight: bold; } /* Blau bonic */
-        .txt-cas { color: #777; }
+        .txt-eng { color: var(--p-blue-strong); font-weight: bold; } 
+        .txt-cas { color: #777; font-size: 0.95em; }
         
         .hidden { display: none !important; }
     </style>
@@ -153,107 +152,4 @@
         if (modoRepas) base = base.filter(item => repasIds.has(item.id));
         dadesJoc = base.sort(() => Math.random() - 0.5);
         index = 0;
-        nouRepte();
-        actualitzarTaula(base);
-    }
-
-    function nouRepte() {
-        if (dadesJoc.length === 0) return;
-        if (index >= dadesJoc.length) { dadesJoc.sort(() => Math.random() - 0.5); index = 0; }
-        errorActive = false; correctActive = false;
-        const p = dadesJoc[index];
-        document.getElementById('pregunta').innerText = (idioma === 'CAS') ? p.esp : p.eng;
-        const r = document.getElementById('resposta');
-        r.value = ""; r.style.color = "var(--text)";
-        r.disabled = false;
-        document.getElementById('feedback').innerText = "";
-        document.getElementById('solucio-text').innerText = "";
-        document.getElementById('star-main').classList.toggle('active', repasIds.has(p.id));
-        r.focus();
-    }
-
-    function validar() {
-        if (dadesJoc.length === 0 || errorActive || correctActive) return;
-        const p = dadesJoc[index];
-        const user = document.getElementById('resposta').value.trim().toLowerCase();
-        const ok = (idioma === 'CAS') ? p.eng.toLowerCase() : p.esp.toLowerCase();
-        
-        reproduir(p.eng, 1.0);
-        document.getElementById('solucio-text').innerText = p.eng.toUpperCase();
-
-        if (user === ok) {
-            document.getElementById('feedback').innerText = "MOLT BÉ ✨";
-            document.getElementById('feedback').style.color = "green";
-            correctActive = true;
-            setTimeout(seguent, 1000);
-        } else {
-            document.getElementById('feedback').innerText = "ERROR ❌";
-            document.getElementById('feedback').style.color = "var(--p-red)";
-            errorActive = true;
-        }
-    }
-
-    function seguent() { index++; nouRepte(); }
-
-    function reproduirActual(vel) {
-        if (dadesJoc[index]) {
-            reproduir(dadesJoc[index].eng, vel);
-            document.getElementById('resposta').focus();
-        }
-    }
-
-    function reproduir(t, vel) {
-        window.speechSynthesis.cancel();
-        const m = new SpeechSynthesisUtterance(t); 
-        m.lang = 'en-US'; m.rate = vel;
-        window.speechSynthesis.speak(m);
-    }
-
-    function toggleEstrellaActual() {
-        const id = dadesJoc[index].id;
-        repasIds.has(id) ? repasIds.delete(id) : repasIds.add(id);
-        localStorage.setItem('repasIds', JSON.stringify([...repasIds]));
-        document.getElementById('star-main').classList.toggle('active', repasIds.has(id));
-        actualitzarTaula(dadesCat); // Actualitzem amb tota la categoria per veure canvis
-    }
-
-    function canviarIdioma() { 
-        idioma = (idioma === 'CAS') ? 'ENG' : 'CAS'; 
-        document.getElementById('txt-idioma').innerText = idioma; 
-        nouRepte(); 
-    }
-    
-    function toggleRepas() { 
-        modoRepas = !modoRepas; 
-        document.getElementById('btn-repas').innerText = modoRepas ? "⭐ ON" : "⭐ OFF"; 
-        actualitzarRang();
-    }
-
-    function actualitzarTaula(llista) {
-        document.getElementById('taula-joc').innerHTML = llista.map((d, i) => `
-            <tr>
-                <td class="num">${i+1}</td>
-                <td style="color:${repasIds.has(d.id)?'#fbbc04':'#eee'}; font-size:1.4em; width:30px;">★</td>
-                <td class="txt-eng">${d.eng}</td>
-                <td class="txt-cas">${d.esp}</td>
-                <td style="text-align:right;"><button style="background:none; border:none; cursor:pointer; font-size:1.2em;" onclick="reproducir('${d.eng.replace(/'/g,"\\'")}', 1.0)">🔊</button></td>
-            </tr>
-        `).join('');
-    }
-
-    document.getElementById('resposta').addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            if (errorActive) {
-                e.preventDefault();
-                nouRepte(); 
-            } else if (correctActive) {
-                e.preventDefault();
-                seguent();
-            } else if (e.key === 'Enter') {
-                validar();
-            }
-        }
-    });
-</script>
-</body>
-</html>
+        nouRep
