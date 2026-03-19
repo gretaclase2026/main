@@ -50,8 +50,7 @@
 
     <button class="btn-inicio" onclick="location.reload()">🏠 INICI</button>
 
-    <div class="grid-lliçons" id="grid-lliçons">
-        </div>
+    <div class="grid-lliçons" id="grid-lliçons"></div>
 
     <div class="top-row">
         <div class="btn-toggle" onclick="canviarIdioma()">🌍 <span id="txt-idioma">CAT</span></div>
@@ -61,16 +60,12 @@
 
     <div class="card">
         <div id="star-main" class="star-main" onclick="toggleEstrellaPrincipal()">⭐</div>
-        
         <div class="audio-group">
             <button class="btn-audio" onclick="reproduirActual(1.0)">🔊</button>
             <button class="btn-audio" onclick="reproduirActual(0.6)">🐢</button>
         </div>
-
-        <div class="word-box">
-            <div id="word-main">Tria una lliçó</div>
-            <div id="word-sub" class="hidden" onclick="this.classList.remove('hidden')"></div>
-        </div>
+        <div id="word-main">Tria una lliçó</div>
+        <div id="word-sub" class="hidden" onclick="this.classList.remove('hidden')"></div>
     </div>
 
     <button class="btn-next" onclick="següent()">SEGÜENT PARAULA ➔</button>
@@ -88,7 +83,6 @@
     let indexActual = 0;
     let idioma = 'CAT';
     let modoRepas = false;
-    let lliçoSeleccionada = null;
     let repasIds = new Set(JSON.parse(localStorage.getItem('repas_ids') || '[]'));
 
     fetch('vocabulariGrups.csv')
@@ -98,7 +92,7 @@
             dadesTotals = lines.map((l, i) => {
                 const p = l.split(';');
                 return { 
-                    id: (i + 1).toString().padStart(3, '0'), // Assigna f001, f002 segons fila
+                    id: (i + 1).toString().padStart(3, '0'), 
                     grup: p[0].trim(), 
                     eng: p[1].trim(), 
                     esp: p[2].trim() 
@@ -125,9 +119,7 @@
     }
 
     function carregarLliço(grup) {
-        lliçoSeleccionada = grup;
         dadesFiltrades = dadesTotals.filter(d => d.grup === grup);
-        
         const sel = document.getElementById('select-rang');
         sel.innerHTML = '<option value="tots">Totes</option>';
         for(let i=0; i<dadesFiltrades.length; i+=10) {
@@ -155,7 +147,7 @@
 
     function nouRepte() {
         if (dadesActuals.length === 0) {
-            document.getElementById('word-main').innerText = "Buida";
+            document.getElementById('word-main').innerText = "Tria lliçó";
             document.getElementById('word-sub').innerText = "";
             return;
         }
@@ -186,15 +178,13 @@
 
     function toggleEstrellaPrincipal() {
         const id = dadesActuals[indexActual].id;
-        if (repasIds.has(id)) repasIds.delete(id);
-        else repasIds.add(id);
+        repasIds.has(id) ? repasIds.delete(id) : repasIds.add(id);
         localStorage.setItem('repas_ids', JSON.stringify([...repasIds]));
         actualitzarRang();
     }
 
     function toggleEstrellaLlista(id) {
-        if (repasIds.has(id)) repasIds.delete(id);
-        else repasIds.add(id);
+        repasIds.has(id) ? repasIds.delete(id) : repasIds.add(id);
         localStorage.setItem('repas_ids', JSON.stringify([...repasIds]));
         actualitzarRang();
     }
@@ -212,13 +202,6 @@
         actualitzarRang(); 
     }
 
-    function reproduirLlista(id) {
-        const p = document.getElementById('player');
-        p.src = `audios/f${id}.mp3`;
-        p.playbackRate = 1.0;
-        p.play();
-    }
-
     function actualitzarTaula(llista) {
         document.getElementById('taula-joc').innerHTML = llista.map((d, i) => `
             <tr>
@@ -229,6 +212,13 @@
                 <td style="color:#888; font-size:0.9em;">${d.esp}</td>
             </tr>
         `).join('');
+    }
+
+    function reproduirLlista(id) {
+        const p = document.getElementById('player');
+        p.src = `audios/f${id}.mp3`;
+        p.playbackRate = 1.0;
+        p.play().catch(() => {});
     }
 </script>
 </body>
