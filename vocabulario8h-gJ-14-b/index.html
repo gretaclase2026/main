@@ -140,7 +140,7 @@
 <script>
     let dadesTotals = [], dadesFiltrades = [], i = 0, repasIds = new Set();
     let estatError = false, modeJoc = 'cat-eng', revelat = false;
-    let audioActual = new Audio();
+    let audioActual = new Audio(); // Mantenemos una única instancia
 
     async function carregarLlista(nomFitxer) {
         try {
@@ -247,16 +247,23 @@
     function seguent() { i = (i + 1) % dadesFiltrades.length; nouRepte(); }
 
     function reproduir(vel, paraulaEspecifica = null) {
+        // Obtenemos la palabra en inglés
         const text = paraulaEspecifica || dadesFiltrades[i].eng;
         
-        // Formatear: Primera mayúscula, espacios -> _
+        // REGLA DE FORMATO:
+        // 1. Limpiar espacios extras
+        // 2. Todo a minúsculas para empezar
+        // 3. Cambiar espacios por guiones bajos (_)
+        // 4. Poner la primera letra en Mayúscula
         let neta = text.trim().toLowerCase().replace(/ /g, "_");
         let fitxer = neta.charAt(0).toUpperCase() + neta.slice(1);
         
         audioActual.pause();
         audioActual.src = "audios/" + fitxer + ".mp3";
         audioActual.playbackRate = vel;
-        audioActual.play().catch(e => console.log("Audio no trobat: " + fitxer));
+        audioActual.play().catch(e => {
+            console.log("No s'ha trobat el fitxer: " + fitxer + ".mp3 a la carpeta audios/");
+        });
     }
 
     function desmarcarTot() { if(confirm("Netejar estrelles?")) { repasIds.clear(); filtrar(); } }
