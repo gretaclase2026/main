@@ -98,6 +98,11 @@
     let estadosTemas = JSON.parse(localStorage.getItem('estadosTemas') || '{}');
     let idioma = 'CAT', modoRepas = false, errorActive = false, correctActive = false;
 
+    // Función para normalizar texto (quitar acentos)
+    function normalitzar(t) {
+        return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+    }
+
     async function carregarCSV(nom) {
         try {
             const r = await fetch(nom);
@@ -189,8 +194,8 @@
     function validar() {
         if (dadesJoc.length === 0 || errorActive || correctActive) return;
         const p = dadesJoc[index];
-        const user = document.getElementById('resposta').value.trim().toLowerCase();
-        const ok = p.eng.toLowerCase();
+        const user = normalitzar(document.getElementById('resposta').value);
+        const ok = normalitzar(p.eng);
         
         document.getElementById('pregunta').innerText = p.eng;
         reproduir(p.eng, 1.0);
@@ -215,8 +220,7 @@
 
     function toggleEstrellaActual() {
         if (!dadesJoc[index]) return;
-        const id = dadesJoc[index].id;
-        gestionarEstrella(id);
+        gestionarEstrella(dadesJoc[index].id);
     }
 
     function toggleEstrellaLlista(id) {
@@ -231,12 +235,10 @@
         }
         localStorage.setItem('repasIds', JSON.stringify([...repasIds]));
         
-        // Refresquem la taula visualment
         const inici = parseInt(document.getElementById('row-desde').value) - 1;
         const fi = parseInt(document.getElementById('row-fins').value);
         actualitzarTaula(dadesCat.slice(inici, fi));
         
-        // Si la paraula que canviem és la que estem veient ara mateix, refresquem l'estrella gran
         if (dadesJoc[index] && dadesJoc[index].id === id) {
             document.getElementById('star-main').classList.toggle('active', repasIds.has(id));
         }

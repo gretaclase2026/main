@@ -98,7 +98,6 @@
     let estadosTemas = JSON.parse(localStorage.getItem('estadosTemas') || '{}');
     let idioma = 'CAT', modoRepas = false, errorActive = false, correctActive = false;
 
-    // Función para normalizar texto (quitar acentos)
     function normalitzar(t) {
         return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
     }
@@ -215,8 +214,27 @@
     }
 
     function seguent() { index++; nouRepte(); }
-    function reproduirActual(vel) { if (dadesJoc[index]) reproduir(dadesJoc[index].eng, vel); document.getElementById('resposta').focus(); }
-    function reproduir(t, vel) { window.speechSynthesis.cancel(); const m = new SpeechSynthesisUtterance(t); m.lang = 'en-US'; m.rate = vel; window.speechSynthesis.speak(m); }
+    
+    function reproduirActual(vel) { 
+        if (dadesJoc[index]) reproduir(dadesJoc[index].eng, vel); 
+        document.getElementById('resposta').focus(); 
+    }
+
+    // FUNCIÓN DE AUDIO AJUSTADA A: "Human_rights.mp3"
+    function reproduir(t, vel) {
+        // Ponemos todo en minúsculas primero
+        let texto = t.toLowerCase();
+        // Ponemos la primera letra en mayúscula
+        texto = texto.charAt(0).toUpperCase() + texto.slice(1);
+        // Cambiamos espacios por guiones bajos
+        const nombreArchivo = texto.replace(/\s+/g, '_');
+        
+        const audioRuta = `audios/${nombreArchivo}.mp3`;
+        
+        const audio = new Audio(audioRuta);
+        audio.playbackRate = vel;
+        audio.play().catch(err => console.log("Audio no trobat: " + audioRuta));
+    }
 
     function toggleEstrellaActual() {
         if (!dadesJoc[index]) return;
