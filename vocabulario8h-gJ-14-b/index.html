@@ -17,272 +17,259 @@
         body { font-family: 'Segoe UI', sans-serif; background: #fff5f6; color: var(--text); display: flex; flex-direction: column; align-items: center; padding: 10px; margin:0; }
         .card { background: white; width: 100%; max-width: 600px; padding: 15px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 6px solid var(--p-pink); text-align: center; box-sizing: border-box; margin-bottom: 15px; position: relative; }
         
-        .btn-inicio { width: 100%; padding: 20px; margin: 10px 0; border: 3px solid var(--p-pink); border-radius: 15px; background: white; color: var(--p-blue-strong); font-weight: bold; font-size: 1.2em; cursor: pointer; text-transform: uppercase; }
+        .btn-volver { 
+            width: 100%; 
+            padding: 10px; 
+            font-size: 0.9em; 
+            background: transparent !important; 
+            border: none !important; 
+            color: #999; 
+            font-weight: bold; 
+            cursor: pointer; 
+            margin-bottom: 10px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            outline: none !important;
+            box-shadow: none !important;
+            -webkit-appearance: none;
+        }
+        .btn-volver:hover { color: var(--p-blue-strong); }
 
-        .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+        .btn-inicio { width: 100%; padding: 15px; font-size: 1.1em; border-radius: 50px; background: white; border: 4px solid var(--p-pink); color: var(--p-blue-strong); font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 10px; }
         
-        .menu-item { display: flex; background: white; border: 3px solid var(--p-pink); border-radius: 15px; overflow: hidden; align-items: stretch; height: 60px; }
-        .menu-btn-text { flex: 1; border: none; background: none; font-weight: bold; color: var(--p-blue-strong); cursor: pointer; text-transform: uppercase; font-size: 0.85em; padding: 0 10px; display: flex; align-items: center; justify-content: space-between; text-align: left; }
-        .menu-btn-mark { width: 50px; border: none; border-left: 2px solid var(--p-pink); background: #f9f9f9; cursor: pointer; font-size: 1.2em; color: #ccc; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+        .grup-selector { font-size: 1.4em; font-weight: bold; color: var(--p-blue-strong); margin-bottom: 10px; border:none; background:none; cursor:pointer; width:100%; }
+        .pregunta { font-size: 2.2em; font-weight: 800; margin: 15px 0; color: #333; min-height: 1.2em; }
         
-        .menu-btn-mark.status-1 { color: white; background: var(--p-orange); } 
-        .menu-btn-mark.status-2 { color: white; background: var(--p-green-active); } 
-        
-        .star-indicator { color: #fbbc04; font-size: 1.1em; margin-left: auto; margin-right: 8px; }
+        .input-container { position: relative; width: 100%; margin: 15px 0; }
+        input[type="text"] { width: 100%; padding: 15px; font-size: 1.3em; border-radius: 15px; border: 3px solid var(--p-blue-soft); text-align: center; outline: none; box-sizing: border-box; }
 
-        .config-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; font-size: 0.95em; font-weight: bold; padding: 0 5px; }
-        .config-bar input { width: 42px; padding: 4px; border: 2px solid var(--p-pink); border-radius: 6px; text-align: center; color: var(--p-blue-strong); font-weight: bold; background: white; outline: none; }
-        .lang-toggle { cursor: pointer; color: var(--p-blue-strong); font-size: 1.1em; }
-        #btn-repas { cursor: pointer; background: #eee; padding: 4px 12px; border-radius: 8px; }
-        #btn-repas.on { background: #c8e6c9; }
-        .star-main { font-size: 2.5em; cursor: pointer; color: #eee; background: none; border: none; padding: 0; line-height: 1; margin-left: 10px; outline: none; }
-        .star-main.active { color: #fbbc04; }
+        .btn-next { background: var(--p-blue-strong); color: white; border: none; padding: 15px 30px; font-size: 1.2em; border-radius: 50px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
         
-        #pregunta { font-size: 2em; margin: 10px 0; color: var(--p-blue-strong); font-weight: bold; min-height: 1.2em; }
-        #resposta { width: 95%; padding: 12px; font-size: 1.5em; border-radius: 15px; border: 3px solid var(--p-pink); text-align: center; outline: none; box-sizing: border-box; }
-        .btn-main { background: var(--p-blue-soft); color: var(--p-blue-strong); padding: 12px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; width: 80%; font-size: 1.1em; }
-        .back-btn { background: none; border: none; color: black; font-weight: bold; cursor: pointer; font-size: 1em; margin-top: 15px; }
-        
-        .list-container { width: 100%; max-width: 600px; background: white; border-radius: 25px; border: 6px solid var(--p-pink); padding: 5px; box-sizing: border-box; margin-bottom: 40px; }
-        .list-table { width: 100%; border-collapse: collapse; }
-        .list-table td { padding: 8px 4px; border-bottom: 1px solid #fce4e6; vertical-align: middle; }
-        .star-list { font-size: 1.4em; width: 30px; text-align: center; color: #eee; cursor: pointer; }
-        .star-list.active { color: #fbbc04; }
-        
-        .hidden { display: none !important; }
+        .stats { display: flex; justify-content: space-around; margin-top: 15px; font-weight: bold; font-size: 0.9em; }
+        .stat-box { background: #fdf2f3; padding: 8px 15px; border-radius: 12px; }
+
+        .feedback { position: absolute; top: 10px; right: 10px; font-size: 1.5em; display: none; }
+        .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; }
+        .modal-content { background: white; width: 100%; max-width: 500px; border-radius: 25px; padding: 20px; max-height: 80vh; overflow-y: auto; position: relative; }
+
+        .row-selector { display: flex; align-items: center; gap: 5px; justify-content: center; margin-bottom: 10px; font-weight: bold; font-size: 0.85em; }
+        .row-selector input { width: 45px; padding: 5px; border-radius: 8px; border: 2px solid var(--p-blue-soft); text-align: center; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9em; }
+        th, td { padding: 12px 8px; border-bottom: 1px solid #eee; text-align: left; }
+        .star-list { cursor: pointer; color: #ddd; font-size: 1.4em; width: 30px; text-align: center; }
+        .star-list.active { color: #ffbc00; }
+        .btn-star-top { position: absolute; top: 15px; left: 15px; font-size: 1.8em; cursor: pointer; color: #ddd; z-index: 10; }
+        .btn-star-top.active { color: #ffbc00; }
+
+        .repas-btn { background: white; border: 3px solid #eee; padding: 8px 15px; border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 0.8em; margin-left: 5px; }
+        .repas-btn.on { border-color: var(--p-green-active); color: var(--p-green-active); }
+
+        .highlight-error { color: var(--p-red); font-weight: bold; margin-top: 5px; font-size: 1.1em; display: none; }
     </style>
 </head>
 <body>
 
-    <div class="card" id="p-fitxer">
-        <h1 style="color:var(--p-blue-strong); margin-bottom:20px;">VOCABULARI</h1>
-        <button class="btn-inicio" onclick="carregarCSV('vocabulariGrups.csv')">GRUPS</button>
-        <button class="btn-inicio" onclick="carregarCSV('vocabulariTemes.csv')">TEMES</button>
-    </div>
+    <div class="card">
+        <button class="btn-volver" onclick="window.location.reload()">
+            <span>◀</span> TORNAR AL MENÚ
+        </button>
 
-    <div class="card hidden" id="p-grups">
-        <h2 style="color: var(--p-blue-strong)">Tria Categoria</h2>
-        <div id="grid-selector" class="grid-menu"></div>
-        <button class="back-btn" onclick="location.reload()">🔙 Tornar</button>
-    </div>
-
-    <div id="p-estudi" class="hidden" style="width: 100%; max-width: 600px; display: flex; flex-direction: column; align-items: center;">
-        <div class="card">
-            <div class="config-bar">
-                <span onclick="canviarIdioma()" class="lang-toggle"><b id="txt-idioma">CAT</b></span>
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <span id="btn-repas" onclick="toggleRepas()">⭐ OFF</span>
-                    <input type="number" id="row-desde" value="1" onchange="actualitzarRang()"> - <input type="number" id="row-fins" value="100" onchange="actualitzarRang()">
-                </div>
-                <button id="star-main" class="star-main" onclick="toggleEstrellaActual()">★</button>
-            </div>
-            <div id="feedback-container" style="min-height:2.5em; font-weight:bold; line-height:1.2;">
-                <div id="feedback-line1"></div>
-                <div id="feedback-line2" style="font-size:0.9em; margin-top:3px;"></div>
-            </div>
-            <div id="pregunta">---</div>
-            <div style="margin: 10px 0; display: flex; justify-content: center; gap: 20px;">
-                <button style="background:none; border:none; cursor:pointer; font-size:2em;" onclick="reproduirActual(1.0)">🔊</button>
-                <button style="background:none; border:none; cursor:pointer; font-size:2em;" onclick="reproduirActual(0.5)">🐢</button>
-            </div>
-            <input type="text" id="resposta" placeholder="..." autocomplete="off">
-            <div style="margin-top:15px;"><button class="btn-main" onclick="validar()">Comprovar</button></div>
-            <button class="back-btn" onclick="location.reload()">🔙 Tornar</button>
+        <div id="star-btn" class="btn-star-top" onclick="toggleStar()">★</div>
+        <button class="grup-selector" onclick="obrirLlista()">Tots els Grups ▾</button>
+        
+        <div class="row-selector">
+            Des de <input type="number" id="row-desde" value="1" onchange="actualitzarRang()"> 
+            Fins a <input type="number" id="row-fins" value="10" onchange="actualitzarRang()">
+            <button id="btn-repas" class="repas-btn" onclick="toggleRepas()">⭐ OFF</button>
         </div>
-        <div class="list-container"><table class="list-table" id="taula-joc"></table></div>
+
+        <div id="txt-pregunta" class="pregunta">...</div>
+        <div id="feedback" class="feedback"></div>
+
+        <div class="input-container">
+            <input type="text" id="resposta" autocomplete="off" spellcheck="false" placeholder="Escriu aquí...">
+            <div id="solucio" class="highlight-error"></div>
+        </div>
+
+        <button class="btn-next" onclick="comprovar()">COMPROVAR</button>
+        <button class="btn-inicio" onclick="canviarIdioma()">Idioma: <span id="txt-idioma">CAT</span></button>
+
+        <div class="stats">
+            <div class="stat-box">Correctes: <span id="count-ok" style="color:var(--p-green-active)">0</span></div>
+            <div class="stat-box">Errors: <span id="count-ko" style="color:var(--p-red)">0</span></div>
+        </div>
     </div>
 
-<script>
-    let dadesTotals = [], dadesCat = [], dadesJoc = [], index = 0;
-    let repasIds = new Set(JSON.parse(localStorage.getItem('repasIds') || '[]'));
-    let estadosTemas = JSON.parse(localStorage.getItem('estadosTemas') || '{}');
-    let idioma = 'CAT', modoRepas = false, errorActive = false, correctActive = false;
+    <div id="modal-llista" class="modal" onclick="tancarLlista(event)">
+        <div class="modal-content">
+            <h3 id="titol-llista">Vocabulari</h3>
+            <table id="taula-joc"></table>
+        </div>
+    </div>
 
-    function normalitzar(t) {
-        return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
-    }
+    <script>
+    let dadesTotales = [];
+    let dadesCat = [];
+    let dadesFiltrades = [];
+    let indexActual = -1;
+    let idioma = 'CAT'; 
+    let modoRepas = false;
+    let repasIds = new Set(JSON.parse(localStorage.getItem('repas_ids') || '[]'));
+    let ok = 0, ko = 0;
 
-    async function carregarCSV(nom) {
+    async function carregarDades() {
         try {
-            const r = await fetch(nom);
+            const r = await fetch('vocabulariGrups.csv');
             const t = await r.text();
-            const lines = t.replace(/\r/g, "").split("\n");
-            dadesTotals = [];
-            lines.forEach((l, i) => {
-                const p = l.split(';');
-                if (p.length >= 3 && p[0].trim() && p[0].toLowerCase() !== 'category') {
-                    dadesTotals.push({ id: i + nom, cat: p[0].trim(), eng: p[1].trim(), esp: p[2].trim() });
-                }
-            });
-            mostrarMenu();
-        } catch (e) { alert("Error"); }
-    }
-
-    function mostrarMenu() {
-        const cats = [...new Set(dadesTotals.map(d => d.cat))].sort();
-        const grid = document.getElementById('grid-selector'); grid.innerHTML = '';
-        cats.forEach(c => {
-            const container = document.createElement('div'); container.className = 'menu-item';
-            const btnText = document.createElement('button'); btnText.className = 'menu-btn-text';
-            btnText.innerHTML = `<span>${c}</span>`;
-            const tieneEstrellas = dadesTotals.some(d => d.cat === c && repasIds.has(d.id));
-            if (tieneEstrellas) btnText.innerHTML += `<span class="star-indicator">★</span>`;
-            btnText.onclick = () => carregarCategoria(c);
-            const btnMark = document.createElement('button'); 
-            const st = estadosTemas[c] || 0;
-            btnMark.className = 'menu-btn-mark' + (st > 0 ? ' status-' + st : '');
-            btnMark.innerHTML = st === 0 ? '' : (st === 1 ? '🕒' : '✓');
-            btnMark.onclick = () => ciclarEstadoTema(c, btnMark);
-            container.appendChild(btnText); container.appendChild(btnMark);
-            grid.appendChild(container);
-        });
-        document.getElementById('p-fitxer').classList.add('hidden');
-        document.getElementById('p-grups').classList.remove('hidden');
-    }
-
-    function ciclarEstadoTema(c, el) {
-        let current = estadosTemas[c] || 0;
-        let next = (current + 1) % 3;
-        estadosTemas[c] = next;
-        localStorage.setItem('estadosTemas', JSON.stringify(estadosTemas));
-        el.className = 'menu-btn-mark' + (next > 0 ? ' status-' + next : '');
-        el.innerHTML = next === 0 ? '' : (next === 1 ? '🕒' : '✓');
-    }
-
-    function carregarCategoria(c) {
-        dadesCat = dadesTotals.filter(d => d.cat === c);
-        document.getElementById('row-fins').value = dadesCat.length;
-        document.getElementById('p-grups').classList.add('hidden');
-        document.getElementById('p-estudi').classList.remove('hidden');
-        actualitzarRang();
+            dadesTotales = t.split('\n').map(l => {
+                const parts = l.split(';');
+                if (parts.length < 3) return null;
+                const [g, en, ca] = parts;
+                const engNet = en.trim();
+                // L'ID és només l'anglès netejat d'espais
+                return { id: engNet, grup: g.trim(), eng: engNet, esp: ca.trim() };
+            }).filter(d => d);
+            actualitzarRang();
+        } catch (e) { console.error(e); }
     }
 
     function actualitzarRang() {
-        let d = parseInt(document.getElementById('row-desde').value) - 1;
-        let f = parseInt(document.getElementById('row-fins').value);
-        let base = dadesCat.slice(d, f);
-        dadesJoc = modoRepas ? base.filter(item => repasIds.has(item.id)) : [...base];
-        dadesJoc.sort(() => Math.random() - 0.5);
-        index = 0; nouRepte(); actualitzarTaula(base);
+        const d = parseInt(document.getElementById('row-desde').value) - 1;
+        const f = parseInt(document.getElementById('row-fins').value);
+        dadesCat = dadesTotales.slice(d, f);
+        dadesFiltrades = modoRepas ? dadesTotales.filter(x => repasIds.has(x.id)) : [...dadesCat];
+        if (dadesFiltrades.length === 0) {
+            document.getElementById('txt-pregunta').innerText = modoRepas ? "Sense estrelles" : "Llista buida";
+            indexActual = -1;
+        } else { nouRepte(); }
     }
 
     function nouRepte() {
-        if (dadesJoc.length === 0) { 
-            document.getElementById('pregunta').innerText = "(Buit)"; 
-            document.getElementById('star-main').classList.remove('active');
-            return; 
-        }
-        if (index >= dadesJoc.length) { dadesJoc.sort(() => Math.random() - 0.5); index = 0; }
-        errorActive = false; correctActive = false;
-        const p = dadesJoc[index];
-        
-        if (idioma === 'ENG') { 
-            document.getElementById('pregunta').innerText = "🎧 Escolta..."; 
-            reproduir(p.eng, 1.0); 
-        } else { 
-            document.getElementById('pregunta').innerText = p.esp; 
-        }
-        
+        if (dadesFiltrades.length === 0) return;
+        indexActual = Math.floor(Math.random() * dadesFiltrades.length);
+        const d = dadesFiltrades[indexActual];
+        document.getElementById('txt-pregunta').innerText = (idioma === 'CAT') ? d.esp : d.eng;
         document.getElementById('resposta').value = "";
-        document.getElementById('feedback-line1').innerText = ""; 
-        document.getElementById('feedback-line2').innerText = "";
-        document.getElementById('star-main').classList.toggle('active', repasIds.has(p.id));
+        document.getElementById('solucio').style.display = "none";
+        document.getElementById('star-btn').classList.toggle('active', repasIds.has(d.id));
         document.getElementById('resposta').focus();
     }
 
-    function validar() {
-        if (dadesJoc.length === 0 || errorActive || correctActive) return;
-        const p = dadesJoc[index];
-        const user = normalitzar(document.getElementById('resposta').value);
-        const ok = normalitzar(p.eng);
-        
-        document.getElementById('pregunta').innerText = p.eng;
-        reproduir(p.eng, 1.0);
+    function comprovar() {
+        if (indexActual === -1) return;
+        const d = dadesFiltrades[indexActual];
+        const res = document.getElementById('resposta').value.trim().toLowerCase();
+        const correcte = (idioma === 'CAT') ? d.eng.toLowerCase() : d.esp.toLowerCase();
 
-        if (user === ok) {
-            document.getElementById('feedback-line1').innerText = "CORRECTE!"; 
-            document.getElementById('feedback-line1').style.color = "green";
-            correctActive = true; setTimeout(seguent, 1500);
+        if (res === correcte) {
+            ok++; document.getElementById('count-ok').innerText = ok;
+            mostrarFeedback("✅");
+            reproduir(d.eng); // Reprodueix l'arxiu MP3
+            setTimeout(nouRepte, 600);
         } else {
-            document.getElementById('feedback-line1').innerText = "INCORRECTE!"; 
-            document.getElementById('feedback-line1').style.color = "var(--p-red)";
-            errorActive = true;
-        }
-        
-        document.getElementById('feedback-line2').innerHTML = `<b>${p.eng.toUpperCase()}</b> = <i>${p.esp}</i>`;
-        document.getElementById('feedback-line2').style.color = "#555";
-    }
-
-    function seguent() { index++; nouRepte(); }
-    
-    function reproduirActual(vel) { 
-        if (dadesJoc[index]) reproduir(dadesJoc[index].eng, vel); 
-        document.getElementById('resposta').focus(); 
-    }
-
-    // FUNCIÓN DE AUDIO AJUSTADA A: "Human_rights.mp3"
-    function reproduir(t, vel) {
-        // Ponemos todo en minúsculas primero
-        let texto = t.toLowerCase();
-        // Ponemos la primera letra en mayúscula
-        texto = texto.charAt(0).toUpperCase() + texto.slice(1);
-        // Cambiamos espacios por guiones bajos
-        const nombreArchivo = texto.replace(/\s+/g, '_');
-        
-        const audioRuta = `audios/${nombreArchivo}.mp3`;
-        
-        const audio = new Audio(audioRuta);
-        audio.playbackRate = vel;
-        audio.play().catch(err => console.log("Audio no trobat: " + audioRuta));
-    }
-
-    function toggleEstrellaActual() {
-        if (!dadesJoc[index]) return;
-        gestionarEstrella(dadesJoc[index].id);
-    }
-
-    function toggleEstrellaLlista(id) {
-        gestionarEstrella(id);
-    }
-
-    function gestionarEstrella(id) {
-        if (repasIds.has(id)) {
-            repasIds.delete(id);
-        } else {
-            repasIds.add(id);
-        }
-        localStorage.setItem('repasIds', JSON.stringify([...repasIds]));
-        
-        const inici = parseInt(document.getElementById('row-desde').value) - 1;
-        const fi = parseInt(document.getElementById('row-fins').value);
-        actualitzarTaula(dadesCat.slice(inici, fi));
-        
-        if (dadesJoc[index] && dadesJoc[index].id === id) {
-            document.getElementById('star-main').classList.toggle('active', repasIds.has(id));
+            ko++; document.getElementById('count-ko').innerText = ko;
+            document.getElementById('solucio').innerText = `R: ${correcte}`;
+            document.getElementById('solucio').style.display = "block";
+            mostrarFeedback("❌");
+            reproduir(d.eng); 
         }
     }
 
-    function canviarIdioma() { idioma = (idioma === 'CAT') ? 'ENG' : 'CAT'; document.getElementById('txt-idioma').innerText = idioma; nouRepte(); }
-    function toggleRepas() { modoRepas = !modoRepas; const btn = document.getElementById('btn-repas'); btn.innerText = modoRepas ? "⭐ ON" : "⭐ OFF"; btn.classList.toggle('on', modoRepas); actualitzarRang(); }
+    function mostrarFeedback(sim) {
+        const f = document.getElementById('feedback');
+        f.innerText = sim; f.style.display = "block";
+        setTimeout(() => f.style.display = "none", 600);
+    }
+
+    // FUNCIÓ D'ÀUDIO CORREGIDA PER REPRODUIR ELS TEUS MP3
+    function reproduir(text) {
+        // Netejem el nom per l'arxiu (canviem espais per guions baixos si cal)
+        let fitxer = text.replace(/ /g, "_") + ".mp3";
+        
+        // Casos especials de noms que vam canviar per evitar conflictes
+        if (text === "Organ" && dadesFiltrades[indexActual].grup === "Cos") fitxer = "Organ_Cos.mp3";
+        if (text === "Culture") fitxer = "Culture_Soc.mp3";
+        if (text === "Custom") fitxer = "Custom_Soc.mp3";
+        if (text === "Law") fitxer = "Law_Soc.mp3";
+        if (text === "Class") fitxer = "Class_Soc.mp3";
+        if (text === "Transport") fitxer = "Transport_Voc.mp3";
+
+        const audio = new Audio('audios/' + fitxer); 
+        // Nota: He posat 'audios/' suposant que els tens en una carpeta. 
+        // Si els tens a la mateixa carpeta que l'index, posa: new Audio(fitxer)
+        
+        audio.play().catch(e => {
+            console.log("No s'ha trobat l'arxiu MP3, usant veu del sistema...");
+            const u = new SpeechSynthesisUtterance(text);
+            u.lang = 'en-US';
+            window.speechSynthesis.speak(u);
+        });
+    }
+
+    function toggleStar() {
+        if (indexActual === -1) return;
+        const id = dadesFiltrades[indexActual].id;
+        toggleId(id);
+        document.getElementById('star-btn').classList.toggle('active', repasIds.has(id));
+    }
+
+    function toggleListStar(id) {
+        toggleId(id);
+        actualitzarTaula(dadesCat);
+        if (indexActual !== -1 && dadesFiltrades[indexActual].id === id) {
+            document.getElementById('star-btn').classList.toggle('active', repasIds.has(id));
+        }
+    }
+
+    function toggleId(id) {
+        if (repasIds.has(id)) repasIds.delete(id); else repasIds.add(id);
+        localStorage.setItem('repas_ids', JSON.stringify([...repasIds]));
+    }
+
+    function obrirLlista() {
+        document.getElementById('modal-llista').style.display = 'flex';
+        actualitzarTaula(dadesCat);
+    }
+
+    function tancarLlista(e) { 
+        if (e.target.className === 'modal') {
+            document.getElementById('modal-llista').style.display = 'none';
+            if (modoRepas) actualitzarRang(); 
+        }
+    }
 
     function actualitzarTaula(llista) {
         document.getElementById('taula-joc').innerHTML = llista.map((d, i) => `
             <tr>
                 <td style="color:#ccc; font-size:0.8em;">${i+1}</td>
-                <td class="star-list ${repasIds.has(d.id)?'active':''}" onclick="toggleEstrellaLlista('${d.id}')">★</td>
-                <td><button style="background:none; border:none; cursor:pointer;" onclick="reproduir('${d.eng.replace(/'/g,"\\'")}', 1.0)">🔊</button></td>
+                <td class="star-list ${repasIds.has(d.id)?'active':''}" onclick="toggleListStar('${d.id}')">★</td>
+                <td><button style="background:none; border:none; cursor:pointer;" onclick="reproduir('${d.eng.replace(/'/g,"\\'")}')">🔊</button></td>
                 <td style="color:var(--p-blue-strong); font-weight:bold;">${d.eng}</td>
                 <td style="color:#888; font-size:0.9em;">${d.esp}</td>
             </tr>
         `).join('');
     }
 
-    document.getElementById('resposta').addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            if (errorActive || correctActive) { e.preventDefault(); if(correctActive) seguent(); else nouRepte(); }
-            else if (e.key === 'Enter') { validar(); }
-        }
-    });
-</script>
+    function canviarIdioma() { 
+        idioma = (idioma === 'CAT') ? 'ENG' : 'CAT'; 
+        document.getElementById('txt-idioma').innerText = idioma; 
+        nouRepte(); 
+    }
+
+    function toggleRepas() { 
+        modoRepas = !modoRepas; 
+        const btn = document.getElementById('btn-repas'); 
+        btn.innerText = modoRepas ? "⭐ ON" : "⭐ OFF"; 
+        btn.classList.toggle('on', modoRepas); 
+        actualitzarRang(); 
+    }
+
+    document.getElementById('resposta').addEventListener('keydown', (e) => { if (e.key === 'Enter') comprovar(); });
+
+    carregarDades();
+    </script>
 </body>
 </html>
