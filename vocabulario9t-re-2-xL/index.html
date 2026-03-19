@@ -3,92 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estudi de Vocabulari</title>
+    <title>Estudi de Vocabulari Pro</title>
     <style>
-        :root {
-            --primary: #4f46e5;
-            --bg: #f8fafc;
-            --card: #ffffff;
-            --text: #1e293b;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            margin: 0;
-        }
-        .container {
-            width: 100%;
-            max-width: 500px;
-        }
-        .tabs {
-            display: flex;
-            overflow-x: auto;
-            gap: 10px;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-            scrollbar-width: none;
-        }
-        .tabs::-webkit-scrollbar { display: none; }
-        .tab {
-            padding: 8px 16px;
-            background: #e2e8f0;
-            border-radius: 20px;
-            cursor: pointer;
-            white-space: nowrap;
-            font-weight: 600;
-            transition: 0.3s;
-        }
-        .tab.active {
-            background: var(--primary);
-            color: white;
-        }
-        .card {
-            background: var(--card);
-            padding: 40px 20px;
-            border-radius: 24px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            text-align: center;
-            min-height: 250px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            position: relative;
-            cursor: pointer;
-        }
-        .word-main { font-size: 2rem; font-weight: 800; margin-bottom: 10px; }
-        .word-sub { font-size: 1.2rem; color: #64748b; visibility: hidden; }
-        .card.flipped .word-sub { visibility: visible; }
-        .controls {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 25px;
-        }
-        button {
-            padding: 15px;
-            border: none;
-            border-radius: 15px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .btn-next { background: #dcfce7; color: #166534; grid-column: span 2; }
-        .audio-icon {
-            font-size: 40px;
-            margin-bottom: 20px;
-            background: #f1f5f9;
-            width: 80px;
-            height: 80px;
-            line-height: 80px;
-            border-radius: 50%;
-            margin: 0 auto 20px;
-        }
+        :root { --primary: #4f46e5; --bg: #f8fafc; --card: #ffffff; --text: #1e293b; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .container { width: 100%; max-width: 600px; }
+        
+        /* Pestanyes i Selectors */
+        .tabs { display: flex; overflow-x: auto; gap: 10px; padding-bottom: 10px; scrollbar-width: none; }
+        .tab { padding: 8px 16px; background: #e2e8f0; border-radius: 20px; cursor: pointer; white-space: nowrap; font-weight: 600; }
+        .tab.active { background: var(--primary); color: white; }
+        
+        .top-controls { display: flex; justify-content: space-between; align-items: center; margin: 15px 0; gap: 10px; }
+        .toggle-group { background: #e2e8f0; padding: 4px; border-radius: 12px; display: flex; }
+        .toggle-btn { padding: 6px 12px; border-radius: 10px; cursor: pointer; font-size: 14px; }
+        .toggle-btn.active { background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+
+        /* Card Principal */
+        .card { background: var(--card); padding: 30px; border-radius: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); text-align: center; position: relative; margin-bottom: 20px; }
+        .star-btn { position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer; filter: grayscale(1); }
+        .star-btn.active { filter: grayscale(0); }
+        .word-main { font-size: 2.2rem; font-weight: 800; margin: 20px 0; }
+        .word-sub { font-size: 1.4rem; color: #64748b; min-height: 1.5em; cursor: pointer; }
+        .word-sub.hidden { background: #eee; color: transparent; border-radius: 8px; }
+
+        /* Botons d'àudio i acció */
+        .audio-controls { display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; }
+        .icon-btn { font-size: 30px; cursor: pointer; background: #f1f5f9; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: none; }
+        .btn-next { width: 100%; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 15px; font-size: 1.1rem; font-weight: bold; cursor: pointer; }
+
+        /* Llista inferior */
+        .list-container { margin-top: 30px; width: 100%; }
+        .list-item { background: white; margin-bottom: 8px; padding: 12px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; }
+        .list-info { display: flex; flex-direction: column; }
     </style>
 </head>
 <body>
@@ -96,85 +43,194 @@
 <div class="container">
     <div class="tabs" id="tabs"></div>
 
-    <div class="card" id="card" onclick="this.classList.toggle('flipped')">
-        <div class="audio-icon" onclick="event.stopPropagation(); playCurrentAudio()">🔊</div>
-        <div class="word-main" id="voc-en">Carregant...</div>
-        <div class="word-sub" id="voc-ca">...</div>
+    <div class="top-controls">
+        <div class="toggle-group">
+            <div id="modeCAT" class="toggle-btn active" onclick="setLang('CAT')">CAT</div>
+            <div id="modeENG" class="toggle-btn" onclick="setLang('ENG')">ENG</div>
+        </div>
+        <div style="font-size: 0.9rem;">
+            Repassar: <span id="reviewToggle" onclick="toggleReviewMode()" style="cursor:pointer; font-weight:bold; color:var(--primary)">OFF</span>
+        </div>
+        <select id="rangeSelect" onchange="updateRange()" style="padding:5px; border-radius:8px; border:1px solid #ccc;"></select>
     </div>
 
-    <div class="controls">
-        <button class="btn-next" onclick="nextWord()">Següent paraula</button>
+    <div class="card">
+        <div id="mainStar" class="star-btn" onclick="toggleStarCurrent()">⭐</div>
+        <div class="audio-controls">
+            <button class="icon-btn" onclick="playAudio(1)">🔊</button>
+            <button class="icon-btn" onclick="playAudio(0.5)">🐢</button>
+        </div>
+        <div class="word-main" id="displayMain">...</div>
+        <div class="word-sub hidden" id="displaySub" onclick="this.classList.remove('hidden')">...</div>
     </div>
+
+    <button class="btn-next" onclick="nextWord()">Següent paraula</button>
+
+    <div class="list-container" id="wordList"></div>
 </div>
 
-<audio id="audioPlayer"></audio>
+<audio id="player"></audio>
 
 <script>
     let vocabulary = [];
-    let currentFiltered = [];
+    let filtered = [];
     let currentIndex = 0;
+    let currentLang = 'CAT';
+    let reviewOnly = false;
+    let starredIds = JSON.parse(localStorage.getItem('starred_words') || '[]');
 
-    // Carregar el CSV
     fetch('vocabulariGrups.csv')
-        .then(response => response.text())
-        .then(data => {
-            const lines = data.split('\n');
-            vocabulary = lines.filter(line => line.trim() !== '').map((line, index) => {
+        .then(r => r.text())
+        .then(text => {
+            const lines = text.split('\n').filter(l => l.trim());
+            vocabulary = lines.map((line, i) => {
                 const [grup, en, ca] = line.split(';');
                 return { 
+                    id: (i + 1).toString().padStart(3, '0'), 
                     grup: grup.trim(), 
                     en: en.trim(), 
-                    ca: ca.trim(),
-                    audioId: (index + 1).toString().padStart(3, '0') // Genera 001, 002... segons la fila
+                    ca: ca.trim() 
                 };
             });
             renderTabs();
-            filterByGroup(vocabulary[0].grup);
+            loadGroup(vocabulary[0].grup);
         });
 
     function renderTabs() {
-        const grups = [...new Set(vocabulary.map(v => v.grup))];
-        const tabsContainer = document.getElementById('tabs');
-        grups.forEach((grup, i) => {
-            const btn = document.createElement('div');
-            btn.className = `tab ${i === 0 ? 'active' : ''}`;
-            btn.textContent = grup;
-            btn.onclick = () => {
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                btn.classList.add('active');
-                filterByGroup(grup);
+        const groups = [...new Set(vocabulary.map(v => v.grup))];
+        const container = document.getElementById('tabs');
+        groups.forEach((g, i) => {
+            const t = document.createElement('div');
+            t.className = `tab ${i===0?'active':''}`;
+            t.textContent = g;
+            t.onclick = () => {
+                document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+                t.classList.add('active');
+                loadGroup(g);
             };
-            tabsContainer.appendChild(btn);
+            container.appendChild(t);
         });
     }
 
-    function filterByGroup(grup) {
-        currentFiltered = vocabulary.filter(v => v.grup === grup);
+    function loadGroup(g) {
+        let groupData = vocabulary.filter(v => v.grup === g);
+        
+        // Setup selector de trams
+        const select = document.getElementById('rangeSelect');
+        select.innerHTML = '<option value="all">Tot el grup</option>';
+        for(let i=0; i<groupData.length; i+=10) {
+            let end = Math.min(i+10, groupData.length);
+            select.innerHTML += `<option value="${i}-${end}">Paraules ${i+1}-${end}</option>`;
+        }
+        
+        applyFilters();
+    }
+
+    function applyFilters() {
+        const groupName = document.querySelector('.tab.active').textContent;
+        let data = vocabulary.filter(v => v.grup === groupName);
+        
+        const range = document.getElementById('rangeSelect').value;
+        if(range !== 'all') {
+            const [start, end] = range.split('-').map(Number);
+            data = data.slice(start, end);
+        }
+
+        if(reviewOnly) {
+            data = data.filter(v => starredIds.includes(v.id));
+        }
+
+        filtered = data.sort(() => Math.random() - 0.5);
         currentIndex = 0;
         showWord();
+        renderList(data);
     }
 
     function showWord() {
-        const item = currentFiltered[currentIndex];
-        document.getElementById('voc-en').textContent = item.en;
-        document.getElementById('voc-ca').textContent = item.ca;
-        document.getElementById('card').classList.remove('flipped');
-        playCurrentAudio();
+        if(filtered.length === 0) {
+            document.getElementById('displayMain').textContent = "Cap paraula";
+            document.getElementById('displaySub').textContent = "";
+            return;
+        }
+        const item = filtered[currentIndex];
+        const isCat = currentLang === 'CAT';
+        document.getElementById('displayMain').textContent = isCat ? item.ca : item.en;
+        document.getElementById('displaySub').textContent = isCat ? item.en : item.ca;
+        document.getElementById('displaySub').classList.add('hidden');
+        document.getElementById('mainStar').classList.toggle('active', starredIds.includes(item.id));
     }
 
     function nextWord() {
-        currentIndex = (currentIndex + 1) % currentFiltered.length;
+        if(filtered.length > 0) {
+            currentIndex = (currentIndex + 1) % filtered.length;
+            showWord();
+        }
+    }
+
+    function playAudio(speed) {
+        if(filtered.length === 0) return;
+        const audio = document.getElementById('player');
+        audio.src = `audios/f${filtered[currentIndex].id}.mp3`;
+        audio.playbackRate = speed;
+        audio.play();
+    }
+
+    function toggleStarCurrent() {
+        const id = filtered[currentIndex].id;
+        starredIds = starredIds.includes(id) ? starredIds.filter(x => x !== id) : [...starredIds, id];
+        localStorage.setItem('starred_words', JSON.stringify(starredIds));
+        showWord();
+        applyFilters(); 
+    }
+
+    function setLang(l) {
+        currentLang = l;
+        document.getElementById('modeCAT').classList.toggle('active', l === 'CAT');
+        document.getElementById('modeENG').classList.toggle('active', l === 'ENG');
         showWord();
     }
 
-    function playCurrentAudio() {
-        const item = currentFiltered[currentIndex];
-        const audio = document.getElementById('audioPlayer');
-        // Busca a la carpeta /audios/ el fitxer f001.mp3, f002.mp3...
-        audio.src = `audios/f${item.audioId}.mp3`;
-        audio.play().catch(e => console.log("Audio no trobat"));
+    function toggleReviewMode() {
+        reviewOnly = !reviewOnly;
+        document.getElementById('reviewToggle').textContent = reviewOnly ? "ON" : "OFF";
+        applyFilters();
+    }
+
+    function updateRange() { applyFilters(); }
+
+    function renderList(data) {
+        const container = document.getElementById('wordList');
+        container.innerHTML = "<h3>Llista actual:</h3>";
+        data.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'list-item';
+            const isStarred = starredIds.includes(item.id);
+            div.innerHTML = `
+                <div class="list-info">
+                    <strong>${item.en}</strong>
+                    <span>${item.ca}</span>
+                </div>
+                <div>
+                    <span style="cursor:pointer; margin-right:15px" onclick="playSpecific('${item.id}')">🔊</span>
+                    <span class="star-btn ${isStarred?'active':''}" onclick="toggleStarList('${item.id}')">⭐</span>
+                </div>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function playSpecific(id) {
+        const audio = document.getElementById('player');
+        audio.src = `audios/f${id}.mp3`;
+        audio.playbackRate = 1;
+        audio.play();
+    }
+
+    function toggleStarList(id) {
+        starredIds = starredIds.includes(id) ? starredIds.filter(x => x !== id) : [...starredIds, id];
+        localStorage.setItem('starred_words', JSON.stringify(starredIds));
+        applyFilters();
     }
 </script>
-
 </body>
 </html>
