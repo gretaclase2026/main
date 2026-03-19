@@ -3,52 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Vocabulari PRO</title>
+    <title>Vocabulari PRO - Àudio Real</title>
     <style>
         :root { 
-            --p-pink: #ffcfd2; 
-            --p-blue-soft: #d4eaf7; 
-            --p-blue-strong: #2196F3; 
-            --p-red: #d93025;
-            --p-orange: #ff9800;
-            --p-green-active: #4CAF50;
-            --text: #4a4a4a; 
+            --p-pink: #ffcfd2; --p-blue-soft: #d4eaf7; --p-blue-strong: #2196F3; 
+            --p-red: #d93025; --p-orange: #ff9800; --p-green-active: #4CAF50; --text: #4a4a4a; 
         }
         body { font-family: 'Segoe UI', sans-serif; background: #fff5f6; color: var(--text); display: flex; flex-direction: column; align-items: center; padding: 10px; margin:0; }
         .card { background: white; width: 100%; max-width: 600px; padding: 15px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 6px solid var(--p-pink); text-align: center; box-sizing: border-box; margin-bottom: 15px; position: relative; }
-        
         .btn-inicio { width: 100%; padding: 20px; margin: 10px 0; border: 3px solid var(--p-pink); border-radius: 15px; background: white; color: var(--p-blue-strong); font-weight: bold; font-size: 1.2em; cursor: pointer; text-transform: uppercase; }
-
         .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
-        
         .menu-item { display: flex; background: white; border: 3px solid var(--p-pink); border-radius: 15px; overflow: hidden; align-items: stretch; height: 60px; }
         .menu-btn-text { flex: 1; border: none; background: none; font-weight: bold; color: var(--p-blue-strong); cursor: pointer; text-transform: uppercase; font-size: 0.85em; padding: 0 10px; display: flex; align-items: center; justify-content: space-between; text-align: left; }
-        .menu-btn-mark { width: 50px; border: none; border-left: 2px solid var(--p-pink); background: #f9f9f9; cursor: pointer; font-size: 1.2em; color: #ccc; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-        
+        .menu-btn-mark { width: 50px; border: none; border-left: 2px solid var(--p-pink); background: #f9f9f9; cursor: pointer; font-size: 1.2em; color: #ccc; display: flex; align-items: center; justify-content: center; }
         .menu-btn-mark.status-1 { color: white; background: var(--p-orange); } 
         .menu-btn-mark.status-2 { color: white; background: var(--p-green-active); } 
-        
-        .star-indicator { color: #fbbc04; font-size: 1.1em; margin-left: auto; margin-right: 8px; }
-
-        .config-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; font-size: 0.95em; font-weight: bold; padding: 0 5px; }
-        .config-bar input { width: 42px; padding: 4px; border: 2px solid var(--p-pink); border-radius: 6px; text-align: center; color: var(--p-blue-strong); font-weight: bold; background: white; outline: none; }
-        .lang-toggle { cursor: pointer; color: var(--p-blue-strong); font-size: 1.1em; }
-        #btn-repas { cursor: pointer; background: #eee; padding: 4px 12px; border-radius: 8px; }
-        #btn-repas.on { background: #c8e6c9; }
-        .star-main { font-size: 2.5em; cursor: pointer; color: #eee; background: none; border: none; padding: 0; line-height: 1; margin-left: 10px; outline: none; }
+        .config-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; font-size: 0.95em; font-weight: bold; }
+        .config-bar input { width: 42px; padding: 4px; border: 2px solid var(--p-pink); border-radius: 6px; text-align: center; }
+        .star-main { font-size: 2.5em; cursor: pointer; color: #eee; background: none; border: none; }
         .star-main.active { color: #fbbc04; }
-        
         #pregunta { font-size: 2em; margin: 10px 0; color: var(--p-blue-strong); font-weight: bold; min-height: 1.2em; }
-        #resposta { width: 95%; padding: 12px; font-size: 1.5em; border-radius: 15px; border: 3px solid var(--p-pink); text-align: center; outline: none; box-sizing: border-box; }
+        #resposta { width: 95%; padding: 12px; font-size: 1.5em; border-radius: 15px; border: 3px solid var(--p-pink); text-align: center; outline: none; }
         .btn-main { background: var(--p-blue-soft); color: var(--p-blue-strong); padding: 12px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; width: 80%; font-size: 1.1em; }
-        .back-btn { background: none; border: none; color: black; font-weight: bold; cursor: pointer; font-size: 1em; margin-top: 15px; }
-        
-        .list-container { width: 100%; max-width: 600px; background: white; border-radius: 25px; border: 6px solid var(--p-pink); padding: 5px; box-sizing: border-box; margin-bottom: 40px; }
+        .list-container { width: 100%; max-width: 600px; background: white; border-radius: 25px; border: 6px solid var(--p-pink); padding: 5px; margin-bottom: 40px; }
         .list-table { width: 100%; border-collapse: collapse; }
-        .list-table td { padding: 8px 4px; border-bottom: 1px solid #fce4e6; vertical-align: middle; }
-        .star-list { font-size: 1.4em; width: 30px; text-align: center; color: #eee; cursor: pointer; }
+        .list-table td { padding: 8px 4px; border-bottom: 1px solid #fce4e6; }
+        .star-list { font-size: 1.4em; color: #eee; cursor: pointer; }
         .star-list.active { color: #fbbc04; }
-        
         .hidden { display: none !important; }
     </style>
 </head>
@@ -63,22 +44,22 @@
     <div class="card hidden" id="p-grups">
         <h2 style="color: var(--p-blue-strong)">Tria Categoria</h2>
         <div id="grid-selector" class="grid-menu"></div>
-        <button class="back-btn" onclick="location.reload()">🔙 Tornar</button>
+        <button onclick="location.reload()" style="margin-top:15px; background:none; border:none; cursor:pointer; font-weight:bold;">🔙 Tornar</button>
     </div>
 
     <div id="p-estudi" class="hidden" style="width: 100%; max-width: 600px; display: flex; flex-direction: column; align-items: center;">
         <div class="card">
             <div class="config-bar">
-                <span onclick="canviarIdioma()" class="lang-toggle"><b id="txt-idioma">CAT</b></span>
+                <span onclick="canviarIdioma()" style="cursor:pointer; color:var(--p-blue-strong);"><b id="txt-idioma">CAT</b></span>
                 <div style="display: flex; align-items: center; gap: 8px;">
-                    <span id="btn-repas" onclick="toggleRepas()">⭐ OFF</span>
+                    <span id="btn-repas" onclick="toggleRepas()" style="cursor:pointer; background:#eee; padding:4px 8px; border-radius:8px;">⭐ OFF</span>
                     <input type="number" id="row-desde" value="1" onchange="actualitzarRang()"> - <input type="number" id="row-fins" value="100" onchange="actualitzarRang()">
                 </div>
                 <button id="star-main" class="star-main" onclick="toggleEstrellaActual()">★</button>
             </div>
-            <div id="feedback-container" style="min-height:2.5em; font-weight:bold; line-height:1.2;">
+            <div id="feedback-container" style="min-height:2.5em; font-weight:bold;">
                 <div id="feedback-line1"></div>
-                <div id="feedback-line2" style="font-size:0.9em; margin-top:3px;"></div>
+                <div id="feedback-line2" style="font-size:0.9em; color:#555;"></div>
             </div>
             <div id="pregunta">---</div>
             <div style="margin: 10px 0; display: flex; justify-content: center; gap: 20px;">
@@ -87,7 +68,7 @@
             </div>
             <input type="text" id="resposta" placeholder="..." autocomplete="off">
             <div style="margin-top:15px;"><button class="btn-main" onclick="validar()">Comprovar</button></div>
-            <button class="back-btn" onclick="location.reload()">🔙 Tornar</button>
+            <button onclick="location.reload()" style="margin-top:15px; background:none; border:none; cursor:pointer; font-weight:bold;">🔙 Tornar</button>
         </div>
         <div class="list-container"><table class="list-table" id="taula-joc"></table></div>
     </div>
@@ -97,11 +78,11 @@
     let repasIds = new Set(JSON.parse(localStorage.getItem('repasIds') || '[]'));
     let estadosTemas = JSON.parse(localStorage.getItem('estadosTemas') || '{}');
     let idioma = 'CAT', modoRepas = false, errorActive = false, correctActive = false;
-    let audioElement = new Audio(); // Instancia para los archivos locales
+    
+    // OBJETO PARA AUDIO REAL
+    let audioReal = new Audio();
 
-    function normalitzar(t) {
-        return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
-    }
+    function normalitzar(t) { return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim(); }
 
     async function carregarCSV(nom) {
         try {
@@ -126,28 +107,22 @@
             const container = document.createElement('div'); container.className = 'menu-item';
             const btnText = document.createElement('button'); btnText.className = 'menu-btn-text';
             btnText.innerHTML = `<span>${c}</span>`;
-            const tieneEstrellas = dadesTotals.some(d => d.cat === c && repasIds.has(d.id));
-            if (tieneEstrellas) btnText.innerHTML += `<span class="star-indicator">★</span>`;
+            if (dadesTotals.some(d => d.cat === c && repasIds.has(d.id))) btnText.innerHTML += `<span style="color:#fbbc04">★</span>`;
             btnText.onclick = () => carregarCategoria(c);
             const btnMark = document.createElement('button'); 
             const st = estadosTemas[c] || 0;
             btnMark.className = 'menu-btn-mark' + (st > 0 ? ' status-' + st : '');
             btnMark.innerHTML = st === 0 ? '' : (st === 1 ? '🕒' : '✓');
-            btnMark.onclick = () => ciclarEstadoTema(c, btnMark);
+            btnMark.onclick = () => {
+                estadosTemas[c] = (estadosTemas[c] || 0 + 1) % 3;
+                localStorage.setItem('estadosTemas', JSON.stringify(estadosTemas));
+                mostrarMenu();
+            };
             container.appendChild(btnText); container.appendChild(btnMark);
             grid.appendChild(container);
         });
         document.getElementById('p-fitxer').classList.add('hidden');
         document.getElementById('p-grups').classList.remove('hidden');
-    }
-
-    function ciclarEstadoTema(c, el) {
-        let current = estadosTemas[c] || 0;
-        let next = (current + 1) % 3;
-        estadosTemas[c] = next;
-        localStorage.setItem('estadosTemas', JSON.stringify(estadosTemas));
-        el.className = 'menu-btn-mark' + (next > 0 ? ' status-' + next : '');
-        el.innerHTML = next === 0 ? '' : (next === 1 ? '🕒' : '✓');
     }
 
     function carregarCategoria(c) {
@@ -168,22 +143,12 @@
     }
 
     function nouRepte() {
-        if (dadesJoc.length === 0) { 
-            document.getElementById('pregunta').innerText = "(Buit)"; 
-            document.getElementById('star-main').classList.remove('active');
-            return; 
-        }
+        if (dadesJoc.length === 0) return;
         if (index >= dadesJoc.length) { dadesJoc.sort(() => Math.random() - 0.5); index = 0; }
         errorActive = false; correctActive = false;
         const p = dadesJoc[index];
-        
-        if (idioma === 'ENG') { 
-            document.getElementById('pregunta').innerText = "🎧 Escolta..."; 
-            reproduir(p.eng, 1.0); 
-        } else { 
-            document.getElementById('pregunta').innerText = p.esp; 
-        }
-        
+        document.getElementById('pregunta').innerText = (idioma === 'ENG') ? "🎧 Escolta..." : p.esp;
+        if (idioma === 'ENG') reproduir(p.eng, 1.0);
         document.getElementById('resposta').value = "";
         document.getElementById('feedback-line1').innerText = ""; 
         document.getElementById('feedback-line2').innerText = "";
@@ -196,83 +161,61 @@
         const p = dadesJoc[index];
         const user = normalitzar(document.getElementById('resposta').value);
         const ok = normalitzar(p.eng);
-        
         document.getElementById('pregunta').innerText = p.eng;
         reproduir(p.eng, 1.0);
-
         if (user === ok) {
             document.getElementById('feedback-line1').innerText = "CORRECTE!"; 
             document.getElementById('feedback-line1').style.color = "green";
             correctActive = true; setTimeout(seguent, 1500);
         } else {
             document.getElementById('feedback-line1').innerText = "INCORRECTE!"; 
-            document.getElementById('feedback-line1').style.color = "var(--p-red)";
+            document.getElementById('feedback-line1').style.color = "red";
             errorActive = true;
         }
-        
         document.getElementById('feedback-line2').innerHTML = `<b>${p.eng.toUpperCase()}</b> = <i>${p.esp}</i>`;
-        document.getElementById('feedback-line2').style.color = "#555";
     }
 
     function seguent() { index++; nouRepte(); }
-    function reproduirActual(vel) { if (dadesJoc[index]) reproduir(dadesJoc[index].eng, vel); document.getElementById('resposta').focus(); }
+    function reproduirActual(vel) { if (dadesJoc[index]) reproduir(dadesJoc[index].eng, vel); }
 
     function reproduir(t, vel) {
-        // Formateig: Primera majúscula, espais -> guió baix
+        // REGLA: Primera Majúscula i guions baixos
         let neta = t.trim().toLowerCase().replace(/ /g, "_");
         let fitxer = neta.charAt(0).toUpperCase() + neta.slice(1);
-        
-        audioElement.pause();
-        audioElement.src = `audios/${fitxer}.mp3`;
-        audioElement.playbackRate = vel;
-        audioElement.play().catch(e => console.log("Audio no trobat: " + fitxer));
-    }
-
-    function toggleEstrellaActual() {
-        if (!dadesJoc[index]) return;
-        gestionarEstrella(dadesJoc[index].id);
-    }
-
-    function toggleEstrellaLlista(id) {
-        gestionarEstrella(id);
+        audioReal.pause();
+        audioReal.src = `audios/${fitxer}.mp3`;
+        audioReal.playbackRate = vel;
+        audioReal.play().catch(() => console.log("Falta: " + fitxer));
     }
 
     function gestionarEstrella(id) {
-        if (repasIds.has(id)) {
-            repasIds.delete(id);
-        } else {
-            repasIds.add(id);
-        }
+        if (repasIds.has(id)) repasIds.delete(id); else repasIds.add(id);
         localStorage.setItem('repasIds', JSON.stringify([...repasIds]));
-        
-        const inici = parseInt(document.getElementById('row-desde').value) - 1;
-        const fi = parseInt(document.getElementById('row-fins').value);
-        actualitzarTaula(dadesCat.slice(inici, fi));
-        
-        if (dadesJoc[index] && dadesJoc[index].id === id) {
-            document.getElementById('star-main').classList.toggle('active', repasIds.has(id));
-        }
+        actualitzarRang();
     }
 
+    function toggleEstrellaActual() { gestionarEstrella(dadesJoc[index].id); }
+    function toggleEstrellaLlista(id) { gestionarEstrella(id); }
     function canviarIdioma() { idioma = (idioma === 'CAT') ? 'ENG' : 'CAT'; document.getElementById('txt-idioma').innerText = idioma; nouRepte(); }
-    function toggleRepas() { modoRepas = !modoRepas; const btn = document.getElementById('btn-repas'); btn.innerText = modoRepas ? "⭐ ON" : "⭐ OFF"; btn.classList.toggle('on', modoRepas); actualitzarRang(); }
+    function toggleRepas() { modoRepas = !modoRepas; document.getElementById('btn-repas').innerText = modoRepas ? "⭐ ON" : "⭐ OFF"; actualitzarRang(); }
 
     function actualitzarTaula(llista) {
         document.getElementById('taula-joc').innerHTML = llista.map((d, i) => `
             <tr>
-                <td style="color:#ccc; font-size:0.8em;">${i+1}</td>
-                <td class="star-list ${repasIds.has(d.id)?'active':''}\" onclick=\"toggleEstrellaLlista('${d.id}')\">★</td>
-                <td><button style=\"background:none; border:none; cursor:pointer;\" onclick=\"reproduir('${d.eng.replace(/'/g,"\\\\'")}', 1.0)\">🔊</button></td>
-                <td style=\"color:var(--p-blue-strong); font-weight:bold;\">${d.eng}</td>
-                <td style=\"color:#888; font-size:0.9em;\">${d.esp}</td>
+                <td style="color:#ccc;">${i+1}</td>
+                <td class="star-list ${repasIds.has(d.id)?'active':''}" onclick="toggleEstrellaLlista('${d.id}')">★</td>
+                <td><button style="border:none; background:none; cursor:pointer;" onclick="reproduir('${d.eng.replace(/'/g,"\\'")}', 1.0)">🔊</button></td>
+                <td style="color:var(--p-blue-strong); font-weight:bold;">${d.eng}</td>
+                <td style="color:#888;">${d.esp}</td>
             </tr>
         `).join('');
     }
 
     document.getElementById('resposta').addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            if (errorActive || correctActive) { e.preventDefault(); if(correctActive) seguent(); else nouRepte(); }
-            else if (e.key === 'Enter') { validar(); }
+        if (e.key === 'Enter') {
+            if (correctActive) seguent(); 
+            else if (errorActive) { errorActive=false; nouRepte(); }
+            else validar();
         }
     });
 </script>
