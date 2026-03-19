@@ -30,16 +30,13 @@
         .star-main.active { filter: grayscale(0); }
 
         .audio-group { display: flex; justify-content: center; gap: 15px; margin: 15px 0; }
-        .btn-audio { background: var(--p-blue-soft); border: none; width: 60px; height: 60px; border-radius: 50%; font-size: 25px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
-        .btn-audio:active { transform: scale(0.9); }
+        .btn-audio { background: var(--p-blue-soft); border: none; width: 60px; height: 60px; border-radius: 50%; font-size: 25px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
-        .word-box { min-height: 120px; display: flex; flex-direction: column; justify-content: center; }
         #word-main { font-size: 32px; font-weight: 800; color: var(--p-blue-strong); margin-bottom: 5px; }
         #word-sub { font-size: 20px; color: #888; font-weight: bold; min-height: 24px; cursor: pointer; }
         #word-sub.hidden { background: #f0f0f0; color: transparent; border-radius: 8px; display: inline-block; padding: 0 20px; }
 
-        .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; max-width: 600px; }
-        .btn-next { grid-column: span 2; background: var(--p-pink); color: #d93025; padding: 18px; border-radius: 20px; border: none; font-size: 20px; font-weight: 800; cursor: pointer; }
+        .btn-next { width: 100%; max-width: 600px; background: var(--p-pink); color: #d93025; padding: 18px; border-radius: 20px; border: none; font-size: 20px; font-weight: 800; cursor: pointer; margin-bottom: 20px; }
 
         .list-section { width: 100%; max-width: 600px; background: white; border-radius: 20px; padding: 10px; box-sizing: border-box; }
         table { width: 100%; border-collapse: collapse; }
@@ -60,16 +57,12 @@
 
     <div class="card">
         <div id="star-main" class="star-main" onclick="toggleEstrellaPrincipal()">⭐</div>
-        
         <div class="audio-group">
             <button class="btn-audio" onclick="reproduirActual(1.0)">🔊</button>
             <button class="btn-audio" onclick="reproduirActual(0.6)">🐢</button>
         </div>
-
-        <div class="word-box">
-            <div id="word-main">Carregant...</div>
-            <div id="word-sub" class="hidden" onclick="this.classList.remove('hidden')"></div>
-        </div>
+        <div id="word-main">Carregant...</div>
+        <div id="word-sub" class="hidden" onclick="this.classList.remove('hidden')"></div>
     </div>
 
     <button class="btn-next" onclick="següent()">SEGÜENT PARAULA ➔</button>
@@ -89,6 +82,7 @@
     let modoRepas = false;
     let repasIds = new Set(JSON.parse(localStorage.getItem('repas_ids') || '[]'));
 
+    // CARREGA DEL CSV
     fetch('vocabulariGrups.csv')
         .then(r => r.text())
         .then(t => {
@@ -96,19 +90,21 @@
             dadesTotals = lines.map((l, i) => {
                 const p = l.split(';');
                 return { 
-                    id: (i + 1).toString().padStart(3, '0'), // Aquí creem el codi 001, 002...
-                    grup: p[0].trim(), 
-                    eng: p[1].trim(), 
-                    esp: p[2].trim() 
+                    id: (i + 1).toString().padStart(3, '0'), 
+                    grup: p[0] ? p[0].trim() : "Sense Grup", 
+                    eng: p[1] ? p[1].trim() : "", 
+                    esp: p[2] ? p[2].trim() : "" 
                 };
             });
             generarPestanyes();
             carregarGrup(dadesTotals[0].grup);
-        });
+        })
+        .catch(e => alert("Error: No s'ha trobat el fitxer 'vocabulariGrups.csv'"));
 
     function generarPestanyes() {
         const grups = [...new Set(dadesTotals.map(d => d.grup))];
         const container = document.getElementById('tabs-container');
+        container.innerHTML = "";
         grups.forEach((g, i) => {
             const btn = document.createElement('button');
             btn.className = 'tab' + (i === 0 ? ' active' : '');
@@ -174,24 +170,21 @@
         if (dadesActuals.length > 0) {
             const d = dadesActuals[indexActual];
             const p = document.getElementById('player');
-            // MODIFICACIÓ CLAU: Busca f001.mp3, f002.mp3... dins de la carpeta /audios/
             p.src = `audios/f${d.id}.mp3`;
             p.playbackRate = velocitat;
-            p.play().catch(() => console.log("Àudio no trobat"));
+            p.play().catch(() => console.log("Audio f" + d.id + " no trobat"));
         }
     }
 
     function toggleEstrellaPrincipal() {
         const id = dadesActuals[indexActual].id;
-        if (repasIds.has(id)) repasIds.delete(id);
-        else repasIds.add(id);
+        repasIds.has(id) ? repasIds.delete(id) : repasIds.add(id);
         localStorage.setItem('repas_ids', JSON.stringify([...repasIds]));
         actualitzarRang();
     }
 
     function toggleEstrellaLlista(id) {
-        if (repasIds.has(id)) repasIds.delete(id);
-        else repasIds.add(id);
+        repasIds.has(id) ? repasIds.delete(id) : repasIds.add(id);
         localStorage.setItem('repas_ids', JSON.stringify([...repasIds]));
         actualitzarRang();
     }
@@ -204,9 +197,8 @@
 
     function toggleRepas() { 
         modoRepas = !modoRepas; 
-        const btn = document.getElementById('btn-repas');
-        btn.innerText = modoRepas ? "⭐ ON" : "⭐ OFF";
-        btn.classList.toggle('on', modoRepas);
+        document.getElementById('btn-repas').innerText = modoRepas ? "⭐ ON" : "⭐ OFF";
+        document.getElementById('btn-repas').classList.toggle('on', modoRepas);
         actualitzarRang(); 
     }
 
