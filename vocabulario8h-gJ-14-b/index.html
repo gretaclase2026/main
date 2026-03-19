@@ -46,7 +46,7 @@
         .list-container { width: 100%; max-width: 600px; background: white; border-radius: 25px; border: 6px solid var(--p-pink); padding: 5px; box-sizing: border-box; margin-bottom: 40px; }
         .list-table { width: 100%; border-collapse: collapse; }
         .list-table td { padding: 8px 4px; border-bottom: 1px solid #fce4e6; vertical-align: middle; }
-        .star-list { font-size: 1.4em; width: 30px; text-align: center; color: #eee; }
+        .star-list { font-size: 1.4em; width: 30px; text-align: center; color: #eee; cursor: pointer; }
         .star-list.active { color: #fbbc04; }
         
         .hidden { display: none !important; }
@@ -163,12 +163,15 @@
     }
 
     function nouRepte() {
-        if (dadesJoc.length === 0) { document.getElementById('pregunta').innerText = "(Buit)"; return; }
+        if (dadesJoc.length === 0) { 
+            document.getElementById('pregunta').innerText = "(Buit)"; 
+            document.getElementById('star-main').classList.remove('active');
+            return; 
+        }
         if (index >= dadesJoc.length) { dadesJoc.sort(() => Math.random() - 0.5); index = 0; }
         errorActive = false; correctActive = false;
         const p = dadesJoc[index];
         
-        // En modo ENG no mostramos chuleta, solo el icono de escucha
         if (idioma === 'ENG') { 
             document.getElementById('pregunta').innerText = "🎧 Escolta..."; 
             reproduir(p.eng, 1.0); 
@@ -189,7 +192,7 @@
         const user = document.getElementById('resposta').value.trim().toLowerCase();
         const ok = p.eng.toLowerCase();
         
-        document.getElementById('pregunta').innerText = p.eng; // Muestra respuesta en pantalla
+        document.getElementById('pregunta').innerText = p.eng;
         reproduir(p.eng, 1.0);
 
         if (user === ok) {
@@ -202,7 +205,6 @@
             errorActive = true;
         }
         
-        // MOSTRAR AMBAS VERSIONES AL FINALIZAR EL INTENTO
         document.getElementById('feedback-line2').innerHTML = `<b>${p.eng.toUpperCase()}</b> = <i>${p.esp}</i>`;
         document.getElementById('feedback-line2').style.color = "#555";
     }
@@ -212,11 +214,32 @@
     function reproduir(t, vel) { window.speechSynthesis.cancel(); const m = new SpeechSynthesisUtterance(t); m.lang = 'en-US'; m.rate = vel; window.speechSynthesis.speak(m); }
 
     function toggleEstrellaActual() {
+        if (!dadesJoc[index]) return;
         const id = dadesJoc[index].id;
-        repasIds.has(id) ? repasIds.delete(id) : repasIds.add(id);
+        gestionarEstrella(id);
+    }
+
+    function toggleEstrellaLlista(id) {
+        gestionarEstrella(id);
+    }
+
+    function gestionarEstrella(id) {
+        if (repasIds.has(id)) {
+            repasIds.delete(id);
+        } else {
+            repasIds.add(id);
+        }
         localStorage.setItem('repasIds', JSON.stringify([...repasIds]));
-        document.getElementById('star-main').classList.toggle('active', repasIds.has(id));
-        actualitzarTaula(dadesCat.slice(parseInt(document.getElementById('row-desde').value)-1, parseInt(document.getElementById('row-fins').value)));
+        
+        // Refresquem la taula visualment
+        const inici = parseInt(document.getElementById('row-desde').value) - 1;
+        const fi = parseInt(document.getElementById('row-fins').value);
+        actualitzarTaula(dadesCat.slice(inici, fi));
+        
+        // Si la paraula que canviem és la que estem veient ara mateix, refresquem l'estrella gran
+        if (dadesJoc[index] && dadesJoc[index].id === id) {
+            document.getElementById('star-main').classList.toggle('active', repasIds.has(id));
+        }
     }
 
     function canviarIdioma() { idioma = (idioma === 'CAT') ? 'ENG' : 'CAT'; document.getElementById('txt-idioma').innerText = idioma; nouRepte(); }
@@ -226,7 +249,7 @@
         document.getElementById('taula-joc').innerHTML = llista.map((d, i) => `
             <tr>
                 <td style="color:#ccc; font-size:0.8em;">${i+1}</td>
-                <td class="star-list ${repasIds.has(d.id)?'active':''}">★</td>
+                <td class="star-list ${repasIds.has(d.id)?'active':''}" onclick="toggleEstrellaLlista('${d.id}')">★</td>
                 <td><button style="background:none; border:none; cursor:pointer;" onclick="reproduir('${d.eng.replace(/'/g,"\\'")}', 1.0)">🔊</button></td>
                 <td style="color:var(--p-blue-strong); font-weight:bold;">${d.eng}</td>
                 <td style="color:#888; font-size:0.9em;">${d.esp}</td>

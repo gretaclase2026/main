@@ -17,7 +17,6 @@
         body { font-family: 'Segoe UI', sans-serif; background: #fff5f6; color: var(--text); display: flex; flex-direction: column; align-items: center; padding: 10px; margin:0; }
         .card { background: white; width: 100%; max-width: 600px; padding: 15px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 6px solid var(--p-pink); text-align: center; box-sizing: border-box; margin-bottom: 15px; position: relative; }
         
-        /* BOTONES PRINCIPALES (GRUPS / TEMES) */
         .btn-inicio { width: 100%; padding: 20px; margin: 10px 0; border: 3px solid var(--p-pink); border-radius: 15px; background: white; color: var(--p-blue-strong); font-weight: bold; font-size: 1.2em; cursor: pointer; text-transform: uppercase; }
 
         .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
@@ -39,7 +38,7 @@
         .star-main { font-size: 2.5em; cursor: pointer; color: #eee; background: none; border: none; padding: 0; line-height: 1; margin-left: 10px; outline: none; }
         .star-main.active { color: #fbbc04; }
         
-        #pregunta { font-size: 2.2em; margin: 10px 0; color: var(--p-blue-strong); font-weight: bold; }
+        #pregunta { font-size: 2em; margin: 10px 0; color: var(--p-blue-strong); font-weight: bold; min-height: 1.2em; }
         #resposta { width: 95%; padding: 12px; font-size: 1.5em; border-radius: 15px; border: 3px solid var(--p-pink); text-align: center; outline: none; box-sizing: border-box; }
         .btn-main { background: var(--p-blue-soft); color: var(--p-blue-strong); padding: 12px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; width: 80%; font-size: 1.1em; }
         .back-btn { background: none; border: none; color: black; font-weight: bold; cursor: pointer; font-size: 1em; margin-top: 15px; }
@@ -77,7 +76,10 @@
                 </div>
                 <button id="star-main" class="star-main" onclick="toggleEstrellaActual()">★</button>
             </div>
-            <div id="feedback-container" style="min-height:2em; font-weight:bold;"><span id="feedback-label"></span><span id="solucio-text"></span></div>
+            <div id="feedback-container" style="min-height:2.5em; font-weight:bold; line-height:1.2;">
+                <div id="feedback-line1"></div>
+                <div id="feedback-line2" style="font-size:0.9em; margin-top:3px;"></div>
+            </div>
             <div id="pregunta">---</div>
             <div style="margin: 10px 0; display: flex; justify-content: center; gap: 20px;">
                 <button style="background:none; border:none; cursor:pointer; font-size:2em;" onclick="reproduirActual(1.0)">🔊</button>
@@ -117,22 +119,16 @@
         const grid = document.getElementById('grid-selector'); grid.innerHTML = '';
         cats.forEach(c => {
             const container = document.createElement('div'); container.className = 'menu-item';
-            
             const btnText = document.createElement('button'); btnText.className = 'menu-btn-text';
             btnText.innerHTML = `<span>${c}</span>`;
-            
             const tieneEstrellas = dadesTotals.some(d => d.cat === c && repasIds.has(d.id));
-            if (tieneEstrellas) {
-                btnText.innerHTML += `<span class="star-indicator">★</span>`;
-            }
+            if (tieneEstrellas) btnText.innerHTML += `<span class="star-indicator">★</span>`;
             btnText.onclick = () => carregarCategoria(c);
-            
             const btnMark = document.createElement('button'); 
             const st = estadosTemas[c] || 0;
             btnMark.className = 'menu-btn-mark' + (st > 0 ? ' status-' + st : '');
             btnMark.innerHTML = st === 0 ? '' : (st === 1 ? '🕒' : '✓');
             btnMark.onclick = () => ciclarEstadoTema(c, btnMark);
-            
             container.appendChild(btnText); container.appendChild(btnMark);
             grid.appendChild(container);
         });
@@ -171,10 +167,18 @@
         if (index >= dadesJoc.length) { dadesJoc.sort(() => Math.random() - 0.5); index = 0; }
         errorActive = false; correctActive = false;
         const p = dadesJoc[index];
-        if (idioma === 'ENG') { document.getElementById('pregunta').innerText = "🎧 Escolta..."; reproduir(p.eng, 1.0); }
-        else { document.getElementById('pregunta').innerText = p.esp; }
+        
+        // En modo ENG no mostramos chuleta, solo el icono de escucha
+        if (idioma === 'ENG') { 
+            document.getElementById('pregunta').innerText = "🎧 Escolta..."; 
+            reproduir(p.eng, 1.0); 
+        } else { 
+            document.getElementById('pregunta').innerText = p.esp; 
+        }
+        
         document.getElementById('resposta').value = "";
-        document.getElementById('feedback-label').innerText = ""; document.getElementById('solucio-text').innerText = "";
+        document.getElementById('feedback-line1').innerText = ""; 
+        document.getElementById('feedback-line2').innerText = "";
         document.getElementById('star-main').classList.toggle('active', repasIds.has(p.id));
         document.getElementById('resposta').focus();
     }
@@ -184,17 +188,23 @@
         const p = dadesJoc[index];
         const user = document.getElementById('resposta').value.trim().toLowerCase();
         const ok = p.eng.toLowerCase();
-        document.getElementById('pregunta').innerText = p.eng;
+        
+        document.getElementById('pregunta').innerText = p.eng; // Muestra respuesta en pantalla
         reproduir(p.eng, 1.0);
+
         if (user === ok) {
-            document.getElementById('feedback-label').innerText = "CORRECTE: "; document.getElementById('feedback-label').style.color = "green";
-            document.getElementById('solucio-text').innerText = p.eng.toUpperCase(); document.getElementById('solucio-text').style.color = "green";
-            correctActive = true; setTimeout(seguent, 1000);
+            document.getElementById('feedback-line1').innerText = "CORRECTE!"; 
+            document.getElementById('feedback-line1').style.color = "green";
+            correctActive = true; setTimeout(seguent, 1500);
         } else {
-            document.getElementById('feedback-label').innerText = "INCORRECTE: "; document.getElementById('feedback-label').style.color = "var(--p-red)";
-            document.getElementById('solucio-text').innerText = p.eng.toUpperCase(); document.getElementById('solucio-text').style.color = "var(--p-red)";
+            document.getElementById('feedback-line1').innerText = "INCORRECTE!"; 
+            document.getElementById('feedback-line1').style.color = "var(--p-red)";
             errorActive = true;
         }
+        
+        // MOSTRAR AMBAS VERSIONES AL FINALIZAR EL INTENTO
+        document.getElementById('feedback-line2').innerHTML = `<b>${p.eng.toUpperCase()}</b> = <i>${p.esp}</i>`;
+        document.getElementById('feedback-line2').style.color = "#555";
     }
 
     function seguent() { index++; nouRepte(); }
