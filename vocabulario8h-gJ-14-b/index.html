@@ -12,6 +12,7 @@
             --p-red: #d93025;
             --p-orange: #ff9800;
             --p-green-active: #4CAF50;
+            --p-green-light: #90ee90;
             --text: #4a4a4a; 
         }
         body { font-family: 'Segoe UI', sans-serif; background: #fff5f6; color: var(--text); display: flex; flex-direction: column; align-items: center; padding: 10px; margin:0; }
@@ -97,7 +98,7 @@
     let repasIds = new Set(JSON.parse(localStorage.getItem('repasIds') || '[]'));
     let estadosTemas = JSON.parse(localStorage.getItem('estadosTemas') || '{}');
     let idioma = 'CAT', modoRepas = false, errorActive = false, correctActive = false;
-    let audioElement = new Audio(); // Instancia para los archivos locales
+    let audioElement = new Audio();
 
     function normalitzar(t) {
         return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
@@ -194,23 +195,32 @@
     function validar() {
         if (dadesJoc.length === 0 || errorActive || correctActive) return;
         const p = dadesJoc[index];
-        const user = normalitzar(document.getElementById('resposta').value);
+        const rawUser = document.getElementById('resposta').value;
+        const user = normalitzar(rawUser);
         const ok = normalitzar(p.eng);
         
+        // Si el campo está vacío, saltamos a la siguiente palabra
+        if (rawUser.trim() === "") {
+            seguent();
+            return;
+        }
+
         document.getElementById('pregunta').innerText = p.eng;
         reproduir(p.eng, 1.0);
 
         if (user === ok) {
             document.getElementById('feedback-line1').innerText = "CORRECTE!"; 
             document.getElementById('feedback-line1').style.color = "green";
-            correctActive = true; setTimeout(seguent, 1500);
+            correctActive = true; 
+            setTimeout(seguent, 1500);
         } else {
             document.getElementById('feedback-line1').innerText = "INCORRECTE!"; 
             document.getElementById('feedback-line1').style.color = "var(--p-red)";
             errorActive = true;
         }
         
-        document.getElementById('feedback-line2').innerHTML = `<b>${p.eng.toUpperCase()}</b> = <i>${p.esp}</i>`;
+        // Formato pedido: verde claro para el texto y sin cursiva para la traducción
+        document.getElementById('feedback-line2').innerHTML = `<b style="color: var(--p-green-light)">${p.eng.toUpperCase()}</b> = <span>${p.esp}</span>`;
         document.getElementById('feedback-line2').style.color = "#555";
     }
 
@@ -218,10 +228,8 @@
     function reproduirActual(vel) { if (dadesJoc[index]) reproduir(dadesJoc[index].eng, vel); document.getElementById('resposta').focus(); }
 
     function reproduir(t, vel) {
-        // Formateig: Primera majúscula, espais -> guió baix
         let neta = t.trim().toLowerCase().replace(/ /g, "_");
         let fitxer = neta.charAt(0).toUpperCase() + neta.slice(1);
-        
         audioElement.pause();
         audioElement.src = `audios/${fitxer}.mp3`;
         audioElement.playbackRate = vel;
@@ -244,11 +252,9 @@
             repasIds.add(id);
         }
         localStorage.setItem('repasIds', JSON.stringify([...repasIds]));
-        
         const inici = parseInt(document.getElementById('row-desde').value) - 1;
         const fi = parseInt(document.getElementById('row-fins').value);
         actualitzarTaula(dadesCat.slice(inici, fi));
-        
         if (dadesJoc[index] && dadesJoc[index].id === id) {
             document.getElementById('star-main').classList.toggle('active', repasIds.has(id));
         }
@@ -261,18 +267,35 @@
         document.getElementById('taula-joc').innerHTML = llista.map((d, i) => `
             <tr>
                 <td style="color:#ccc; font-size:0.8em;">${i+1}</td>
-                <td class="star-list ${repasIds.has(d.id)?'active':''}\" onclick=\"toggleEstrellaLlista('${d.id}')\">★</td>
-                <td><button style=\"background:none; border:none; cursor:pointer;\" onclick=\"reproduir('${d.eng.replace(/'/g,"\\\\'")}', 1.0)\">🔊</button></td>
-                <td style=\"color:var(--p-blue-strong); font-weight:bold;\">${d.eng}</td>
-                <td style=\"color:#888; font-size:0.9em;\">${d.esp}</td>
+                <td class="star-list ${repasIds.has(d.id)?'active':''}" onclick="toggleEstrellaLlista('${d.id}')">★</td>
+                <td><button style="background:none; border:none; cursor:pointer;" onclick="reproduir('${d.eng.replace(/'/g,"\\\\'")}', 1.0)">🔊</button></td>
+                <td style="color:var(--p-blue-strong); font-weight:bold;">${d.eng}</td>
+                <td style="color:#888; font-size:0.9em;">${d.esp}</td>
             </tr>
         `).join('');
     }
 
     document.getElementById('resposta').addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
-            if (errorActive || correctActive) { e.preventDefault(); if(correctActive) seguent(); else nouRepte(); }
-            else if (e.key === 'Enter') { validar(); }
+            if (correctActive) { 
+                e.preventDefault(); 
+                seguent(); 
+            } else if (errorActive) { 
+                e.preventDefault();
+                // Si estaba mal y pulsamos Intro/Espacio, reseteamos para reintentar
+                errorActive = false;
+                document.getElementById('resposta').value = "";
+                document.getElementById('feedback-line1').innerText = "";
+                document.getElementById('feedback-line2').innerText = "";
+                // Restauramos la pregunta original según el idioma
+                if (idioma === 'ENG') {
+                    document.getElementById('pregunta').innerText = "🎧 Escolta...";
+                } else {
+                    document.getElementById('pregunta').innerText = dadesJoc[index].esp;
+                }
+            } else if (e.key === 'Enter') { 
+                validar(); 
+            }
         }
     });
 </script>

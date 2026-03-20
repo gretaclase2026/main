@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Vocabulari PRO - Àudio Real</title>
+    <title>Vocabulari PRO</title>
     <style>
         :root { 
             --p-pink: #ffcfd2; 
@@ -97,9 +97,7 @@
     let repasIds = new Set(JSON.parse(localStorage.getItem('repasIds') || '[]'));
     let estadosTemas = JSON.parse(localStorage.getItem('estadosTemas') || '{}');
     let idioma = 'CAT', modoRepas = false, errorActive = false, correctActive = false;
-    
-    // Element d'àudio per fitxers reals
-    let audioReal = new Audio();
+    let audioElement = new Audio(); // Instancia para los archivos locales
 
     function normalitzar(t) {
         return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
@@ -217,23 +215,17 @@
     }
 
     function seguent() { index++; nouRepte(); }
-    
-    function reproduirActual(vel) { 
-        if (dadesJoc[index]) reproduir(dadesJoc[index].eng, vel); 
-        document.getElementById('resposta').focus(); 
-    }
+    function reproduirActual(vel) { if (dadesJoc[index]) reproduir(dadesJoc[index].eng, vel); document.getElementById('resposta').focus(); }
 
     function reproduir(t, vel) {
-        // REGLA: Primera lletra Majúscula i espais -> guió baix (_)
+        // Formateig: Primera majúscula, espais -> guió baix
         let neta = t.trim().toLowerCase().replace(/ /g, "_");
         let fitxer = neta.charAt(0).toUpperCase() + neta.slice(1);
         
-        audioReal.pause();
-        audioReal.src = `audios/${fitxer}.mp3`;
-        audioReal.playbackRate = vel;
-        audioReal.play().catch(e => {
-            console.warn("No s'ha trobat l'arxiu local: audios/" + fitxer + ".mp3");
-        });
+        audioElement.pause();
+        audioElement.src = `audios/${fitxer}.mp3`;
+        audioElement.playbackRate = vel;
+        audioElement.play().catch(e => console.log("Audio no trobat: " + fitxer));
     }
 
     function toggleEstrellaActual() {
@@ -269,10 +261,10 @@
         document.getElementById('taula-joc').innerHTML = llista.map((d, i) => `
             <tr>
                 <td style="color:#ccc; font-size:0.8em;">${i+1}</td>
-                <td class="star-list ${repasIds.has(d.id)?'active':''}" onclick="toggleEstrellaLlista('${d.id}')">★</td>
-                <td><button style="background:none; border:none; cursor:pointer;" onclick="reproduir('${d.eng.replace(/'/g,"\\'")}', 1.0)">🔊</button></td>
-                <td style="color:var(--p-blue-strong); font-weight:bold;">${d.eng}</td>
-                <td style="color:#888; font-size:0.9em;">${d.esp}</td>
+                <td class="star-list ${repasIds.has(d.id)?'active':''}\" onclick=\"toggleEstrellaLlista('${d.id}')\">★</td>
+                <td><button style=\"background:none; border:none; cursor:pointer;\" onclick=\"reproduir('${d.eng.replace(/'/g,"\\\\'")}', 1.0)\">🔊</button></td>
+                <td style=\"color:var(--p-blue-strong); font-weight:bold;\">${d.eng}</td>
+                <td style=\"color:#888; font-size:0.9em;\">${d.esp}</td>
             </tr>
         `).join('');
     }
