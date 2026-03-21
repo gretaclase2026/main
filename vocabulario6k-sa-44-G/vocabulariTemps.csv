@@ -1,100 +1,100 @@
-﻿Sleet;Aiguaneu
-Avalanche;Allau
-Anemometer;Anemòmetre
-Rainbow;Arc de Sant Martí
-Sunny;Assolellat
-Atmosphere;Atmosfera
-Barometer;Baròmetre
-Fog;Boira
-Smog;Boirina contaminada
-Bright;Brillant
-Breeze;Brisa
-Blast;Bufada
-Hail;Calamarsa
-Mist;Calitja
-Haze;Calitja
-Heat;Calor
-Hot;Calorós
-Icicle;Caramell
+﻿Aiguaneu;Sleet
+Allau;Avalanche
+Anemòmetre;Anemometer
+Arc de Sant Martí;Rainbow
+Assolellat;Sunny
+Atmosfera;Atmosphere
+Baròmetre;Barometer
+Boira;Fog
+Boirina contaminada;Smog
+Brillant;Bright
+Brisa;Breeze
+Bufada;Blast
+Calamarsa;Hail
+Calitja;Mist
+Calitja;Haze
+Calor;Heat
+Calorós;Hot
+Caramell;Icicle
 Celsius;Celsius
-Cyclone;Cicló
-Clear;Clar
-Moonlight;Clar de lluna
-Climate;Clima
-Frozen;Congelat
-Sunburn;Cremada solar
-Overcast;Ennuvolat
-Warmth;Escalfament
-Landslide;Esllavissada
+Cicló;Cyclone
+Clar;Clear
+Clar de lluna;Moonlight
+Clima;Climate
+Congelat;Frozen
+Cremada solar;Sunburn
+Ennuvolat;Overcast
+Escalfament;Warmth
+Esllavissada;Landslide
 Fahrenheit;Fahrenheit
-Snowflake;Floc de neu
-Cold;Fred
-Chill;Fredor
-Cool;Fresc
-Front;Front (atmosfèric)
-Smoke;Fum
-Hoarfrost;Gebre
-Ice;Gel
-Black ice;Gel invisible
-Freezing;Gelat
-Frost;Glaçada
-Chilly;Glaçador
-Icy;Glaçat
-Damp;Humit
-Humidity;Humitat
-Moisture;Humitat
-Hurricane;Huracà
-Flood;Inundació
-Lightning;Llampec
-Sunshine;Llum de sol
-Weather map;Mapa meteorològic
-Meteorologist;Meteoròleg
-Meteorology;Meteorologia
-Partly cloudy;Mig ennuvolat
-Wet;Moll
-Whiteout;Nebulosa de neu
-Snow;Neu
-Snowfall;Nevada
-Cloud;Núvol
-Heatwave;Ona de calor
-Weather vane;Penell
-Drizzle;Plugim
-Rain;Pluja
-Rain gauge;Pluviòmetre
-Sunset;Posta del sol
-Forecast;Predicció
-Pressure;Pressió
-Dew point;Punt de rosada
-Gust;Ràfega
-Lightning bolt;Raig
-UV rays;Raigs UV
-Whirlwind;Remolí
-Dew;Rosada
-Shower;Ruixat
-Dry;Sec
-Wind chill;Sensació tèrmica
-Drought;Sequera
-Sun;Sol
-Sunrise;Sortida del sol
-Mild;Suau
-Warm;Tèbi
-Temperature;Temperatura
-Storm;Tempesta
-Snowstorm;Tempesta de neu
-Dust storm;Tempesta de pols
-Thunderstorm;Tempesta elèctrica
-Stormy;Tempestuós
-Weather;Temps
-Thermometer;Termòmetre
-Typhoon;Tifó
-Blizzard;Torb
+Floc de neu;Snowflake
+Fred;Cold
+Fredor;Chill
+Fresc;Cool
+Front (atmosfèric);Front
+Fum;Smoke
+Gebre;Hoarfrost
+Gel;Ice
+Gel invisible;Black ice
+Gelat;Freezing
+Glaçada;Frost
+Glaçador;Chilly
+Glaçat;Icy
+Humit;Damp
+Humitat;Humidity
+Humitat;Moisture
+Huracà;Hurricane
+Inundació;Flood
+Llampec;Lightning
+Llum de sol;Sunshine
+Mapa meteorològic;Weather map
+Meteoròleg;Meteorologist
+Meteorologia;Meteorology
+Mig ennuvolat;Partly cloudy
+Moll;Wet
+Nebulosa de neu;Whiteout
+Neu;Snow
+Nevada;Snowfall
+Núvol;Cloud
+Ona de calor;Heatwave
+Penell;Weather vane
+Plugim;Drizzle
+Pluja;Rain
+Pluviòmetre;Rain gauge
+Posta del sol;Sunset
+Predicció;Forecast
+Pressió;Pressure
+Punt de rosada;Dew point
+Ràfega;Gust
+Raig;Lightning bolt
+Raigs UV;UV rays
+Remolí;Whirlwind
+Rosada;Dew
+Ruixat;Shower
+Sec;Dry
+Sensació tèrmica;Wind chill
+Sequera;Drought
+Sol;Sun
+Sortida del sol;Sunrise
+Suau;Mild
+Tèbi;Warm
+Temperatura;Temperature
+Tempesta;Storm
+Tempesta de neu;Snowstorm
+Tempesta de pols;Dust storm
+Tempesta elèctrica;Thunderstorm
+Tempestuós;Stormy
+Temps;Weather
+Termòmetre;Thermometer
+Tifó;Typhoon
+Torb;Blizzard
 Tornado;Tornado
-Scorching;Tòrrid
-Thunder;Tro
-Wind;Vent
-Gale;Vent fort
-Windy;Ventós
-Blustery;Ventós i variable
-Visibility;Visibilitat
-Downpour;Xàfec fort
-Sweltering;Xafogós
+Tòrrid;Scorching
+Tro;Thunder
+Vent;Wind
+Vent fort;Gale
+Ventós;Windy
+Ventós i variable;Blustery
+Visibilitat;Visibility
+Xàfec fort;Downpour
+Xafogós;Sweltering
