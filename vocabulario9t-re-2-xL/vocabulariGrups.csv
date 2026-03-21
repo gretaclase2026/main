@@ -158,21 +158,20 @@ Cuina;Simmer;Fuego lento / Fer xup-xup
 Cuina;Season;Sazonar / Salpebrar
 Cuina;Bake;Hornear / Forn
 Cuina;Stir;Remover / Remenar
-Tema;Inglés;Español
-Adjectius;Barefoot;Descalzo
-Adjectius;Naked;Desnudo
-Adjectius;Homeless;Sin hogar
-Adjectius;Unemployed;Desempleado
-Adjectius;Bald;Calvo
-Sons Similars;Ear;Oreja
-Vocabulario;Fear;Miedo
-Vocabulario;Bear;Oso
-Vocabulario;Beard;Barba
-Vocabulario;Pear;Pera
-Vocabulario;Hear;Oír
-Vocabulario;Heard;Oído
-Vocabulario;Heart;Corazón
-Verbs;Yawn;Bostezar
+Adjectius;Barefoot;Descalç
+Adjectius;Naked;Despullat
+Adjectius;Homeless;Sense casa
+Adjectius;Unemployed;Desempleat
+Adjectius;Bald;calb
+Sons Similars;Ear;Orella
+Sons Similars;Fear;Por
+Sons Similars;Bear;Os          
+Sons Similars;Beard;Barba
+Sons Similars;Pear;Pera
+Sons Similars;Hear;Oír
+Sons Similars;Heard;Oído
+Sons Similars;Heart;Cor 
+Verbs;Yawn;Badallar
 Verbs;Gasp;Jadear
 Verbs;Sigh;Suspirar
 Verbs;Sniff;Oler
