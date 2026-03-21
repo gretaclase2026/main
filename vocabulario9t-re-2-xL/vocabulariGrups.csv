@@ -18,16 +18,16 @@ Naturalesa;Almond tree;Almendro / Ametller
 Naturalesa;Lemon tree;Limonero / Llimoner
 Naturalesa;Orange tree;Naranjo / Taronger
 Naturalesa;Poplar;Álamo / Pollancre
-Animals;Dog / Puppy;Perro / Cachorro / Gos / Gosset
-Animals;Cat / Kitten;Gato / Gatito / Gat / Gatet
-Animals;Cow / Calf;Vaca / Ternero / Vaca / Vedell
-Animals;Horse / Foal;Haballo / Potro / Cavall / Poltre
-Animals;Hen / Chick;Gallina / Pollito / Gallina / Pollet
-Animals;Sheep / Lamb;Oveja / Cordero / Ovelha / Xai
-Animals;Pig / Piglet;Cerdo / Lechón / Porc / Porquet
-Animals;Lion / Cub;León / Cachorro / Lleó / Cadell
-Animals;Goat / Kid;Cabra / Cabrito / Cabra / Cabrit
-Animals;Duck / Duckling;Pato / Patito / Ànec / Ànec petit
+Animals;Dog Puppy;Perro / Cachorro / Gos / Gosset
+Animals;Cat Kitten;Gato / Gatito / Gat / Gatet
+Animals;Cow Calf;Vaca / Ternero / Vaca / Vedell
+Animals;Horse Foal;Haballo / Potro / Cavall / Poltre
+Animals;Hen Chick;Gallina / Pollito / Gallina / Pollet
+Animals;Sheep Lamb;Oveja / Cordero / Ovelha / Xai
+Animals;Pig Piglet;Cerdo / Lechón / Porc / Porquet
+Animals;Lion Cub;León / Cachorro / Lleó / Cadell
+Animals;Goat Kid;Cabra / Cabrito / Cabra / Cabrit
+Animals;Duck  Duckling;Pato / Patito / Ànec / Ànec petit
 Fruites;Blueberry;Arándano / Nabiu
 Fruites;Raspberry;Frambuesa / Gerd
 Fruites;Blackberry;Mora / Mora
@@ -76,7 +76,7 @@ Pentinats;Pigtails;Coletas / Cues
 Pentinats;Ponytail;Coleta única / Cua
 Pentinats;Bun;Moño / Moixó
 Pentinats;Braid;Trenza / Trena
-Pentinats;Shoulder-length;Media melena / Cabell espatlles
+Pentinats;Shoulder length;Media melena / Cabell espatlles
 Pentinats;Bald;Calvo / Calb
 Medi Ambient;Plant trees;Plantar árboles / Plantar arbres
 Medi Ambient;Oil spill;Derrame petróleo / Vessament petroli
@@ -158,3 +158,27 @@ Cuina;Simmer;Fuego lento / Fer xup-xup
 Cuina;Season;Sazonar / Salpebrar
 Cuina;Bake;Hornear / Forn
 Cuina;Stir;Remover / Remenar
+Tema;Inglés;Español
+Adjectius;Barefoot;Descalzo
+Adjectius;Naked;Desnudo
+Adjectius;Homeless;Sin hogar
+Adjectius;Unemployed;Desempleado
+Adjectius;Bald;Calvo
+Sons Similars;Ear;Oreja
+Vocabulario;Fear;Miedo
+Vocabulario;Bear;Oso
+Vocabulario;Beard;Barba
+Vocabulario;Pear;Pera
+Vocabulario;Hear;Oír
+Vocabulario;Heard;Oído
+Vocabulario;Heart;Corazón
+Verbs;Yawn;Bostezar
+Verbs;Gasp;Jadear
+Verbs;Sigh;Suspirar
+Verbs;Sniff;Oler
+Verbs;Wink;Guiñar
+Verbs;Groan;Gemir
+Verbs;Blush;Sonrojarse
+Verbs;Frown;Fruncir el ceño
+Verbs;Nod;Asentir
+Verbs;Shrug;Encogerse de hombros
