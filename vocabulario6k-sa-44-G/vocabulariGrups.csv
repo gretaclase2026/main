@@ -15,7 +15,7 @@ Naturalesa;Palm tree;Palmera / Palmera
 Naturalesa;Cypress;Ciprés / Xiprer
 Naturalesa;Fig tree;Higuera / Figuera
 Naturalesa;Almond tree;Almendro / Ametller
-Naturalesa;Lemon tree;Limonero / Llimoner
+Naturalesa;Lemon Tree;Limonero / Llimoner
 Naturalesa;Orange tree;Naranjo / Taronger
 Naturalesa;Poplar;Álamo / Pollancre
 Animals;Dog Puppy;Perro / Cachorro / Gos / Gosset
@@ -27,7 +27,7 @@ Animals;Sheep Lamb;Oveja / Cordero / Ovelha / Xai
 Animals;Pig Piglet;Cerdo / Lechón / Porc / Porquet
 Animals;Lion Cub;León / Cachorro / Lleó / Cadell
 Animals;Goat Kid;Cabra / Cabrito / Cabra / Cabrit
-Animals;Duck  Duckling;Pato / Patito / Ànec / Ànec petit
+Animals;Duck Duckling;Pato / Patito / Ànec / Ànec petit
 Fruites;Blueberry;Arándano / Nabiu
 Fruites;Raspberry;Frambuesa / Gerd
 Fruites;Blackberry;Mora / Mora
@@ -181,126 +181,126 @@ Verbs;Blush;Sonrojarse
 Verbs;Frown;Fruncir el ceño
 Verbs;Nod;Asentir
 Verbs;Shrug;Encogerse de hombros
-Verbs per A;abandon;abandonar
-Verbs per A;abbreviate;abreujar
-Verbs per A;abduct;segrestar
-Verbs per A;abet;encoratjar
-Verbs per A;abhor;detestar
-Verbs per A;abide;obeir
-Verbs per A;abolish;abolir
-Verbs per A;absorb;absorbir
-Verbs per A;abstract;abstracte
-Verbs per A;accelerate;accelerar
-Verbs per A;accentuate;accentuar
-Verbs per A;accept;acceptar
-Verbs per A;accommodate;acollir
-Verbs per A;accompany;acompanyar
-Verbs per A;accomplish;aconseguir
-Verbs per A;accord;acordar
-Verbs per A;account;compte
-Verbs per A;accumulate;acumular
-Verbs per A;accuse;acusar
-Verbs per A;achieve;aconseguir / assolir
-Verbs per A;acknowledge;reconèixer
-Verbs per A;acquire;adquirir
-Verbs per A;acquit;absoldre
-Verbs per A;activate;activar
-Verbs per A;adapt;adaptar
-Verbs per A;address;dirigir-se a / tractar (tema)
-Verbs per A;adhere;adherir
-Verbs per A;adjourn;ajornar
-Verbs per A;adjust;ajustar  
-Verbs per A;administer;administrar
-Verbs per A;admire;admirar
-Verbs per A;admit;admetre
-Verbs per A;admonish;amonestar
-Verbs per A;adopt;adoptar
-Verbs per A;adore;adorar
-Verbs per A;advance;avançar
-Verbs per A;advise;aconsellar
-Verbs per A;advocate;defensar
-Verbs per A;affect;afectar
-Verbs per A;affiliate;afiliar
-Verbs per A;affirm;afirmar
-Verbs per A;affix;afegir
-Verbs per A;afflict;afligir
-Verbs per A;afford;permetre’s (econòmicament)
-Verbs per A;aggravate;agreujar
-Verbs per A;aggregate;agregar
-Verbs per A;agonize;agonitzar
-Verbs per A;agree;estar d’acord
-Verbs per A;aid;ajudar
-Verbs per A;ail;patir
-Verbs per A;aim;apuntar / objectiu
-Verbs per A;air;airejar
-Verbs per A;alarm;alarmar
-Verbs per A;alert;alertar
-Verbs per A;alienate;alienar
-Verbs per A;align;alinear
-Verbs per A;allege;al·legar
-Verbs per A;alleviate;alleujar
-Verbs per A;allocate;assignar
-Verbs per A;allow;permetre
-Verbs per A;allude;al·ludir
-Verbs per A;ally;aliar-se
-Verbs per A;alter;alterar / modificar
-Verbs per A;alternate;alternar
-Verbs per A;amalgamate;amalgamar
-Verbs per A;amaze;sorprendre
-Verbs per A;amble;caminar
-Verbs per A;amend;esmenar
-Verbs per A;amplify;amplificar
-Verbs per A;amuse;divertir
-Verbs per A;analyze;analitzar
-Verbs per A;anchor;ancorar
-Verbs per A;anger;enfadar
-Verbs per A;angle;inclinar
-Verbs per A;animate;animar
-Verbs per A;announce;anunciar
-Verbs per A;annoy;molestar / fer enfadar
-Verbs per A;annul;anul·lar
-Verbs per A;anoint;ungir
-Verbs per A;answer;respondre / contestar
-Verbs per A;anticipate;anticipar
-Verbs per A;apologize;demanar perdó
-Verbs per A;appeal;apel·lar / agradar
-Verbs per A;appear;aparèixer/parecer
-Verbs per A;appease;apaivagar
-Verbs per A;applaud;aplaudir
-Verbs per A;apply;sol·licitar / aplicar
-Verbs per A;appoint;nomenar / designar
-Verbs per A;appraise;avaluar
-Verbs per A;appreciate;valorar / agrair
-Verbs per A;approach;acostar-se / enfocar
-Verbs per A;approve;aprovar
-Verbs per A;argue;discutir
-Verbs per A;arise;sorgir
-Verbs per A;arrange;organitzar
-Verbs per A;arrest;arrestar
-Verbs per A;arrive;arribar
-Verbs per A;articulate;articular
-Verbs per A;ask;demanar / preguntar
-Verbs per A;assemble;reunir / muntar
-Verbs per A;assert;afirmar
-Verbs per A;assess;avaluar
-Verbs per A;assign;assignar
-Verbs per A;assist;ajudar / assistir
-Verbs per A;associate;associar
-Verbs per A;assume;suposar
-Verbs per A;assure;assegurar
-Verbs per A;astonish;sorprendre
-Verbs per A;attach;adjuntar / enganxar
-Verbs per A;attack;atacar
-Verbs per A;attain;assolir
-Verbs per A;attempt;intentar
-Verbs per A;attend;assistir
-Verbs per A;attract;atreure
-Verbs per A;attribute;atribuir
-Verbs per A;authorize;autoritzar
-Verbs per A;avoid;evitar
-Verbs per A;awake;despertar
-Verbs per A;awaken;despertar-se
-Verbs per A;award;atorgar
+Verbs per A;Abandon;abandonar
+Verbs per A;Abbreviate;abreujar
+Verbs per A;Abduct;segrestar
+Verbs per A;Abet;encoratjar
+Verbs per A;Abhor;detestar
+Verbs per A;Abide;obeir
+Verbs per A;Abolish;abolir
+Verbs per A;Absorb;absorbir
+Verbs per A;Abstract;abstracte
+Verbs per A;Accelerate;accelerar
+Verbs per A;Accentuate;accentuar
+Verbs per A;Accept;acceptar
+Verbs per A;Accommodate;acollir
+Verbs per A;Accompany;acompanyar
+Verbs per A;Accomplish;aconseguir
+Verbs per A;Accord;acordar
+Verbs per A;Account;compte
+Verbs per A;Accumulate;acumular
+Verbs per A;Accuse;acusar
+Verbs per A;Achieve;aconseguir / assolir
+Verbs per A;Acknowledge;reconèixer
+Verbs per A;Acquire;adquirir
+Verbs per A;Acquit;absoldre
+Verbs per A;Activate;activar
+Verbs per A;Adapt;adaptar
+Verbs per A;Address;dirigir-se a / tractar (tema)
+Verbs per A;Adhere;adherir
+Verbs per A;Adjourn;ajornar
+Verbs per A;Adjust;ajustar  
+Verbs per A;Administer;administrar
+Verbs per A;Admire;admirar
+Verbs per A;Admit;admetre
+Verbs per A;Admonish;amonestar
+Verbs per A;Adopt;adoptar
+Verbs per A;Adore;adorar
+Verbs per A;Advance;avançar
+Verbs per A;Advise;aconsellar
+Verbs per A;Advocate;defensar
+Verbs per A;Affect;afectar
+Verbs per A;Affiliate;afiliar
+Verbs per A;Affirm;afirmar
+Verbs per A;Affix;afegir
+Verbs per A;Afflict;afligir
+Verbs per A;Afford;permetre’s (econòmicament)
+Verbs per A;Aggravate;agreujar
+Verbs per A;Aggregate;agregar
+Verbs per A;Agonize;agonitzar
+Verbs per A;Agree;estar d’acord
+Verbs per A;Aid;ajudar
+Verbs per A;Ail;patir
+Verbs per A;Aim;apuntar / objectiu
+Verbs per A;Air;airejar
+Verbs per A;Alarm;alarmar
+Verbs per A;Alert;alertar
+Verbs per A;Alienate;alienar
+Verbs per A;Align;alinear
+Verbs per A;Allege;al·legar
+Verbs per A;Alleviate;alleujar
+Verbs per A;Allocate;assignar
+Verbs per A;Allow;permetre
+Verbs per A;Allude;al·ludir
+Verbs per A;Ally;aliar-se
+Verbs per A;Alter;alterar / modificar
+Verbs per A;Alternate;alternar
+Verbs per A;Amalgamate;amalgamar
+Verbs per A;Amaze;sorprendre
+Verbs per A;Amble;caminar
+Verbs per A;Amend;esmenar
+Verbs per A;Amplify;amplificar
+Verbs per A;Amuse;divertir
+Verbs per A;Analyze;analitzar
+Verbs per A;Anchor;ancorar
+Verbs per A;Anger;enfadar
+Verbs per A;Angle;inclinar
+Verbs per A;Animate;animar
+Verbs per A;Announce;anunciar
+Verbs per A;Annoy;molestar / fer enfadar
+Verbs per A;Annul;anul·lar
+Verbs per A;Anoint;ungir
+Verbs per A;Answer;respondre / contestar
+Verbs per A;Anticipate;anticipar
+Verbs per A;Apologize;demanar perdó
+Verbs per A;Appeal;apel·lar / agradar
+Verbs per A;Appear;aparèixer/parecer
+Verbs per A;Appease;apaivagar
+Verbs per A;Applaud;aplaudir
+Verbs per A;Apply;sol·licitar / aplicar
+Verbs per A;Appoint;nomenar / designar
+Verbs per A;Appraise;avaluar
+Verbs per A;Appreciate;valorar / agrair
+Verbs per A;Approach;acostar-se / enfocar
+Verbs per A;Approve;aprovar
+Verbs per A;Argue;discutir
+Verbs per A;Arise;sorgir
+Verbs per A;Arrange;organitzar
+Verbs per A;Arrest;arrestar
+Verbs per A;Arrive;arribar
+Verbs per A;Articulate;articular
+Verbs per A;Ask;demanar / preguntar
+Verbs per A;Assemble;reunir / muntar
+Verbs per A;Assert;afirmar
+Verbs per A;Assess;avaluar
+Verbs per A;Assign;assignar
+Verbs per A;Assist;ajudar / assistir
+Verbs per A;Associate;associar
+Verbs per A;Assume;suposar
+Verbs per A;Assure;assegurar
+Verbs per A;Astonish;sorprendre
+Verbs per A;Attach;adjuntar / enganxar
+Verbs per A;Attack;atacar
+Verbs per A;Attain;assolir
+Verbs per A;Attempt;intentar
+Verbs per A;Attend;assistir
+Verbs per A;Attract;atreure
+Verbs per A;Attribute;atribuir
+Verbs per A;Authorize;autoritzar
+Verbs per A;Avoid;evitar
+Verbs per A;Awake;despertar
+Verbs per A;Awaken;despertar-se
+Verbs per A;Award;atorgar
 Verbs per B;Babble;Balbucejar
 Verbs per B;Back;Donar suport / Retrocedir
 Verbs per B;Baffle;Desconcertar
@@ -1748,11 +1748,11 @@ Cos;Skeleton;esquelet
 Cos;Bronchus;bronqui
 Cos;Cheekbone;pòmul / os de la galta
 Cos;Trachea;tràquea
-Argot;Come Up;Proposar
-Argot;Be Beat;Estar esgotat
-Argot;Hang Out;Passar l'estona
-Argot;Chill Out;Relaxar-se
-Argot;Be Amped;Estar entusiasmat
+Expressions;Come Up;Proposar
+Expressions;Be Beat;Estar esgotat
+Expressions;Hang Out;Passar l'estona
+Expressions;Chill Out;Relaxar-se
+Expressions;Be Amped;Estar entusiasmat
 Esports;Hang-Gliding;ala delta
 Esports;Hiking;senderisme
 Esports;Scuba Diving;submarinisme
