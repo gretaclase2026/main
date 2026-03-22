@@ -199,6 +199,7 @@
         const user = normalitzar(rawUser);
         const ok = normalitzar(p.eng);
         
+        // Si el campo está vacío, saltamos a la siguiente palabra
         if (rawUser.trim() === "") {
             seguent();
             return;
@@ -218,6 +219,7 @@
             errorActive = true;
         }
         
+        // Formato pedido: verde claro para el texto y sin cursiva para la traducción
         document.getElementById('feedback-line2').innerHTML = `<b style="color: var(--p-green-light)">${p.eng.toUpperCase()}</b> = <span>${p.esp}</span>`;
         document.getElementById('feedback-line2').style.color = "#555";
     }
@@ -226,16 +228,10 @@
     function reproduirActual(vel) { if (dadesJoc[index]) reproduir(dadesJoc[index].eng, vel); document.getElementById('resposta').focus(); }
 
     function reproduir(t, vel) {
-        // Formateig segons el script de generació: Primera en majúscula, la resta igual
-        let neta = t.trim();
+        let neta = t.trim().toLowerCase().replace(/ /g, "_");
         let fitxer = neta.charAt(0).toUpperCase() + neta.slice(1);
-        
-        // Neteja de caràcters especials per coincidir amb el "safeName" del generador
-        fitxer = fitxer.replace(/[\/\\?%*:|"<>]/g, '-');
-
         audioElement.pause();
-        // encodeURIComponent assegura que els espais i símbols funcionin en la URL
-        audioElement.src = `audios/${encodeURIComponent(fitxer)}.mp3`;
+        audioElement.src = `audios/${fitxer}.mp3`;
         audioElement.playbackRate = vel;
         audioElement.play().catch(e => console.log("Audio no trobat: " + fitxer));
     }
@@ -286,10 +282,12 @@
                 seguent(); 
             } else if (errorActive) { 
                 e.preventDefault();
+                // Si estaba mal y pulsamos Intro/Espacio, reseteamos para reintentar
                 errorActive = false;
                 document.getElementById('resposta').value = "";
                 document.getElementById('feedback-line1').innerText = "";
                 document.getElementById('feedback-line2').innerText = "";
+                // Restauramos la pregunta original según el idioma
                 if (idioma === 'ENG') {
                     document.getElementById('pregunta').innerText = "🎧 Escolta...";
                 } else {

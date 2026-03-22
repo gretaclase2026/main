@@ -301,75 +301,46 @@ Verbs per A;avoid;evitar
 Verbs per A;awake;despertar
 Verbs per A;awaken;despertar-se
 Verbs per A;award;atorgar
-Verbs per B;Bake;Cuinar al forn
-Verbs per B;Bark;Lladrar
-Verbs per B;Behave;Comportar-se
-Verbs per B;Belong;Pertànyer
-Verbs per B;Borrow;Demanar prestat
-Verbs per B;Brush;Cepillar
-Verbs per B;Burn;Cremar
-Verbs per B;Back;Donar suport / Retrocedir
-Verbs per B;Balance;Equilibrar
-Verbs per B;Ban;Prohibir
-Verbs per B;Bathe;Banyar-se
-Verbs per B;Beg;Suplicar / Demanar
-Verbs per B;Believe;Creure
-Verbs per B;Blame;Culpar
-Verbs per B;Bless;Beneir
-Verbs per B;Blink;Parpellejar
-Verbs per B;Boil;Bullir
-Verbs per B;Book;Reservar
-Verbs per B;Bounce;Botar / Rebotar
-Verbs per B;Brake;Frenar
-Verbs per B;Breathe;Respirar
-Verbs per B;Bump;Topar / Donar un cop
-Verbs per B;Bury;Enterrar
-Verbs per B;Buzz;Zumzejar
-Verbs per B;Bare;Nuar / Revelar
-Verbs per B;Battle;Lluitar
-Verbs per B;Beam;Somriure radiantment / Emetre
-Verbs per B;Benefit;Beneficiar
-Verbs per B;Blind;Cegar
-Verbs per B;Blot;Eixugar / Taca
-Verbs per B;Blush;Enrojolar-se
-Verbs per B;Boast;Presumir / Alardear
-Verbs per B;Bomb;Bombardejar
-Verbs per B;Border;Limitar amb
-Verbs per B;Bother;Molestar
-Verbs per B;Bow;Inclinar-se
-Verbs per B;Box;Boxejar
-Verbs per B;Branch;Ramificar-se
-Verbs per B;Brighten;Il·luminar / Alegrar
-Verbs per B;Broaden;Ampliar
-Verbs per B;Bruise;Fer-se un blau
-Verbs per B;Bubble;Borbollejar
-Verbs per B;Buckle;Abrochar / Doblegar-se
 Verbs per B;Babble;Balbucejar
+Verbs per B;Back;Donar suport / Retrocedir
 Verbs per B;Baffle;Desconcertar
 Verbs per B;Baggage;Facturar (equipatge)
 Verbs per B;Bait;Atreure / Posar esquer
+Verbs per B;Bake;Cuinar al forn
+Verbs per B;Balance;Equilibrar
+Verbs per B;Ban;Prohibir
 Verbs per B;Banish;Desterrar
 Verbs per B;Bankrupt;Fer fallida
 Verbs per B;Barb;Posar pues
+Verbs per B;Bare;Nuar / Revelar
 Verbs per B;Bargain;Negociar / Regatejar
+Verbs per B;Bark;Lladrar
 Verbs per B;Barrel;Anar a tota velocitat
 Verbs per B;Barter;Intercanviar / Baratar
 Verbs per B;Bash;Colpejar fort
 Verbs per B;Bask;Gaudir / Prendre el sol
+Verbs per B;Bathe;Banyar-se
 Verbs per B;Batten;Reforçar
 Verbs per B;Batter;Colpejar repetidament
+Verbs per B;Battle;Lluitar
 Verbs per B;Bawl;Plorar a crits
 Verbs per B;Bay;Udolar
+Verbs per B;Beam;Somriure radiantment / Emetre
 Verbs per B;Beckon;Fer senyal
 Verbs per B;Beef;Queixar-se / Reforçar
 Verbs per B;Befriend;Fer-se amic
+Verbs per B;Beg;Suplicar / Demanar
 Verbs per B;Beguile;Enganyar / Seduir
+Verbs per B;Behave;Comportar-se
 Verbs per B;Belch;Rutllar
 Verbs per B;Belie;Desmentir
+Verbs per B;Believe;Creure
 Verbs per B;Belittle;Menystenir
 Verbs per B;Bellow;Bramar
+Verbs per B;Belong;Pertànyer
 Verbs per B;Bemoan;Lamentar
 Verbs per B;Bemuse;Confondre
+Verbs per B;Benefit;Beneficiar
 Verbs per B;Bequeath;Llegar
 Verbs per B;Berate;Escridassar
 Verbs per B;Besiege;Assetjar
@@ -383,24 +354,51 @@ Verbs per B;Bill;Facturar
 Verbs per B;Billow;Onlejar / Inflar-se
 Verbs per B;Bind (Reg);Enquadernar (ús específic)
 Verbs per B;Blacken;Ennegrir
+Verbs per B;Blame;Culpar
 Verbs per B;Blanch;Blanquejar
 Verbs per B;Blast;Explotar
 Verbs per B;Blaze;Cremar amb flama
 Verbs per B;Bleach;Decolorar
 Verbs per B;Blend;Barrejar
 Verbs per B;Bless;Beneir
+Verbs per B;Blind;Cegar
+Verbs per B;Blink;Parpellejar
 Verbs per B;Block;Bloquejar
 Verbs per B;Bloom;Florir
 Verbs per B;Blossom;Florir / Prosperar
+Verbs per B;Blot;Eixugar / Taca
 Verbs per B;Blunder;Cometre un error
 Verbs per B;Blunt;Esmussar
 Verbs per B;Blur;Desdibuixar
 Verbs per B;Blurt;Deixar anar (sense pensar)
+Verbs per B;Blush;Enrojolar-se
 Verbs per B;Board;Pujar a bord
+Verbs per B;Boast;Presumir / Alardear
+Verbs per B;Boil;Bullir
 Verbs per B;Bolster;Reforçar
 Verbs per B;Bolt;Sortir corrents
+Verbs per B;Bomb;Bombardejar
+Verbs per B;Book;Reservar
 Verbs per B;Boost;Impulsar
-Verbs per C;believe;creure
+Verbs per B;Border;Limitar amb
+Verbs per B;Borrow;Demanar prestat
+Verbs per B;Bother;Molestar
+Verbs per B;Bounce;Botar / Rebotar
+Verbs per B;Bow;Inclinar-se
+Verbs per B;Box;Boxejar
+Verbs per B;Brake;Frenar
+Verbs per B;Branch;Ramificar-se
+Verbs per B;Breathe;Respirar
+Verbs per B;Brighten;Il·luminar / Alegrar
+Verbs per B;Broaden;Ampliar
+Verbs per B;Bruise;Fer-se un blau
+Verbs per B;Brush;Cepillar
+Verbs per B;Bubble;Borbollejar
+Verbs per B;Buckle;Abrochar / Doblegar-se
+Verbs per B;Bump;Topar / Donar un cop
+Verbs per B;Burn;Cremar
+Verbs per B;Bury;Enterrar
+Verbs per B;Buzz;Zumzejar
 Verbs per C;calculate;calcular
 Verbs per C;call;trucar
 Verbs per C;campaign;fer campanya
@@ -408,29 +406,19 @@ Verbs per C;cancel;cancel·lar
 Verbs per C;capture;capturar
 Verbs per C;care;cuidar
 Verbs per C;carry;carregar
-Verbs per C;carve;carvar
 Verbs per C;carve;esculpir
 Verbs per C;catch;atrapar
 Verbs per C;categorize;classificar
 Verbs per C;cater;proporcionar
 Verbs per C;cause;causar
-Verbs per C;cause;causar
-Verbs per C;cause;provocar
-Verbs per C;cease;cessar
 Verbs per C;cease;cessar
 Verbs per C;celebrate;celebrar
-Verbs per C;celebrate;celebrar
-Verbs per C;challenge;reptar
 Verbs per C;challenge;reptar
 Verbs per C;change;canviar
-Verbs per C;change;canviar
-Verbs per C;chant;cantar
 Verbs per C;chant;entonar
-Verbs per C;charge;carregar
 Verbs per C;charge;carregar
 Verbs per C;charm;encantar
 Verbs per C;chase;perseguir
-Verbs per C;chat;xerrar
 Verbs per C;chat;xerrar
 Verbs per C;cheat;enganyar
 Verbs per C;check;comprovar
@@ -443,7 +431,6 @@ Verbs per C;choose;escollir
 Verbs per C;cite;citar
 Verbs per C;claim;reclamar
 Verbs per C;clap;aplaudir
-Verbs per C;clarify;clarificar
 Verbs per C;clarify;clarificar
 Verbs per C;classify;classificar
 Verbs per C;clean;netejar
@@ -460,8 +447,7 @@ Verbs per C;coach;entrenar
 Verbs per C;coexist;coexistir
 Verbs per C;collaborate;col·laborar
 Verbs per C;collapse;col·lapsar
-Verbs per C;collect;cobrar
-Verbs per C;collect;recollir
+Verbs per C;collect;cobrar/recollir
 Verbs per C;collide;xocar
 Verbs per C;colonize;colonitzar
 Verbs per C;color;colorejar
@@ -559,7 +545,6 @@ Verbs per E;encase;empaquetar
 Verbs per E;enchant;embriagar
 Verbs per E;encourage;empènyer
 Verbs per E;enflame;encendre
-Verbs per E;engulf;enfonsar
 Verbs per E;engulf;empassar
 Verbs per E;enlighten;enlluernar
 Verbs per E;enrich;enriquir
@@ -1321,31 +1306,13 @@ Anàlisi de Dades;Statistics;Estadístiques
 Anàlisi de Dades;Survey;Enquesta
 Anàlisi de Dades;Tendency;Tendència
 Anàlisi de Dades;Undergo;Experimentar / Patir
-Universitat;Seminar;Seminari
-Universitat;Whiteboard;Pissarra
-Universitat;Educate;Educar
-Universitat;High School;Institut
-Universitat;Dean;Degà
-Universitat;Recitation;Recitació
-Universitat;Pass Exam;Aprovar un examen
-Universitat;Rector;Rector
 Universitat;Academic;Acadèmic
-Universitat;Learning Disorder;Trastorn d'aprenentatge
-Universitat;Primary School;Escola primària
-Universitat;Secondary School;Escola secundària
-Universitat;Take A Course;Fer un curs
-Universitat;Find Out;Esbrinar
-Universitat;Library;Biblioteca
-Universitat;Nursery School;Escola bressol / Llar d'infants
-Universitat;Topic;Tema
-Universitat;University;Universitat
-Universitat;Work-Related;Relacionat amb la feina
-Universitat;Concentrate;Concentrar-se
-Universitat;Mixed;Mixt / Coeducació
 Universitat;Argue;Discutir / Argumentar
 Universitat;Assignment;Tasca / Treball
 Universitat;Attendance;Assistència
+Universitat;Bachelor;Batxiller
 Universitat;Be Brainy;Ser intel·ligent
+Universitat;Bookshelf;Prestatgeria
 Universitat;Brainstorm;Pluja d'idees
 Universitat;Break;Esbarjo / Descans
 Universitat;Break Up;Acabar les classes
@@ -1355,35 +1322,53 @@ Universitat;Chemistry;Química
 Universitat;Coach;Entrenador
 Universitat;College;Universitat / Facultat
 Universitat;Compulsory;Obligatori
-Universitat;Curriculum;Pla d'estudis
-Universitat;Degree;Títol / Grau
-Universitat;Dropout;Abandonament escolar
-Universitat;Enroll;Matricular-se
-Universitat;Bachelor;Batxiller
 Universitat;Computer Science;Informàtica
+Universitat;Concentrate;Concentrar-se
+Universitat;Curriculum;Pla d'estudis
+Universitat;Deadline;Termini / Data límit
+Universitat;Dean;Degà
+Universitat;Degree;Títol / Grau
+Universitat;Distance Learning;Educació a distància
+Universitat;Dormitory;Residència / Dormitori
+Universitat;Dropout;Abandonament escolar
+Universitat;Educate;Educar
+Universitat;Elementary School;Escola primària
+Universitat;Enroll;Matricular-se
+Universitat;Field Of Study;Camp d'estudi
+Universitat;Find Out;Esbrinar
+Universitat;Form Master;Tutor
+Universitat;High School;Institut
 Universitat;Higher Education;Educació superior
 Universitat;Humanities;Humanitats
+Universitat;Institute;Institut
+Universitat;Law School;Facultat de Dret
+Universitat;Learning Disorder;Trastorn d'aprenentatge
+Universitat;Liberal Arts;Lletres / Arts liberals
+Universitat;Library;Biblioteca
+Universitat;Master'S Degree;Títol de Màster
+Universitat;Mixed;Mixt / Coeducació
+Universitat;Nursery School;Escola bressol / Llar d'infants
+Universitat;Pass Exam;Aprovar un examen
+Universitat;Phd;Doctorat
 Universitat;Postgraduate;Postgraduat
+Universitat;Primary School;Escola primària
 Universitat;Private Lesson;Classe particular
+Universitat;Recitation;Recitació
+Universitat;Rector;Rector
 Universitat;Report Card;Butlletí de qualificacions
 Universitat;Scholarship;Beca
 Universitat;School Year;Any escolar
-Universitat;Student Loan;Préstec estudiantil
-Universitat;Teach-Yourself Book;Llibre autodidacta
-Universitat;Phd;Doctorat
-Universitat;Liberal Arts;Lletres / Arts liberals
-Universitat;Dormitory;Residència / Dormitori
-Universitat;Form Master;Tutor
-Universitat;Institute;Institut
-Universitat;Master'S Degree;Títol de Màster
-Universitat;Field Of Study;Camp d'estudi
-Universitat;Bookshelf;Prestatgeria
-Universitat;Deadline;Termini / Data límit
-Universitat;Tutorials;Tutories
-Universitat;Distance Learning;Educació a distància
-Universitat;Elementary School;Escola primària
-Universitat;Law School;Facultat de Dret
+Universitat;Secondary School;Escola secundària
+Universitat;Seminar;Seminari
 Universitat;Skip Classes;Fer campana / Faltar a classe
+Universitat;Student Loan;Préstec estudiantil
+Universitat;Take A Course;Fer un curs
+Universitat;Teach Yourself Book;Llibre autodidacta
+Universitat;Topic;Tema
+Universitat;Tutorials;Tutories
+Universitat;University;Universitat
+Universitat;Whiteboard;Pissarra
+Universitat;Work Related;Relacionat amb la feina
 Connectors;Under No Circumstances;Sota cap circumstància
 Connectors;Otherwise;D'una altra manera / Si no
 Connectors;As Can Be Expected;Com es pot esperar
