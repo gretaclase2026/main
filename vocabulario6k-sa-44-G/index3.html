@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
@@ -118,7 +118,7 @@
                 }
             });
             mostrarMenu();
-        } catch (e) { alert("Error cargando CSV"); }
+        } catch (e) { alert("Error"); }
     }
 
     function mostrarMenu() {
@@ -226,19 +226,15 @@
     function seguent() { index++; nouRepte(); }
     function reproduirActual(vel) { if (dadesJoc[index]) reproduir(dadesJoc[index].eng, vel); document.getElementById('resposta').focus(); }
 
-    // FUNCIÓN DE AUDIO REFORZADA PARA APÓSTROFES Y ESPACIOS
     function reproduir(t, vel) {
-        let textoOriginal = t.trim();
+        let texto = t.trim().replace(/[\/\\?%*:|"<>]/g, '-');
         
-        // Creamos variantes para probar suerte si el archivo tiene nombres raros
+        // Creamos 3 posibles variantes del nombre del archivo
         let variantes = [
-            textoOriginal,                                        // 1. Tal cual (p.ej. "Jog someone's memory")
-            textoOriginal.replace(/'/g, "’"),                     // 2. Apóstrofe curvo
-            textoOriginal.replace(/'/g, ""),                      // 3. Sin apóstrofe (someones)
-            textoOriginal.replace(/'/g, "_"),                     // 4. Guion bajo por apóstrofe
-            textoOriginal.replace(/\s+/g, '_'),                   // 5. Espacios por guiones bajos
-            textoOriginal.toLowerCase().replace(/'/g, ""),        // 6. Todo minúsculas y sin apóstrofe
-            textoOriginal.replace(/\s+/g, '_').replace(/'/g, "")  // 7. Guiones y sin apóstrofe
+            texto,                                      // 1. Tal cual (Ej: "Fewer_Than")
+            texto.charAt(0).toUpperCase() + texto.slice(1), // 2. Primera mayúscula (Ej: "Explore")
+            texto.toLowerCase().replace(/\s+/g, '_'),   // 3. Minúsculas y con guiones (Ej: "full_board")
+            texto.replace(/_/g, ' ')                    // 4. Con espacios (Ej: "Full board")
         ];
 
         let vIndex = 0;
@@ -246,19 +242,16 @@
 
         function intentarCargar() {
             if (vIndex >= variantes.length) {
-                console.log("No se ha encontrado audio para: " + t);
+                console.log("No se pudo encontrar ninguna variante de audio para: " + t);
                 return;
             }
             
-            // Limpiamos caracteres prohibidos por seguridad del sistema
-            let nombreLimpio = variantes[vIndex].replace(/[\/\\?%*:|"<>]/g, '-');
-            let nombreFinal = encodeURIComponent(nombreLimpio);
-            
-            audioElement.src = `audios/${nombreFinal}.mp3`;
+            let nombre = encodeURIComponent(variantes[vIndex]);
+            audioElement.src = `audios/${nombre}.mp3`;
             
             audioElement.play().catch(() => {
                 vIndex++;
-                intentarCargar(); // Si falla, intenta la siguiente variante
+                intentarCargar(); // Si falla, prueba la siguiente variante
             });
         }
 
