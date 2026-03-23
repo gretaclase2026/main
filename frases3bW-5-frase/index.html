@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Greta App - Frases con Grabación</title>
+<title>Greta App - Grabación y Control Visual</title>
 <style>
 body{margin:0;font-family:sans-serif;background:#f9fafb;color:#0f172a}
 header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center}
@@ -19,7 +19,7 @@ main{display:flex;justify-content:center;padding:24px}
 .audio-btn{width:60px;height:60px;border-radius:50%;border:none;background:#dbeafe;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
 .audio-btn.slow{background:#fef08a;}
 .audio-btn.pause{background:#fee2e2;}
-.audio-btn.rec{background:#fca5a5; color: white;} /* Botón grabar activo */
+.audio-btn.rec{background:#fca5a5; color: white;}
 .audio-btn.rec.recording { animation: pulse 1.5s infinite; background: #ef4444; }
 
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
@@ -106,7 +106,6 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 <div id="listBox" class="list-box hidden"></div>
 
 <script>
-// (Aquí se mantienen los mismos items del archivo original)
 const items = [
     {"id": "001", "audio": "f001.mp3", "en": "Even though the weather forecast predicted heavy rain all weekend, we decided to go hiking because we had already packed our gear and didn't want to waste the opportunity.", "es": "Aunque el pronostico del tiempo predecia lluvia intensa todo el fin de semana, decidimos ir de excursion porque ya habiamos empacado nuestro equipo y no queriamos desperdiciar la oportunidad."},
     {"id": "002", "audio": "f002.mp3", "en": "The company that I told you about yesterday is looking for a professional who has extensive experience in digital marketing and who is also willing to travel abroad.", "es": "La empresa de la que te hable ayer esta buscando a un profesional que tenga amplia experiencia en marketing digital y que tambien este dispuesto a viajar al extranjero."},
@@ -134,7 +133,6 @@ let remaining=[...items], current=null, mode="EN", known=0, studyStarsOnly=false
 const audioObj = new Audio();
 const progressBar = document.getElementById("progressBar");
 
-// Variables para Grabación
 let mediaRecorder;
 let audioChunks = [];
 let isRecording = false;
@@ -142,7 +140,6 @@ let isRecording = false;
 async function toggleRecord() {
     const btn = document.getElementById("recBtn");
     if (!isRecording) {
-        // Iniciar grabación
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             mediaRecorder = new MediaRecorder(stream);
@@ -152,7 +149,7 @@ async function toggleRecord() {
                 const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
                 const audioUrl = URL.createObjectURL(audioBlob);
                 const userAudio = new Audio(audioUrl);
-                userAudio.play(); // Reproducir automáticamente al parar
+                userAudio.play();
             };
             mediaRecorder.start();
             isRecording = true;
@@ -160,7 +157,6 @@ async function toggleRecord() {
             btn.textContent = "⏹";
         } catch (err) { alert("Error al acceder al micrófono."); }
     } else {
-        // Parar grabación
         mediaRecorder.stop();
         isRecording = false;
         btn.classList.remove("recording");
@@ -220,13 +216,25 @@ function toggleStudyStars() {
     known = 0; remaining = [...items]; load();
 }
 
+// MODIFICADO: Ahora alterna visible/oculto sin disparar el audio
 function reveal(){
  if(!current)return;
- document.getElementById("es").textContent=current.es;
- document.getElementById("en").textContent=current.en;
- document.getElementById("es").classList.remove("hidden");
- document.getElementById("en").classList.remove("hidden");
- if(mode==="ES") play(1.0);
+ const esDiv = document.getElementById("es");
+ const enDiv = document.getElementById("en");
+
+ esDiv.textContent = current.es;
+ enDiv.textContent = current.en;
+
+ // Si ya son visibles, los ocultamos. Si están ocultos, los mostramos.
+ if (!esDiv.classList.contains("hidden") && !enDiv.classList.contains("hidden")) {
+    esDiv.classList.add("hidden");
+    enDiv.classList.add("hidden");
+    // En modo Castellano mantenemos el enunciado siempre visible
+    if(mode==="ES") esDiv.classList.remove("hidden");
+ } else {
+    esDiv.classList.remove("hidden");
+    enDiv.classList.remove("hidden");
+ }
 }
 
 function know(){
@@ -250,11 +258,11 @@ function toggleList(){
     <div class="list-controls-side">
         <button class="star-btn-list ${isStarred ? 'active' : ''}" onclick="toggleStar('${i.id}', this)">★</button>
         <button class="mini-icon-btn btn-play-mini" onclick="play(1.0, '${i.audio}')">🔊</button>
-        <button class="mini-icon-btn btn-reveal-mini" onclick="document.getElementById('en-${i.id}').classList.add('revealed')">👁</button>
+        <button class="mini-icon-btn btn-reveal-mini" onclick="document.getElementById('en-${i.id}').classList.toggle('revealed')">👁</button>
     </div>
     <div class="list-texts">
         <div class="list-es">${i.es}</div>
-        <div class="list-en" id="en-${i.id}" onclick="this.classList.add('revealed')">${i.en}</div>
+        <div class="list-en" id="en-${i.id}" onclick="this.classList.toggle('revealed')">${i.en}</div>
     </div>`;
   lb.appendChild(d);
  });
