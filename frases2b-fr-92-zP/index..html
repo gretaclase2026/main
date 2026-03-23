@@ -22,10 +22,7 @@ main{display:flex;justify-content:center;padding:24px}
 .audio-container { display: flex; justify-content: center; gap: 10px; margin: 10px 0; align-items: center; flex-wrap: wrap; }
 .audio-btn{width:60px;height:60px;border-radius:50%;border:none;background:#dbeafe;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
 .audio-btn.slow{background:#fef08a;}
-
-/* Ajuste botón pausa: fondo rosa y sin el cuadrado azul del icono */
-.audio-btn.pause{background:#fee2e2; color: inherit;} 
-
+.audio-btn.pause{background:#fee2e2;}
 .audio-btn.rec{background:#fca5a5; color: white;}
 .audio-btn.rec.recording { animation: pulse 1.5s infinite; background: #ef4444; }
 
@@ -274,32 +271,26 @@ function toggleStudyStars() {
     pos = 0; learnedCount = 0; update(true);
 }
 
-// Cambio pedido: Mostrar/Ocultar sin audio automático
 function reveal() {
   let pool = studyStarsOnly ? currentBlockData.filter(i => localStorage.getItem('star_' + i.id) === 'true') : currentBlockData;
   if (pool.length === 0) return;
   const item = pool[pos];
   
+  if(item.key) {
+      document.getElementById("key").textContent = "Clave: " + item.key;
+      document.getElementById("key").classList.remove("hidden");
+  }
+
   const esDiv = document.getElementById("es");
   const enDiv = document.getElementById("en");
-  const keyDiv = document.getElementById("key");
 
-  // Si ya se ve el inglés, lo ocultamos todo (modo interruptor)
-  if (!enDiv.classList.contains("hidden")) {
-      enDiv.classList.add("hidden");
-      keyDiv.classList.add("hidden");
-      // En modo EN ocultamos también el castellano. En modo ES lo dejamos.
-      if(mode==="EN") esDiv.classList.add("hidden");
+  if (!esDiv.classList.contains("hidden") && !enDiv.classList.contains("hidden")) {
+      esDiv.classList.add("hidden"); enDiv.classList.add("hidden");
+      if(mode==="ES") esDiv.classList.remove("hidden");
   } else {
-      // Si estaba oculto, lo mostramos TODO sin reproducir sonido
-      if(item.key) {
-          keyDiv.textContent = "Clave: " + item.key;
-          keyDiv.classList.remove("hidden");
-      }
-      esDiv.innerHTML = item.es; 
-      enDiv.innerHTML = item.en;
-      esDiv.classList.remove("hidden"); 
-      enDiv.classList.remove("hidden");
+      esDiv.innerHTML = item.es; enDiv.innerHTML = item.en;
+      esDiv.classList.remove("hidden"); enDiv.classList.remove("hidden");
+      if (mode === "ES") play(1.0);
   }
 }
 

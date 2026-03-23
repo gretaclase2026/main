@@ -19,10 +19,7 @@ main{display:flex;justify-content:center;padding:24px}
 .audio-container { display: flex; justify-content: center; gap: 10px; margin: 10px 0; align-items: center; flex-wrap: wrap; }
 .audio-btn{width:60px;height:60px;border-radius:50%;border:none;background:#dbeafe;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
 .audio-btn.slow{background:#fef08a;}
-
-/* Cambio pedido: Botón de pausa con fondo rosa como el círculo y sin el azul del icono */
-.audio-btn.pause{background:#fee2e2; color: inherit;} 
-
+.audio-btn.pause{background:#fee2e2;}
 .audio-btn.rec{background:#fca5a5; color: white;}
 .audio-btn.rec.recording { animation: pulse 1.5s infinite; background: #ef4444; }
 
@@ -125,7 +122,7 @@ const items = [
 {"id":"004","key":"call off","audio":"f004.mp3","ca":"El gerent va decidir cancel·lar l’esdeveniment a l’aire lliure perquè la previsió del temps deia que faria molt fred i vent tota la nit.","en":"The manager decided to call off the outdoor event because the weather forecast said it would be very cold and windy all night."},
 {"id":"005","key":"harmless","audio":"f005.mp3","ca":"No cal que tinguis por d’aquell insecte perquè és completament inofensiu i només vol volar a prop de la llum del llum.","en":"You don't need to be afraid of that insect because it is completely harmless and it just wants to fly near the light of the lamp."},
 {"id":"006","key":"as long as","audio":"f006.mp3","ca":"Et deixaré el meu llibre preferit sempre que prometis cuidar-lo i tornar-me’l la setmana vinent.","en":"I will lend you my favorite book as long as you promise to take care of it and give it back to me next week."},
-{"id":"007","key":"worth","audio":"f007.mp3","ca":"Sé que l’entrada al museu és cara, però realment val la pena visitar-lo perquè las pintures de dins són les més famoses del món.","en":"I know the museum ticket is expensive, but it is really worth visiting because the paintings inside are the most famous in the world."},
+{"id":"007","key":"worth","audio":"f007.mp3","ca":"Sé que l’entrada al museu és cara, però realment val la pena visitar-lo perquè les pintures de dins són les més famoses del món.","en":"I know the museum ticket is expensive, but it is really worth visiting because the paintings inside are the most famous in the world."},
 {"id":"008","key":"awkward","audio":"f008.mp3","ca":"Va ser molt incòmode quan em vaig trobar el meu antic cap al supermercat i no sabia què dir-li després de tants anys.","en":"It was very awkward when I met my old boss at the supermarket and I didn't know what to say to him after so many years."},
 {"id":"009","key":"provided that","audio":"f009.mp3","ca":"Comprarem el cotxe nou el mes que ve sempre que el banc ens doni els diners que necessitem per al primer pagament.","en":"We are going to buy the new car next month provided that the bank gives us the money we need for the first payment."},
 {"id":"010","key":"tough","audio":"f010.mp3","ca":"L’examen va ser molt difícil i llarg, però em sento contenta perquè vaig estudiar molt i crec que vaig respondre totes les preguntes correctament.","en":"The exam was very tough and long, but I feel happy because I studied a lot and I think I answered all the questions correctly."}
@@ -135,6 +132,7 @@ let remaining=[...items], current=null, mode="EN", known=0, studyStarsOnly=false
 const audioObj = new Audio();
 const progressBar = document.getElementById("progressBar");
 
+// Lógica de grabación
 let mediaRecorder;
 let audioChunks = [];
 let isRecording = false;
@@ -166,6 +164,7 @@ async function toggleRecord() {
     }
 }
 
+// Barra de progreso
 audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
 progressBar.oninput = () => { if (audioObj.duration) audioObj.currentTime = (progressBar.value / 100) * audioObj.duration; };
 
@@ -235,28 +234,26 @@ function toggleStudyStars() {
     known = 0; remaining = [...items]; load(true);
 }
 
-// Cambio pedido: Mostrar/Ocultar sin audio
 function reveal(){
  if(!current) return;
  const keyDiv = document.getElementById("key");
  const caDiv = document.getElementById("ca");
  const enDiv = document.getElementById("en");
 
- // Si el inglés ya es visible, lo ocultamos todo (toggle)
- if (!enDiv.classList.contains("hidden")) {
-    keyDiv.classList.add("hidden");
+ keyDiv.textContent="Paraula clau: "+current.key;
+ caDiv.textContent=current.ca;
+ enDiv.textContent=current.en;
+
+ if (!caDiv.classList.contains("hidden") && !enDiv.classList.contains("hidden")) {
+    caDiv.classList.add("hidden");
     enDiv.classList.add("hidden");
-    // En modo EN ocultamos también el catalán. En modo CA lo dejamos visible.
-    if(mode==="EN") caDiv.classList.add("hidden");
+    keyDiv.classList.add("hidden");
+    if(mode==="CA") caDiv.classList.remove("hidden");
  } else {
-    // Si estaba oculto, lo mostramos TODO sin reproducir sonido
-    keyDiv.textContent="Paraula clau: "+current.key;
-    caDiv.textContent=current.ca;
-    enDiv.textContent=current.en;
-    
-    keyDiv.classList.remove("hidden");
     caDiv.classList.remove("hidden");
     enDiv.classList.remove("hidden");
+    keyDiv.classList.remove("hidden");
+    if(mode==="CA") play(1.0);
  }
 }
 
