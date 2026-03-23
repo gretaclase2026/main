@@ -101,7 +101,6 @@
     let audioElement = new Audio();
 
     function normalitzar(t) {
-        if(!t) return "";
         return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
     }
 
@@ -227,36 +226,18 @@
     function reproduirActual(vel) { if (dadesJoc[index]) reproduir(dadesJoc[index].eng, vel); document.getElementById('resposta').focus(); }
 
     function reproduir(t, vel) {
-        let texto = t.trim().replace(/[\/\\?%*:|"<>]/g, '-');
+        // Formateig segons el script de generació: Primera en majúscula, la resta igual
+        let neta = t.trim();
+        let fitxer = neta.charAt(0).toUpperCase() + neta.slice(1);
         
-        // Creamos 3 posibles variantes del nombre del archivo
-        let variantes = [
-            texto,                                      // 1. Tal cual (Ej: "Fewer_Than")
-            texto.charAt(0).toUpperCase() + texto.slice(1), // 2. Primera mayúscula (Ej: "Explore")
-            texto.toLowerCase().replace(/\s+/g, '_'),   // 3. Minúsculas y con guiones (Ej: "full_board")
-            texto.replace(/_/g, ' ')                    // 4. Con espacios (Ej: "Full board")
-        ];
-
-        let vIndex = 0;
-        audioElement.playbackRate = vel;
-
-        function intentarCargar() {
-            if (vIndex >= variantes.length) {
-                console.log("No se pudo encontrar ninguna variante de audio para: " + t);
-                return;
-            }
-            
-            let nombre = encodeURIComponent(variantes[vIndex]);
-            audioElement.src = `audios/${nombre}.mp3`;
-            
-            audioElement.play().catch(() => {
-                vIndex++;
-                intentarCargar(); // Si falla, prueba la siguiente variante
-            });
-        }
+        // Neteja de caràcters especials per coincidir amb el "safeName" del generador
+        fitxer = fitxer.replace(/[\/\\?%*:|"<>]/g, '-');
 
         audioElement.pause();
-        intentarCargar();
+        // encodeURIComponent assegura que els espais i símbols funcionin en la URL
+        audioElement.src = `audios/${encodeURIComponent(fitxer)}.mp3`;
+        audioElement.playbackRate = vel;
+        audioElement.play().catch(e => console.log("Audio no trobat: " + fitxer));
     }
 
     function toggleEstrellaActual() {
