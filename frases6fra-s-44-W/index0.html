@@ -43,6 +43,7 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 
 #list{margin-top:20px;background:#f9f9f9;padding:15px;border-radius:15px;display:none;border:1px solid #ddd}
 
+/* Diseño de lista con botones en horizontal */
 .list-item { display: flex; align-items: center; gap: 15px; padding: 10px 0; border-bottom: 1px solid #eee; text-align: left; }
 .list-btns { display: flex; flex-direction: row; gap: 6px; min-width: 120px; }
 .list-texts { flex: 1; }
@@ -50,7 +51,7 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .btn-star-list { background: #f8fafc; font-size: 20px; color: #ccc; border: 1px solid #e2e8f0; }
 .btn-star-list.active { color: #f59e0b; border-color: #f59e0b; background: #fffbeb; }
 .btn-audio-list { background: #dcfce7; }
-.btn-eye-list { background: #fbcfe8; } /* Fondo rosa pastel */
+.btn-eye-list { background: #e0f2fe; }
 .blur { filter: blur(5px); transition: filter 0.3s; cursor: pointer; }
 .blur.revealed { filter: blur(0); }
 </style>
@@ -108,7 +109,7 @@ const data = [
   {en: "I've tidied up every room", es: "He ordenado cada habitación", cat: "He ordenat cada habitació"},
   {en: "Each one is spotless now", es: "Cada una está impecable ahora", cat: "Cadascuna està impecable ara"},
   {en: "You ought to go now", es: "Deberías irte ahora", cat: "Hauries de marxar ara"},
-  {en: "I need a hook for my keys", es: "Necesito un gancho para mis llaves", cat: "Necesito un ganxo per a les meves claus"},
+  {en: "I need a hook for my keys", es: "Necesito un gancho para mis llaves", cat: "Necessito un ganxo per a les meves claus"},
   {en: "Hook it up to the speaker", es: "Conéctalo al altavoz", cat: "Connecta-ho a l'altaveu"},
   {en: "I have a fear of heights", es: "Tengo miedo a las alturas", cat: "Tinc por a les altures"},
   {en: "The judge was very fair in his decision", es: "El juez fue muy justo en su decisión", cat: "El jutge va ser molt just en la seva decisió"},

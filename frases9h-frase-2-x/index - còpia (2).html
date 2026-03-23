@@ -24,11 +24,6 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .audio-btn{font-size:35px;background:#dcfce7;border:none;cursor:pointer;width:75px;height:75px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
 .audio-btn.slow{background:#fef08a;width:60px;height:60px;font-size:28px}
 .audio-btn.pause{background:#fee2e2;width:60px;height:60px;font-size:28px}
-.audio-btn.mic{background:#e0f2fe;width:60px;height:60px;font-size:28px}
-.audio-btn.mic.listening{background:#f87171;animation:pulse 1.5s infinite}
-
-@keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.1);} 100% {transform: scale(1);} }
-
 .star-main { background: none; border: none; font-size: 35px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px; }
 .star-main.active { color: #f59e0b !important; }
 
@@ -93,7 +88,6 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
       <button class="audio-btn slow" onclick="playAudio(0.75)">🐢</button>
       <button class="audio-btn" onclick="playAudio(1.0)">🔊</button>
       <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
-      <button id="micBtn" class="audio-btn mic" onclick="toggleMic()">🎤</button>
     </div>
 
     <div class="progress-wrapper">
@@ -176,44 +170,6 @@ const data = [
 let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0;
 const a = document.getElementById("audio");
 const progressBar = document.getElementById("progressBar");
-
-// Reconocimiento de voz
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-let recognition;
-let isListening = false;
-
-if (SpeechRecognition) {
-    recognition = new SpeechRecognition();
-    recognition.lang = 'en-US';
-    recognition.interimResults = false;
-
-    recognition.onstart = () => {
-        isListening = true;
-        document.getElementById("micBtn").classList.add("listening");
-    };
-
-    recognition.onend = () => {
-        isListening = false;
-        document.getElementById("micBtn").classList.remove("listening");
-    };
-
-    recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript.toLowerCase().replace(/[.,?!]/g, "");
-        const original = currentBlockData[pos].en.toLowerCase().replace(/[.,?!]/g, "");
-        
-        if (transcript === original) {
-            alert("Correct! ✅\n" + event.results[0][0].transcript);
-        } else {
-            alert("Mistake ❌\nYou said: " + event.results[0][0].transcript + "\nExpected: " + currentBlockData[pos].en);
-        }
-    };
-}
-
-function toggleMic() {
-    if (!recognition) { alert("Tu navegador no soporta reconocimiento de voz."); return; }
-    if (isListening) recognition.stop();
-    else recognition.start();
-}
 
 function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "neural_b1"; }
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
@@ -309,24 +265,9 @@ function pauseAudio() { a.pause(); }
 function reveal() {
   if (currentBlockData.length > 0) {
     const item = currentBlockData[pos];
-    const w = document.getElementById("word");
-    const aElement = document.getElementById("answer");
-
-    if (mode === "EN") {
-      // Toggle para modo EN: Si ya tiene texto, lo quita. Si no, lo pone.
-      if (w.innerHTML.includes(item.en)) {
-        w.innerHTML = "";
-      } else {
-        w.innerHTML = `<span style="color:#333;">${item.en}</span>`;
-      }
-    }
-    
-    // Toggle para la respuesta secundaria
-    if (aElement.style.display === "block") {
-      aElement.style.display = "none";
-    } else {
-      aElement.style.display = "block";
-    }
+    if (mode === "EN") document.getElementById("word").innerHTML = `<span style="color:#333;">${item.en}</span>`;
+    document.getElementById("answer").style.display = "block";
+    if (mode === "ES") playAudio(1.0); 
   }
 }
 

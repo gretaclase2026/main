@@ -5,66 +5,66 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Repàs Personalitzat - 76 Frases</title>
 <style>
-body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
+body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center}
-.mode-btns button{margin:0 6px;padding:8px 14px;border:none;border-radius:14px;font-weight:700;cursor:pointer}
+.mode-btns button{margin:0 6px;padding:10px 16px;border:none;border-radius:24px;font-weight:700;cursor:pointer;font-size:15px}
 .mode-en{background:#dbeafe}
 .mode-es{background:#fde68a}
-main{display:flex;justify-content:center;padding:24px}
-.card{position:relative;width:100%;max-width:560px;background:#ffffff;border-radius:28px;padding:32px;box-shadow:0 10px 24px rgba(0,0,0,0.06);text-align:center}
-.counter{position:absolute;top:18px;left:22px;font-weight:800;color:#2563eb}
-.check-box-manual { position: absolute; top: 18px; right: 22px; width: 24px; height: 24px; background: #fff; border: 1.5px solid #22c55e; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 14px; }
+
+main{display:flex;justify-content:center;padding:20px}
+.card{position:relative;width:100%;max-width:720px;background:#ffffff;border-radius:24px;padding:35px;box-shadow:0 8px 18px rgba(0,0,0,0.15);text-align:center}
+
+.counter{position:absolute;top:20px;left:25px;font-weight:800;color:#2563eb;font-size:18px}
+.check-box-manual { position: absolute; top: 20px; right: 25px; width: 30px; height: 30px; background: #fff; border: 2px solid #22c55e; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 18px; }
 .check-box-manual.marked { background: #22c55e !important; color: white !important; }
-.lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
-.blocks{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:15px 0 20px}
-.block{width:32px;height:32px;border-radius:50%;border:none;background:#f1f5f9;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.2s}
-.block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1);box-shadow:0 4px 10px rgba(37,99,235,0.3)}
+
+.lang{font-size:16px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:10px}
+.blocks{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:20px 0 25px}
+.block{width:40px;height:40px;border-radius:50%;border:none;background:#f1f5f9;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.2s}
+.block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1)}
 
 /* Audio y Controles */
-.audio-container { display: flex; justify-content: center; gap: 10px; margin: 10px 0 10px; align-items: center; flex-wrap: wrap; }
-.audio-btn{width:60px;height:60px;border-radius:50%;border:none;background:#dbeafe;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
+.audio-container { display: flex; justify-content: center; gap: 15px; margin: 15px 0; align-items: center; }
+.audio-btn{width:70px;height:70px;border-radius:50%;border:none;background:#dbeafe;font-size:30px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .audio-btn.slow{background:#fef08a;}
-
-/* Botón de pausa rosa sin fondo azul en el icono */
-.audio-btn.pause{background:#fee2e2; color: inherit;} 
-
-/* Estilos para el Micro */
+.audio-btn.pause{background:#fee2e2;}
 .audio-btn.rec{background:#fca5a5; color: white;}
 .audio-btn.rec.recording { animation: pulse 1.5s infinite; background: #ef4444; }
+
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 
-.star-btn { background: none; border: none; font-size: 32px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 10px; }
+.star-btn { background: none; border: none; font-size: 40px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 10px; }
 .star-btn.active { color: #f59e0b !important; }
 
-.progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
-input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
+.progress-wrapper { width: 100%; padding: 0 10px; margin: 20px 0 30px; box-sizing: border-box; }
+input[type="range"] { width: 100%; cursor: pointer; height: 12px; border-radius: 6px; accent-color: #2563eb; }
 
 .hidden{display:none}
-.es{font-size:19px;color:#2563eb;margin-top:14px;line-height:1.4;font-weight:600}
-.en{font-size:19px;color:#0f172a;margin-top:14px;font-weight:700;line-height:1.4}
+.es{font-size:24px;color:#2563eb;margin-top:20px;line-height:1.4;font-weight:700}
+.en{font-size:26px;color:#0f172a;margin-top:20px;font-weight:800;line-height:1.4}
 
-.buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:22px}
-button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;cursor:pointer}
+.buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:15px;margin-top:30px}
+button.action{padding:20px 0;border:none;border-radius:20px;font-weight:800;cursor:pointer;font-size:18px}
 .reveal{background:#e0f2fe}
 .know{background:#dcfce7}
 .next{background:#fbcfe8}
 
-.list-controls { display: flex; gap: 10px; margin-top: 16px; }
-.list-btn{ flex:1; background:#e9d5ff; border:none; border-radius:16px; padding:14px; font-weight:800; cursor:pointer; font-size:13px }
+.list-controls { display: flex; gap: 12px; margin-top: 25px; }
+.list-btn{ flex:1; background:#e9d5ff; border:none; border-radius:20px; padding:16px; font-weight:800; cursor:pointer; font-size:15px }
 .review-btn { background: #fef3c7; color: #92400e; }
 
-.list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
-.list-item { display: flex; align-items: flex-start; gap: 15px; padding: 15px 0; border-bottom: 1px solid #eee; }
-.list-controls-side { display: flex; flex-direction: column; gap: 8px; min-width: 40px; align-items: center; }
-.list-texts { flex-grow: 1; display: flex; flex-direction: column; gap: 6px; }
+.list-box{max-width:720px;margin:20px auto;background:#fff;border-radius:24px;border:1px solid #e5e7eb;padding:20px;text-align:left}
+.list-item { display: flex; align-items: flex-start; gap: 15px; padding: 18px 0; border-bottom: 1px solid #eee; }
+.list-controls-side { display: flex; flex-direction: column; gap: 10px; min-width: 50px; align-items: center; }
+.list-texts { flex-grow: 1; display: flex; flex-direction: column; gap: 8px; }
 
-.mini-btn { border: none; border-radius: 10px; width: 36px; height: 36px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+.mini-btn { border: none; border-radius: 12px; width: 44px; height: 44px; cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; }
 .btn-audio { background: #dbeafe; }
-.btn-eye { background: #fee2e2; } 
-.star-btn-list { background: none; border: none; font-size: 24px; cursor: pointer; color: #cbd5e1; padding: 0; line-height: 1; }
+.btn-eye { background: #fee2e2; }
+.star-btn-list { background: none; border: none; font-size: 28px; cursor: pointer; color: #cbd5e1; padding: 0; }
 .star-btn-list.active { color: #f59e0b !important; }
 
-.blur { filter: blur(5px); transition: filter 0.3s; cursor: pointer; }
+.blur { filter: blur(6px); transition: filter 0.3s; cursor: pointer; }
 .blur.revealed { filter: blur(0); }
 </style>
 </head>
@@ -102,12 +102,13 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
     <button class="list-btn" onclick="toggleList('all')">Tota la llista</button>
     <button class="list-btn review-btn" onclick="toggleList('stars')">Repàs (★)</button>
  </div>
- <div id="endMsg" class="hidden" style="margin-top:16px; font-weight:800; color:#16a34a;">✔ Bloc completat!</div>
+ <div id="endMsg" class="hidden" style="margin-top:20px; font-weight:800; color:#16a34a; font-size:20px;">✔ Bloc completat!</div>
 </div>
 </main>
 <div id="listBox" class="list-box hidden"></div>
 
 <script>
+// (Aquí va el mismo script del archivo anterior con los datos de las frases f001-f076)
 const items = [
     {audio:"f001.mp3",en:"It was so dark in the hallway that I had a lot of trouble finding the keyhole with my keys, and I spent several minutes trying to open the door.",es:"Estaba tan oscuro en el pasillo que tuve muchos problemas para encontrar la cerradura con las llaves y pasé varios minutos intentando abrir la puerta."},
     {audio:"f002.mp3",en:"I was walking through the living room in the middle of the night and I couldn't find the light switch, so I accidentally tripped over the dog's bed.",es:"Estaba caminando por el salón en mitad de la noche y no encontraba el interruptor de la luz, así que tropecé accidentalmente con la cama del perro."},
@@ -178,7 +179,7 @@ const items = [
     {audio:"f067.mp3",en:"This frying pan is very dirty after cooking the meat, so I will need to use a rough scrub and a lot of soap to leave it completely clean.",es:"Esta sartén está muy sucia después de cocinar la carne, así que necesitaré usar un estropajo áspero y mucho jabón para dejarla completamente limpia."},
     {audio:"f068.mp3",en:"I am very sad because I dropped some red wine on my new white sofa, and now I am afraid that the stain will stay there forever.",es:"Estoy muy triste porque se me cayó un poco de vino tinto en mi sofá blanco nuevo y ahora temo que la mancha se quede ahí para siempre."},
     {audio:"f069.mp3",en:"I was cleaning the bathroom very carefully, but a drop of liquid fell on my blue trousers and created a permanent bleach stain.",es:"Estaba limpiando el baño con mucho cuidado, pero una gota de líquido cayó sobre mis pantalones azules y creó una mancha permanente de lejía."},
-    {audio:"f070.mp3",en:"The water in the kitchen sink is going down very slowly today, so I think there is a clog in the pipes that I need to fix soon.",es:"El agua del fregadero de la cocina está bajando muy lentamente hoy, así que creo que hay un atasco en las tuberías que necesito arreglar pronto."},
+    {audio:"f070.mp3",en:"The water in the kitchen sink is going down very slowly hoy, así que creo que hay un atasco en las tuberías que necesito arreglar pronto.",es:"El agua del fregadero de la cocina está bajando muy lentamente hoy, así que creo que hay un atasco en las tuberías que necesito arreglar pronto."},
     {audio:"f071.mp3",en:"You should be careful not to drop any food down the drain while you are washing the dishes, because it might cause a bad smell in the kitchen.",es:"Deberías tener cuidado de no dejar caer comida por el desagüe mientras lavas los platos, porque podría provocar un mal olor en la cocina."},
     {audio:"f072.mp3",en:"Every time I wash my black sweater, it comes out of the machine covered in white lint, so I have to spend a lot of time cleaning it.",es:"Cada vez que lavo mi jersey negro, sale de la lavadora cubierto de pelusa blanca, así que tengo que pasar mucho tiempo limpiándolo."},
     {audio:"f073.mp3",en:"I had to spend more than thirty minutes at the bank because they asked me to fill out a very long form with all my personal information.",es:"Tuve que pasar más de treinta minutos en el banco porque me pidieron rellenar un formulario muy largo con toda mi información personal."},
@@ -191,12 +192,10 @@ let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockI
 const audioObj = new Audio();
 const progressBar = document.getElementById("progressBar");
 
-function getFolderName() { return "frases-76-hogar"; }
-let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
+let mediaRecorder;
+let audioChunks = [];
+let isRecording = false;
 
-let mediaRecorder, audioChunks = [], isRecording = false;
-
-// Función para el Micrófono
 async function toggleRecord() {
     const btn = document.getElementById("recBtn");
     if (!isRecording) {
@@ -208,17 +207,24 @@ async function toggleRecord() {
             mediaRecorder.onstop = () => {
                 const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
                 const audioUrl = URL.createObjectURL(audioBlob);
-                new Audio(audioUrl).play();
+                const userAudio = new Audio(audioUrl);
+                userAudio.play();
             };
             mediaRecorder.start();
             isRecording = true;
-            btn.classList.add("recording"); btn.textContent = "⏹";
-        } catch (err) { alert("Error al accedir al micròfon."); }
+            btn.classList.add("recording");
+            btn.textContent = "⏹";
+        } catch (err) { alert("Error al acceder al micrófono."); }
     } else {
-        mediaRecorder.stop(); isRecording = false;
-        btn.classList.remove("recording"); btn.textContent = "🎤";
+        mediaRecorder.stop();
+        isRecording = false;
+        btn.classList.remove("recording");
+        btn.textContent = "🎤";
     }
 }
+
+function getFolderName() { return "frases-76-hogar"; }
+let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
 
 audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
 progressBar.oninput = () => { if (audioObj.duration) audioObj.currentTime = (progressBar.value / 100) * audioObj.duration; };
@@ -282,24 +288,19 @@ function playAudio(src, speed) { audioObj.src = src; audioObj.playbackRate = spe
 function playCurrent(speed) { if (currentBlockData.length > 0) playAudio(currentBlockData[pos].audio, speed); }
 function pauseAudio() { audioObj.pause(); }
 
-// Función Veure: Interruptor que no activa el audio
 function reveal() {
   if (currentBlockData.length === 0) return;
-  const item = currentBlockData[pos];
   const esDiv = document.getElementById("es");
   const enDiv = document.getElementById("en");
-
-  // Si ya se ve el inglés, lo ocultamos (interruptor)
-  if (!enDiv.classList.contains("hidden") && mode === "EN") {
-      esDiv.classList.add("hidden");
-  } else if (!enDiv.classList.contains("hidden") && mode === "ES") {
-      enDiv.classList.add("hidden");
+  
+  if (!esDiv.classList.contains("hidden") && !enDiv.classList.contains("hidden")) {
+    esDiv.classList.add("hidden");
+    enDiv.classList.add("hidden");
+    if (mode === "EN") enDiv.classList.remove("hidden");
+    if (mode === "ES") esDiv.classList.remove("hidden");
   } else {
-      // Si estaba oculto, mostramos ambos SIN audio
-      esDiv.innerHTML = item.es;
-      enDiv.innerHTML = item.en;
-      esDiv.classList.remove("hidden");
-      enDiv.classList.remove("hidden");
+    esDiv.classList.remove("hidden");
+    enDiv.classList.remove("hidden");
   }
 }
 
@@ -343,7 +344,7 @@ function toggleList(type) {
 
 function renderList(type) {
   const box = document.getElementById("listBox");
-  box.innerHTML = type === 'stars' ? "<h3>Frases destacades (★):</h3>" : "<h3>Tota la llista (bloc actual):</h3>";
+  box.innerHTML = type === 'stars' ? "<h3>Frases destacades (★):</h3>" : "<h3>Tota la llista:</h3>";
   
   const listToRender = type === 'stars' 
     ? items.filter(i => starredIds.includes(i.audio))
@@ -362,11 +363,11 @@ function renderList(type) {
       <div class="list-controls-side">
         <button class="star-btn-list ${isStarred ? 'active' : ''}" onclick="toggleStar('${i.audio}'); renderList('${type}')">★</button>
         <button class="mini-btn btn-audio" onclick="playAudio('${i.audio}', 1.0)">🔊</button>
-        <button class="mini-btn btn-eye" onclick="document.getElementById('rev-${index}').classList.add('revealed')">👁️</button>
+        <button class="mini-btn btn-eye" onclick="document.getElementById('rev-${index}').classList.toggle('revealed')">👁️</button>
       </div>
       <div class="list-texts">
-        <div style="color:#2563eb; font-weight:700;">${i.es}</div>
-        <div id="rev-${index}" class="blur" style="font-weight:800;" onclick="this.classList.add('revealed')">${i.en}</div>
+        <div style="color:#2563eb; font-weight:700; font-size: 16px;">${i.es}</div>
+        <div id="rev-${index}" class="blur" style="font-weight:800; font-size: 18px;" onclick="this.classList.toggle('revealed')">${i.en}</div>
       </div>
     `;
     box.appendChild(itemDiv);
