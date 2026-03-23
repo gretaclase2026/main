@@ -1,0 +1,125 @@
+ <!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <title>Descarregador de Verbs per J Faltants</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; line-height: 1.6; background: #fff5f6; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 25px; border-radius: 12px; border: 4px solid #ffcfd2; }
+        input, button { padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #ccc; }
+        input { width: 100%; box-sizing: border-box; }
+        button { cursor: pointer; background: #2196F3; color: white; border: none; font-weight: bold; width: 100%; }
+        button:disabled { background: #94a3b8; }
+        .log { margin-top: 20px; font-size: 14px; height: 300px; overflow-y: auto; background: #1e293b; color: #f1f5f9; padding: 15px; border-radius: 8px; border: 2px solid #ffcfd2; }
+        .success { color: #4ade80; }
+        .error { color: #f87171; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Descarregar Audios Faltants (Verbs per J)</h2>
+    <p>Aquest programa descarregarà els 19 audios que falten.</p>
+    
+    <input type="password" id="apiKey" placeholder="Enganxa la teva Google API Key aquí...">
+    <button id="startBtn" onclick="iniciarProces()">COMENÇAR DESCARREGA</button>
+
+    <div id="log" class="log">Esperant per començar...</div>
+</div>
+
+<script>
+const paraulesFaltants = [
+    { text: "Jitter away", audio: "Jitter away.mp3" },
+    { text: "Jitterbug", audio: "Jitterbug.mp3" },
+    { text: "Jump the gun", audio: "Jump the gun.mp3" },
+    { text: "Jump to a conclusion", audio: "Jump to a conclusion.mp3" },
+    { text: "Jangle", audio: "Jangle.mp3" },
+    { text: "Jear", audio: "Jear.mp3" },
+    { text: "Jerk", audio: "Jerk.mp3" },
+    { text: "Jettison", audio: "Jettison.mp3" },
+    { text: "Jewel", audio: "Jewel.mp3" },
+    { text: "Jibe", audio: "Jibe.mp3" },
+    { text: "Jig", audio: "Jig.mp3" },
+    { text: "Jiggle", audio: "Jiggle.mp3" },
+    { text: "Jingle", audio: "Jingle.mp3" },
+    { text: "Jockey", audio: "Jockey.mp3" },
+    { text: "Jog", audio: "Jog.mp3" },
+    { text: "Jollify", audio: "Jollify.mp3" },
+    { text: "Jolly", audio: "Jolly.mp3" },
+    { text: "Jounce", audio: "Jounce.mp3" },
+    { text: "Joy", audio: "Joy.mp3" }
+];
+
+function updateLog(msg, type = '') {
+    const log = document.getElementById('log');
+    const div = document.createElement('div');
+    if (type) div.className = type;
+    div.innerText = msg;
+    log.appendChild(div);
+    log.scrollTop = log.scrollHeight;
+}
+
+async function iniciarProces() {
+    const key = document.getElementById('apiKey').value.trim();
+    if (!key) { alert("Posa la API Key!"); return; }
+
+    document.getElementById('startBtn').disabled = true;
+    document.getElementById('log').innerHTML = "";
+    updateLog("Iniciant procés...");
+
+    for (let i = 0; i < paraulesFaltants.length; i++) {
+        const item = paraulesFaltants[i];
+        const voiceName = (i % 2 === 0) ? "en-US-Studio-Q" : "en-US-Studio-O";
+        
+        updateLog(`Processant ${i+1}/${paraulesFaltants.length}: ${item.text}...`);
+
+        try {
+            const response = await fetch(`https://texttospeech.googleapis.com/v1/text:synthesize?key=${key}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    input: { text: item.text }, 
+                    voice: { languageCode: "en-US", name: voiceName },
+                    audioConfig: { audioEncoding: "MP3" }
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.audioContent) {
+                downloadBlob(data.audioContent, item.audio);
+                updateLog(`Èxit: ${item.audio} descarregat.`, 'success');
+            } else {
+                throw new Error(data.error?.message || "Error a l'API");
+            }
+        } catch (err) {
+            updateLog(`Error: ${err.message}`, 'error');
+        }
+        
+        // Esperem 1 segon entre descàrregues per no col·lapsar el navegador
+        await new Promise(r => setTimeout(r, 1000));
+    }
+    
+    updateLog("Procés finalitzat.");
+    document.getElementById('startBtn').disabled = false;
+}
+
+function downloadBlob(base64, fileName) {
+    const byteCharacters = atob(base64);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], {type: 'audio/mp3'});
+    
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = fileName;
+    link.click();
+    URL.revokeObjectURL(link.href);
+}
+</script>
+
+</body>
+</html>
