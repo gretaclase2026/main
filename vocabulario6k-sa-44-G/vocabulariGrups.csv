@@ -1,123 +1,123 @@
-﻿ Casa;Basement;Sótano / Soterrani
-Casa;Attic;Desván / Golfes
-Casa;Pantry;Despensa / Despensa
+﻿Casa;Attic;Desván / Golfes
+Casa;Backyard;Patio trasero / Pati darrere
+ Casa;Basement;Sótano / Soterrani
 Casa;Driveway;Entrada coche / Entrada cotxes
 Casa;Hallway;Pasillo / Passadís
 Casa;Landing;Rellano / Replà
-Casa;Backyard;Patio trasero / Pati darrere
+Casa;Pantry;Despensa / Despensa
 Casa;Porch;Porche / Porxo
-Casa;Utility room;Lavadero / Safareig
 Casa;Roof;Tejado / Teulada
-Naturalesa;Pine;Pino / Pi
-Naturalesa;Oak;Roble / Roure
-Naturalesa;Olive tree;Olivo / Olivera
-Naturalesa;Palm tree;Palmera / Palmera
+Casa;Utility room;Lavadero / Safareig
+Naturalesa;Almond tree;Almendro / Ametller
 Naturalesa;Cypress;Ciprés / Xiprer
 Naturalesa;Fig tree;Higuera / Figuera
-Naturalesa;Almond tree;Almendro / Ametller
 Naturalesa;Lemon Tree;Limonero / Llimoner
+Naturalesa;Oak;Roble / Roure
+Naturalesa;Olive tree;Olivo / Olivera
 Naturalesa;Orange tree;Naranjo / Taronger
+Naturalesa;Palm tree;Palmera / Palmera
+Naturalesa;Pine;Pino / Pi
 Naturalesa;Poplar;Álamo / Pollancre
-Animals;Dog Puppy;Perro / Cachorro / Gos / Gosset
 Animals;Cat Kitten;Gato / Gatito / Gat / Gatet
 Animals;Cow Calf;Vaca / Ternero / Vaca / Vedell
-Animals;Horse Foal;Haballo / Potro / Cavall / Poltre
-Animals;Hen Chick;Gallina / Pollito / Gallina / Pollet
-Animals;Sheep Lamb;Oveja / Cordero / Ovelha / Xai
-Animals;Pig Piglet;Cerdo / Lechón / Porc / Porquet
-Animals;Lion Cub;León / Cachorro / Lleó / Cadell
-Animals;Goat Kid;Cabra / Cabrito / Cabra / Cabrit
+Animals;Dog Puppy;Perro / Cachorro / Gos / Gosset
 Animals;Duck Duckling;Pato / Patito / Ànec / Ànec petit
-Fruites;Blueberry;Arándano / Nabiu
-Fruites;Raspberry;Frambuesa / Gerd
+Animals;Goat Kid;Cabra / Cabrito / Cabra / Cabrit
+Animals;Hen Chick;Gallina / Pollito / Gallina / Pollet
+Animals;Horse Foal;Haballo / Potro / Cavall / Poltre
+Animals;Lion Cub;León / Cachorro / Lleó / Cadell
+Animals;Pig Piglet;Cerdo / Lechón / Porc / Porquet
+Animals;Sheep Lamb;Oveja / Cordero / Ovelha / Xai
+Fruites;Avocado;Aguacate / Alvocat
 Fruites;Blackberry;Mora / Mora
-Fruites;Strawberry;Fresa / Maduixa
+Fruites;Blueberry;Arándano / Nabiu
 Fruites;Currant;Grosella / Grosella
+Fruites;Dragon fruit;Fruta dragón / Pitahaya
 Fruites;Mango;Mango / Mango
 Fruites;Papaya;Papaya / Papaya
-Fruites;Avocado;Aguacate / Alvocat
 Fruites;Pomegranate;Granada / Magrana
-Fruites;Dragon fruit;Fruta dragón / Pitahaya
-Expressions;Get to the point;Ve al grano / Ves al gra
-Expressions;Cut to the chase;Ir directo / Anar directe
-Expressions;Stop beating around the bush;No des rodeos / No donis voltes
-Expressions;Get down to business;Ir por faena / Anar per feina
-Expressions;The bottom line;La conclusión es / La conclusió és
-Expressions;Let's stay on track;No nos desviemos / No ens desviem
+Fruites;Raspberry;Frambuesa / Gerd
+Fruites;Strawberry;Fresa / Maduixa
 Expressions;Cut the crap;Déjate de tonterías / Fora conyàries
+Expressions;Cut to the chase;Ir directo / Anar directe
+Expressions;Get down to business;Ir por faena / Anar per feina
+Expressions;Get to the point;Ve al grano / Ves al gra
 Expressions;In a nutshell;En pocas palabras / En resum
-Expressions;To make a long story short;En resumen / Per no allargar
+Expressions;Let's stay on track;No nos desviemos / No ens desviem
+Expressions;Stop beating around the bush;No des rodeos / No donis voltes
 Expressions;Straight away;De inmediato / De seguida
+Expressions;The bottom line;La conclusión es / La conclusió és
+Expressions;To make a long story short;En resumen / Per no allargar
 Relacions;Acquaintance;Conocido / Conegut
-Relacions;Engagement;Compromiso / Compromís
-Relacions;Wedding;Boda / Casament
-Relacions;Pregnancy;Embarazo / Embaràs
-Relacions;Honeymoon;Luna de miel / Lluna de mel
-Relacions;Childbirth;Parto / Part
-Relacions;Quarrel;Pelea / Baralla
 Relacions;Adultery;Adulterio / Adulteri
+Relacions;Childbirth;Parto / Part
 Relacions;Divorce;Divorcio / Divorci
+Relacions;Engagement;Compromiso / Compromís
 Relacions;Fling;Aventura / Aventura
-Salut;Syringe;Jeringuilla / Xeringa
-Salut;Patch;Tirita / Tirita
+Relacions;Honeymoon;Luna de miel / Lluna de mel
+Relacions;Pregnancy;Embarazo / Embaràs
+Relacions;Quarrel;Pelea / Baralla
+Relacions;Wedding;Boda / Casament
 Salut;Bandage;Venda / Venda
-Salut;Thermometer;Termómetro / Termòmetre
-Salut;Pill;Pastilla / Píndola
-Salut;Glucose meter;Glucómetro / Glucòmetre
-Salut;Spray;Espray / Esprai
-Salut;Eye drops;Colirio / Col·liri
 Salut;Cough syrup;Jarabe tos / Jarop tos
+Salut;Eye drops;Colirio / Col·liri
+Salut;Glucose meter;Glucómetro / Glucòmetre
 Salut;Ointment;Pomada / Pomada
+Salut;Patch;Tirita / Tirita
+Salut;Pill;Pastilla / Píndola
+Salut;Spray;Espray / Esprai
+Salut;Syringe;Jeringuilla / Xeringa
+Salut;Thermometer;Termómetro / Termòmetre
+Pentinats;Bald;Calvo / Calb
+Pentinats;Bob;Corte Bob / Tall Bob
+Pentinats;Braid;Trenza / Trena
+Pentinats;Bun;Moño / Moixó
 Pentinats;Curly;Rizado / Arrissat
 Pentinats;Dreadlocks;Rastas / Rastes
-Pentinats;Bob;Corte Bob / Tall Bob
-Pentinats;Wavy;Ondulado / Ondulat
 Pentinats;Pigtails;Coletas / Cues
 Pentinats;Ponytail;Coleta única / Cua
-Pentinats;Bun;Moño / Moixó
-Pentinats;Braid;Trenza / Trena
 Pentinats;Shoulder length;Media melena / Cabell espatlles
-Pentinats;Bald;Calvo / Calb
-Medi Ambient;Plant trees;Plantar árboles / Plantar arbres
-Medi Ambient;Oil spill;Derrame petróleo / Vessament petroli
-Medi Ambient;Landfill;Vertedero / Abocador
-Medi Ambient;Separate garbage;Separar basura / Separar escombraria
-Medi Ambient;Pollution;Contaminación / Contaminació
-Medi Ambient;Reusable bag;Bolsa reutilizable / Bossa reutilitzable
-Medi Ambient;Recycle;Reciclar / Reciclar
+Pentinats;Wavy;Ondulado / Ondulat
 Medi Ambient;Exhaust fumes;Humo escape / Fums escapament
+Medi Ambient;Landfill;Vertedero / Abocador
+Medi Ambient;Oil spill;Derrame petróleo / Vessament petroli
+Medi Ambient;Plant trees;Plantar árboles / Plantar arbres
+Medi Ambient;Pollution;Contaminación / Contaminació
+Medi Ambient;Recycle;Reciclar / Reciclar
+Medi Ambient;Reusable bag;Bolsa reutilizable / Bossa reutilitzable
+Medi Ambient;Separate garbage;Separar basura / Separar escombraria
 Medi Ambient;Solar panel;Panel solar / Panell solar
 Medi Ambient;Wind turbine;Aerogenerador / Aerogenerador
+Policia;Bullet;Bala / Bala
 Policia;Bulletproof vest;Chaleco antibalas / Armilla antibales
-Policia;Warrant card;Placa policía / Placa policia
-Policia;Handcuffs;Esposas / Esposes
-Policia;Prison;Prisión / Presó
 Policia;Bullhorn;Megáfono / Megàfon
 Policia;Gun;Pistola / Pistola
-Policia;Bullet;Bala / Bala
-Policia;Walkie talkie;Walkie / Walkie
+Policia;Handcuffs;Esposas / Esposes
 Policia;Magnifying glass;Lupa / Lupa
 Policia;Police car;Coche policía / Cotxe policia
-Preposicions;Around;Alrededor / Al voltant
-Preposicions;Under;Debajo / Sota
-Preposicions;Through;A través / A través
-Preposicions;Behind;Detrás / Darrere
-Preposicions;Among;Entre (varios) / Entre
-Preposicions;Opposite;Enfrente / Davant per davant
-Preposicions;Towards;Hacia / Cap a
-Preposicions;Across;Cruzando / A través de
-Preposicions;Into;Hacia dentro / Cap a dins
-Preposicions;Between;Entre (dos) / Entre
-Preposicions;Over;Por encima / Per sobre
-Preposicions;In front of;Delante / Davant de
-Preposicions;Next to;Al lado / Al costat
+Policia;Prison;Prisión / Presó
+Policia;Walkie talkie;Walkie / Walkie
+Policia;Warrant card;Placa policía / Placa policia
 Preposicions;Above;Arriba / Per damunt
+Preposicions;Across;Cruzando / A través de
+Preposicions;Among;Entre (varios) / Entre
+Preposicions;Around;Alrededor / Al voltant
+Preposicions;Behind;Detrás / Darrere
 Preposicions;Below;Abajo / Per sota
-Preposicions;Out of;Fuera de / Fora de
-Preposicions;Up;Hacia arriba / Cap amunt
+Preposicions;Between;Entre (dos) / Entre
 Preposicions;Down;Hacia abajo / Cap avall
+Preposicions;In front of;Delante / Davant de
+Preposicions;Into;Hacia dentro / Cap a dins
+Preposicions;Next to;Al lado / Al costat
 Preposicions;Off;Fuera / Fora de
 Preposicions;On;Encima (tocando) / Sobre
+Preposicions;Opposite;Enfrente / Davant per davant
+Preposicions;Out of;Fuera de / Fora de
+Preposicions;Over;Por encima / Per sobre
+Preposicions;Through;A través / A través
+Preposicions;Towards;Hacia / Cap a
+Preposicions;Under;Debajo / Sota
+Preposicions;Up;Hacia arriba / Cap amunt
 Insectes;Ant;Hormiga / Formiga
 Insectes;Bee;Abeja / Abella
 Insectes;Butterfly;Mariposa / Papallona
@@ -128,59 +128,59 @@ Insectes;Fly;Mosca / Mosca
 Insectes;Grasshopper;Saltamontes / Saltamartí
 Insectes;Ladybug;Mariquita / Marieta
 Insectes;Mosquito;Mosquito / Mosquit
+Mar;Cod;Bacalao / Bacallà
 Mar;Crab;Cangrejo / Cranc
 Mar;Lobster;Langosta / Llagosta
-Mar;Shrimp;Gamba / Gamba
 Mar;Mussels;Musclos / Musclos
-Mar;Oyster;Ostra / Ostra
-Mar;Squid;Calamar / Calamar
 Mar;Octopus;Pop / Pop
+Mar;Oyster;Ostra / Ostra
 Mar;Salmon;Salmón / Salmó
+Mar;Shrimp;Gamba / Gamba
+Mar;Squid;Calamar / Calamar
 Mar;Tuna;Atún / Tonyina
-Mar;Cod;Bacalao / Bacallà
+Desastres;Avalanche;Alud / Allau
+Desastres;Drought;Sequía / Sequera
 Desastres;Earthquake;Terremoto / Terratrèmol
 Desastres;Flood;Inundación / Inundació
-Desastres;Tsunami;Tsunami / Tsunami
-Desastres;Wildfire;Incendio / Incendi
-Desastres;Drought;Sequía / Sequera
-Desastres;Tornado;Tornado / Tornado
 Desastres;Hurricane;Huracán / Huracà
-Desastres;Volcanic eruption;Erupción / Erupció
-Desastres;Avalanche;Alud / Allau
 Desastres;Landslide;Desprendimiento / Despreniment
+Desastres;Tornado;Tornado / Tornado
+Desastres;Tsunami;Tsunami / Tsunami
+Desastres;Volcanic eruption;Erupción / Erupció
+Desastres;Wildfire;Incendio / Incendi
+Cuina;Bake;Hornear / Forn
 Cuina;Chop;Picar / Trinxar
+Cuina;Grate;Rallar / Ratllar
 Cuina;Peel;Pelar / Pelar
+Cuina;Season;Sazonar / Salpebrar
+Cuina;Simmer;Fuego lento / Fer xup-xup
 Cuina;Slice;Rodajas / Rodanxes
 Cuina;Squeeze;Exprimir / Exprèmer
 Cuina;Squish;Aixafar / Aixafar
-Cuina;Grate;Rallar / Ratllar
-Cuina;Simmer;Fuego lento / Fer xup-xup
-Cuina;Season;Sazonar / Salpebrar
-Cuina;Bake;Hornear / Forn
 Cuina;Stir;Remover / Remenar
 Adjectius;Barefoot;Descalç
 Adjectius;Naked;Despullat
 Adjectius;Homeless;Sense casa
 Adjectius;Unemployed;Desempleat
 Adjectius;Bald;calb
-Sons Similars;Ear;Orella
-Sons Similars;Fear;Por
 Sons Similars;Bear;Os          
 Sons Similars;Beard;Barba
-Sons Similars;Pear;Pera
+Sons Similars;Ear;Orella
+Sons Similars;Fear;Por
 Sons Similars;Hear;Oír
 Sons Similars;Heard;Oído
 Sons Similars;Heart;Cor 
-Verbs;Yawn;Badallar
+Sons Similars;Pear;Pera
+Verbs;Blush;Sonrojarse
+Verbs;Frown;Fruncir el ceño
 Verbs;Gasp;Jadear
+Verbs;Groan;Gemir
+Verbs;Nod;Asentir
+Verbs;Shrug;Encogerse de hombros
 Verbs;Sigh;Suspirar
 Verbs;Sniff;Oler
 Verbs;Wink;Guiñar
-Verbs;Groan;Gemir
-Verbs;Blush;Sonrojarse
-Verbs;Frown;Fruncir el ceño
-Verbs;Nod;Asentir
-Verbs;Shrug;Encogerse de hombros
+Verbs;Yawn;Badallar
 Verbs per A;Abandon;abandonar
 Verbs per A;Abbreviate;abreujar
 Verbs per A;Abduct;segrestar
@@ -1601,14 +1601,14 @@ Caracter;Docile;Dòcil
 Caracter;Eloquent;Eloqüent
 Caracter;Fearful;Poruc / Espantadís
 Caracter;Frank;Franc
-Caracter;Jealous;Gels
+Caracter;Jealous;Gelós
 Caracter;Modest;Modest
 Caracter;Outstanding;Excepcional
 Caracter;Reasonable;Raonable
 Caracter;Respectful;Respectius
 Caracter;Sleepyhead;Dormilega
 Caracter;Sloven;Desaliat / Deixat
-Caracter;Sluggish;Sogre / Mandrós
+Caracter;Sluggish;  Mandrós
 Caracter;Sly;Astut
 Caracter;Stingy;Tacaany
 Caracter;Temper;Caràcter / Temperament
