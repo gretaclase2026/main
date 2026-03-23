@@ -19,7 +19,7 @@ main{display:flex;justify-content:center;padding:24px}
 .audio-container { display: flex; justify-content: center; gap: 10px; margin: 10px 0 10px; align-items: center; }
 .audio-btn{width:60px;height:60px;border-radius:50%;border:none;background:#dbeafe;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
 .audio-btn.slow{background:#fef08a;}
-.audio-btn.pause{background:#fee2e2;} /* Fondo Rosa/Rojo suave */
+.audio-btn.pause{background:#fee2e2;}
 .star-main{font-size:32px;cursor:pointer;color:#d1d5db;background:none;border:none;padding:0 10px;transition:0.2s}
 .star-main.active{color:#facc15}
 .audio-btn:active{transform:scale(0.9)}
@@ -55,7 +55,7 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 
 .mini-icon-btn{width:36px;height:36px;border:none;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px}
 .btn-play-mini{background:#dbeafe}
-.btn-reveal-mini{background:#fee2e2} /* Rosa como el botón pausa */
+.btn-reveal-mini{background:#dcfce7}
 .star-btn-list{font-size:24px;cursor:pointer;color:#d1d5db;background:none;border:none}
 .star-btn-list.active{color:#facc15}
 
@@ -175,6 +175,7 @@ function load(){
  document.getElementById("en").classList.add("hidden");
  progressBar.value = 0;
  
+ // Actualizar estrella principal
  const starMain = document.getElementById("starMain");
  starMain.classList.toggle('active', localStorage.getItem('star_' + current.id) === 'true');
 

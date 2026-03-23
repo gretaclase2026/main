@@ -40,22 +40,19 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 .btn-know{background:#dcfce7}
 .btn-next{background:#fbcfe8}
 
-/* Listado con botones a la izquierda */
+/* Listado */
 .list-toggle-btns { display: flex; gap: 10px; margin-top: 20px; }
 .btn-list-main { flex: 1; padding: 12px; border-radius: 12px; border: none; background: #e9d5ff; font-weight: bold; cursor: pointer; }
 .btn-stars-main { background: #fef3c7; color: #92400e; }
 
 #list{margin-top:20px;background:#fff;border-radius:15px;display:none;border:1px solid #ddd;padding:15px}
-.list-item { padding: 15px 0; border-bottom: 1px solid #eee; display: flex; align-items: flex-start; gap: 15px; }
-.list-actions-side { display: flex; flex-direction: row; gap: 8px; padding-top: 5px; }
-.list-content { flex: 1; display: flex; flex-direction: column; gap: 4px; }
-
-.mini-btn { border: none; border-radius: 10px; width: 36px; height: 36px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+.list-item { padding: 15px 0; border-bottom: 1px solid #eee; display: flex; flex-direction: column; gap: 10px; }
+.list-actions-row { display: flex; gap: 15px; align-items: center; margin-top: 5px; }
+.mini-btn { border: none; border-radius: 10px; padding: 8px 12px; cursor: pointer; font-size: 14px; font-weight: bold; display: flex; align-items: center; gap: 5px; }
 .btn-audio-list { background: #dcfce7; }
 .btn-eye-list { background: #fee2e2; }
-.star-list { background: none; border: none; font-size: 24px; color: #cbd5e1; cursor: pointer; padding: 0; }
+.star-list { background: none; border: none; font-size: 24px; color: #cbd5e1; cursor: pointer; padding: 0; transition: 0.2s; }
 .star-list.active { color: #f59e0b !important; }
-
 .blur { filter: blur(5px); transition: filter 0.3s; cursor: pointer; }
 .blur.revealed { filter: blur(0); }
 
@@ -114,7 +111,6 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 <audio id="audio"></audio>
 
 <script>
-// Datos (f001 - f100)
 const data = [
     {audio:"f001.mp3",en:"If I had more money, I'd buy a new laptop.",es:"Si tingués més diners, compraria un portàtil nou."},
     {audio:"f002.mp3",en:"If she lived in London, she'd speak English every day.",es:"Si ella visqués a Londres, parlaria anglès cada dia."},
@@ -193,7 +189,7 @@ const data = [
     {audio:"f075.mp3",en:"If I'd had a map, I'd have found the hotel easily.",es:"Si hagués tingut un mapa, hauria trobat l'hotel fàcilment."},
     {audio:"f076.mp3",en:"He would've learned English if he'd lived in London.",es:"Ell hauria après anglès si hagués viscut a Londres."},
     {audio:"f077.mp3",en:"If they'd seen the movie, they'd have liked it.",es:"Si haguessin vist la pel·lícula, els hauria agradat."},
-    {audio:"f078.mp3",en:"I'd have taken a photo if I'd had my phone.",es:"Hauria fet una foto si hagués git el telèfon."},
+    {audio:"f078.mp3",en:"I'd have taken a photo if I'd had my phone.",es:"Hauria fet una foto si hagués tingut el telèfon."},
     {audio:"f079.mp3",en:"If we'd had enough eggs, I'd have made a cake.",es:"Si haguéssim tingut prou ous, hauria fet un pastís."},
     {audio:"f080.mp3",en:"She would've come if she hadn't been so busy.",es:"Ella hauria vingut si no hagués estat tan ocupada."},
     {audio:"f081.mp3",en:"If you'd followed the instructions, you'd have finished sooner.",es:"Si haguessis seguit les instruccions, hauries acabat abans."},
@@ -368,14 +364,12 @@ function renderList(type) {
     const itemDiv = document.createElement("div");
     itemDiv.className = "list-item";
     itemDiv.innerHTML = `
-      <div class="list-actions-side">
+      <div class="txt-es" style="font-weight:bold; font-size:14px;">${item.es}</div>
+      <div id="list-rev-${index}" class="blur" style="font-weight:bold; font-size:16px;" onclick="this.classList.add('revealed')">${item.en}</div>
+      <div class="list-actions-row">
         <button class="star-list ${isStarred ? 'active' : ''}" onclick="toggleStar(${item.realIdx}); renderList('${type}')">★</button>
-        <button class="mini-btn btn-audio-list" onclick="playAudio(1.0, '${item.audio}')">🔊</button>
-        <button class="mini-btn btn-eye-list" onclick="document.getElementById('list-rev-${index}').classList.add('revealed')">👁️</button>
-      </div>
-      <div class="list-content">
-        <div class="txt-es" style="font-weight:bold; font-size:14px;">${item.es}</div>
-        <div id="list-rev-${index}" class="blur" style="font-weight:bold; font-size:16px;" onclick="this.classList.add('revealed')">${item.en}</div>
+        <button class="mini-btn btn-audio-list" onclick="playAudio(1.0, '${item.audio}')">🔊 Escolta</button>
+        <button class="mini-btn btn-eye-list" onclick="document.getElementById('list-rev-${index}').classList.add('revealed')">👁️ Veure</button>
       </div>
     `;
     l.appendChild(itemDiv);

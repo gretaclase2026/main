@@ -46,16 +46,15 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 .btn-list-main { flex: 1; padding: 12px; border-radius: 12px; border: none; background: #e9d5ff; font-weight: bold; cursor: pointer; }
 .btn-stars-main { background: #fef3c7; color: #92400e; }
 
-/* Estils Llista amb botons en línia */
-#list{margin-top:20px;background:#fff;border-radius:15px;display:none;border:1px solid #ddd;padding:15px}
-.list-item { padding: 15px 0; border-bottom: 1px solid #eee; }
-.list-header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-.list-btns-row { display: flex; gap: 10px; align-items: center; }
-.list-texts { line-height: 1.4; }
-.mini-btn { border: none; border-radius: 8px; width: 32px; height: 32px; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+/* Estils Llista amb botons verticals */
+#list{margin-top:20px;background:#fff;border-radius:15px;display:none;border:1px solid #ddd;padding:10px}
+.list-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid #eee; }
+.list-btns-col { display: flex; flex-direction: column; gap: 8px; align-items: center; min-width: 45px; }
+.list-texts { flex-grow: 1; display: flex; flex-direction: column; line-height: 1.3; }
+.mini-btn { border: none; border-radius: 8px; width: 36px; height: 36px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
 .btn-audio-list { background: #dcfce7; }
 .btn-eye-list { background: #fee2e2; }
-.star-list { background: none; border: none; font-size: 20px; color: #cbd5e1; cursor: pointer; padding: 0; }
+.star-list { background: none; border: none; font-size: 22px; color: #cbd5e1; cursor: pointer; padding: 0; }
 .star-list.active { color: #f59e0b !important; }
 .blur { filter: blur(5px); transition: filter 0.3s; cursor: pointer; }
 .blur.revealed { filter: blur(0); }
@@ -331,15 +330,13 @@ function renderList(type) {
     const itemDiv = document.createElement("div");
     itemDiv.className = "list-item";
     itemDiv.innerHTML = `
-      <div class="list-header-row">
-        <div class="txt-es" style="font-weight:bold; font-size:14px;">${item.es}</div>
-        <div class="list-btns-row">
-          <button class="star-list ${isStarred ? 'active' : ''}" onclick="toggleStar(${item.realIdx}); renderList('${type}')">★</button>
-          <button class="mini-btn btn-audio-list" onclick="playAudio(1.0, ${item.realIdx})">🔊</button>
-          <button class="mini-btn btn-eye-list" onclick="document.getElementById('list-rev-${index}').classList.add('revealed')">👁️</button>
-        </div>
+      <div class="list-btns-col">
+        <button class="star-list ${isStarred ? 'active' : ''}" onclick="toggleStar(${item.realIdx}); renderList('${type}')">★</button>
+        <button class="mini-btn btn-audio-list" onclick="playAudio(1.0, ${item.realIdx})">🔊</button>
+        <button class="mini-btn btn-eye-list" onclick="document.getElementById('list-rev-${index}').classList.add('revealed')">👁️</button>
       </div>
       <div class="list-texts">
+        <div class="txt-es" style="font-weight:bold; font-size:14px;">${item.es}</div>
         <div id="list-rev-${index}" class="blur" style="font-weight:bold; font-size:16px;" onclick="this.classList.add('revealed')">${item.en}</div>
       </div>
     `;

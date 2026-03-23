@@ -3,65 +3,45 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vocabulari Social C1 - Pràctica Completa</title>
+<title>Vocabulari Social C1 - Vibrant</title>
 <style>
 body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .card{max-width:720px;margin:20px auto;background:#fff;border-radius:24px;padding:24px;box-shadow:0 8px 18px rgba(0,0,0,.15);position:relative}
-
 .modes{display:flex;gap:10px;margin-bottom:10px;width:100%}
 .mode{flex:1;text-align:center;padding:14px;border-radius:24px;font-weight:bold;cursor:pointer;border:2px solid transparent}
 .mode.en{background:#d6e6f5}
 .mode.es{background:#f4d6e6}
 .mode.active{border-color:#999;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
-
 .blocks{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}
 .block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#f1f5f9;cursor:pointer;transition:0.2s}
+
+/* Bloque activo en AZUL */
 .block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1);box-shadow:0 4px 10px rgba(37,99,235,0.3)}
 
 .main-box-container{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;margin:20px 0}
-.audio-controls{display:flex;align-items:center;gap:12px;margin-bottom:15px}
-
-.audio-btn{font-size:35px;background:#dcfce7;border:none;cursor:pointer;width:75px;height:75px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
-.audio-btn.slow{background:#fef08a;width:60px;height:60px;font-size:28px}
-.audio-btn.pause{background:#fee2e2;width:60px;height:60px;font-size:28px}
-.star-main { background: none; border: none; font-size: 35px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px; }
-.star-main.active { color: #f59e0b !important; }
+.audio-controls{display:flex;align-items:center;gap:15px;margin-bottom:15px}
+.audio-btn{font-size:50px;background:#dcfce7;border:none;cursor:pointer;width:110px;height:110px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
+.audio-btn.slow{background:#fef08a;width:80px;height:80px;font-size:35px}
+.audio-btn.vibrate{animation:vibrate 0.25s linear 2}
+@keyframes vibrate{0%{transform:translate(0)}25%{transform:translate(2px,-2px)}50%{transform:translate(-2px,2px)}75%{transform:translate(2px,2px)}100%{transform:translate(0)}}
 
 .progress-wrapper { width: 100%; max-width: 300px; margin: 10px 0; }
 input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 5px; accent-color: #2563eb; }
 
 .counter-side{position:absolute;right:10px;top:0;font-weight:bold;color:#2563eb;font-size:22px}
-
 #word{font-size:24px;font-weight:800;margin:20px 0;line-height:1.4;min-height:120px;text-align:center;display:flex;align-items:center;justify-content:center;padding:0 10px}
 .txt-es{color:#2563eb} 
 #answer{font-size:20px;font-weight:bold;margin-top:-10px;margin-bottom:20px;text-align:center;min-height:30px;color:#666}
-
 .actions{display:flex;gap:12px}
 .btn{flex:1;padding:18px;border-radius:18px;border:none;font-weight:bold;font-size:18px;cursor:pointer}
 .btn-reveal{background:#e0f2fe}
 .btn-know{background:#dcfce7}
 .btn-next{background:#fbcfe8}
-
-.list-toggle-btns { display: flex; gap: 10px; margin-top: 20px; }
-.btn-list-main { flex: 1; padding: 12px; border-radius: 12px; border: none; background: #e9d5ff; font-weight: bold; cursor: pointer; }
-.btn-stars-main { background: #fef3c7; color: #92400e; }
-
-/* Estils Llista amb botons en línia */
-#list{margin-top:20px;background:#fff;border-radius:15px;display:none;border:1px solid #ddd;padding:15px}
-.list-item { padding: 15px 0; border-bottom: 1px solid #eee; }
-.list-header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-.list-btns-row { display: flex; gap: 10px; align-items: center; }
-.list-texts { line-height: 1.4; }
-.mini-btn { border: none; border-radius: 8px; width: 32px; height: 32px; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; }
-.btn-audio-list { background: #dcfce7; }
-.btn-eye-list { background: #fee2e2; }
-.star-list { background: none; border: none; font-size: 20px; color: #cbd5e1; cursor: pointer; padding: 0; }
-.star-list.active { color: #f59e0b !important; }
-.blur { filter: blur(5px); transition: filter 0.3s; cursor: pointer; }
-.blur.revealed { filter: blur(0); }
+#list{margin-top:20px;background:#f9f9f9;padding:15px;border-radius:15px;display:none;border:1px solid #ddd}
 
 .check-box-manual {
-    position: absolute; top: 85px; right: 22px; width: 24px; height: 24px;
+    position: absolute; top: 85px; right: 22px;
+    width: 24px; height: 24px;
     background: #fff !important; border: 1.5px solid #22c55e !important;
     border-radius: 6px; display: flex; align-items: center; justify-content: center;
     cursor: pointer; z-index: 10; transition: all 0.2s; font-size: 14px;
@@ -80,19 +60,17 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
   <div class="blocks" id="blocksContainer"></div>
 
   <div class="main-box-container">
-    <div class="counter-side">
-      <span id="pos">0</span> / <span id="total">0</span>
+    <div class="audio-controls">
+      <button class="audio-btn" onclick="playAudio(1.0)">🔊</button>
+      <button class="audio-btn slow" onclick="playAudio(0.75)">🐢</button>
     </div>
     
-    <div class="audio-controls">
-      <button class="star-main" id="starMain" onclick="toggleStar()">★</button>
-      <button class="audio-btn slow" onclick="playAudio(0.75)">🐢</button>
-      <button class="audio-btn" onclick="playAudio(1.0)">🔊</button>
-      <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
-    </div>
-
     <div class="progress-wrapper">
       <input type="range" id="progressBar" value="0" step="0.1">
+    </div>
+
+    <div class="counter-side">
+      <span id="pos">0</span> / <span id="total">0</span>
     </div>
   </div>
 
@@ -105,10 +83,7 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
     <button class="btn btn-next" onclick="next()">següent</button>
   </div>
   
-  <div class="list-toggle-btns">
-    <button class="btn-list-main" onclick="toggleList('all')">llista del bloc</button>
-    <button class="btn-list-main btn-stars-main" onclick="toggleList('stars')">favorites (★)</button>
-  </div>
+  <button id="listBtn" onclick="toggleList()" style="width:100%;margin-top:20px;padding:12px;border-radius:12px;border:none;background:#e9d5ff;font-weight:bold;cursor:pointer">mostrar llista del bloc</button>
   <div id="list"></div>
 </div>
 
@@ -179,19 +154,21 @@ const data = [
 ];
 
 let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0;
-const a = document.getElementById("audio");
+const audioObj = document.getElementById("audio");
 const progressBar = document.getElementById("progressBar");
 
-function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "social_c1"; }
-let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
+function getFolderName() {
+    return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "social_c1";
+}
 
-a.ontimeupdate = () => { if (a.duration) progressBar.value = (a.currentTime / a.duration) * 100; };
-progressBar.oninput = () => { if (a.duration) a.currentTime = (progressBar.value / 100) * a.duration; };
+audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
+progressBar.oninput = () => { if (audioObj.duration) audioObj.currentTime = (progressBar.value / 100) * audioObj.duration; };
 
 function initBlocks() {
   const container = document.getElementById("blocksContainer");
   const numBlocks = Math.ceil(data.length / 10);
   const savedBlock = localStorage.getItem(getFolderName() + "_currentBlock");
+  
   container.innerHTML = "";
   for (let i = 0; i < numBlocks; i++) {
     const btn = document.createElement("button");
@@ -228,17 +205,23 @@ function loadBlock(b) {
   update(true); 
 }
 
+function setMode(m) {
+  mode = m;
+  document.getElementById("modeEN").classList.toggle("active", m === "EN");
+  document.getElementById("modeES").classList.toggle("active", m === "ES");
+  update(true);
+}
+
 function update(fromNextAction = false) {
   if (currentBlockData.length === 0) {
     document.getElementById("word").innerHTML = "¡Bloque Completado! 🎉";
     document.getElementById("answer").innerHTML = "";
     return;
   }
+  progressBar.value = 0;
   const item = currentBlockData[pos];
-  document.getElementById("starMain").classList.toggle("active", starredIds.includes(item.realIdx));
   const w = document.getElementById("word");
   const ans = document.getElementById("answer");
-  progressBar.value = 0;
 
   if (mode === "EN") {
     w.innerHTML = ``; 
@@ -252,26 +235,6 @@ function update(fromNextAction = false) {
   document.getElementById("pos").textContent = learnedCount;
   document.getElementById("total").textContent = currentBlockData.length + learnedCount;
 }
-
-function toggleStar(forcedIdx = null) {
-  const idx = forcedIdx || (currentBlockData.length > 0 ? currentBlockData[pos].realIdx : null);
-  if (!idx) return;
-  if (starredIds.includes(idx)) starredIds = starredIds.filter(id => id !== idx);
-  else starredIds.push(idx);
-  localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
-  if (!forcedIdx) update();
-}
-
-function playAudio(speed, forcedIdx = null) {
-  const num = forcedIdx || (currentBlockData.length > 0 ? currentBlockData[pos].realIdx : null);
-  if (!num) return;
-  const fileName = "frase" + num + ".mp3";
-  if (!a.src.includes(fileName)) { a.src = fileName; }
-  a.playbackRate = speed;
-  a.play().catch(() => {});
-}
-
-function pauseAudio() { a.pause(); }
 
 function reveal() {
   if (currentBlockData.length > 0) {
@@ -296,55 +259,27 @@ function next() {
   update(true);
 }
 
-function setMode(m) {
-  mode = m;
-  document.getElementById("modeEN").classList.toggle("active", m === "EN");
-  document.getElementById("modeES").classList.toggle("active", m === "ES");
-  update(true);
+function playAudio(speed) {
+  if (currentBlockData.length === 0) return;
+  const num = currentBlockData[pos].realIdx;
+  const fileName = "frase" + num + ".mp3";
+  if (!audioObj.src.includes(fileName)) { audioObj.src = fileName; progressBar.value = 0; }
+  audioObj.playbackRate = speed;
+  const btn = document.querySelector('.audio-btn');
+  btn.classList.remove('vibrate'); void btn.offsetWidth; btn.classList.add('vibrate');
+  audioObj.play().catch(() => {});
 }
 
-function toggleList(type) {
+function toggleList() {
   const l = document.getElementById("list");
-  if (l.style.display === "block" && l.dataset.type === type) { l.style.display = "none"; return; }
-  l.dataset.type = type;
-  renderList(type);
-  l.style.display = "block";
-}
-
-function renderList(type) {
-  const l = document.getElementById("list");
-  l.innerHTML = type === 'stars' ? "<b>Favorites (★):</b><br><br>" : "<b>Llista del bloc:</b><br><br>";
-  
-  let listToRender = [];
-  if (type === 'stars') {
-    listToRender = data.map((item, index) => ({...item, realIdx: index+1})).filter(i => starredIds.includes(i.realIdx));
-  } else {
-    let start = currentBlockID === 'T' ? 0 : currentBlockID * 10;
-    let end = currentBlockID === 'T' ? data.length : Math.min(start + 10, data.length);
-    listToRender = data.slice(start, end).map((item, index) => ({...item, realIdx: start + index + 1}));
-  }
-
-  if (listToRender.length === 0) { l.innerHTML += "<i>Buit.</i>"; return; }
-
-  listToRender.forEach((item, index) => {
-    const isStarred = starredIds.includes(item.realIdx);
-    const itemDiv = document.createElement("div");
-    itemDiv.className = "list-item";
-    itemDiv.innerHTML = `
-      <div class="list-header-row">
-        <div class="txt-es" style="font-weight:bold; font-size:14px;">${item.es}</div>
-        <div class="list-btns-row">
-          <button class="star-list ${isStarred ? 'active' : ''}" onclick="toggleStar(${item.realIdx}); renderList('${type}')">★</button>
-          <button class="mini-btn btn-audio-list" onclick="playAudio(1.0, ${item.realIdx})">🔊</button>
-          <button class="mini-btn btn-eye-list" onclick="document.getElementById('list-rev-${index}').classList.add('revealed')">👁️</button>
-        </div>
-      </div>
-      <div class="list-texts">
-        <div id="list-rev-${index}" class="blur" style="font-weight:bold; font-size:16px;" onclick="this.classList.add('revealed')">${item.en}</div>
-      </div>
-    `;
-    l.appendChild(itemDiv);
+  if (l.style.display === "block") { l.style.display = "none"; return; }
+  l.innerHTML = "<b>Llista del bloc:</b><br><br>";
+  let start = currentBlockID === 'T' ? 0 : currentBlockID * 10;
+  let end = currentBlockID === 'T' ? data.length : Math.min(start + 10, data.length);
+  data.slice(start, end).forEach((item) => {
+    l.innerHTML += `<div style="margin-bottom:8px"><b>${item.en}</b> - <span class="txt-es">${item.es}</span></div>`;
   });
+  l.style.display = "block";
 }
 
 function markAsDone(element) {
@@ -353,14 +288,14 @@ function markAsDone(element) {
     alert("Lliçó marcada ✅");
 }
 
-initBlocks();
-
 const card = document.querySelector(".card");
 const box = document.createElement("div");
 box.className = "check-box-manual";
 if (localStorage.getItem(getFolderName())) { box.innerHTML = "✓"; box.classList.add('marked'); }
 box.onclick = function() { markAsDone(this); };
 card.appendChild(box);
+
+initBlocks();
 </script>
 </body>
 </html>

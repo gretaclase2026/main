@@ -46,15 +46,14 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 .btn-list-main { flex: 1; padding: 12px; border-radius: 12px; border: none; background: #e9d5ff; font-weight: bold; cursor: pointer; }
 .btn-stars-main { background: #fef3c7; color: #92400e; }
 
-/* Estilos de la Lista Horizontal */
 #list{margin-top:20px;background:#fff;border-radius:15px;display:none;border:1px solid #ddd;padding:10px}
-.list-item { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #eee; }
-.list-btns-row { display: flex; gap: 5px; align-items: center; }
-.list-texts { flex-grow: 1; display: flex; flex-direction: column; line-height: 1.2; }
-.mini-btn { border: none; border-radius: 8px; width: 32px; height: 32px; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+.list-item { display: flex; align-items: flex-start; gap: 15px; padding: 12px 0; border-bottom: 1px solid #eee; }
+.list-controls-side { display: flex; flex-direction: column; gap: 6px; min-width: 40px; align-items: center; }
+.list-texts { flex-grow: 1; display: flex; flex-direction: column; gap: 4px; }
+.mini-btn { border: none; border-radius: 10px; width: 34px; height: 34px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
 .btn-audio-list { background: #dcfce7; }
 .btn-eye-list { background: #fee2e2; }
-.star-list { background: none; border: none; font-size: 20px; color: #cbd5e1; cursor: pointer; padding: 0; }
+.star-list { background: none; border: none; font-size: 22px; color: #cbd5e1; cursor: pointer; padding:0; line-height:1; }
 .star-list.active { color: #f59e0b !important; }
 .blur { filter: blur(5px); transition: filter 0.3s; cursor: pointer; }
 .blur.revealed { filter: blur(0); }
@@ -106,7 +105,7 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
   
   <div class="list-toggle-btns">
     <button class="btn-list-main" onclick="toggleList('all')">llista del bloc</button>
-    <button class="btn-list-main btn-stars-main" onclick="toggleList('stars')">favorites (★)</button>
+    <button class="btn-list-main btn-stars-main" onclick="toggleList('stars')">repassar favorites (★)</button>
   </div>
   <div id="list"></div>
 </div>
@@ -161,7 +160,7 @@ const data = [
   {en: "Never mind, I'll do it myself.", es: "Olvídalo, lo haré yo mismo"},
   {en: "Is there a problem? No, never mind, it's fine.", es: "¿Hay algún problema? No, olvídalo, está bien"},
   {en: "After months of exercise, I’m fit as a fiddle.", es: "Después de meses de ejercicio, estoy sano como una pera"},
-  {en: "My grandfather is 80, but he's fit as a fiddle.", es: "Mi abuelo tiene 80 años, pero está como un roble"},
+  {en: "My grandfather is 80, but he's fit as a fiddle.", es: "My abuelo tiene 80 años, pero está como un roble"},
   {en: "I feel fit as a fiddle after my morning run.", es: "Me siento estupendamente después de mi carrera matutina"},
   {en: "I've been working all day and I'm worn out.", es: "He estado trabajando todo el día y estoy agotado"},
   {en: "The kids are finally asleep, but I'm worn out.", es: "Los niños por fin duermen, pero estoy reventado"},
@@ -242,10 +241,16 @@ function loadBlock(b) {
   let start = b * 10, end = Math.min(start + 10, data.length);
   for (let i = start; i < end; i++) temp.push({...data[i], realIdx: i+1});
   currentBlockData = temp.sort(() => Math.random() - 0.5);
-  document.querySelectorAll(".block").forEach((btn, idx) => btn.classList.toggle("active", idx === b));
+  updateActiveBlockUI(b);
   pos = 0; learnedCount = 0;
   document.getElementById("list").style.display = "none";
   update(true); 
+}
+
+function updateActiveBlockUI(b) {
+  document.querySelectorAll(".block").forEach((btn, idx) => {
+    btn.classList.toggle("active", idx === b);
+  });
 }
 
 function update(fromNextAction = false) {
@@ -330,7 +335,7 @@ function toggleList(type) {
 
 function renderList(type) {
   const l = document.getElementById("list");
-  l.innerHTML = type === 'stars' ? "<b>Favorites (★):</b><br><br>" : "<b>Llista del bloc:</b><br><br>";
+  l.innerHTML = type === 'stars' ? "<b>Repàs de Favorites (★):</b><br><br>" : "<b>Llista del bloc:</b><br><br>";
   
   let listToRender = [];
   if (type === 'stars') {
@@ -341,32 +346,49 @@ function renderList(type) {
     listToRender = data.slice(start, end).map((item, index) => ({...item, realIdx: start + index + 1}));
   }
 
-  if (listToRender.length === 0) { l.innerHTML += "<i>Buit.</i>"; return; }
+  if (listToRender.length === 0) {
+    l.innerHTML += "<i>No hi ha frases marcades.</i>";
+    return;
+  }
 
   listToRender.forEach((item, index) => {
     const isStarred = starredIds.includes(item.realIdx);
     const itemDiv = document.createElement("div");
     itemDiv.className = "list-item";
     itemDiv.innerHTML = `
-      <div class="list-btns-row">
+      <div class="list-controls-side">
         <button class="star-list ${isStarred ? 'active' : ''}" onclick="toggleStar(${item.realIdx}); renderList('${type}')">★</button>
         <button class="mini-btn btn-audio-list" onclick="playAudio(1.0, ${item.realIdx})">🔊</button>
         <button class="mini-btn btn-eye-list" onclick="document.getElementById('list-rev-${index}').classList.add('revealed')">👁️</button>
       </div>
       <div class="list-texts">
-        <div class="txt-es" style="font-weight:bold; font-size:14px;">${item.es}</div>
-        <div id="list-rev-${index}" class="blur" style="font-weight:bold; font-size:15px;" onclick="this.classList.add('revealed')">${item.en}</div>
+        <div class="txt-es" style="font-weight:bold;">${item.es}</div>
+        <div id="list-rev-${index}" class="blur" style="font-weight:bold;" onclick="this.classList.add('revealed')">${item.en}</div>
       </div>
     `;
     l.appendChild(itemDiv);
   });
+
+  if (type === 'stars') {
+      const startStudyBtn = document.createElement("button");
+      startStudyBtn.className = "btn-list-main";
+      startStudyBtn.style.marginTop = "15px";
+      startStudyBtn.textContent = "Estudiar aquestes frases ara";
+      startStudyBtn.onclick = () => {
+          currentBlockData = [...listToRender].sort(() => Math.random() - 0.5);
+          pos = 0; learnedCount = 0;
+          l.style.display = "none";
+          update(true);
+      };
+      l.appendChild(startStudyBtn);
+  }
 }
 
 function markAsDone(element) {
     localStorage.setItem(getFolderName(), new Date().toISOString());
     element.innerHTML = "✓";
     element.classList.add('marked');
-    alert("Lliçó marcada ✅");
+    alert("Lliçó marcada com a feta ✅");
 }
 
 initBlocks();
