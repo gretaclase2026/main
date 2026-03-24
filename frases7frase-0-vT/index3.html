@@ -16,16 +16,16 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 
 .blocks{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}
 .block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#fff4cc;cursor:pointer;transition:0.2s;color:#333}
-/* Estilo para el bloque seleccionado (azul fuerte como pediste) */
 .block.active{background:#2563eb !important; color: white !important; transform: scale(1.1); box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3)}
 
 .main-box-container{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;margin:20px 0}
-.audio-controls{display:flex;align-items:center;gap:15px;margin-bottom:15px}
+.audio-controls{display:flex;align-items:center;gap:12px;margin-bottom:15px}
 
-.audio-btn{font-size:50px;background:#dcfce7;border:none;cursor:pointer;width:110px;height:110px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
-.audio-btn.slow{background:#fef08a;width:80px;height:80px;font-size:35px}
-.audio-btn.vibrate{animation:vibrate 0.25s linear 2}
-@keyframes vibrate{0%{transform:translate(0)}25%{transform:translate(2px,-2px)}50%{transform:translate(-2px,2px)}75%{transform:translate(2px,2px)}100%{transform:translate(0)}}
+.audio-btn{font-size:35px;background:#dcfce7;border:none;cursor:pointer;width:75px;height:75px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
+.audio-btn.slow{background:#fef08a;width:60px;height:60px;font-size:28px}
+.audio-btn.pause{background:#fee2e2;width:60px;height:60px;font-size:28px}
+.star-main { background: none; border: none; font-size: 35px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px; }
+.star-main.active { color: #f59e0b !important; }
 
 .progress-wrapper { width: 100%; max-width: 300px; margin: 10px 0; }
 input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 5px; accent-color: #2563eb; }
@@ -42,7 +42,22 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 .btn-know{background:#dcfce7}
 .btn-next{background:#fbcfe8}
 
-#list{margin-top:20px;background:#f9f9f9;padding:15px;border-radius:15px;display:none;border:1px solid #ddd}
+.list-toggle-btns { display: flex; gap: 10px; margin-top: 20px; }
+.btn-list-main { flex: 1; padding: 12px; border-radius: 12px; border: none; background: #e9d5ff; font-weight: bold; cursor: pointer; }
+.btn-stars-main { background: #fef3c7; color: #92400e; }
+
+/* Estilos de la Lista Horizontal */
+#list{margin-top:20px;background:#fff;border-radius:15px;display:none;border:1px solid #ddd;padding:10px}
+.list-item { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #eee; }
+.list-btns-row { display: flex; gap: 5px; align-items: center; }
+.list-texts { flex-grow: 1; display: flex; flex-direction: column; line-height: 1.2; }
+.mini-btn { border: none; border-radius: 8px; width: 32px; height: 32px; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+.btn-audio-list { background: #dcfce7; }
+.btn-eye-list { background: #fee2e2; }
+.star-list { background: none; border: none; font-size: 20px; color: #cbd5e1; cursor: pointer; padding: 0; }
+.star-list.active { color: #f59e0b !important; }
+.blur { filter: blur(5px); transition: filter 0.3s; cursor: pointer; }
+.blur.revealed { filter: blur(0); }
 
 .check-box-manual {
     position: absolute; top: 85px; right: 22px; width: 24px; height: 24px;
@@ -69,8 +84,10 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
     </div>
     
     <div class="audio-controls">
-      <button class="audio-btn" onclick="playAudio(1.0)">🔊</button>
+      <button class="star-main" id="starMain" onclick="toggleStar()">★</button>
       <button class="audio-btn slow" onclick="playAudio(0.75)">🐢</button>
+      <button class="audio-btn" onclick="playAudio(1.0)">🔊</button>
+      <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
     </div>
 
     <div class="progress-wrapper">
@@ -87,14 +104,16 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
     <button class="btn btn-next" onclick="next()">següent</button>
   </div>
   
-  <button id="listBtn" onclick="toggleList()" style="width:100%;margin-top:20px;padding:12px;border-radius:12px;border:none;background:#e9d5ff;font-weight:bold;cursor:pointer">mostrar llista del bloc</button>
+  <div class="list-toggle-btns">
+    <button class="btn-list-main" onclick="toggleList('all')">llista del bloc</button>
+    <button class="btn-list-main btn-stars-main" onclick="toggleList('stars')">favorites (★)</button>
+  </div>
   <div id="list"></div>
 </div>
 
 <audio id="audio"></audio>
 
 <script>
-// AQUÍ VAN TUS DATOS (HE DEJADO LOS QUE ME PASASTE DE EJEMPLO)
 const data = [
   {en: "We can go now or later; it's up to you.", es: "Podemos ir ahora o más tarde; depende de ti"},
   {en: "The final decision is up to you.", es: "La decisión final depende de ti"},
@@ -191,34 +210,20 @@ const data = [
   {en: "Don't get pissed, it was just a joke.", es: "No te cabrees, solo era una broma"}
 ];
 
-let currentBlockData = [];
-let pos = 0;
-let mode = "EN";
-let learnedCount = 0;
-let currentBlockID = 0;
-
+let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0;
 const a = document.getElementById("audio");
 const progressBar = document.getElementById("progressBar");
 
-function getFolderName() {
-    return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "unknown";
-}
+function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "unknown"; }
+let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
 
-a.ontimeupdate = () => {
-  if (a.duration) progressBar.value = (a.currentTime / a.duration) * 100;
-};
-
-progressBar.oninput = () => {
-  if (a.duration) a.currentTime = (progressBar.value / 100) * a.duration;
-};
+a.ontimeupdate = () => { if (a.duration) progressBar.value = (a.currentTime / a.duration) * 100; };
+progressBar.oninput = () => { if (a.duration) a.currentTime = (progressBar.value / 100) * a.duration; };
 
 function initBlocks() {
   const container = document.getElementById("blocksContainer");
   const numBlocks = Math.ceil(data.length / 10);
-  
-  // Recuperar punto guardado
   const savedBlock = localStorage.getItem(getFolderName() + "_currentBlock");
-  
   container.innerHTML = "";
   for (let i = 0; i < numBlocks; i++) {
     const btn = document.createElement("button");
@@ -227,50 +232,20 @@ function initBlocks() {
     btn.onclick = () => loadBlock(i);
     container.appendChild(btn);
   }
-  const btnT = document.createElement("button");
-  btnT.className = "block"; btnT.textContent = "T";
-  btnT.onclick = () => loadBlock('T');
-  container.appendChild(btnT);
-
-  // Cargar el bloque guardado o el primero
-  const blockToLoad = (savedBlock !== null) ? (savedBlock === 'T' ? 'T' : parseInt(savedBlock)) : 0;
-  loadBlock(blockToLoad);
+  loadBlock((savedBlock !== null) ? parseInt(savedBlock) : 0);
 }
 
 function loadBlock(b) {
   currentBlockID = b;
-  
-  // GUARDAR PROGRESO (Exclusivo)
   localStorage.setItem(getFolderName() + "_currentBlock", b);
-
   let temp = [];
-  if (b === 'T') {
-    temp = data.map((item, i) => ({...item, realIdx: i+1}));
-  } else {
-    let start = b * 10;
-    let end = Math.min(start + 10, data.length);
-    for (let i = start; i < end; i++) {
-      temp.push({...data[i], realIdx: i+1});
-    }
-  }
+  let start = b * 10, end = Math.min(start + 10, data.length);
+  for (let i = start; i < end; i++) temp.push({...data[i], realIdx: i+1});
   currentBlockData = temp.sort(() => Math.random() - 0.5);
-  
-  // Actualizar visual de los botones
-  document.querySelectorAll(".block").forEach((btn) => {
-    const isThis = (b === 'T' && btn.textContent === 'T') || (parseInt(btn.textContent)-1 === b);
-    btn.classList.toggle("active", isThis);
-  });
-
+  document.querySelectorAll(".block").forEach((btn, idx) => btn.classList.toggle("active", idx === b));
   pos = 0; learnedCount = 0;
   document.getElementById("list").style.display = "none";
   update(true); 
-}
-
-function setMode(m) {
-  mode = m;
-  document.getElementById("modeEN").classList.toggle("active", m === "EN");
-  document.getElementById("modeES").classList.toggle("active", m === "ES");
-  update(true);
 }
 
 function update(fromNextAction = false) {
@@ -280,12 +255,11 @@ function update(fromNextAction = false) {
     return;
   }
   const item = currentBlockData[pos];
+  document.getElementById("starMain").classList.toggle("active", starredIds.includes(item.realIdx));
   const translation = `<span class="txt-es">${item.es}</span>`;
   const w = document.getElementById("word");
   const aElement = document.getElementById("answer");
-
   progressBar.value = 0;
-
   if (mode === "EN") {
     w.innerHTML = ``; 
     aElement.innerHTML = translation;
@@ -294,18 +268,32 @@ function update(fromNextAction = false) {
     w.innerHTML = `<div style='font-size:22px;'>${translation}</div>`;
     aElement.innerHTML = `<span style="font-size:24px;">${item.en}</span>`;
   }
-  
   aElement.style.display = "none";
   document.getElementById("pos").textContent = learnedCount;
   document.getElementById("total").textContent = currentBlockData.length + learnedCount;
 }
 
+function toggleStar(forcedIdx = null) {
+  const idx = forcedIdx || currentBlockData[pos].realIdx;
+  if (starredIds.includes(idx)) starredIds = starredIds.filter(id => id !== idx);
+  else starredIds.push(idx);
+  localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
+  update();
+}
+
+function playAudio(speed, forcedIdx = null) {
+  const num = forcedIdx || currentBlockData[pos].realIdx;
+  a.src = "frase" + num + ".mp3";
+  a.playbackRate = speed;
+  a.play().catch(() => {});
+}
+
+function pauseAudio() { a.pause(); }
+
 function reveal() {
   if (currentBlockData.length > 0) {
     const item = currentBlockData[pos];
-    if (mode === "EN") {
-        document.getElementById("word").innerHTML = `<span style="color:#333;">${item.en}</span>`;
-    }
+    if (mode === "EN") document.getElementById("word").innerHTML = `<span style="color:#333;">${item.en}</span>`;
     document.getElementById("answer").style.display = "block";
     if (mode === "ES") playAudio(1.0); 
   }
@@ -325,45 +313,64 @@ function next() {
   update(true);
 }
 
-function playAudio(speed) {
-  if (currentBlockData.length === 0) return;
-  const num = currentBlockData[pos].realIdx;
-  const fileName = "frase" + num + ".mp3";
-  
-  if (!a.src.includes(fileName)) {
-    a.src = fileName;
-    progressBar.value = 0;
-  }
-
-  a.playbackRate = speed;
-  const btn = document.querySelector('.audio-btn');
-  btn.classList.remove('vibrate'); void btn.offsetWidth; btn.classList.add('vibrate');
-  a.play().catch(() => {});
+function setMode(m) {
+  mode = m;
+  document.getElementById("modeEN").classList.toggle("active", m === "EN");
+  document.getElementById("modeES").classList.toggle("active", m === "ES");
+  update(true);
 }
 
-function toggleList() {
+function toggleList(type) {
   const l = document.getElementById("list");
-  if (l.style.display === "block") { l.style.display = "none"; return; }
-  l.innerHTML = "<b>Llista del bloc:</b><br><br>";
-  let start = currentBlockID === 'T' ? 0 : currentBlockID * 10;
-  let end = currentBlockID === 'T' ? data.length : Math.min(start + 10, data.length);
-  let originalBlock = data.slice(start, end);
-  originalBlock.forEach((item) => {
-    l.innerHTML += `<div style="margin-bottom:8px"><b>${item.en}</b> - <span class="txt-es">${item.es}</span></div>`;
-  });
+  if (l.style.display === "block" && l.dataset.type === type) { l.style.display = "none"; return; }
+  l.dataset.type = type;
+  renderList(type);
   l.style.display = "block";
+}
+
+function renderList(type) {
+  const l = document.getElementById("list");
+  l.innerHTML = type === 'stars' ? "<b>Favorites (★):</b><br><br>" : "<b>Llista del bloc:</b><br><br>";
+  
+  let listToRender = [];
+  if (type === 'stars') {
+    listToRender = data.map((item, index) => ({...item, realIdx: index+1})).filter(i => starredIds.includes(i.realIdx));
+  } else {
+    let start = currentBlockID * 10;
+    let end = Math.min(start + 10, data.length);
+    listToRender = data.slice(start, end).map((item, index) => ({...item, realIdx: start + index + 1}));
+  }
+
+  if (listToRender.length === 0) { l.innerHTML += "<i>Buit.</i>"; return; }
+
+  listToRender.forEach((item, index) => {
+    const isStarred = starredIds.includes(item.realIdx);
+    const itemDiv = document.createElement("div");
+    itemDiv.className = "list-item";
+    itemDiv.innerHTML = `
+      <div class="list-btns-row">
+        <button class="star-list ${isStarred ? 'active' : ''}" onclick="toggleStar(${item.realIdx}); renderList('${type}')">★</button>
+        <button class="mini-btn btn-audio-list" onclick="playAudio(1.0, ${item.realIdx})">🔊</button>
+        <button class="mini-btn btn-eye-list" onclick="document.getElementById('list-rev-${index}').classList.add('revealed')">👁️</button>
+      </div>
+      <div class="list-texts">
+        <div class="txt-es" style="font-weight:bold; font-size:14px;">${item.es}</div>
+        <div id="list-rev-${index}" class="blur" style="font-weight:bold; font-size:15px;" onclick="this.classList.add('revealed')">${item.en}</div>
+      </div>
+    `;
+    l.appendChild(itemDiv);
+  });
 }
 
 function markAsDone(element) {
     localStorage.setItem(getFolderName(), new Date().toISOString());
     element.innerHTML = "✓";
     element.classList.add('marked');
-    alert("Lliçó marcada com a feta al índex ✅");
+    alert("Lliçó marcada ✅");
 }
 
 initBlocks();
 
-// Cuadrito de marcado para el índice principal
 const card = document.querySelector(".card");
 const box = document.createElement("div");
 box.className = "check-box-manual";

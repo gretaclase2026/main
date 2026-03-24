@@ -36,7 +36,8 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .counter-side{position:absolute;right:10px;font-weight:bold;color:#2563eb;font-size:22px}
 
 #word{font-size:32px;font-weight:800;margin:20px 0;line-height:1.2;min-height:80px;text-align:center;display:flex;align-items:center;justify-content:center}
-.txt-cat{color:#2563eb}
+.txt-es{color:#2563eb} 
+.txt-cat{color:#666}
 #answer{font-size:24px;font-weight:bold;margin-top:-10px;margin-bottom:20px;text-align:center;min-height:30px}
 
 .actions{display:flex;gap:12px}
@@ -64,8 +65,8 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 
 <div class="card">
   <div class="modes">
-    <div id="modeEN" class="mode en active" onclick="setMode('EN')">ENG → CAT</div>
-    <div id="modeES" class="mode es" onclick="setMode('ES')">CAT → ENG</div>
+    <div id="modeEN" class="mode en active" onclick="setMode('EN')">ENG → ESP/CAT</div>
+    <div id="modeES" class="mode es" onclick="setMode('ES')">ESP/CAT → ENG</div>
   </div>
 
   <div class="blocks" id="blocksContainer"></div>
@@ -102,27 +103,27 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 
 <script>
 const data = [
-  {en: "I have a small pebble in my shoe", cat: "Tinc una petita pedreta a la sabata"},
-  {en: "Tie the package with a piece of string", cat: "Lliga el paquet amb un tros de corda"},
-  {en: "This dress is made of white lace", cat: "Aquest vestit està fet d'encaix blanc"},
-  {en: "Put the plant on the window ledge", cat: "Posa la planta a la repisa de la finestra"},
-  {en: "Button the cuff of your shirt", cat: "Abotona el puny de la teva camisa"},
-  {en: "The officer put the handcuffs on him", cat: "L'oficial li va posar les esposes"},
-  {en: "Use the kitchen tongs to turn the meat", cat: "Utilitza les pinces de cuina per girar la carn"},
-  {en: "She uses tweezers for her eyebrows", cat: "Ella fa servir pinces de depilar per a les celles"},
-  {en: "The sly fox escaped", cat: "La guineu astuta va escapar"},
-  {en: "He held her gaze for a moment", cat: "Ell va mantenir la mirada per un moment"},
-  {en: "I've tidied up every room", cat: "He ordenat cada habitació"},
-  {en: "Each one is spotless now", cat: "Cadascuna està impecable ara"},
-  {en: "You ought to go now", cat: "Hauries de marxar ara"},
-  {en: "I need a hook for my keys", cat: "Necesito un ganxo per a les meves claus"},
-  {en: "Hook it up to the speaker", cat: "Connecta-ho a l'altaveu"},
-  {en: "I have a fear of heights", cat: "Tinc por a les altures"},
-  {en: "The judge was very fair in his decision", cat: "El jutge va ser molt just en la seva decisió"},
-  {en: "That movie was awesome", cat: "Aquella pel·lícula va ser genial"},
-  {en: "Flip the pancake", cat: "Dona-li la volta a la truita"},
-  {en: "The movie has a complex plot", cat: "La pel·lícula té una trama completa"},
-  {en: "The hearse led the procession", cat: "El cotxe fúnebre encapçalava la processó"}
+  {en: "I have a small pebble in my shoe", es: "Tengo una pequeña piedrecita en mi zapato", cat: "Tinc una petita pedreta a la sabata"},
+  {en: "Tie the package with a piece of string", es: "Ata el paquete con un trozo de cuerda", cat: "Lliga el paquet amb un tros de corda"},
+  {en: "This dress is made of white lace", es: "Este vestido está hecho de encaje blanco", cat: "Aquest vestit està fet d'encaix blanc"},
+  {en: "Put the plant on the window ledge", es: "Pon la planta en la repisa de la ventana", cat: "Posa la planta a la repisa de la finestra"},
+  {en: "Button the cuff of your shirt", es: "Abotona el puño de tu camisa", cat: "Abotona el puny de la teva camisa"},
+  {en: "The officer put the handcuffs on him", es: "El oficial le puso las esposas", cat: "L'oficial li va posar les esposes"},
+  {en: "Use the kitchen tongs to turn the meat", es: "Usa las pinzas de cocina para girar la carne", cat: "Utilitza les pinces de cuina per girar la carn"},
+  {en: "She uses tweezers for her eyebrows", es: "Ella usa pinzas de depilar para sus cejas", cat: "Ella fa servir pinces de depilar per a les celles"},
+  {en: "The sly fox escaped", es: "El zorro astuto escapó", cat: "La guineu astuta va escapar"},
+  {en: "He held her gaze for a moment", es: "Él mantuvo su mirada por un momento", cat: "Ell va mantenir la mirada per un moment"},
+  {en: "I've tidied up every room", es: "He ordenado cada habitación", cat: "He ordenat cada habitació"},
+  {en: "Each one is spotless now", es: "Cada una está impecable ahora", cat: "Cadascuna està impecable ara"},
+  {en: "You ought to go now", es: "Deberías irte ahora", cat: "Hauries de marxar ara"},
+  {en: "I need a hook for my keys", es: "Necesito un gancho para mis llaves", cat: "Necesito un ganxo per a les meves claus"},
+  {en: "Hook it up to the speaker", es: "Conéctalo al altavoz", cat: "Connecta-ho a l'altaveu"},
+  {en: "I have a fear of heights", es: "Tengo miedo a las alturas", cat: "Tinc por a les altures"},
+  {en: "The judge was very fair in his decision", es: "El juez fue muy justo en su decisión", cat: "El jutge va ser molt just en la seva decisió"},
+  {en: "That movie was awesome", es: "Esa película fue genial", cat: "Aquella pel·lícula va ser genial"},
+  {en: "Flip the pancake", es: "Dale la vuelta a la tortita", cat: "Dona-li la volta a la truita"},
+  {en: "The movie has a complex plot", es: "La película tiene una trama compleja", cat: "La pel·lícula té una trama complexa"},
+  {en: "The hearse led the procession", es: "El coche fúnebre encabezaba la procesión", cat: "El cotxe fúnebre encapçalava la processó"}
 ];
 
 let currentBlockData = [];
@@ -131,6 +132,7 @@ let mode = "EN";
 let learnedCount = 0;
 let currentBlockID = 0;
 
+// Reconocimiento de voz (index0 style)
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = SpeechRecognition ? new SpeechRecognition() : null;
 if (recognition) {
@@ -238,7 +240,7 @@ function update(fromNextAction = false) {
   document.getElementById("starMain").style.display = "block";
   document.getElementById("speech-feedback").textContent = "";
   const item = currentBlockData[pos];
-  const translation = `<span class="txt-cat">${item.cat}</span>`;
+  const translation = `<span class="txt-es">${item.es}</span><br><span class="txt-cat">${item.cat}</span>`;
   
   const w = document.getElementById("word");
   const a = document.getElementById("answer");
@@ -274,14 +276,18 @@ function toggleStar(id) {
     localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
 }
 
+// Botón "Veure" modificado: Toggle y sin audio
 function reveal() {
   if (currentBlockData.length > 0) {
     const item = currentBlockData[pos];
     const a = document.getElementById("answer");
+    
+    // Si ya está visible, lo escondemos
     if (a.style.display === "block") {
         a.style.display = "none";
         if (mode === "EN") document.getElementById("word").innerHTML = "";
     } else {
+        // Si está escondido, lo mostramos (sin audio)
         if (mode === "EN") {
             document.getElementById("word").innerHTML = `<span style="color:#333;">${item.en}</span>`;
         }
@@ -309,10 +315,12 @@ function playAudio(forcedIdx = null) {
   const num = idx.toString().padStart(3, "0");
   const a = document.getElementById("audio");
   a.src = "f" + num + ".mp3";
+  
   if (!forcedIdx) {
     const btn=document.querySelector('.audio-btn');
     btn.classList.remove('vibrate'); void btn.offsetWidth; btn.classList.add('vibrate');
   }
+  
   a.play().catch(() => {});
 }
 
@@ -342,8 +350,8 @@ function toggleList() {
         <button class="mini-btn btn-eye-list" onclick="document.getElementById('reveal-li-${item.realIdx}').classList.toggle('revealed')">👁</button>
       </div>
       <div class="list-texts">
-        <div class="txt-cat" style="font-size:16px; font-weight:bold;">${item.cat}</div>
-        <div id="reveal-li-${item.realIdx}" class="blur" style="font-size:16px; color:#666;">${item.en}</div>
+        <div class="txt-es" style="font-size:14px;">${item.es}</div>
+        <div id="reveal-li-${item.realIdx}" class="blur" style="font-weight:bold; font-size:16px;">${item.en}</div>
       </div>
     `;
     l.appendChild(itemDiv);

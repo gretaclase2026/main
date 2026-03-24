@@ -255,8 +255,7 @@ function update(newWord){
   document.getElementById("starMain").classList.toggle("active", starredIds.includes(item.realIdx));
 
   if(mode==="EN"){
-    lb.innerText="ANGLÈS RÀPID"; 
-    w.innerText="";
+    lb.innerText="ANGLÈS RÀPID"; w.innerText="";
     if(newWord) playAudio(1.0);
   }else{
     lb.innerText="CATALÀ";
@@ -302,13 +301,8 @@ function toggleReveal(){
     const w=document.getElementById("word");
 
     if(a.style.display === "none") {
-        if(mode === "EN") {
-            w.innerText = item.en;
-            a.innerHTML = `<div class="pron">Sona com: ${item.fast}</div><span style="color:#2563eb;">${item.ca}</span>`;
-        } else {
-            // Mode CAT -> ENG: El català ja està a 'word', mostrem l'anglès a 'answer'
-            a.innerHTML = `<div>${item.en}</div><div class="pron">Sona com: ${item.fast}</div>`;
-        }
+        w.innerText = item.en;
+        a.innerHTML = `<div class="pron">Sona com: ${item.fast}</div><span style="color:#2563eb;">${item.ca}</span>`;
         a.style.display = "block";
     } else {
         if(mode === "EN") w.innerText = "";

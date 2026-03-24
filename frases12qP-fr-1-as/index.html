@@ -7,32 +7,39 @@
 <style>
 body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .card{max-width:720px;margin:20px auto;background:#fff;border-radius:24px;padding:24px;box-shadow:0 8px 18px rgba(0,0,0,.15);position:relative}
+
 .modes{display:flex;gap:10px;margin-bottom:10px;width:100%}
 .mode{flex:1;text-align:center;padding:14px;border-radius:24px;font-weight:bold;cursor:pointer;border:2px solid transparent}
 .mode.en{background:#d6e6f5}
 .mode.es{background:#f4d6e6}
 .mode.active{border-color:#999;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
+
 .blocks{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0;justify-content:center}
 .block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#f1f5f9;cursor:pointer;transition:0.2s}
-
 .block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1);box-shadow:0 4px 10px rgba(37,99,235,0.3)}
 
 .main-box-container{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;margin:20px 0}
 .audio-controls{display:flex;align-items:center;gap:12px;margin-bottom:15px}
+
 .audio-btn{font-size:35px;background:#dcfce7;border:none;cursor:pointer;width:75px;height:75px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
 .audio-btn.slow{background:#fef08a;width:60px;height:60px;font-size:28px}
 .audio-btn.pause{background:#fee2e2;width:60px;height:60px;font-size:28px}
 
-.star-main { background: none; border: none; font-size: 35px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px; }
-.star-main.active { color: #f59e0b !important; }
+.mic-btn{font-size:30px;background:#fee2e2;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.3s}
+.mic-btn.listening{background:#ef4444; color:white; animation: pulse 1.5s infinite; transform: scale(1.1);}
+@keyframes pulse { 0% {box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);} 70% {box-shadow: 0 0 0 15px rgba(239, 68, 68, 0);} 100% {box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);} }
 
 .progress-wrapper { width: 100%; max-width: 300px; margin: 10px 0; }
 input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 5px; accent-color: #2563eb; }
 
 .counter-side{position:absolute;right:10px;top:0;font-weight:bold;color:#2563eb;font-size:22px}
+
 #word{font-size:22px;font-weight:800;margin:20px 0;line-height:1.4;min-height:120px;text-align:center;display:flex;align-items:center;justify-content:center;padding:0 10px}
 .txt-es{color:#2563eb} 
 #answer{font-size:20px;font-weight:bold;margin-top:-10px;margin-bottom:20px;text-align:center;min-height:30px;color:#666}
+
+#speech-feedback { font-style: italic; color: #ef4444; font-size: 19px; margin-bottom: 10px; min-height: 24px; text-align: center; transition: 0.2s;}
+.speech-success { color: #22c55e !important; font-weight: bold; font-style: normal !important; }
 
 .actions{display:flex;gap:12px}
 .btn{flex:1;padding:18px;border-radius:18px;border:none;font-weight:bold;font-size:18px;cursor:pointer}
@@ -40,21 +47,8 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 .btn-know{background:#dcfce7}
 .btn-next{background:#fbcfe8}
 
-.list-toggle-btns { display: flex; gap: 10px; margin-top: 20px; }
-.btn-list-main { flex: 1; padding: 12px; border-radius: 12px; border: none; background: #e9d5ff; font-weight: bold; cursor: pointer; }
-.btn-stars-main { background: #fef3c7; color: #92400e; }
-
-/* Estils Llista amb botons laterals */
-#list{margin-top:20px;background:#fff;border-radius:15px;display:none;border:1px solid #ddd;padding:10px}
-.list-item { padding: 15px 0; border-bottom: 1px solid #eee; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-.list-content { flex: 1; }
-.list-texts { line-height: 1.4; }
-.list-actions-side { display: flex; gap: 6px; align-items: center; }
-.mini-btn { border: none; border-radius: 10px; width: 38px; height: 38px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
-.btn-audio-list { background: #dcfce7; }
-.btn-eye-list { background: #fee2e2; }
-.star-list { background: none; border: none; font-size: 24px; color: #cbd5e1; cursor: pointer; padding: 0 4px; transition: 0.2s; }
-.star-list.active { color: #f59e0b !important; }
+#list{margin-top:20px;background:#fff;border-radius:15px;display:none;border:1px solid #ddd;padding:15px}
+.list-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee; }
 .blur { filter: blur(5px); transition: filter 0.3s; cursor: pointer; }
 .blur.revealed { filter: blur(0); }
 
@@ -82,20 +76,21 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
     <div class="counter-side">
       <span id="pos">0</span> / <span id="total">0</span>
     </div>
-
+    
     <div class="audio-controls">
-      <button class="star-main" id="starMain" onclick="toggleStar()">★</button>
       <button class="audio-btn slow" onclick="playAudio(0.75)">🐢</button>
       <button class="audio-btn" onclick="playAudio(1.0)">🔊</button>
       <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
+      <button class="mic-btn" id="micBtn" onclick="startDictation()">🎤</button>
     </div>
-    
+
     <div class="progress-wrapper">
       <input type="range" id="progressBar" value="0" step="0.1">
     </div>
   </div>
 
   <div id="word"></div>
+  <div id="speech-feedback"></div>
   <div id="answer"></div>
 
   <div class="actions">
@@ -104,10 +99,7 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
     <button class="btn btn-next" onclick="next()">següent</button>
   </div>
   
-  <div class="list-toggle-btns">
-    <button class="btn-list-main" onclick="toggleList('all')">llista del bloc</button>
-    <button class="btn-list-main btn-stars-main" onclick="toggleList('stars')">favorites (★)</button>
-  </div>
+  <button id="listBtn" onclick="toggleList()" style="width:100%;margin-top:20px;padding:12px;border-radius:12px;border:none;background:#e9d5ff;font-weight:bold;cursor:pointer">mostrar llista del bloc</button>
   <div id="list"></div>
 </div>
 
@@ -149,8 +141,34 @@ let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockI
 const a = document.getElementById("audio");
 const progressBar = document.getElementById("progressBar");
 
-function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "fast_english"; }
-let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+const recognition = SpeechRecognition ? new SpeechRecognition() : null;
+if (recognition) { recognition.lang = 'en-US'; recognition.interimResults = false; }
+
+function startDictation() {
+    if (!recognition || currentBlockData.length === 0) return;
+    const btn = document.getElementById("micBtn");
+    const feedback = document.getElementById("speech-feedback");
+    btn.classList.add("listening");
+    feedback.textContent = "Escoltant...";
+    feedback.classList.remove("speech-success");
+    recognition.start();
+
+    recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,"").trim();
+        const original = currentBlockData[pos].en.replace(/<[^>]*>/g, '').toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,"").trim();
+        if (transcript === original) {
+            feedback.innerHTML = `"${event.results[0][0].transcript}" 🎉`;
+            feedback.classList.add("speech-success");
+            setTimeout(() => { feedback.textContent = ""; know(); }, 1200);
+        } else {
+            feedback.textContent = `"${event.results[0][0].transcript}"`;
+        }
+    };
+    recognition.onend = () => btn.classList.remove("listening");
+}
+
+function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "fast_english_copia"; }
 
 a.ontimeupdate = () => { if (a.duration) progressBar.value = (a.currentTime / a.duration) * 100; };
 progressBar.oninput = () => { if (a.duration) a.currentTime = (progressBar.value / 100) * a.duration; };
@@ -170,9 +188,7 @@ function initBlocks() {
   btnT.className = "block"; btnT.textContent = "T";
   btnT.onclick = () => loadBlock('T');
   container.appendChild(btnT);
-
-  const blockToLoad = (savedBlock !== null) ? (savedBlock === 'T' ? 'T' : parseInt(savedBlock)) : 0;
-  loadBlock(blockToLoad);
+  loadBlock((savedBlock !== null) ? (savedBlock === 'T' ? 'T' : parseInt(savedBlock)) : 0);
 }
 
 function loadBlock(b) {
@@ -180,11 +196,11 @@ function loadBlock(b) {
   localStorage.setItem(getFolderName() + "_currentBlock", b);
   let temp = [];
   if (b === 'T') {
-    temp = data.map((item, i) => ({...item, realIdx: i}));
+    temp = data.map((item) => ({...item}));
   } else {
     let start = b * 10;
     let end = Math.min(start + 10, data.length);
-    for (let i = start; i < end; i++) temp.push({...data[i], realIdx: i});
+    for (let i = start; i < end; i++) temp.push({...data[i]});
   }
   currentBlockData = temp.sort(() => Math.random() - 0.5);
   document.querySelectorAll(".block").forEach((btn) => {
@@ -202,10 +218,12 @@ function update(fromNextAction = false) {
     return;
   }
   const item = currentBlockData[pos];
-  document.getElementById("starMain").classList.toggle("active", starredIds.includes(item.realIdx));
   const w = document.getElementById("word");
   const ans = document.getElementById("answer");
+  const feedback = document.getElementById("speech-feedback");
   progressBar.value = 0;
+  ans.style.display = "none";
+  feedback.textContent = "";
 
   if (mode === "EN") {
     w.innerHTML = ``; 
@@ -215,24 +233,15 @@ function update(fromNextAction = false) {
     w.innerHTML = `<div class="txt-es">${item.es}</div>`;
     ans.innerHTML = `<span>${item.en}</span>`;
   }
-  ans.style.display = "none";
+  
   document.getElementById("pos").textContent = learnedCount;
   document.getElementById("total").textContent = currentBlockData.length + learnedCount;
 }
 
-function toggleStar(forcedIdx = null) {
-  const idx = forcedIdx !== null ? forcedIdx : (currentBlockData.length > 0 ? currentBlockData[pos].realIdx : null);
-  if (idx === null) return;
-  if (starredIds.includes(idx)) starredIds = starredIds.filter(id => id !== idx);
-  else starredIds.push(idx);
-  localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
-  if (forcedIdx === null) update();
-}
-
-function playAudio(speed, forcedAudio = null) {
-  const audioFile = forcedAudio || (currentBlockData.length > 0 ? currentBlockData[pos].audio : null);
-  if (!audioFile) return;
-  if (!a.src.includes(audioFile)) { a.src = audioFile; progressBar.value = 0; }
+function playAudio(speed) {
+  if (currentBlockData.length === 0) return;
+  const item = currentBlockData[pos];
+  if (!a.src.includes(item.audio)) { a.src = item.audio; }
   a.playbackRate = speed;
   a.play().catch(() => {});
 }
@@ -242,9 +251,15 @@ function pauseAudio() { a.pause(); }
 function reveal() {
   if (currentBlockData.length > 0) {
     const item = currentBlockData[pos];
-    if (mode === "EN") document.getElementById("word").innerHTML = `<span>${item.en}</span>`;
-    document.getElementById("answer").style.display = "block";
-    if (mode === "ES") playAudio(1.0); 
+    const ans = document.getElementById("answer");
+    const w = document.getElementById("word");
+    if (ans.style.display === "none") {
+        if (mode === "EN") w.innerHTML = `<span>${item.en}</span>`;
+        ans.style.display = "block";
+    } else {
+        if (mode === "EN") w.innerHTML = "";
+        ans.style.display = "none";
+    }
   }
 }
 
@@ -269,48 +284,24 @@ function setMode(m) {
   update(true);
 }
 
-function toggleList(type) {
+function toggleList() {
   const l = document.getElementById("list");
-  if (l.style.display === "block" && l.dataset.type === type) { l.style.display = "none"; return; }
-  l.dataset.type = type;
-  renderList(type);
-  l.style.display = "block";
-}
-
-function renderList(type) {
-  const l = document.getElementById("list");
-  l.innerHTML = type === 'stars' ? "<b>Favorites (★):</b><br><br>" : "<b>Llista del bloc:</b><br><br>";
-  
-  let listToRender = [];
-  if (type === 'stars') {
-    listToRender = data.map((item, index) => ({...item, realIdx: index})).filter(i => starredIds.includes(i.realIdx));
-  } else {
-    let start = currentBlockID === 'T' ? 0 : currentBlockID * 10;
-    let end = currentBlockID === 'T' ? data.length : Math.min(start + 10, data.length);
-    listToRender = data.slice(start, end).map((item, index) => ({...item, realIdx: start + index}));
-  }
-
-  if (listToRender.length === 0) { l.innerHTML += "<i>Buit.</i>"; return; }
-
-  listToRender.forEach((item, index) => {
-    const isStarred = starredIds.includes(item.realIdx);
+  if (l.style.display === "block") { l.style.display = "none"; return; }
+  l.innerHTML = "<b>Llista del bloc:</b><br><br>";
+  let start = currentBlockID === 'T' ? 0 : currentBlockID * 10;
+  let end = currentBlockID === 'T' ? data.length : Math.min(start + 10, data.length);
+  data.slice(start, end).forEach((item, index) => {
     const itemDiv = document.createElement("div");
     itemDiv.className = "list-item";
     itemDiv.innerHTML = `
-      <div class="list-content">
-        <div class="list-texts">
-          <div class="txt-es" style="font-weight:bold; font-size:14px;">${item.es}</div>
-          <div id="list-rev-${index}" class="blur" style="font-weight:bold; font-size:16px;" onclick="this.classList.add('revealed')">${item.en}</div>
-        </div>
-      </div>
-      <div class="list-actions-side">
-        <button class="star-list ${isStarred ? 'active' : ''}" onclick="toggleStar(${item.realIdx}); renderList('${type}')">★</button>
-        <button class="mini-btn btn-audio-list" onclick="playAudio(1.0, '${item.audio}')">🔊</button>
-        <button class="mini-btn btn-eye-list" onclick="document.getElementById('list-rev-${index}').classList.add('revealed')">👁️</button>
+      <div style="flex:1">
+        <div class="txt-es" style="font-weight:bold; font-size:14px;">${item.es}</div>
+        <div id="list-rev-${index}" class="blur" style="font-weight:bold; font-size:16px;" onclick="this.classList.add('revealed')">${item.en}</div>
       </div>
     `;
     l.appendChild(itemDiv);
   });
+  l.style.display = "block";
 }
 
 function markAsDone(element) {
@@ -319,14 +310,14 @@ function markAsDone(element) {
     alert("Lliçó marcada ✅");
 }
 
+initBlocks();
+
 const card = document.querySelector(".card");
 const box = document.createElement("div");
 box.className = "check-box-manual";
 if (localStorage.getItem(getFolderName())) { box.innerHTML = "✓"; box.classList.add('marked'); }
 box.onclick = function() { markAsDone(this); };
 card.appendChild(box);
-
-initBlocks();
 </script>
 </body>
 </html>

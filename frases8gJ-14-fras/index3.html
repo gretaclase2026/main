@@ -73,11 +73,11 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 <body>
 <div class="card">
   <div class="modes">
-    <div id="mEN" class="mode en active" onclick="setMode('EN')">ANGLÈS → CATALÀ</div>
-    <div id="mES" class="mode es" onclick="setMode('ES')">CATALÀ → ANGLÈS</div>
+    <div id="mEN" class="mode en active" onclick="setMode('EN')">INGLÉS → ESPAÑOL</div>
+    <div id="mES" class="mode es" onclick="setMode('ES')">ESPAÑOL → INGLÉS</div>
   </div>
   <div class="blocks" id="blockContainer"></div>
-  <div class="lang-label" id="langLabel">ANGLÈS RÀPID</div>
+  <div class="lang-label" id="langLabel">INGLÉS RÁPIDO</div>
   <div class="audio-section">
     <button class="star-main" id="starMain" onclick="toggleStar()">★</button>
     <button class="audio-btn" id="btnNormal" onclick="playAudio(1.0)">🔊</button>
@@ -103,56 +103,56 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 
 <script>
 const data = [
-  {en:"I am going to do it", ca:"Ho faré", fast:"Gonna"},
-  {en:"I want to go now", ca:"Vull anar-me'n ara", fast:"Wanna"},
-  {en:"I have got to leave", ca:"Me n'he d'anar", fast:"Gotta"},
-  {en:"Give me a break", ca:"Dona'm un respir", fast:"Gimme"},
-  {en:"Let me know later", ca:"Avisa'm després", fast:"Lemme"},
-  {en:"It is kind of funny", ca:"És una mica divertit", fast:"Kinda"},
-  {en:"I do not know yet", ca:"Encara no ho sé", fast:"Dunno"},
-  {en:"Get out of here", ca:"Fora d'aquí", fast:"Outta"},
-  {en:"What are you doing?", ca:"Què fas?", fast:"Whatcha"},
-  {en:"It is because I can", ca:"És perquè puc", fast:"'Cause"},
-  {en:"I have to study more", ca:"He d'estudiar més", fast:"Hafta"},
-  {en:"She has to work", ca:"Ella ha de treballar", fast:"Hasta"},
-  {en:"I used to live here", ca:"Solia viure aquí", fast:"Usta"},
-  {en:"Did you see him?", ca:"El vas veure?", fast:"Didja"},
-  {en:"I should have told you", ca:"T'ho hauria d'haver dit", fast:"Shoulda"},
-  {en:"It would have been nice", ca:"Hauria estat bé", fast:"Woulda"},
-  {en:"You could have won", ca:"Podries haver guanyat", fast:"Coulda"},
-  {en:"He must have forgot", ca:"Ell deu haver oblidat", fast:"Musta"},
-  {en:"There is a lot of time", ca:"Hi ha molt de temps", fast:"Lotta"},
-  {en:"Tell them the truth", ca:"Digues-los la veritat", fast:"Tell'em"},
-  {en:"Don't you like it?", ca:"No t'agrada?", fast:"Doncha"},
-  {en:"Won't you come?", ca:"No vindràs?", fast:"Woncha"},
-  {en:"I am out of money", ca:"M'he quedat sense diners", fast:"Outta"},
-  {en:"Sort of boring", ca:"Una mica avorrit", fast:"Sorta"},
-  {en:"I am going to eat", ca:"Aniré a menjar", fast:"Gonna"},
-  {en:"Do you want a drink?", ca:"Vols beure alguna cosa?", fast:"Wanna"},
-  {en:"Got you!", ca:"T'he enxampat!", fast:"Gotcha"},
-  {en:"See you later", ca:"Ens veiem després", fast:"See ya"},
-  {en:"How are you doing?", ca:"Com te va?", fast:"How ya doin'"},
-  {en:"I am about to cry", ca:"Estic a punt de plorar", fast:"Bouta"},
-  {en:"Come here right now", ca:"Vine aquí ara mateix", fast:"Comeer"},
-  {en:"Why do you lie?", ca:"Per què mentes?", fast:"Why july"},
-  {en:"Is he your brother?", ca:"És ell el teu germà?", fast:"Izi"},
-  {en:"Did you ever go?", ca:"Hi vas anar mai?", fast:"Jeveer"},
-  {en:"I will ask her later", ca:"Li preguntaré després", fast:"Alaskar"},
-  {en:"Don't you know?", ca:"No ho saps?", fast:"Doncha"},
-  {en:"Not yet", ca:"Encara no", fast:"Nachet"},
-  {en:"Meet you there", ca:"Ens veiem allà", fast:"Meecha"},
-  {en:"Bless you", ca:"Salut / Jesús", fast:"Blessha"},
-  {en:"Can't you see?", ca:"No ho pots veure?", fast:"Cancha"},
-  {en:"Wouldn't you?", ca:"No ho faries tu?", fast:"Woodencha"},
-  {en:"What do you think?", ca:"Què en penses?", fast:"Whatcha"},
-  {en:"I'll get you", ca:"T'atraparé", fast:"Getcha"},
-  {en:"Could you help me?", ca:"Em podries ajudar?", fast:"Couldja"},
-  {en:"Might have been", ca:"Podria haver estat", fast:"Mighta"},
-  {en:"Bet you", ca:"T'aposto", fast:"Betcha"},
-  {en:"In front of", ca:"Davant de", fast:"In fronna"},
-  {en:"Want a cup of tea?", ca:"Vols una tassa de te?", fast:"Wanna cuppa"},
-  {en:"Lots of people", ca:"Molta gent", fast:"Lotsa"},
-  {en:"I am going to try", ca:"Ho intentaré", fast:"Gonna"}
+  {en:"I am going to do it", es:"Lo voy a hacer", ca:"Ho faré", fast:"Gonna"},
+  {en:"I want to go now", es:"Quiero irme ahora", ca:"Vull anar-me'n ara", fast:"Wanna"},
+  {en:"I have got to leave", es:"Tengo que irme", ca:"Me n'he d'anar", fast:"Gotta"},
+  {en:"Give me a break", es:"Dame un respiro", ca:"Dona'm un respir", fast:"Gimme"},
+  {en:"Let me know later", es:"Avísame luego", ca:"Avisa'm después", fast:"Lemme"},
+  {en:"It is kind of funny", es:"Es un poco divertido", ca:"És una mica divertit", fast:"Kinda"},
+  {en:"I do not know yet", es:"Aún no lo sé", ca:"Encara no ho sé", fast:"Dunno"},
+  {en:"Get out of here", es:"Fuera de aquí", ca:"Fora d'aquí", fast:"Outta"},
+  {en:"What are you doing?", es:"¿Qué haces?", ca:"Què fas?", fast:"Whatcha"},
+  {en:"It is because I can", es:"Es porque puedo", ca:"És perquè puc", fast:"'Cause"},
+  {en:"I have to study more", es:"Tengo que estudiar más", ca:"He d'estudiar més", fast:"Hafta"},
+  {en:"She has to work", es:"Ella tiene que trabajar", ca:"Ella ha de treballar", fast:"Hasta"},
+  {en:"I used to live here", es:"Solía vivir aquí", ca:"Solia viure aquí", fast:"Usta"},
+  {en:"Did you see him?", es:"¿Lo viste?", ca:"El vas veure?", fast:"Didja"},
+  {en:"I should have told you", es:"Debería haberte dicho", ca:"T'ho hauria d'haver dit", fast:"Shoulda"},
+  {en:"It would have been nice", es:"Habría estado bien", ca:"Hauria estat bé", fast:"Woulda"},
+  {en:"You could have won", es:"Podrías haber ganado", ca:"Podries haver guanyat", fast:"Coulda"},
+  {en:"He must have forgot", es:"Él debe haber olvidado", ca:"Ell deu haver oblidat", fast:"Musta"},
+  {en:"There is a lot of time", es:"Hay mucho tiempo", ca:"Hi ha molt de temps", fast:"Lotta"},
+  {en:"Tell them the truth", es:"Diles la verdad", ca:"Digues-los la veritat", fast:"Tell'em"},
+  {en:"Don't you like it?", es:"¿No te gusta?", ca:"No t'agrada?", fast:"Doncha"},
+  {en:"Won't you come?", es:"¿No vendrás?", ca:"No vindràs?", fast:"Woncha"},
+  {en:"I am out of money", es:"Me quedé sin dinero", ca:"M'he quedat sense diners", fast:"Outta"},
+  {en:"Sort of boring", es:"Algo aburrido", ca:"Una mica avorrit", fast:"Sorta"},
+  {en:"I am going to eat", es:"Voy a comer", ca:"Aniré a menjar", fast:"Gonna"},
+  {en:"Do you want a drink?", es:"¿Quieres beber algo?", ca:"Vols beure alguna cosa?", fast:"Wanna"},
+  {en:"Got you!", es:"¡Te pillé!", ca:"T'he enxampat!", fast:"Gotcha"},
+  {en:"See you later", es:"Nos vemos luego", ca:"Ens veiem después", fast:"See ya"},
+  {en:"How are you doing?", es:"¿Cómo te va?", ca:"Com te va?", fast:"How ya doin'"},
+  {en:"I am about to cry", es:"Estoy a punto de llorar", ca:"Estic a punt de plorar", fast:"Bouta"},
+  {en:"Come here right now", es:"Ven aquí ahora mismo", ca:"Vine aquí ara mateix", fast:"Comeer"},
+  {en:"Why do you lie?", es:"¿Por qué mientes?", ca:"Per què mentes?", fast:"Why july"},
+  {en:"Is he your brother?", es:"¿Es él tu hermano?", ca:"És ell el teu germà?", fast:"Izi"},
+  {en:"Did you ever go?", es:"¿Fuiste alguna vez?", ca:"Hi vas anar mai?", fast:"Jeveer"},
+  {en:"I will ask her later", es:"Le preguntaré luego", ca:"Li preguntaré després", fast:"Alaskar"},
+  {en:"Don't you know?", es:"¿No lo sabes?", ca:"No ho saps?", fast:"Doncha"},
+  {en:"Not yet", es:"Aún no", ca:"Encara no", fast:"Nachet"},
+  {en:"Meet you there", es:"Te veo allí", ca:"Ens veiem allà", fast:"Meecha"},
+  {en:"Bless you", es:"Salud / Jesús", ca:"Salut / Jesús", fast:"Blessha"},
+  {en:"Can't you see?", es:"¿No puedes ver?", ca:"No ho pots veure?", fast:"Cancha"},
+  {en:"Wouldn't you?", es:"¿No lo harías tú?", ca:"No ho faries tu?", fast:"Woodencha"},
+  {en:"What do you think?", es:"¿Qué piensas?", ca:"Què en penses?", fast:"Whatcha"},
+  {en:"I'll get you", es:"Te atraparé", ca:"T'atraparé", fast:"Getcha"},
+  {en:"Could you help me?", es:"¿Podrías ayudarme?", ca:"Em podries ajudar?", fast:"Couldja"},
+  {en:"Might have been", es:"Podría haber sido", ca:"Podria haver estat", fast:"Mighta"},
+  {en:"Bet you", es:"Te apuesto", ca:"T'aposto", fast:"Betcha"},
+  {en:"In front of", es:"Delante de", ca:"Davant de", fast:"In fronna"},
+  {en:"Want a cup of tea?", es:"¿Quieres un té?", ca:"Vols una tassa de te?", fast:"Wanna cuppa"},
+  {en:"Lots of people", es:"Mucha gente", ca:"Molta gent", fast:"Lotsa"},
+  {en:"I am going to try", es:"Voy a intentarlo", ca:"Ho intentaré", fast:"Gonna"}
 ];
 
 let mode="EN", currentBlockID='T', currentBlockData=[], pos=0, learnedCount=0, totalInBlock=50;
@@ -255,12 +255,11 @@ function update(newWord){
   document.getElementById("starMain").classList.toggle("active", starredIds.includes(item.realIdx));
 
   if(mode==="EN"){
-    lb.innerText="ANGLÈS RÀPID"; 
-    w.innerText="";
+    lb.innerText="INGLÉS RÁPIDO"; w.innerText="";
     if(newWord) playAudio(1.0);
   }else{
-    lb.innerText="CATALÀ";
-    w.innerHTML=`<span style="color:#2563eb;">${item.ca}</span>`;
+    lb.innerText="CASTELLÀ / CATALÀ";
+    w.innerHTML=`<span style="color:#2563eb;">${item.es} / ${item.ca}</span>`;
   }
   document.getElementById("counterDisplay").innerText=`${learnedCount} / ${totalInBlock}`;
 }
@@ -302,13 +301,8 @@ function toggleReveal(){
     const w=document.getElementById("word");
 
     if(a.style.display === "none") {
-        if(mode === "EN") {
-            w.innerText = item.en;
-            a.innerHTML = `<div class="pron">Sona com: ${item.fast}</div><span style="color:#2563eb;">${item.ca}</span>`;
-        } else {
-            // Mode CAT -> ENG: El català ja està a 'word', mostrem l'anglès a 'answer'
-            a.innerHTML = `<div>${item.en}</div><div class="pron">Sona com: ${item.fast}</div>`;
-        }
+        w.innerText = item.en;
+        a.innerHTML = `<div class="pron">Suena como: ${item.fast}</div><span style="color:#2563eb;">${item.es} / ${item.ca}</span>`;
         a.style.display = "block";
     } else {
         if(mode === "EN") w.innerText = "";
@@ -348,7 +342,7 @@ function toggleList(type){
 
 function renderList(type) {
   const l = document.getElementById("list");
-  l.innerHTML = type === 'stars' ? "<b>Favorits (★):</b><br><br>" : "<b>Llista del bloc:</b><br><br>";
+  l.innerHTML = type === 'stars' ? "<b>Favorites (★):</b><br><br>" : "<b>Llista del bloc:</b><br><br>";
   
   let listToRender = [];
   if (type === 'stars') {
@@ -370,7 +364,7 @@ function renderList(type) {
     itemDiv.className = "list-item";
     itemDiv.innerHTML = `
       <div class="list-content">
-        <div style="color:#2563eb; font-weight:bold; font-size:14px;">${item.ca}</div>
+        <div style="color:#2563eb; font-weight:bold; font-size:14px;">${item.es} / ${item.ca}</div>
         <div id="list-rev-${index}" class="blur" style="font-weight:bold; font-size:16px;" onclick="this.classList.add('revealed')">${item.en} (${item.fast})</div>
       </div>
       <div class="list-actions-side">
