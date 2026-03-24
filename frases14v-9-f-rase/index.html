@@ -1,4 +1,4 @@
- s<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ca">
 <head>
 <meta charset="UTF-8">
@@ -397,7 +397,7 @@ function reveal() {
     if (ans.style.display === "none") {
         if (mode === "EN") w.innerHTML = `<span>${item.en}</span>`;
         ans.style.display = "block";
-        if (mode === "CA") playAudio(1.0); 
+        // Eliminat: playAudio(1.0); (Ara no sona en mode CA)
     } else {
         if (mode === "EN") w.innerHTML = "";
         ans.style.display = "none";
