@@ -19,16 +19,12 @@ main{display:flex;justify-content:center;padding:24px}
 .blocks{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:15px 0 20px}
 .block{width:32px;height:32px;border-radius:50%;border:none;background:#f1f5f9;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.2s}
 .block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1);box-shadow:0 4px 10px rgba(37,99,235,0.3)}
+.block.all-btn { background: #e2e8f0; color: #475569; }
 
-/* Audio y Controles */
 .audio-container { display: flex; justify-content: center; gap: 10px; margin: 10px 0 10px; align-items: center; flex-wrap: wrap; }
 .audio-btn{width:60px;height:60px;border-radius:50%;border:none;background:#dbeafe;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
 .audio-btn.slow{background:#fef08a;}
-
-/* Botón de pausa rosa sin fondo azul en el icono */
 .audio-btn.pause{background:#fee2e2; color: inherit;} 
-
-/* Estilos para el Micro */
 .audio-btn.rec{background:#fca5a5; color: white;}
 .audio-btn.rec.recording { animation: pulse 1.5s infinite; background: #ef4444; }
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
@@ -60,11 +56,10 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 
 .mini-btn { border: none; border-radius: 10px; width: 36px; height: 36px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
 .btn-audio { background: #dbeafe; }
-.btn-eye { background: #fee2e2; } 
 .star-btn-list { background: none; border: none; font-size: 24px; cursor: pointer; color: #cbd5e1; padding: 0; line-height: 1; }
 .star-btn-list.active { color: #f59e0b !important; }
 
-.blur { filter: blur(5px); transition: filter 0.3s; cursor: pointer; }
+.blur { filter: blur(5px); transition: filter 0.2s; cursor: pointer; user-select: none; }
 .blur.revealed { filter: blur(0); }
 </style>
 </head>
@@ -196,7 +191,6 @@ let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) ||
 
 let mediaRecorder, audioChunks = [], isRecording = false;
 
-// Función para el Micrófono
 async function toggleRecord() {
     const btn = document.getElementById("recBtn");
     if (!isRecording) {
@@ -228,6 +222,13 @@ function initBlocks() {
   const numBlocks = Math.ceil(items.length / 10);
   const savedBlock = localStorage.getItem(getFolderName() + "_puntoLibro");
   container.innerHTML = "";
+  
+  const allBtn = document.createElement("button");
+  allBtn.className = "block all-btn";
+  allBtn.textContent = "T";
+  allBtn.onclick = () => loadAll();
+  container.appendChild(allBtn);
+
   for (let i = 0; i < numBlocks; i++) {
     const btn = document.createElement("button");
     btn.className = "block";
@@ -235,7 +236,12 @@ function initBlocks() {
     btn.onclick = () => loadBlock(i);
     container.appendChild(btn);
   }
-  loadBlock((savedBlock !== null) ? parseInt(savedBlock) : 0);
+  
+  if (savedBlock === "all") {
+    loadAll();
+  } else {
+    loadBlock((savedBlock !== null) ? parseInt(savedBlock) : 0);
+  }
 }
 
 function loadBlock(b) {
@@ -246,7 +252,21 @@ function loadBlock(b) {
   let end = Math.min(start + 10, items.length);
   for (let i = start; i < end; i++) temp.push({...items[i]});
   currentBlockData = temp.sort(() => Math.random() - 0.5);
-  document.querySelectorAll(".block").forEach((btn, idx) => btn.classList.toggle("active", idx === b));
+  document.querySelectorAll(".block").forEach((btn, idx) => {
+      btn.classList.toggle("active", idx === (b + 1));
+  });
+  pos = 0; learnedCount = 0;
+  document.getElementById("endMsg").classList.add("hidden");
+  update(true);
+}
+
+function loadAll() {
+  currentBlockID = -1;
+  localStorage.setItem(getFolderName() + "_puntoLibro", "all");
+  currentBlockData = items.map(i => ({...i})).sort(() => Math.random() - 0.5);
+  document.querySelectorAll(".block").forEach((btn, idx) => {
+      btn.classList.toggle("active", idx === 0);
+  });
   pos = 0; learnedCount = 0;
   document.getElementById("endMsg").classList.add("hidden");
   update(true);
@@ -282,20 +302,16 @@ function playAudio(src, speed) { audioObj.src = src; audioObj.playbackRate = spe
 function playCurrent(speed) { if (currentBlockData.length > 0) playAudio(currentBlockData[pos].audio, speed); }
 function pauseAudio() { audioObj.pause(); }
 
-// Función Veure: Interruptor que no activa el audio
 function reveal() {
   if (currentBlockData.length === 0) return;
   const item = currentBlockData[pos];
   const esDiv = document.getElementById("es");
   const enDiv = document.getElementById("en");
-
-  // Si ya se ve el inglés, lo ocultamos (interruptor)
   if (!enDiv.classList.contains("hidden") && mode === "EN") {
       esDiv.classList.add("hidden");
   } else if (!enDiv.classList.contains("hidden") && mode === "ES") {
       enDiv.classList.add("hidden");
   } else {
-      // Si estaba oculto, mostramos ambos SIN audio
       esDiv.innerHTML = item.es;
       enDiv.innerHTML = item.en;
       esDiv.classList.remove("hidden");
@@ -343,11 +359,14 @@ function toggleList(type) {
 
 function renderList(type) {
   const box = document.getElementById("listBox");
-  box.innerHTML = type === 'stars' ? "<h3>Frases destacades (★):</h3>" : "<h3>Tota la llista (bloc actual):</h3>";
+  box.innerHTML = type === 'stars' ? "<h3>Frases destacades (★):</h3>" : "<h3>Tota la llista:</h3>";
   
-  const listToRender = type === 'stars' 
-    ? items.filter(i => starredIds.includes(i.audio))
-    : items.slice(currentBlockID * 10, (currentBlockID + 1) * 10);
+  let listToRender = [];
+  if (type === 'stars') {
+      listToRender = items.filter(i => starredIds.includes(i.audio));
+  } else {
+      listToRender = (currentBlockID === -1) ? items : items.slice(currentBlockID * 10, (currentBlockID + 1) * 10);
+  }
 
   if (listToRender.length === 0) {
     box.innerHTML += "<p style='padding:10px;'>Buit.</p>";
@@ -362,11 +381,10 @@ function renderList(type) {
       <div class="list-controls-side">
         <button class="star-btn-list ${isStarred ? 'active' : ''}" onclick="toggleStar('${i.audio}'); renderList('${type}')">★</button>
         <button class="mini-btn btn-audio" onclick="playAudio('${i.audio}', 1.0)">🔊</button>
-        <button class="mini-btn btn-eye" onclick="document.getElementById('rev-${index}').classList.add('revealed')">👁️</button>
       </div>
       <div class="list-texts">
         <div style="color:#2563eb; font-weight:700;">${i.es}</div>
-        <div id="rev-${index}" class="blur" style="font-weight:800;" onclick="this.classList.add('revealed')">${i.en}</div>
+        <div id="rev-${index}" class="blur" style="font-weight:800;" onclick="this.classList.toggle('revealed')">${i.en}</div>
       </div>
     `;
     box.appendChild(itemDiv);

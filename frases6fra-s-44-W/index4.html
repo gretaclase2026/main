@@ -21,8 +21,7 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .main-box-container{display:flex;align-items:center;justify-content:center;position:relative;margin:20px 0; gap:20px;}
 .main-box{text-align:center;display:flex;flex-direction:row;justify-content:center;align-items:center; gap:15px;}
 
-/* Tamaño de audio igualado al micro */
-.audio-btn{font-size:40px;background:#dcfce7;border:none;cursor:pointer;width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
+.audio-btn{font-size:60px;background:#dcfce7;border:none;cursor:pointer;width:140px;height:140px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
 .audio-btn.vibrate{animation:vibrate 0.25s linear 2}
 
 .mic-btn{font-size:40px;background:#fee2e2;border:none;cursor:pointer;width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.3s}
@@ -36,10 +35,9 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 
 .counter-side{position:absolute;right:10px;font-weight:bold;color:#2563eb;font-size:22px}
 
-#word{font-size:32px;font-weight:800;margin-top:20px;margin-bottom:5px;line-height:1.2;min-height:40px;text-align:center;display:flex;align-items:center;justify-content:center}
+#word{font-size:32px;font-weight:800;margin:20px 0;line-height:1.2;min-height:80px;text-align:center;display:flex;align-items:center;justify-content:center}
 .txt-cat{color:#2563eb}
-#speech-feedback { font-style: italic; color: #ef4444; font-size: 18px; margin-bottom: 15px; min-height: 24px; text-align: center;}
-#answer{font-size:24px;font-weight:bold;margin-bottom:20px;text-align:center;min-height:30px}
+#answer{font-size:24px;font-weight:bold;margin-top:-10px;margin-bottom:20px;text-align:center;min-height:30px}
 
 .actions{display:flex;gap:12px}
 .btn{flex:1;padding:18px;border-radius:18px;border:none;font-weight:bold;font-size:18px;cursor:pointer}
@@ -49,35 +47,17 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 
 #list{margin-top:20px;background:#f9f9f9;padding:15px;border-radius:15px;display:none;border:1px solid #ddd}
 
+#speech-feedback { font-style: italic; color: #ef4444; font-size: 18px; margin-top: 10px; min-height: 24px; text-align: center;}
+
 .list-item { display: flex; align-items: center; gap: 15px; padding: 10px 0; border-bottom: 1px solid #eee; text-align: left; }
-/* Alineación horizontal para botones de la lista */
-.list-btns { display: flex; flex-direction: row; gap: 8px; }
 .list-texts { flex: 1; }
 .mini-btn { border: none; border-radius: 8px; width: 36px; height: 36px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: 0.2s; }
 .btn-star-list { background: #f8fafc; font-size: 20px; color: #ccc; border: 1px solid #e2e8f0; }
 .btn-star-list.active { color: #f59e0b; border-color: #f59e0b; background: #fffbeb; }
 .btn-audio-list { background: #dcfce7; }
-.blur { filter: blur(5px); transition: filter 0.3s; cursor: pointer; user-select: none; }
+.btn-eye-list { background: #fbcfe8; }
+.blur { filter: blur(5px); transition: filter 0.3s; cursor: pointer; }
 .blur.revealed { filter: blur(0); }
-
-.check-box-manual {
-    position: absolute;
-    top: 85px; 
-    right: 22px;
-    width: 24px;
-    height: 24px;
-    background: #fff !important;
-    border: 1.5px solid #22c55e !important;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 10;
-    transition: all 0.2s;
-    font-size: 14px;
-}
-.check-box-manual.marked { background: #22c55e !important; color: white; }
 </style>
 </head>
 <body>
@@ -112,7 +92,7 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
   </div>
   
   <div style="display:flex; gap:10px; margin-top:20px;">
-    <button id="listBtn" onclick="toggleList()" style="flex:1; padding:12px; border-radius:12px; border:none; background:#e9d5ff; font-weight:bold; cursor:pointer">Llista del bloc</button>
+    <button id="listBtn" onclick="toggleList()" style="flex:2; padding:12px; border-radius:12px; border:none; background:#e9d5ff; font-weight:bold; cursor:pointer">Llista del bloc</button>
     <button onclick="loadStars()" style="flex:1; padding:12px; border-radius:12px; border:none; background:#fef3c7; color:#92400e; font-weight:bold; cursor:pointer">Repàs (★)</button>
   </div>
   <div id="list"></div>
@@ -359,10 +339,11 @@ function toggleList() {
       <div class="list-btns">
         <button class="mini-btn btn-star-list ${isStarred ? 'active' : ''}" onclick="toggleStar(${item.realIdx}); this.classList.toggle('active'); update();">★</button>
         <button class="mini-btn btn-audio-list" onclick="playAudio(${item.realIdx})">🔊</button>
+        <button class="mini-btn btn-eye-list" onclick="document.getElementById('reveal-li-${item.realIdx}').classList.toggle('revealed')">👁</button>
       </div>
       <div class="list-texts">
         <div class="txt-cat" style="font-size:16px; font-weight:bold;">${item.cat}</div>
-        <div class="blur" onclick="this.classList.toggle('revealed')" style="font-size:16px; color:#666;">${item.en}</div>
+        <div id="reveal-li-${item.realIdx}" class="blur" style="font-size:16px; color:#666;">${item.en}</div>
       </div>
     `;
     l.appendChild(itemDiv);
@@ -371,6 +352,29 @@ function toggleList() {
 }
 
 initBlocks();
+
+const style = document.createElement('style');
+style.innerHTML = `
+    .check-box-manual {
+        position: absolute;
+        top: 85px; 
+        right: 22px;
+        width: 24px;
+        height: 24px;
+        background: #fff !important;
+        border: 1.5px solid #22c55e !important;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+        transition: all 0.2s;
+        font-size: 14px;
+    }
+    .check-box-manual.marked { background: #22c55e !important; color: white; }
+`;
+document.head.appendChild(style);
 
 function markAsDone(element) {
     localStorage.setItem(getFolderName(), new Date().toISOString());

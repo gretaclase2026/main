@@ -37,8 +37,9 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 #speech-feedback { font-style: italic; color: #ef4444; font-size: 19px; margin-bottom: 10px; min-height: 24px; text-align: center; transition: 0.2s;}
 .speech-success { color: #22c55e !important; font-weight: bold; font-style: normal !important; }
 
+/* AJUSTE BOTONES ACCIÓN: Mismo tamaño y sin bordes grises */
 .actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:25px}
-.btn{padding:18px;border-radius:20px;border:none;font-weight:bold;cursor:pointer;font-size:16px}
+.btn{height:60px; border-radius:20px; border:none; font-weight:bold; cursor:pointer; font-size:16px; outline:none; -webkit-tap-highlight-color:transparent;}
 .btn-reveal{background:#d6e6f5}
 .btn-know{background:#d1e7dd}
 .btn-next{background:#f8d7da}
@@ -48,15 +49,17 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .btn-stars-main { background: #fef3c7; color: #92400e; }
 
 #list{margin-top:20px;background:#f9f9f9;border-radius:15px;display:none;padding:15px;border:1px solid #ddd}
-.list-item { padding: 15px 0; border-bottom: 1px solid #eee; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.list-item { padding: 15px 0; border-bottom: 1px solid #eee; display: flex; align-items: center; justify-content: flex-start; gap: 12px; }
 .list-content { flex: 1; }
-.list-actions-side { display: flex; gap: 6px; align-items: center; }
+.list-actions-side { display: flex; gap: 4px; align-items: center; order: -1; } /* Mueve a la izquierda */
 .mini-btn { border: none; border-radius: 10px; width: 38px; height: 38px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
 .btn-audio-list { background: #dcfce7; }
-.btn-eye-list { background: #fee2e2; }
-.star-list { background: none; border: none; font-size: 24px; color: #cbd5e1; cursor: pointer; padding: 0 4px; }
+.btn-mic-list { background: #fee2e2; }
+.star-list { background: none; border: none; font-size: 24px; color: #cbd5e1; cursor: pointer; padding: 0 2px; }
 .star-list.active { color: #f59e0b !important; }
-.blur { filter: blur(5px); transition: filter 0.3s; cursor: pointer; }
+
+/* DESENFOQUE MEJORADO */
+.blur { filter: blur(5px); transition: filter 0.2s; cursor: pointer; user-select: none; }
 .blur.revealed { filter: blur(0); }
 
 .vibrate{animation:vibrate 0.3s linear}
@@ -114,7 +117,7 @@ const data = [
   {en:"What are you doing?", ca:"Què fas?", fast:"Whatcha"},
   {en:"It is because I can", ca:"És perquè puc", fast:"'Cause"},
   {en:"I have to study more", ca:"He d'estudiar més", fast:"Hafta"},
-  {en:"She has to work", ca:"Ella ha de treballar", fast:"Hasta"},
+  {en:"She has to work", ca:"Ella ha de trabajar", fast:"Hasta"},
   {en:"I used to live here", ca:"Solia viure aquí", fast:"Usta"},
   {en:"Did you see him?", ca:"El vas veure?", fast:"Didja"},
   {en:"I should have told you", ca:"T'ho hauria d'haver dit", fast:"Shoulda"},
@@ -161,25 +164,41 @@ const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecogni
 const recognition = SpeechRecognition ? new SpeechRecognition() : null;
 if (recognition) { recognition.lang = 'en-US'; recognition.interimResults = false; }
 
-function startDictation() {
-    if (!recognition || currentBlockData.length === 0) return;
-    const btn = document.getElementById("micBtn");
+function startDictation(specificIdx = null) {
+    if (!recognition) return;
+    
+    // Si no se pasa un índice específico, usamos el actual del juego
+    const targetIdx = specificIdx !== null ? specificIdx : (currentBlockData.length > 0 ? currentBlockData[pos].realIdx : null);
+    if (targetIdx === null) return;
+
+    const btn = specificIdx !== null ? document.getElementById(`mic-list-${specificIdx}`) : document.getElementById("micBtn");
     const feedback = document.getElementById("speech-feedback");
+    
     btn.classList.add("listening");
-    feedback.textContent = "Escoltant...";
-    feedback.classList.remove("speech-success");
+    if (feedback) {
+        feedback.textContent = "Escoltant...";
+        feedback.classList.remove("speech-success");
+    }
+    
     recognition.start();
 
     recognition.onresult = (event) => {
         const transcript = event.results[0][0].transcript.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,"").trim();
-        const original = currentBlockData[pos].en.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,"").trim();
+        const original = data[targetIdx].en.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,"").trim();
         
         if (transcript === original) {
-            feedback.innerHTML = `"${event.results[0][0].transcript}" 🎉`;
-            feedback.classList.add("speech-success");
-            setTimeout(() => { feedback.textContent = ""; know(); }, 1200);
+            if (feedback) {
+                feedback.innerHTML = `"${event.results[0][0].transcript}" 🎉`;
+                feedback.classList.add("speech-success");
+            }
+            if (specificIdx === null) {
+                setTimeout(() => { feedback.textContent = ""; know(); }, 1200);
+            } else {
+                const blurTxt = document.getElementById(`list-rev-${targetIdx}`);
+                if(blurTxt) blurTxt.classList.add('revealed');
+            }
         } else {
-            feedback.textContent = `"${event.results[0][0].transcript}"`;
+            if (feedback) feedback.textContent = `"${event.results[0][0].transcript}"`;
         }
     };
     recognition.onend = () => btn.classList.remove("listening");
@@ -247,7 +266,7 @@ function update(newWord){
   const a=document.getElementById("answer");
   const feedback = document.getElementById("speech-feedback");
   a.style.display="none";
-  feedback.textContent = "";
+  if(feedback) feedback.textContent = "";
   
   if(currentBlockData.length===0){w.innerText="Bloc completat!"; return;}
   
@@ -306,7 +325,6 @@ function toggleReveal(){
             w.innerText = item.en;
             a.innerHTML = `<div class="pron">Sona com: ${item.fast}</div><span style="color:#2563eb;">${item.ca}</span>`;
         } else {
-            // Mode CAT -> ENG: El català ja està a 'word', mostrem l'anglès a 'answer'
             a.innerHTML = `<div>${item.en}</div><div class="pron">Sona com: ${item.fast}</div>`;
         }
         a.style.display = "block";
@@ -364,19 +382,19 @@ function renderList(type) {
 
   if (listToRender.length === 0) { l.innerHTML += "<i>Buit.</i>"; return; }
 
-  listToRender.forEach((item, index) => {
+  listToRender.forEach((item) => {
     const isStarred = starredIds.includes(item.realIdx);
     const itemDiv = document.createElement("div");
     itemDiv.className = "list-item";
     itemDiv.innerHTML = `
-      <div class="list-content">
-        <div style="color:#2563eb; font-weight:bold; font-size:14px;">${item.ca}</div>
-        <div id="list-rev-${index}" class="blur" style="font-weight:bold; font-size:16px;" onclick="this.classList.add('revealed')">${item.en} (${item.fast})</div>
-      </div>
       <div class="list-actions-side">
         <button class="star-list ${isStarred ? 'active' : ''}" onclick="toggleStar(${item.realIdx}); renderList('${type}')">★</button>
         <button class="mini-btn btn-audio-list" onclick="playAudio(1.0, ${item.realIdx})">🔊</button>
-        <button class="mini-btn btn-eye-list" onclick="document.getElementById('list-rev-${index}').classList.add('revealed')">👁️</button>
+        <button class="mini-btn btn-mic-list" id="mic-list-${item.realIdx}" onclick="startDictation(${item.realIdx})">🎤</button>
+      </div>
+      <div class="list-content">
+        <div style="color:#2563eb; font-weight:bold; font-size:14px;">${item.ca}</div>
+        <div id="list-rev-${item.realIdx}" class="blur" style="font-weight:bold; font-size:16px;" onclick="this.classList.toggle('revealed')">${item.en} (${item.fast})</div>
       </div>
     `;
     l.appendChild(itemDiv);

@@ -55,7 +55,6 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 
 .mini-icon-btn{width:36px;height:36px;border:none;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px}
 .btn-play-mini{background:#dbeafe}
-.btn-reveal-mini{background:#fee2e2}
 .star-btn-list{font-size:24px;cursor:pointer;color:#d1d5db;background:none;border:none}
 .star-btn-list.active{color:#facc15}
 
@@ -116,7 +115,7 @@ const items = [
     {"id": "007", "audio": "f007.mp3", "en": "I was planning to spend the afternoon cleaning the house, but I ended up watching a new series on Netflix that was so addictive that I couldn't stop until I finished the whole season.", "es": "Tenia planeado pasar la tarde limpiando la casa, pero termine viendo una serie nueva en Netflix que era tan adictiva que no pude parar hasta que termine la temporada completa."},
     {"id": "008", "audio": "f008.mp3", "en": "While I was waiting for the bus to go downtown, I ran into an old friend from high school whom I hadn't seen in years, so we decided to grab a quick coffee and catch up.", "es": "Mientras esperaba el autobus para ir al centro, me encontre con un viejo amigo de la secundaria a quien no habia visto en años, asi que decidimos tomar un cafe rapido y ponernos al dia."},
     {"id": "009", "audio": "f009.mp3", "en": "I spent the whole morning looking for a specific ingredient for the cake I wanted to bake, only to find out that the small grocery store around the corner had it all along.", "es": "Pase toda la mañana buscando un ingrediente especifico para el pastel que queria hornear, solo para descubrir que la pequeña tienda de comestibles a la vuelta de la esquina lo tuvo todo el tiempo."},
-    {"id": "010", "audio": "f010.mp3", "en": "Every time I want to sort out my wardrobe, I end up trying on clothes that I haven't worn in years and looking at myself in the mirror instead of actually organizing anything.", "es": "Cada vez que decido limpiar mi armario, termino probandome ropa que no me he puesto en años y mirandome en el espejo en lugar de organizar algo realmente."},
+    {"id": "010", "audio": "f010.mp3", "en": "Every time I want to sort out my wardrobe, I end up trying on clothes that I haven't worn in years and looking at myself in the mirror instead of actually organizing anything.", "es": "Cada vez que quiero limpiar mi armario, termino probandome ropa que no me he puesto en años y mirandome en el espejo en lugar de organizar algo realmente."},
     {"id": "011", "audio": "f011.mp3", "en": "My cat has the strange habit of sleeping on top of the television, which is quite annoying because she blocks the screen right when I am watching the most interesting part of a movie.", "es": "Mi gata tiene la extraña costumbre de dormir encima del televisor, lo cual es bastante molesto porque bloquea la pantalla justo cuando estoy viendo la parte mas interesante de una pelicula."},
     {"id": "012", "audio": "f012.mp3", "en": "It was so hot inside the house today that I had to open all the windows to let some fresh air in, but then a lot of mosquitoes entered and I spent the night trying to catch them.", "es": "Hacia tanto calor dentro de casa hoy que tuve que abrir todas las ventanas para dejar entrar un poco de aire fresco, pero luego entraron muchos mosquitos y pase la noche intentando atraparlos."},
     {"id": "013", "audio": "f013.mp3", "en": "I went to the market to buy some fresh fruit and vegetables, but the smell of the bakery next door was so tempting that I ended up buying three chocolate croissants that I didn't need.", "es": "Fui al mercado a comprar algunas frutas y verduras frescas, pero el olor de la panaderia de al lado era tan tentador que termine comprando tres croissants de chocolate que no necesitaba."},
@@ -216,7 +215,6 @@ function toggleStudyStars() {
     known = 0; remaining = [...items]; load();
 }
 
-// MODIFICADO: Ahora alterna visible/oculto sin disparar el audio
 function reveal(){
  if(!current)return;
  const esDiv = document.getElementById("es");
@@ -225,11 +223,9 @@ function reveal(){
  esDiv.textContent = current.es;
  enDiv.textContent = current.en;
 
- // Si ya son visibles, los ocultamos. Si están ocultos, los mostramos.
  if (!esDiv.classList.contains("hidden") && !enDiv.classList.contains("hidden")) {
     esDiv.classList.add("hidden");
     enDiv.classList.add("hidden");
-    // En modo Castellano mantenemos el enunciado siempre visible
     if(mode==="ES") esDiv.classList.remove("hidden");
  } else {
     esDiv.classList.remove("hidden");
@@ -258,7 +254,6 @@ function toggleList(){
     <div class="list-controls-side">
         <button class="star-btn-list ${isStarred ? 'active' : ''}" onclick="toggleStar('${i.id}', this)">★</button>
         <button class="mini-icon-btn btn-play-mini" onclick="play(1.0, '${i.audio}')">🔊</button>
-        <button class="mini-icon-btn btn-reveal-mini" onclick="document.getElementById('en-${i.id}').classList.toggle('revealed')">👁</button>
     </div>
     <div class="list-texts">
         <div class="list-es">${i.es}</div>
