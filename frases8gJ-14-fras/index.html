@@ -32,7 +32,8 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
     font-size: 18px;
 }
 
-.blocks{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0;justify-content:center}
+/* MODIFICADO: Contenedor de bloques con margen izquierdo sutil y alineado al inicio */
+.blocks{display:flex;flex-wrap:wrap;gap:4px;margin:15px 0 15px 10px;justify-content:flex-start; align-items: center;}
 .block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#f1f5f9;cursor:pointer;box-shadow:0 2px 4px rgba(0,0,0,0.1);transition: 0.2s;}
 .block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1);box-shadow:0 4px 10px rgba(37,99,235,0.3)}
 
@@ -61,7 +62,18 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 
 @keyframes pulse { 0% {box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);} 70% {box-shadow: 0 0 0 15px rgba(239, 68, 68, 0);} 100% {box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);} }
 
-.star-main { background: none; border: none; font-size: 35px; cursor: pointer; color: #cbd5e1; transition: 0.2s; margin-right: 10px;}
+/* MODIFICADO: Estilos de la estrella principal en la fila de bloques */
+.star-main { 
+    background: none; 
+    border: none; 
+    font-size: 35px; 
+    cursor: pointer; 
+    color: #cbd5e1; 
+    transition: 0.2s; 
+    margin-left: 10px; /* Espacio con el último bloque */
+    padding: 0;
+    line-height: 1;
+}
 .star-main.active { color: #f59e0b !important; }
 
 .word{text-align:center;font-size:28px;font-weight:bold;margin:20px 0;min-height:35px}
@@ -98,8 +110,13 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .vibrate{animation:vibrate 0.3s linear}
 @keyframes vibrate{0%{transform:rotate(0)}25%{transform:rotate(5deg)}50%{transform:rotate(0)}75%{transform:rotate(-5deg)}100%{transform:rotate(0)}}
 
+/* MODIFICADO: Posición del checkbox manual alineado a la derecha en la fila de bloques */
 .check-box-manual {
-    position: absolute; top: 85px; right: 22px; width: 24px; height: 24px;
+    position: absolute; 
+    top: 85px; /* Alineado con la fila de bloques */
+    right: 22px; 
+    width: 24px; 
+    height: 24px;
     background: #fff; border: 1.5px solid #22c55e; border-radius: 6px; 
     display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 14px;
 }
@@ -117,9 +134,9 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
   </div>
   
   <div class="blocks" id="blockContainer"></div>
+  
   <div class="lang-label" id="langLabel">ANGLÈS RÀPID</div>
   <div class="audio-section">
-    <button class="star-main" id="starMain" onclick="toggleStar()">★</button>
     <button class="round-btn" id="btnNormal" onclick="playAudio(1.0)">🔊</button>
     <button class="round-btn" id="btnSlow" onclick="playAudio(0.75)">🐢</button>
     <button class="round-btn" id="micBtn" onclick="startDictation()">🎤</button>
@@ -144,7 +161,6 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 <audio id="audio"></audio>
 
 <script>
-// El resto del script permanece igual que en tu versión anterior
 const data = [
   {en:"I am going to do it", ca:"Ho faré", fast:"Gonna"},
   {en:"I want to go now", ca:"Vull anar-me'n ara", fast:"Wanna"},
@@ -287,17 +303,31 @@ function initBlocks(){
   const container=document.getElementById("blockContainer");
   const savedBlock = localStorage.getItem(getFolderName() + "_currentBlock");
   container.innerHTML = "";
+  
+  // Bloque T
   const tBtn=document.createElement("button");
-  tBtn.className="block"; tBtn.innerText="T"; tBtn.onclick=()=>setBlock('T');
+  tBtn.className="block"; tBtn.id="btnBlockT"; tBtn.innerText="T"; tBtn.onclick=()=>setBlock('T');
   container.appendChild(tBtn);
+  
+  // Bloques numéricos
   for(let i=0; i<5; i++){
     const b=document.createElement("button");
-    b.className="block"; b.innerText=i+1;
+    b.className="block"; b.id="btnBlock"+i; b.innerText=i+1;
     b.onclick=()=>setBlock(i);
     container.appendChild(b);
   }
+  
+  // CORREGIDO: Añadir la estrella aquí CON ID y asegurar que update() la referencia
+  const starBtn = document.createElement("button");
+  starBtn.className = "star-main";
+  starBtn.id = "starMain"; // ID crucial para update()
+  starBtn.innerText = "★";
+  starBtn.onclick = () => toggleStar(); // Usar función anónima para evitar problemas de 'this'
+  container.appendChild(starBtn);
+
   const blockToLoad = (savedBlock !== null) ? (savedBlock === 'T' ? 'T' : parseInt(savedBlock)) : 'T';
   setBlock(blockToLoad);
+  
   const card = document.querySelector(".card");
   const box = document.createElement("div");
   box.className = "check-box-manual";
@@ -318,10 +348,17 @@ function setBlock(id){
     totalInBlock=10;
   }
   pos=0;
-  document.querySelectorAll(".block").forEach(b=>{
-    const isThis = (id==='T' && b.innerText==='T') || (b.innerText == (id+1));
-    b.classList.toggle("active", isThis);
-  });
+  
+  // Actualizar estado activo de bloques
+  document.querySelectorAll(".block").forEach(b => b.classList.remove("active"));
+  if(id === 'T') {
+      const tBtn = document.getElementById("btnBlockT");
+      if(tBtn) tBtn.classList.add("active");
+  } else {
+      const bBtn = document.getElementById("btnBlock"+id);
+      if(bBtn) bBtn.classList.add("active");
+  }
+
   update(true);
 }
 
@@ -335,7 +372,11 @@ function update(newWord){
   if(currentBlockData.length===0){w.innerText="Bloc completat!"; return;}
   const item=currentBlockData[pos];
   
-  document.getElementById("starMain").classList.toggle("active", starredIds.includes(item.realIdx));
+  // CORREGIDO: Asegurar que starMain existe antes de intentar cambiar clase
+  const starMain = document.getElementById("starMain");
+  if(starMain) {
+      starMain.classList.toggle("active", starredIds.includes(item.realIdx));
+  }
   
   if(mode==="EN"){
     lb.innerText="ANGLÈS RÀPID"; 
@@ -351,10 +392,21 @@ function update(newWord){
 function toggleStar(forcedIdx = null) {
   const idx = forcedIdx !== null ? forcedIdx : (currentBlockData.length > 0 ? currentBlockData[pos].realIdx : null);
   if (idx === null) return;
-  if (starredIds.includes(idx)) { starredIds = starredIds.filter(id => id !== idx); } 
-  else { starredIds.push(idx); }
+  
+  if (starredIds.includes(idx)) { 
+      starredIds = starredIds.filter(id => id !== idx); 
+  } else { 
+      starredIds.push(idx); 
+  }
   localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
-  if (forcedIdx === null) { document.getElementById("starMain").classList.toggle("active", starredIds.includes(idx)); }
+  
+  // CORREGIDO: Si es la estrella principal, actualizar su estado visual inmediatamente
+  if (forcedIdx === null) { 
+      const starMain = document.getElementById("starMain");
+      if(starMain) {
+          starMain.classList.toggle("active", starredIds.includes(idx)); 
+      }
+  }
 }
 
 function playAudio(speed, forcedIdx = null) {
