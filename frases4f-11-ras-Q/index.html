@@ -6,11 +6,14 @@
 <title>Repàs Personalitzat - 76 Frases</title>
 <style>
 body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
-header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center;align-items:center}
-.unit-number{font-size:24px;font-weight:800;color:#2563eb;margin:0 15px}
-.mode-btns button{margin:0 6px;padding:8px 14px;border:none;border-radius:14px;font-weight:700;cursor:pointer}
+/* Ajuste de cabecera para ahorrar espacio */
+header{padding:8px 4px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center;align-items:center;gap:4px}
+.unit-number{font-size:22px;font-weight:800;color:#2563eb;margin:0 8px;min-width:20px;text-align:center}
+/* Botones más pequeños y compactos */
+.mode-btns button{padding:6px 10px;border:none;border-radius:12px;font-weight:700;cursor:pointer;font-size:11px;white-space:nowrap;line-height:1.2}
 .mode-en{background:#dbeafe}
 .mode-es{background:#fde68a}
+
 main{display:flex;justify-content:center;padding:24px}
 .card{position:relative;width:100%;max-width:560px;background:#ffffff;border-radius:28px;padding:32px;box-shadow:0 10px 24px rgba(0,0,0,0.06);text-align:center}
 .counter{position:absolute;top:18px;left:22px;font-weight:800;color:#2563eb}
@@ -18,7 +21,6 @@ main{display:flex;justify-content:center;padding:24px}
 .check-box-manual.marked { background: #22c55e !important; color: white !important; }
 .lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
 
-/* Bloques con un poco más de margen izquierdo para que no se corten */
 .blocks{display:flex;flex-wrap:nowrap;gap:6px;justify-content:flex-start;margin:15px 0 20px;overflow-x:auto;padding:5px 0 5px 10px}
 .block{flex: 0 0 auto;width:32px;height:32px;border-radius:50%;border:none;background:#f1f5f9;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.2s}
 .block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1)}
@@ -32,7 +34,6 @@ main{display:flex;justify-content:center;padding:24px}
 .audio-btn.rec.recording { animation: pulse 1.5s infinite; background: #ef4444; }
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 
-/* Estrella a la izquierda de la tortuga, misma fila */
 .star-btn { background: none; border: none; font-size: 32px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px 0 0; margin-right: 5px; }
 .star-btn.active { color: #f59e0b !important; }
 
@@ -71,9 +72,9 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 <body>
 
 <header>
- <div class="mode-btns"><button class="mode-en" onclick="setMode('EN')">Mode anglès → castellà</button></div>
+ <div class="mode-btns"><button class="mode-en" onclick="setMode('EN')">Anglès → Castellà</button></div>
  <div class="unit-number">4</div>
- <div class="mode-btns"><button class="mode-es" onclick="setMode('ES')">Mode castellà → anglès</button></div>
+ <div class="mode-btns"><button class="mode-es" onclick="setMode('ES')">Castellà → Anglès</button></div>
 </header>
 
 <main>
@@ -110,9 +111,6 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 <div id="listBox" class="list-box hidden"></div>
 
 <script>
-// El resto del script permanece igual que en tu index4.html original
-// (He mantenido toda la lógica de items, audio, grabación y manejo de bloques intacta)
-
 const items = [
     {audio:"f001.mp3",en:"It was so dark in the hallway that I had a lot of trouble finding the keyhole with my keys, and I spent several minutes trying to open the door.",es:"Estaba tan oscuro en el pasillo que tuve muchos problemas para encontrar la cerradura con las llaves y pasé varios minutos intentando abrir la puerta."},
     {audio:"f002.mp3",en:"I was walking through the living room in the middle of the night and I couldn't find the light switch, so I accidentally tripped over the dog's bed.",es:"Estaba caminando por el salón en mitad de la noche y no encontraba el interruptor de la luz, así que tropecé accidentalmente con la cama del perro."},
@@ -132,7 +130,7 @@ const items = [
     {audio:"f016.mp3",en:"We need a much larger pot if we want to cook enough pasta for all the people who are coming to eat at our house this Sunday.",es:"Necesitamos una olla mucho más grande si queremos cocinar suficiente pasta para toda la gente que viene a comer a nuestra casa este domingo."},
     {audio:"f017.mp3",en:"I always use a wooden chopping board to cut the vegetables because it is much better for the knives and it is easier to clean after preparing dinner.",es:"Siempre uso una tabla de cortar de madera para cortar las verduras porque es mucho mejor para los cuchillos y es más fácil de limpiar después de preparar la cena."},
     {audio:"f018.mp3",en:"After the pasta was ready, I looked for the strainer in the sink to remove the hot water, but I realized that it was still inside the dishwasher.",es:"Cuando la pasta estuvo lista, busqué el colador en el fregadero para quitar el agua caliente, pero me di cuenta de que todavía estaba dentro del lavavajillas."},
-    {audio:"f019.mp3",en:"My mother always says that you should use a sieve for the flour when you make a sponge cake so that the texture is much lighter and without any lumps.",es:"Mi madre siempre dice que hay que usar un tamiz para la harina cuando haces un bizcocho para que la textura sea mucho más ligera y sin grumos."},
+    {audio:"f019.mp3",en:"Mi madre siempre dice que hay que usar un tamiz para la harina cuando haces un bizcocho para que la textura sea mucho más ligera y sin grumos.",es:"Mi madre siempre dice que hay que usar un tamiz para la harina cuando haces un bizcocho para que la textura sea mucho más ligera y sin grumos."},
     {audio:"f020.mp3",en:"I found a tin can of tomato soup in the back of the cupboard that had been there for months, so I decided to heat it up for a quick lunch.",es:"Encontré una lata de sopa de tomate al fondo del armario que llevaba allí meses, así que decidí calentarla para un almuerzo rápido."},
     {audio:"f021.mp3",en:"It is very difficult for me to open this jar of jam because the lid is stuck, so I might need to put it under some hot water for a few seconds.",es:"Me resulta muy difícil abrir este tarro de mermelada porque la tapa está atascada, así que puede que tenga que ponerlo bajo agua caliente unos segundos."},
     {audio:"f022.mp3",en:"We were ready to drink some cold sodas on the terrace, but we had to go back to the kitchen because nobody could find the bottle opener.",es:"Estábamos listos para beber unos refrescos fríos en la terraza, pero tuvimos que volver a la cocina porque nadie encontraba el abrebotellas."},
