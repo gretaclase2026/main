@@ -8,23 +8,25 @@
 body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .card{max-width:720px;margin:20px auto;background:#fff;border-radius:24px;padding:24px;box-shadow:0 8px 18px rgba(0,0,0,.15);position:relative}
 
-.modes{display:flex;gap:10px;margin-bottom:10px;width:100%}
+.modes-container { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.unit-number { font-weight: bold; font-size: 20px; color: #2563eb; padding: 0 5px; }
+.modes{display:flex;gap:10px;flex:1}
 .mode{flex:1;text-align:center;padding:14px;border-radius:24px;font-weight:bold;cursor:pointer;border:2px solid transparent}
 .mode.en{background:#d6e6f5}
 .mode.es{background:#f4d6e6}
 .mode.active{border-color:#999;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
 
-.blocks{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}
+.blocks{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0; align-items: center;}
 .block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#f1f5f9;cursor:pointer;transition:0.2s}
 .block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1);box-shadow:0 4px 10px rgba(37,99,235,0.3)}
 
 .main-box-container{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;margin:20px 0}
 .audio-controls{display:flex;align-items:center;gap:12px;margin-bottom:15px}
 
-.audio-btn{font-size:35px;background:#dcfce7;border:none;cursor:pointer;width:75px;height:75px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
-.audio-btn.slow{background:#fef08a;width:60px;height:60px;font-size:28px}
-.audio-btn.pause{background:#fee2e2;width:60px;height:60px;font-size:28px}
-.audio-btn.mic{background:#e0f2fe;width:60px;height:60px;font-size:28px}
+.audio-btn{font-size:35px;background:#dcfce7;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
+.audio-btn.slow{background:#fef08a;font-size:28px}
+.audio-btn.pause{background:#fee2e2;font-size:28px}
+.audio-btn.mic{background:#fbcfe8;font-size:28px} /* Cambio a rosa */
 .audio-btn.mic.listening{background:#f87171;animation:pulse 1.5s infinite}
 
 @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.1);} 100% {transform: scale(1);} }
@@ -35,7 +37,8 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .progress-wrapper { width: 100%; max-width: 300px; margin: 10px 0; }
 input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 5px; accent-color: #2563eb; }
 
-.counter-side{position:absolute;right:10px;top:0;font-weight:bold;color:#2563eb;font-size:22px}
+/* Subido el contador para evitar solape */
+.counter-side{position:absolute;right:10px;top:-15px;font-weight:bold;color:#2563eb;font-size:22px}
 
 #word{font-size:22px;font-weight:800;margin:20px 0;line-height:1.4;min-height:120px;text-align:center;display:flex;align-items:center;justify-content:center;padding:0 10px}
 .txt-es{color:#2563eb} 
@@ -51,14 +54,12 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 .btn-list-main { flex: 1; padding: 12px; border-radius: 12px; border: none; background: #e9d5ff; font-weight: bold; cursor: pointer; }
 .btn-stars-main { background: #fef3c7; color: #92400e; }
 
-/* Estilos de la Lista Vertical */
 #list{margin-top:20px;background:#fff;border-radius:15px;display:none;border:1px solid #ddd;padding:10px}
 .list-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid #eee; }
 .list-btns-col { display: flex; flex-direction: column; gap: 8px; align-items: center; }
 .list-texts { flex-grow: 1; display: flex; flex-direction: column; line-height: 1.3; }
 .mini-btn { border: none; border-radius: 8px; width: 36px; height: 36px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
 .btn-audio-list { background: #dcfce7; }
-.btn-eye-list { background: #fee2e2; }
 .star-list { background: none; border: none; font-size: 22px; color: #cbd5e1; cursor: pointer; padding: 0; }
 .star-list.active { color: #f59e0b !important; }
 .blur { filter: blur(5px); transition: filter 0.3s; cursor: pointer; }
@@ -76,8 +77,9 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 <body>
 
 <div class="card">
-  <div class="modes">
+  <div class="modes-container">
     <div id="modeEN" class="mode en active" onclick="setMode('EN')">ENG → ESP</div>
+    <span class="unit-number">9</span>
     <div id="modeES" class="mode es" onclick="setMode('ES')">ESP → ENG</div>
   </div>
 
@@ -89,7 +91,6 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
     </div>
     
     <div class="audio-controls">
-      <button class="star-main" id="starMain" onclick="toggleStar()">★</button>
       <button class="audio-btn slow" onclick="playAudio(0.75)">🐢</button>
       <button class="audio-btn" onclick="playAudio(1.0)">🔊</button>
       <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
@@ -156,7 +157,7 @@ const data = [
   {en: "It was a really tough decision to sell the old house where I grew up, but I knew it was the right thing to do to start a new life in the city.", es: "Fue una decisión realmente difícil vender la vieja casa donde crecí, pero sabía que era lo correcto para empezar una nueva vida en la ciudad"},
   {en: "Assembling this new bookshelf is quite tricky because the instructions are not very clear, so we should take our time to avoid making any mistakes.", es: "Montar esta nueva estantería es bastante complicado porque las instrucciones no son muy claras, así que deberíamos tomarnos nuestro tiempo para evitar cometer errores"},
   {en: "There was an awkward silence during dinner when nobody knew what to say after John mentioned the problem with the neighbors.", es: "Hubo un silencio incómodo durante la cena cuando nadie sabía qué decir después de que John mencionara el problema con los vecinos"},
-  {en: "It's definitely worth paying a little bit more for a high-quality mattress, since you'll be spending a third of your life sleeping on it.", es: "Definitivamente vale la pena pagar un poco más por un colchón de alta calidad, ya que pasarás un tercio de tu vida durmiendo en él"},
+  {en: "It's definitely worth paying a little bit more for a high-quality mattress, since you'll be spending a third of your life sleeping on it.", es: "Definitivamente vale la pena pagar un poco más por un colchón de alta calidad, ya que pasarás un tercio de tu vida dumiendo en él"},
   {en: "Keep this multi-tool in your kitchen drawer because it's very handy for opening jars or fixing small things around the house without calling a professional.", es: "Guarda esta multiherramienta en el cajón de la cocina porque es muy práctica para abrir botes o arreglar cosas pequeñas en casa sin llamar a un profesional"},
   {en: "The renovation of the kitchen will take roughly three weeks to finish, provided that the workers arrive on time every morning and we have all the materials.", es: "La reforma de la cocina tardará aproximadamente tres semanas en terminarse, siempre que los trabajadores lleguen a tiempo cada mañana y tengamos todos los materiales"},
   {en: "I can hardly hear what you're saying because the volume of the television is too high, so please turn it down for a moment.", es: "Apenas puedo oír lo que estás diciendo porque el volumen de la televisión está demasiado alto, así que por favor bájalo un momento"},
@@ -177,7 +178,6 @@ let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockI
 const a = document.getElementById("audio");
 const progressBar = document.getElementById("progressBar");
 
-// Reconocimiento de voz
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition;
 let isListening = false;
@@ -237,6 +237,14 @@ function initBlocks() {
   btnT.onclick = () => loadBlock('T');
   container.appendChild(btnT);
 
+  // Estrella añadida al final de los bloques
+  const starBtn = document.createElement("button");
+  starBtn.id = "starMain";
+  starBtn.className = "star-main";
+  starBtn.innerHTML = "★";
+  starBtn.onclick = () => toggleStar();
+  container.appendChild(starBtn);
+
   const blockToLoad = (savedBlock !== null) ? (savedBlock === 'T' ? 'T' : parseInt(savedBlock)) : 0;
   loadBlock(blockToLoad);
 }
@@ -269,20 +277,29 @@ function update(fromNextAction = false) {
   }
   const item = currentBlockData[pos];
   document.getElementById("starMain").classList.toggle("active", starredIds.includes(item.realIdx));
-  const translation = `<span class="txt-es">${item.es}</span>`;
+  
   const w = document.getElementById("word");
   const aElement = document.getElementById("answer");
+  
+  // Guardamos si estaban visibles antes de actualizar
+  const wasAnswerVisible = (aElement.style.display === "block");
+  const wasWordTextVisible = (w.innerHTML !== "");
+
   progressBar.value = 0;
 
   if (mode === "EN") {
-    w.innerHTML = ``; 
-    aElement.innerHTML = translation;
+    // En modo EN, la palabra inglesa se oculta inicialmente
+    w.innerHTML = fromNextAction ? "" : (wasWordTextVisible ? `<span style="color:#333;">${item.en}</span>` : ""); 
+    aElement.innerHTML = `<span class="txt-es">${item.es}</span>`;
     if (fromNextAction) playAudio(1.0);
   } else {
     w.innerHTML = `<div style='font-size:22px;' class="txt-es">${item.es}</div>`;
     aElement.innerHTML = `<span style="font-size:24px;">${item.en}</span>`;
   }
-  aElement.style.display = "none";
+
+  // Si venimos de "next/know", ocultamos respuesta. Si es por "estrella", mantenemos visibilidad.
+  aElement.style.display = fromNextAction ? "none" : (wasAnswerVisible ? "block" : "none");
+  
   document.getElementById("pos").textContent = learnedCount;
   document.getElementById("total").textContent = currentBlockData.length + learnedCount;
 }
@@ -292,7 +309,7 @@ function toggleStar(forcedIdx = null) {
   if (starredIds.includes(idx)) starredIds = starredIds.filter(id => id !== idx);
   else starredIds.push(idx);
   localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
-  update();
+  update(false); // Pasamos false para no resetear textos
 }
 
 function playAudio(speed, forcedIdx = null) {
@@ -313,7 +330,6 @@ function reveal() {
     const aElement = document.getElementById("answer");
 
     if (mode === "EN") {
-      // Toggle para modo EN: Si ya tiene texto, lo quita. Si no, lo pone.
       if (w.innerHTML.includes(item.en)) {
         w.innerHTML = "";
       } else {
@@ -321,7 +337,6 @@ function reveal() {
       }
     }
     
-    // Toggle para la respuesta secundaria
     if (aElement.style.display === "block") {
       aElement.style.display = "none";
     } else {
@@ -359,6 +374,10 @@ function toggleList(type) {
   l.style.display = "block";
 }
 
+function toggleBlur(el) {
+    el.classList.toggle('revealed');
+}
+
 function renderList(type) {
   const l = document.getElementById("list");
   l.innerHTML = type === 'stars' ? "<b>Favorites (★):</b><br><br>" : "<b>Llista del bloc:</b><br><br>";
@@ -382,11 +401,10 @@ function renderList(type) {
       <div class="list-btns-col">
         <button class="star-list ${isStarred ? 'active' : ''}" onclick="toggleStar(${item.realIdx}); renderList('${type}')">★</button>
         <button class="mini-btn btn-audio-list" onclick="playAudio(1.0, ${item.realIdx})">🔊</button>
-        <button class="mini-btn btn-eye-list" onclick="document.getElementById('list-rev-${index}').classList.add('revealed')">👁️</button>
       </div>
       <div class="list-texts">
         <div class="txt-es" style="font-weight:bold; font-size:14px;">${item.es}</div>
-        <div id="list-rev-${index}" class="blur" style="font-weight:bold; font-size:15px;" onclick="this.classList.add('revealed')">${item.en}</div>
+        <div id="list-rev-${index}" class="blur" style="font-weight:bold; font-size:15px;" onclick="toggleBlur(this)">${item.en}</div>
       </div>
     `;
     l.appendChild(itemDiv);
