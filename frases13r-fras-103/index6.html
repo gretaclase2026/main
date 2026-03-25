@@ -17,12 +17,23 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1);box-shadow:0 4px 10px rgba(37,99,235,0.3)}
 
 .main-box-container{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;margin:20px 0}
-.audio-controls{display:flex;align-items:center;gap:12px;margin-bottom:15px}
+.audio-controls{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:15px;flex-wrap:wrap}
 
-/* Botones principales */
 .audio-btn{font-size:35px;background:#dcfce7;border:none;cursor:pointer;width:75px;height:75px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
 .audio-btn.slow{background:#fef08a;width:60px;height:60px;font-size:28px}
 .audio-btn.pause{background:#fee2e2;width:60px;height:60px;font-size:28px}
+
+/* Micrófono 1: Dictado (Rojo) */
+.mic-btn{font-size:30px;background:#fee2e2;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.3s}
+.mic-btn.listening{background:#ef4444; color:white; animation: pulse-red 1.5s infinite; transform: scale(1.1);}
+
+/* Micrófono 2: Grabación (Azul) */
+.rec-btn{font-size:30px;background:#dbeafe;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.3s}
+.rec-btn.recording{background:#2563eb; color:white; animation: pulse-blue 1.5s infinite; transform: scale(1.1);}
+
+@keyframes pulse-red { 0% {box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);} 70% {box-shadow: 0 0 0 15px rgba(239, 68, 68, 0);} 100% {box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);} }
+@keyframes pulse-blue { 0% {box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7);} 70% {box-shadow: 0 0 0 15px rgba(37, 99, 235, 0);} 100% {box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);} }
+
 .star-main { background: none; border: none; font-size: 35px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px; }
 .star-main.active { color: #f59e0b !important; }
 
@@ -34,13 +45,15 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 .txt-es{color:#2563eb} 
 #answer{font-size:18px;font-weight:bold;margin-top:-10px;margin-bottom:20px;text-align:center;min-height:30px;color:#666}
 
+#speech-feedback { font-style: italic; color: #ef4444; font-size: 19px; margin-bottom: 10px; min-height: 24px; text-align: center; transition: 0.2s;}
+.speech-success { color: #22c55e !important; font-weight: bold; font-style: normal !important; }
+
 .actions{display:flex;gap:12px}
 .btn{flex:1;padding:18px;border-radius:18px;border:none;font-weight:bold;font-size:18px;cursor:pointer}
 .btn-reveal{background:#e0f2fe}
 .btn-know{background:#dcfce7}
 .btn-next{background:#fbcfe8}
 
-/* Listado */
 .list-toggle-btns { display: flex; gap: 10px; margin-top: 20px; }
 .btn-list-main { flex: 1; padding: 12px; border-radius: 12px; border: none; background: #e9d5ff; font-weight: bold; cursor: pointer; }
 .btn-stars-main { background: #fef3c7; color: #92400e; }
@@ -86,6 +99,8 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
       <button class="audio-btn slow" onclick="playAudio(0.75)">🐢</button>
       <button class="audio-btn" onclick="playAudio(1.0)">🔊</button>
       <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
+      <button class="mic-btn" id="micBtn" onclick="startDictation()" title="Dictat">🎤</button>
+      <button class="rec-btn" id="recBtn" onclick="toggleRecord()" title="Gravar-se">🎙️</button>
     </div>
     
     <div class="progress-wrapper">
@@ -94,6 +109,7 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
   </div>
 
   <div id="word"></div>
+  <div id="speech-feedback"></div>
   <div id="answer"></div>
 
   <div class="actions">
@@ -112,6 +128,7 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 <audio id="audio"></audio>
 
 <script>
+// --- DATA ---
 const data = [
     {audio:"f001.mp3",en:"When I hang clothes on the balcony I always use many clothespins because if it starts to get windy the clothes can easily fall from the line.",es:"Quan estenc la roba al balcó sempre utilitzo moltes pinces perquè si comença a fer vent la roba pot caure fàcilment del fil."},
     {audio:"f002.mp3",en:"When I arrive home after work I usually hang my jacket on a hanger so it doesn't get wrinkled and it is easier to find the next day.",es:"Quan arribo a casa després de treballar normalment penjo la jaqueta en un penjador perquè no s’arrugui i sigui més fàcil trobar-la l’endemà."},
@@ -123,7 +140,7 @@ const data = [
     {audio:"f008.mp3",en:"When it is very cold I prefer to wear several layers of clothes because then I can remove one if I get too warm later.",es:"Quan fa molt fred prefereixo portar diverses capes de roba perquè així em puc treure alguna peça si després tinc calor."},
     {audio:"f009.mp3",en:"After walking for a while in the park we found a quiet spot under a tree where we could sit and talk.",es:"Després de caminar una estona pel parc vam trobar un lloc tranquil sota un arbre on vam poder seure i parlar."},
     {audio:"f010.mp3",en:"When I looked at the wall more carefully I saw a small mark that I had not noticed before.",es:"Quan vaig mirar la paret amb més atenció vaig veure una petita marca que abans no havia notat."},
-    {audio:"f011.mp3",en:"The jeans I bought yesterday are so tight that they are actually hurting my thighs.",es:"Els texans que vaig comprar ahir són tan ajustats que de fet m’estan fent mal a les cuixes."},
+    {audio:"f011.mp3",en:"Els texans que vaig comprar ahir són tan ajustats que de fet m’estan fent mal a les cuixes.",en:"The jeans I bought yesterday are so tight that they are actually hurting my thighs.",es:"Els texans que vaig comprar ahir són tan ajustats que de fet m’estan fent mal a les cuixes."},
     {audio:"f012.mp3",en:"I have a very tight muscle in my left thigh after running that marathon last weekend.",es:"Tinc un múscul molt tens a la cuixa esquerra després de córrer aquella marató el cap de setmana passat."},
     {audio:"f013.mp3",en:"Since these leggings are too tight I can barely feel my thighs when I sit down.",es:"Com que aquests leggings són massa ajustats gairebé no puc sentir les cuixes quan m’assec."},
     {audio:"f014.mp3",en:"The sea is much rougher today than it was yesterday so we should probably stay on the shore.",es:"El mar està molt més picat avui que ahir així que probablement hauríem de quedar-nos a la riba."},
@@ -154,7 +171,7 @@ const data = [
     {audio:"f039.mp3",en:"When I looked at the garage floor I saw a small puddle of water that must have come in under the door.",es:"Quan vaig mirar cap al terra del garatge vaig veure un bassal petit d’aigua que devia haver entrat per sota de la porta."},
     {audio:"f040.mp3",en:"When I closed all the shutters in the evening the house became much quieter and more peaceful.",es:"Quan vaig tancar totes les persianes al vespre la casa va quedar molt més tranquil·la i silenciosa."},
     {audio:"f041.mp3",en:"One Saturday morning I went out to the balcony to hang the clothes and I used several clothespins because it was starting to get a little windy. When I went back inside the house I hung my jacket on a hanger next to the door and I realized that one of the hinges was making a small noise every time I opened the door.",es:"Un dissabte al matí vaig sortir al balcó per estendre la roba i vaig utilitzar diverses pinces perquè començava a fer una mica de vent. Quan vaig tornar a dins de casa vaig penjar la jaqueta en un penjador al costat de la porta i em vaig adonar que una de les frontisses feia un petit soroll cada vegada que obria la porta."},
-    {audio:"f042.mp3",en:"When I left the house to go to the shop I saw that there was a puddle in front of the entrance because it had rained during the night. I walked to the park and found a quiet spot under a tree where I could sit for a while.",es:"Quan vaig sortir de casa per anar a la botiga vaig veure que hi havia un bassal davant de l’entrada perquè havia plogut durant la nit. Vaig caminar fins al parc i vaig trobar un lloc tranquil sota un arbre on vaig poder seure una estona."},
+    {audio:"f042.mp3",en:"When I walked to the shop I saw that there was a puddle in front of the entrance because it had rained during the night. I walked to the park and found a quiet spot under a tree where I could sit for a while.",es:"Quan vaig anar a la botiga vaig veure que hi havia un bassal davant de l’entrada perquè havia plogut durant la nit. Vaig caminar fins al parc i vaig trobar un lloc tranquil sota un arbre on vaig poder seure una estona."},
     {audio:"f043.mp3",en:"One day I tried to connect a new lamp but the cord was short to reach the socket. I had to move the table a little until everything finally worked correctly.",es:"Un dia vaig intentar connectar una làmpada nova però el cable era massa curt per arribar a l’endoll. Vaig haver de moure la taula una mica fins que finalment tot va funcionar correctament."},
     {audio:"f044.mp3",en:"When we arrived at the park we walked for a while until we found a quiet spot under a tree. We sat there and talked for almost an hour because the weather was very nice.",es:"Quan vam arribar al parc vam caminar una estona fins que vam trobar un lloc tranquil sota un arbre. Ens vam asseure allà i vam parlar durant gairebé una hora perquè feia molt bon temps."},
     {audio:"f045.mp3",en:"Before leaving the house I closed the garage door with a padlock because I wanted to make sure everything stayed properly locked while we were away.",es:"Abans de marxar de casa vaig tancar la porta del garatge amb un cadenat perquè volia assegurar-me que tot quedava ben tancat mentre no hi érem."}
@@ -164,6 +181,67 @@ let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockI
 const a = document.getElementById("audio");
 const progressBar = document.getElementById("progressBar");
 
+// --- LOGICA RECONOCIMIENTO (ROJO) ---
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+const recognition = SpeechRecognition ? new SpeechRecognition() : null;
+if (recognition) { recognition.lang = 'en-US'; recognition.interimResults = false; }
+
+function startDictation() {
+    if (!recognition || currentBlockData.length === 0) return;
+    const btn = document.getElementById("micBtn");
+    const feedback = document.getElementById("speech-feedback");
+    btn.classList.add("listening");
+    feedback.textContent = "Escoltant...";
+    feedback.classList.remove("speech-success");
+    recognition.start();
+
+    recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,"").trim();
+        const original = currentBlockData[pos].en.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,"").trim();
+        if (transcript === original) {
+            feedback.innerHTML = `"${event.results[0][0].transcript}" 🎉`;
+            feedback.classList.add("speech-success");
+            setTimeout(() => { feedback.textContent = ""; know(); }, 1200);
+        } else {
+            feedback.textContent = `"${event.results[0][0].transcript}"`;
+        }
+    };
+    recognition.onend = () => btn.classList.remove("listening");
+}
+
+// --- LOGICA GRABACIÓN PROPIA (AZUL) ---
+let mediaRecorder;
+let audioChunks = [];
+let isRecording = false;
+
+async function toggleRecord() {
+    const btn = document.getElementById("recBtn");
+    if (!isRecording) {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
+            mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+            mediaRecorder.onstop = () => {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                const audioUrl = URL.createObjectURL(audioBlob);
+                const userAudio = new Audio(audioUrl);
+                userAudio.play();
+            };
+            mediaRecorder.start();
+            isRecording = true;
+            btn.classList.add("recording");
+            btn.textContent = "⏹";
+        } catch (err) { alert("Error al accedir al micròfon."); }
+    } else {
+        mediaRecorder.stop();
+        isRecording = false;
+        btn.classList.remove("recording");
+        btn.textContent = "🎙️";
+    }
+}
+
+// --- CORE APP LOGIC ---
 function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "noves_frases"; }
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
 
@@ -218,7 +296,10 @@ function update(fromNextAction = false) {
   document.getElementById("starMain").classList.toggle("active", starredIds.includes(item.realIdx));
   const w = document.getElementById("word");
   const ans = document.getElementById("answer");
+  const feedback = document.getElementById("speech-feedback");
   progressBar.value = 0;
+  ans.style.display = "none";
+  feedback.textContent = "";
 
   if (mode === "EN") {
     w.innerHTML = ``; 
@@ -228,7 +309,6 @@ function update(fromNextAction = false) {
     w.innerHTML = `<div class="txt-es">${item.es}</div>`;
     ans.innerHTML = `<span>${item.en}</span>`;
   }
-  ans.style.display = "none";
   document.getElementById("pos").textContent = learnedCount;
   document.getElementById("total").textContent = currentBlockData.length + learnedCount;
 }
@@ -255,9 +335,15 @@ function pauseAudio() { a.pause(); }
 function reveal() {
   if (currentBlockData.length > 0) {
     const item = currentBlockData[pos];
-    if (mode === "EN") document.getElementById("word").innerHTML = `<span>${item.en}</span>`;
-    document.getElementById("answer").style.display = "block";
-    if (mode === "CA") playAudio(1.0); 
+    const ans = document.getElementById("answer");
+    const w = document.getElementById("word");
+    if (ans.style.display === "none") {
+        if (mode === "EN") w.innerHTML = `<span>${item.en}</span>`;
+        ans.style.display = "block";
+    } else {
+        if (mode === "EN") w.innerHTML = "";
+        ans.style.display = "none";
+    }
   }
 }
 
