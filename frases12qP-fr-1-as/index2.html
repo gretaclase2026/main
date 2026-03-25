@@ -7,41 +7,71 @@
 <style>
 body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .card{max-width:720px;margin:20px auto;background:#fff;border-radius:24px;padding:24px;box-shadow:0 8px 18px rgba(0,0,0,.15);position:relative}
+
 .modes{display:flex;gap:10px;margin-bottom:10px;width:100%}
 .mode{flex:1;text-align:center;padding:14px;border-radius:24px;font-weight:bold;cursor:pointer;border:2px solid transparent}
 .mode.en{background:#d6e6f5}
 .mode.es{background:#f4d6e6}
 .mode.active{border-color:#999;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
-.blocks{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0;justify-content:center}
-.block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#f1f5f9;cursor:pointer;transition:0.2s}
 
-/* Bloque activo en AZUL */
+.blocks{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0;justify-content:center;align-items:center}
+.block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#f1f5f9;cursor:pointer;transition:0.2s}
 .block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1);box-shadow:0 4px 10px rgba(37,99,235,0.3)}
 
-.main-box-container{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;margin:20px 0}
-.audio-controls{display:flex;align-items:center;gap:15px;margin-bottom:15px}
-.audio-btn{font-size:50px;background:#dcfce7;border:none;cursor:pointer;width:110px;height:110px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
-.audio-btn.slow{background:#fef08a;width:80px;height:80px;font-size:35px}
-.audio-btn.vibrate{animation:vibrate 0.25s linear 2}
-@keyframes vibrate{0%{transform:translate(0)}25%{transform:translate(2px,-2px)}50%{transform:translate(-2px,2px)}75%{transform:translate(2px,2px)}100%{transform:translate(0)}}
+.star-main { background: none; border: none; font-size: 30px; cursor: pointer; color: #cbd5e1; transition: 0.2s; margin-left: 5px; }
+.star-main.active { color: #f59e0b !important; }
+
+.main-box-container{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;margin:35px 0 20px 0}
+.audio-controls{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:15px;flex-wrap:wrap}
+
+.audio-btn{font-size:30px;background:#dcfce7;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
+.audio-btn.slow{background:#fef08a;font-size:28px}
+.audio-btn.pause{background:#fee2e2;font-size:28px}
+
+.rec-btn{font-size:30px;background:#dbeafe;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.3s}
+.rec-btn.recording{background:#2563eb; color:white; animation: pulse-blue 1.5s infinite; transform: scale(1.1);}
+.mic-btn{font-size:30px;background:#fee2e2;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.3s}
+.mic-btn.listening{background:#ef4444; color:white; animation: pulse-red 1.5s infinite; transform: scale(1.1);}
+
+@keyframes pulse-red { 0% {box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);} 70% {box-shadow: 0 0 0 15px rgba(239, 68, 68, 0);} 100% {box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);} }
+@keyframes pulse-blue { 0% {box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7);} 70% {box-shadow: 0 0 0 15px rgba(37, 99, 235, 0);} 100% {box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);} }
 
 .progress-wrapper { width: 100%; max-width: 300px; margin: 10px 0; }
 input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 5px; accent-color: #2563eb; }
 
-.counter-side{position:absolute;right:10px;top:0;font-weight:bold;color:#2563eb;font-size:22px}
+.counter-side{position:absolute;right:10px;top:-25px;font-weight:bold;color:#2563eb;font-size:22px}
+
 #word{font-size:22px;font-weight:800;margin:20px 0;line-height:1.4;min-height:120px;text-align:center;display:flex;align-items:center;justify-content:center;padding:0 10px}
 .txt-es{color:#2563eb} 
 #answer{font-size:20px;font-weight:bold;margin-top:-10px;margin-bottom:20px;text-align:center;min-height:30px;color:#666}
+
+#speech-feedback { font-style: italic; color: #ef4444; font-size: 19px; margin-bottom: 10px; min-height: 24px; text-align: center; transition: 0.2s;}
+.speech-success { color: #22c55e !important; font-weight: bold; font-style: normal !important; }
+
 .actions{display:flex;gap:12px}
 .btn{flex:1;padding:18px;border-radius:18px;border:none;font-weight:bold;font-size:18px;cursor:pointer}
 .btn-reveal{background:#e0f2fe}
 .btn-know{background:#dcfce7}
 .btn-next{background:#fbcfe8}
-#list{margin-top:20px;background:#f9f9f9;padding:15px;border-radius:15px;display:none;border:1px solid #ddd}
+
+.list-toggle-btns { display: flex; gap: 10px; margin-top: 20px; }
+.btn-list-main { flex: 1; padding: 12px; border-radius: 12px; border: none; background: #e9d5ff; font-weight: bold; cursor: pointer; }
+.btn-stars-main { background: #fef3c7; color: #92400e; }
+
+#list{margin-top:20px;background:#fff;border-radius:15px;display:none;border:1px solid #ddd;padding:10px}
+.list-item { padding: 15px 0; border-bottom: 1px solid #eee; display: flex; align-items: center; justify-content: flex-start; gap: 15px; }
+.list-btns-col { display: flex; flex-direction: column; gap: 8px; align-items: center; min-width: 45px; }
+.list-content { flex: 1; }
+.mini-btn { border: none; border-radius: 10px; width: 38px; height: 38px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+.btn-audio-list { background: #dcfce7; }
+.star-list { background: none; border: none; font-size: 24px; color: #cbd5e1; cursor: pointer; padding: 0; }
+.star-list.active { color: #f59e0b !important; }
+
+.blur { filter: blur(5px); transition: filter 0.3s; cursor: pointer; user-select: none; }
+.blur.revealed { filter: blur(0); }
 
 .check-box-manual {
-    position: absolute; top: 85px; right: 22px;
-    width: 24px; height: 24px;
+    position: absolute; top: 85px; right: 22px; width: 24px; height: 24px;
     background: #fff !important; border: 1.5px solid #22c55e !important;
     border-radius: 6px; display: flex; align-items: center; justify-content: center;
     cursor: pointer; z-index: 10; transition: all 0.2s; font-size: 14px;
@@ -61,21 +91,25 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
   <div class="blocks" id="blocksContainer"></div>
 
   <div class="main-box-container">
-    <div class="audio-controls">
-      <button class="audio-btn" onclick="playAudio(1.0)">🔊</button>
-      <button class="audio-btn slow" onclick="playAudio(0.75)">🐢</button>
-    </div>
-    
-    <div class="progress-wrapper">
-      <input type="range" id="progressBar" value="0" step="0.1">
-    </div>
-
     <div class="counter-side">
       <span id="pos">0</span> / <span id="total">0</span>
+    </div>
+    
+    <div class="audio-controls">
+      <button class="audio-btn slow" onclick="playAudio(0.75)">🐢</button>
+      <button class="audio-btn" onclick="playAudio(1.0)">🔊</button>
+      <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
+      <button class="rec-btn" id="recBtn" onclick="toggleRecord()" title="Gravar-se">🎙️</button>
+      <button class="mic-btn" id="micBtn" onclick="startDictation()" title="Dictat">🎤</button>
+    </div>
+
+    <div class="progress-wrapper">
+      <input type="range" id="progressBar" value="0" step="0.1">
     </div>
   </div>
 
   <div id="word"></div>
+  <div id="speech-feedback"></div>
   <div id="answer"></div>
 
   <div class="actions">
@@ -84,7 +118,10 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
     <button class="btn btn-next" onclick="next()">següent</button>
   </div>
   
-  <button id="listBtn" onclick="toggleList()" style="width:100%;margin-top:20px;padding:12px;border-radius:12px;border:none;background:#e9d5ff;font-weight:bold;cursor:pointer">mostrar llista del bloc</button>
+  <div class="list-toggle-btns">
+    <button class="btn-list-main" onclick="toggleList('all')">llista del bloc</button>
+    <button class="btn-list-main btn-stars-main" onclick="toggleList('stars')">favorites (★)</button>
+  </div>
   <div id="list"></div>
 </div>
 
@@ -112,7 +149,7 @@ const data = [
   {audio:"f018.mp3",en:"When I forget a word, I <span class='focus'>explain the idea</span> in another way.",es:"Quan oblido una paraula, <span class='focus'>explico la idea</span> d’una altra manera."},
   {audio:"f019.mp3",en:"I <span class='focus'>start many things at once</span> and then I have to finish one.",es:"<span class='focus'>Començo moltes coses alhora</span> i després n'he d'acabar una."},
   {audio:"f020.mp3",en:"I like to <span class='focus'>walk without looking at the map</span>.",es:"M’agrada <span class='focus'>caminar sense mirar el mapa</span>."},
-  {audio:"f021.mp3",en:"Before leaving I always <span class='focus'>check the door</span> is closed.",es:"Abans de sortir sempre <span class='focus'>miro que la porta</span> estigui tancada."},
+  {audio:"f021.mp3",en:"Before leaving I always <span class='focus'>check the door</span> is closed.",es:"Abans de sortir siempre <span class='focus'>miro que la porta</span> estigui tancada."},
   {audio:"f022.mp3",en:"When I buy clothes, I first <span class='focus'>check the price</span>.",es:"Quan compro roba, primer <span class='focus'>miro el preu</span>."},
   {audio:"f023.mp3",en:"If I have a lot of work, I <span class='focus'>take short breaks</span>.",es:"Si tinc molta feina, <span class='focus'>faig pauses curtes</span>."},
   {audio:"f024.mp3",en:"I start <span class='focus'>tidying a room</span> and find old things.",es:"Començo a <span class='focus'>ordenar una habitació</span> i trobo coses antigues."},
@@ -126,9 +163,66 @@ let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockI
 const a = document.getElementById("audio");
 const progressBar = document.getElementById("progressBar");
 
-function getFolderName() {
-    return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "fast_english";
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+const recognition = SpeechRecognition ? new SpeechRecognition() : null;
+if (recognition) { recognition.lang = 'en-US'; recognition.interimResults = false; }
+
+function startDictation() {
+    if (!recognition || currentBlockData.length === 0) return;
+    const btn = document.getElementById("micBtn");
+    const feedback = document.getElementById("speech-feedback");
+    btn.classList.add("listening");
+    feedback.textContent = "Escoltant...";
+    feedback.classList.remove("speech-success");
+    recognition.start();
+
+    recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,"").trim();
+        const original = currentBlockData[pos].en.replace(/<[^>]*>/g, '').toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,"").trim();
+        if (transcript === original) {
+            feedback.innerHTML = `"${event.results[0][0].transcript}" 🎉`;
+            feedback.classList.add("speech-success");
+            setTimeout(() => { feedback.textContent = ""; know(); }, 1200);
+        } else {
+            feedback.textContent = `"${event.results[0][0].transcript}"`;
+        }
+    };
+    recognition.onend = () => btn.classList.remove("listening");
 }
+
+let mediaRecorder;
+let audioChunks = [];
+let isRecording = false;
+
+async function toggleRecord() {
+    const btn = document.getElementById("recBtn");
+    if (!isRecording) {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
+            mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+            mediaRecorder.onstop = () => {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                const audioUrl = URL.createObjectURL(audioBlob);
+                const userAudio = new Audio(audioUrl);
+                userAudio.play();
+            };
+            mediaRecorder.start();
+            isRecording = true;
+            btn.classList.add("recording");
+            btn.textContent = "⏹";
+        } catch (err) { alert("Error al accedir al micròfon."); }
+    } else {
+        mediaRecorder.stop();
+        isRecording = false;
+        btn.classList.remove("recording");
+        btn.textContent = "🎙️";
+    }
+}
+
+function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "fast_english_copia"; }
+let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
 
 a.ontimeupdate = () => { if (a.duration) progressBar.value = (a.currentTime / a.duration) * 100; };
 progressBar.oninput = () => { if (a.duration) a.currentTime = (progressBar.value / 100) * a.duration; };
@@ -137,7 +231,6 @@ function initBlocks() {
   const container = document.getElementById("blocksContainer");
   const numBlocks = Math.ceil(data.length / 10);
   const savedBlock = localStorage.getItem(getFolderName() + "_currentBlock");
-  
   container.innerHTML = "";
   for (let i = 0; i < numBlocks; i++) {
     const btn = document.createElement("button");
@@ -150,8 +243,14 @@ function initBlocks() {
   btnT.onclick = () => loadBlock('T');
   container.appendChild(btnT);
 
-  const blockToLoad = (savedBlock !== null) ? (savedBlock === 'T' ? 'T' : parseInt(savedBlock)) : 0;
-  loadBlock(blockToLoad);
+  const starMain = document.createElement("button");
+  starMain.id = "starMain";
+  starMain.className = "star-main";
+  starMain.innerHTML = "★";
+  starMain.onclick = () => toggleStar();
+  container.appendChild(starMain);
+
+  loadBlock((savedBlock !== null) ? (savedBlock === 'T' ? 'T' : parseInt(savedBlock)) : 0);
 }
 
 function loadBlock(b) {
@@ -159,11 +258,11 @@ function loadBlock(b) {
   localStorage.setItem(getFolderName() + "_currentBlock", b);
   let temp = [];
   if (b === 'T') {
-    temp = data.map((item) => ({...item}));
+    temp = data.map((item, i) => ({...item, realIdx: i}));
   } else {
     let start = b * 10;
     let end = Math.min(start + 10, data.length);
-    for (let i = start; i < end; i++) temp.push({...data[i]});
+    for (let i = start; i < end; i++) temp.push({...data[i], realIdx: i});
   }
   currentBlockData = temp.sort(() => Math.random() - 0.5);
   document.querySelectorAll(".block").forEach((btn) => {
@@ -174,23 +273,20 @@ function loadBlock(b) {
   update(true); 
 }
 
-function setMode(m) {
-  mode = m;
-  document.getElementById("modeEN").classList.toggle("active", m === "EN");
-  document.getElementById("modeES").classList.toggle("active", m === "ES");
-  update(true);
-}
-
 function update(fromNextAction = false) {
   if (currentBlockData.length === 0) {
     document.getElementById("word").innerHTML = "¡Bloc Completat! 🎉";
     document.getElementById("answer").innerHTML = "";
     return;
   }
-  progressBar.value = 0;
   const item = currentBlockData[pos];
+  document.getElementById("starMain").classList.toggle("active", starredIds.includes(item.realIdx));
   const w = document.getElementById("word");
   const ans = document.getElementById("answer");
+  const feedback = document.getElementById("speech-feedback");
+  progressBar.value = 0;
+  ans.style.display = "none";
+  feedback.textContent = "";
 
   if (mode === "EN") {
     w.innerHTML = ``; 
@@ -200,17 +296,45 @@ function update(fromNextAction = false) {
     w.innerHTML = `<div class="txt-es">${item.es}</div>`;
     ans.innerHTML = `<span>${item.en}</span>`;
   }
-  ans.style.display = "none";
+  
   document.getElementById("pos").textContent = learnedCount;
   document.getElementById("total").textContent = currentBlockData.length + learnedCount;
 }
 
+function toggleStar(forcedIdx = null) {
+  const idx = forcedIdx !== null ? forcedIdx : (currentBlockData.length > 0 ? currentBlockData[pos].realIdx : null);
+  if (idx === null) return;
+  if (starredIds.includes(idx)) starredIds = starredIds.filter(id => id !== idx);
+  else starredIds.push(idx);
+  localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
+  
+  if (forcedIdx === null) {
+      document.getElementById("starMain").classList.toggle("active", starredIds.includes(idx));
+  }
+}
+
+function playAudio(speed, forcedAudio = null) {
+  const audioFile = forcedAudio || (currentBlockData.length > 0 ? currentBlockData[pos].audio : null);
+  if (!audioFile) return;
+  if (!a.src.includes(audioFile)) { a.src = audioFile; progressBar.value = 0; }
+  a.playbackRate = speed;
+  a.play().catch(() => {});
+}
+
+function pauseAudio() { a.pause(); }
+
 function reveal() {
   if (currentBlockData.length > 0) {
     const item = currentBlockData[pos];
-    if (mode === "EN") document.getElementById("word").innerHTML = `<span>${item.en}</span>`;
-    document.getElementById("answer").style.display = "block";
-    if (mode === "ES") playAudio(1.0); 
+    const ans = document.getElementById("answer");
+    const w = document.getElementById("word");
+    if (ans.style.display === "none") {
+        if (mode === "EN") w.innerHTML = `<span>${item.en}</span>`;
+        ans.style.display = "block";
+    } else {
+        if (mode === "EN") w.innerHTML = "";
+        ans.style.display = "none";
+    }
   }
 }
 
@@ -228,27 +352,52 @@ function next() {
   update(true);
 }
 
-function playAudio(speed) {
-  if (currentBlockData.length === 0) return;
-  const item = currentBlockData[pos];
-  const fileName = item.audio;
-  if (!a.src.includes(fileName)) { a.src = fileName; progressBar.value = 0; }
-  a.playbackRate = speed;
-  const btn = document.querySelector('.audio-btn');
-  btn.classList.remove('vibrate'); void btn.offsetWidth; btn.classList.add('vibrate');
-  a.play().catch(() => {});
+function setMode(m) {
+  mode = m;
+  document.getElementById("modeEN").classList.toggle("active", m === "EN");
+  document.getElementById("modeES").classList.toggle("active", m === "ES");
+  update(true);
 }
 
-function toggleList() {
+function toggleList(type) {
   const l = document.getElementById("list");
-  if (l.style.display === "block") { l.style.display = "none"; return; }
-  l.innerHTML = "<b>Llista del bloc:</b><br><br>";
-  let start = currentBlockID === 'T' ? 0 : currentBlockID * 10;
-  let end = currentBlockID === 'T' ? data.length : Math.min(start + 10, data.length);
-  data.slice(start, end).forEach((item) => {
-    l.innerHTML += `<div style="margin-bottom:8px"><b>${item.en}</b> - <span class="txt-es">${item.es}</span></div>`;
-  });
+  if (l.style.display === "block" && l.dataset.type === type) { l.style.display = "none"; return; }
+  l.dataset.type = type;
+  renderList(type);
   l.style.display = "block";
+}
+
+function renderList(type) {
+  const l = document.getElementById("list");
+  l.innerHTML = type === 'stars' ? "<b>Favorites (★):</b><br><br>" : "<b>Llista del bloc:</b><br><br>";
+  
+  let listToRender = [];
+  if (type === 'stars') {
+    listToRender = data.map((item, index) => ({...item, realIdx: index})).filter(i => starredIds.includes(i.realIdx));
+  } else {
+    let start = currentBlockID === 'T' ? 0 : currentBlockID * 10;
+    let end = currentBlockID === 'T' ? data.length : Math.min(start + 10, data.length);
+    listToRender = data.slice(start, end).map((item, index) => ({...item, realIdx: start + index}));
+  }
+
+  if (listToRender.length === 0) { l.innerHTML += "<i>Buit.</i>"; return; }
+
+  listToRender.forEach((item) => {
+    const isStarred = starredIds.includes(item.realIdx);
+    const itemDiv = document.createElement("div");
+    itemDiv.className = "list-item";
+    itemDiv.innerHTML = `
+      <div class="list-btns-col">
+        <button class="star-list ${isStarred ? 'active' : ''}" onclick="toggleStar(${item.realIdx}); renderList('${type}')">★</button>
+        <button class="mini-btn btn-audio-list" onclick="playAudio(1.0, '${item.audio}')">🔊</button>
+      </div>
+      <div class="list-content">
+        <div class="txt-es" style="font-weight:bold; font-size:14px;">${item.es}</div>
+        <div class="blur" style="font-weight:bold; font-size:16px;" onclick="this.classList.toggle('revealed')">${item.en}</div>
+      </div>
+    `;
+    l.appendChild(itemDiv);
+  });
 }
 
 function markAsDone(element) {
@@ -257,14 +406,14 @@ function markAsDone(element) {
     alert("Lliçó marcada ✅");
 }
 
+initBlocks();
+
 const card = document.querySelector(".card");
 const box = document.createElement("div");
 box.className = "check-box-manual";
 if (localStorage.getItem(getFolderName())) { box.innerHTML = "✓"; box.classList.add('marked'); }
 box.onclick = function() { markAsDone(this); };
 card.appendChild(box);
-
-initBlocks();
 </script>
 </body>
 </html>

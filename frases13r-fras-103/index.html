@@ -25,9 +25,10 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .main-box-container{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;margin:35px 0 20px 0}
 .audio-controls{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:15px;flex-wrap:wrap}
 
-.audio-btn{font-size:35px;background:#dcfce7;border:none;cursor:pointer;width:75px;height:75px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
-.audio-btn.slow{background:#fef08a;width:60px;height:60px;font-size:28px}
-.audio-btn.pause{background:#fee2e2;width:60px;height:60px;font-size:28px}
+/* Ajuste de tamaño: Ahora todos miden 60px */
+.audio-btn{font-size:30px;background:#dcfce7;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
+.audio-btn.slow{background:#fef08a;font-size:28px}
+.audio-btn.pause{background:#fee2e2;font-size:28px}
 
 .rec-btn{font-size:30px;background:#dbeafe;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.3s}
 .rec-btn.recording{background:#2563eb; color:white; animation: pulse-blue 1.5s infinite; transform: scale(1.1);}
@@ -40,7 +41,6 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .progress-wrapper { width: 100%; max-width: 300px; margin: 10px 0; }
 input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 5px; accent-color: #2563eb; }
 
-/* 8. Contador más arriba */
 .counter-side{position:absolute;right:10px;top:-25px;font-weight:bold;color:#2563eb;font-size:22px}
 
 #word{font-size:20px;font-weight:800;margin:20px 0;line-height:1.4;min-height:120px;text-align:center;display:flex;align-items:center;justify-content:center;padding:0 10px}
@@ -133,7 +133,7 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 // --- DATA ---
 const data = [
     {audio:"f001.mp3",en:"When I hang clothes on the balcony I always use many clothespins because if it starts to get windy the clothes can easily fall from the line.",es:"Quan estenc la roba al balcó sempre utilitzo moltes pinces perquè si comença a fer vent la roba pot caure fàcilment del fil."},
-    {audio:"f002.mp3",en:"When I arrive home after work I usually hang my jacket on a hanger so it doesn't get wrinkled and it is easier to find the next day.",es:"Quan arribo a casa després de trabajar normalment penjo la jaqueta en un penjador perquè no s’arrugui i sigui més fàcil trobar-la l’endemà."},
+    {audio:"f002.mp3",en:"When I arrive home after work I usually hang my jacket on a hanger so it doesn't get wrinkled and it is easier to find the next day.",es:"Quan arribo a casa després de treballar normalment penjo la jaqueta en un penjador perquè no s’arrugui i sigui més fàcil trobar-la l’endemà."},
     {audio:"f003.mp3",en:"The door was making a strange noise every time I opened it because one of the hinges was a little loose.",es:"La porta feia un soroll estrany cada vegada que l’obria perquè una de les frontisses estava una mica fluixa."},
     {audio:"f004.mp3",en:"He closed the door with the latch because the wind was very strong and it could open it easily.",es:"Va tancar la porta amb el pestell perquè el vent era molt fort i podia obrir-la fàcilment."},
     {audio:"f005.mp3",en:"The cord of the lamp was too short and I had to move the table so it could reach the socket.",es:"El cable de la làmpada era massa curt i vaig haver de moure la taula perquè arribés a l’endoll."},
@@ -319,7 +319,6 @@ function update(fromNextAction = false) {
   document.getElementById("total").textContent = currentBlockData.length + learnedCount;
 }
 
-// 7. Toggle star sin reiniciar texto
 function toggleStar(forcedIdx = null) {
   const idx = forcedIdx !== null ? forcedIdx : (currentBlockData.length > 0 ? currentBlockData[pos].realIdx : null);
   if (idx === null) return;
