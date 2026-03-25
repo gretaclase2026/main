@@ -31,9 +31,11 @@ main{display:flex;justify-content:center;padding:24px}
 .audio-btn.slow{background:#fef08a;}
 .audio-btn.pause{background:#fee2e2; color: inherit;} 
 .audio-btn.rec{background:#fca5a5; color: white;}
-.audio-btn.rec.recording { animation: pulse 1.5s infinite; background: #ef4444; }
 
+/* Animación y estado de grabación */
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+.recording { animation: pulse 1.5s infinite; background: #ef4444 !important; color: white !important; }
+.btn-rec-mini.recording { background: #f472b6 !important; }
 
 .progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
 input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
@@ -96,7 +98,7 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
   <button class="audio-btn slow" onclick="play(0.75)">🐢</button>
   <button class="audio-btn" onclick="play(1.0)">🔊</button>
   <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
-  <button class="audio-btn rec" id="recBtn" onclick="toggleRecord()">🎤</button>
+  <button class="audio-btn rec" id="recBtn" onclick="toggleRecord('recBtn')">🎤</button>
  </div>
 
  <div class="progress-wrapper">
@@ -128,7 +130,7 @@ const items = [
     {"id": "003", "audio": "f003.mp3", "key": "otherwise", "es": "Necesitas comer todas tus verduras y beber mucha agua cada mañana; de lo contrario, no tendras energia para jugar al futbol con tus amigos o ir al gimnasio por la noche.", "en": "You need to eat all your vegetables and drink a lot of water every morning; otherwise, you will not have energy to play football with your friends or go to the gym at night."},
     {"id": "004", "audio": "f004.mp3", "key": "awkward", "es": "Estaba en una fiesta grande con mucha gente y olvide el nombre de mi jefe, asi que hubo un silencio incomodo por mucho tiempo y me senti muy rojo de la cara.", "en": "I was at a big party with many people and I forgot the name of my boss, so there was an awkward silence for a long time and I felt very red in the face."},
     {"id": "005", "audio": "f005.mp3", "key": "amusing", "es": "Ayer vi una pelicula muy divertida sobre un grupo de perros que pueden hablar español y van a una ciudad grande para encontrar un tesoro secreto en una casa pequeña.", "en": "Yesterday I saw a very amusing movie about a group of dogs that can speak Spanish and they go to a big city to find a secret treasure in a small house."},
-    {"id": "006", "audio": "f006.mp3", "key": "amazing", "es": "La vista desde la ventana de mi hotel es increible porque puedo ver el oceano azul, las montañas altas con nieve, y el sol hermoso cada mañana cuando bebo mi cafe.", "en": "Yesterday I saw a very amusing movie about a group of dogs that can speak Spanish and they go to a big city to find a secret treasure in a small house."},
+    {"id": "006", "audio": "f006.mp3", "key": "amazing", "es": "La vista desde la ventana de mi hotel es increible porque puedo ver el oceano azul, las montañas altas con nieve, y el sol hermoso cada mañana cuando bebo mi cafe.", "en": "The view from the window of my hotel is amazing because I can see the blue ocean, the tall mountains with snow, and the beautiful sun every morning when I drink my coffee.."},
     {"id": "007", "audio": "f007.mp3", "key": "harmless", "es": "No necesitas tener miedo de ese animal pequeño en el jardin porque es completamente inofensivo, solo quiere comer algo de hierba verde y dormir bajo el arbol grande.", "en": "You do not need to be afraid of that small animal in the garden because it is completely harmless, it only wants to eat some green grass and sleep under the big tree."},
     {"id": "008", "audio": "f008.mp3", "key": "Whereas", "en": "My brother always eats a lot of junk food like burgers and pizza for dinner, whereas I prefer to eat a healthy salad with tomatoes and chicken because I want to be fit.", "es": "Mi hermano siempre cena mucha comida basura como hamburguesas y pizza, mientras que yo prefiero comer una ensalada saludable con tomates y pollo porque quiero estar en forma."},
     {"id": "009", "audio": "f009.mp3", "key": "Therefore", "en": "Yesterday I woke up very late and I didn't have time to eat breakfast at home; so, I was very hungry during my English class and I couldn't concentrate well.", "es": "Ayer me desperte muy tarde y no tuve tiempo de desayunar en casa; por lo tanto, tuve mucha hambre durante mi clase de ingles y no pude concentrarme bien."},
@@ -157,7 +159,7 @@ const progressBar = document.getElementById("progressBar");
 
 let mediaRecorder, audioChunks = [], isRecording = false;
 
-async function toggleRecord(targetBtnId = "recBtn") {
+async function toggleRecord(targetBtnId) {
     const btn = document.getElementById(targetBtnId);
     if (!isRecording) {
         try {
@@ -176,7 +178,8 @@ async function toggleRecord(targetBtnId = "recBtn") {
             if(targetBtnId === "recBtn") btn.textContent = "⏹";
         } catch (err) { alert("Error al acceder al micrófono."); }
     } else {
-        mediaRecorder.stop(); isRecording = false;
+        mediaRecorder.stop(); 
+        isRecording = false;
         btn.classList.remove("recording");
         if(targetBtnId === "recBtn") btn.textContent = "🎤";
     }

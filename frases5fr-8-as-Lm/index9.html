@@ -3,67 +3,59 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Repàs Personalitzat - 76 Frases</title>
+<title>Estudi FRASES - Repàs Avançat</title>
 <style>
 body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
-header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center;align-items:center}
-.unit-number{font-size:24px;font-weight:800;color:#2563eb;margin:0 10px}
-.mode-btns button{margin:0 6px;padding:8px 14px;border:none;border-radius:14px;font-weight:700;cursor:pointer}
-.mode-en{background:#dbeafe}
-.mode-es{background:#fde68a}
+header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center;align-items:center;gap:15px}
+.mode-btns button{margin:0 6px;padding:8px 14px;border:none;border-radius:20px;font-weight:700;cursor:pointer}
+.mode-en{background:#dbeafe; border-radius: 20px; padding: 8px 16px; border: none; font-weight: 700; cursor: pointer;}
+.mode-es{background:#fde68a; border-radius: 20px; padding: 8px 16px; border: none; font-weight: 700; cursor: pointer;}
+.unit-badge{color:#2563eb;padding:8px 12px;border-radius:14px;font-weight:500;font-size:24px}
 main{display:flex;justify-content:center;padding:24px}
 .card{position:relative;width:100%;max-width:560px;background:#ffffff;border-radius:28px;padding:32px;box-shadow:0 10px 24px rgba(0,0,0,0.06);text-align:center}
 .counter{position:absolute;top:18px;left:22px;font-weight:800;color:#2563eb}
 .check-box-manual { position: absolute; top: 18px; right: 22px; width: 24px; height: 24px; background: #fff; border: 1.5px solid #22c55e; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 14px; }
 .check-box-manual.marked { background: #22c55e !important; color: white !important; }
 .lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
-
-/* Ajuste bloques para que quepan en una fila */
-.blocks{display:flex;flex-wrap:nowrap;gap:4px;justify-content:flex-start;margin:15px 0 20px;overflow-x:auto;padding-bottom:5px}
+.blocks{display:flex;flex-wrap:nowrap;gap:6px;justify-content:flex-start;margin:15px 0 20px;overflow-x:auto;padding:5px 0 5px 10px}
 .block{flex: 0 0 auto;width:32px;height:32px;border-radius:50%;border:none;background:#f1f5f9;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.2s}
-.block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1);box-shadow:0 4px 10px rgba(37,99,235,0.3)}
+.block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1)}
 .block.all-btn { background: #e2e8f0; color: #475569; }
+.audio-container { display: flex; justify-content: center; gap: 8px; margin: 10px 0; align-items: center; }
+.audio-btn{width:52px;height:52px;border-radius:50%;border:none;background:#dbeafe;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s}
+.audio-btn.slow{background:#fef08a}
+.audio-btn.pause{background:#fee2e2}
+.audio-btn.rec{background:#fca5a5}
 
-.audio-container { display: flex; justify-content: center; gap: 8px; margin: 10px 0 10px; align-items: center; flex-wrap: nowrap; }
-.audio-btn{width:55px;height:55px;border-radius:50%;border:none;background:#dbeafe;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
-.audio-btn.slow{background:#fef08a;}
-.audio-btn.pause{background:#fee2e2; color: inherit;} 
-.audio-btn.rec{background:#fca5a5; color: white;}
-.audio-btn.rec.recording { animation: pulse 1.5s infinite; background: #ef4444; }
-@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+/* Estados de grabación */
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+.recording { animation: pulse 1.5s infinite; background: #ef4444 !important; color: white !important; }
+.btn-mic-list.recording { background: #f472b6 !important; color: white !important; }
 
-/* Estrella a la izquierda bajo el contador */
-.star-btn { position: absolute; left: 22px; top: 45px; background: none; border: none; font-size: 32px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0; z-index: 10; }
+.star-btn { background: none; border: none; font-size: 32px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px 0 0; margin-right: 5px; }
 .star-btn.active { color: #f59e0b !important; }
-
 .progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
 input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
-
 .hidden{display:none}
 .es{font-size:19px;color:#2563eb;margin-top:14px;line-height:1.4;font-weight:600}
 .en{font-size:19px;color:#0f172a;margin-top:14px;font-weight:700;line-height:1.4}
-
 .buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:22px}
 button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;cursor:pointer}
 .reveal{background:#e0f2fe}
 .know{background:#dcfce7}
 .next{background:#fbcfe8}
-
 .list-controls { display: flex; gap: 10px; margin-top: 16px; }
 .list-btn{ flex:1; background:#e9d5ff; border:none; border-radius:16px; padding:14px; font-weight:800; cursor:pointer; font-size:13px }
 .review-btn { background: #fef3c7; color: #92400e; }
-
 .list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
 .list-item { display: flex; align-items: flex-start; gap: 15px; padding: 15px 0; border-bottom: 1px solid #eee; }
-.list-controls-side { display: flex; flex-direction: column; gap: 8px; min-width: 40px; align-items: center; }
+.list-controls-side { display: flex; flex-direction: column; gap: 8px; min-width: 44px; align-items: center; }
 .list-texts { flex-grow: 1; display: flex; flex-direction: column; gap: 6px; }
-
-.mini-btn { border: none; border-radius: 10px; width: 36px; height: 36px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+.mini-btn { border: none; border-radius: 10px; width: 38px; height: 38px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
 .btn-audio { background: #dbeafe; }
-.btn-rec-mini { background: #fbcfe8; } /* Micro rosa en lista */
-.star-btn-list { background: none; border: none; font-size: 24px; cursor: pointer; color: #cbd5e1; padding: 0; line-height: 1; }
+.btn-mic-list { background: #fbcfe8; }
+.star-btn-list { background: none; border: none; font-size: 26px; cursor: pointer; color: #cbd5e1; padding: 0; line-height: 1; }
 .star-btn-list.active { color: #f59e0b !important; }
-
 .blur { filter: blur(5px); transition: filter 0.2s; cursor: pointer; user-select: none; }
 .blur.revealed { filter: blur(0); }
 </style>
@@ -71,30 +63,27 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 <body>
 
 <header>
- <div class="mode-btns">
-  <button class="mode-en" onclick="setMode('EN')">Mode anglès → castellà</button>
- </div>
- <div class="unit-number">4</div>
- <div class="mode-btns">
-  <button class="mode-es" onclick="setMode('ES')">Mode castellà → anglès</button>
- </div>
+ <div class="mode-btns"><button class="mode-en" onclick="setMode('EN')">English → Spanish</button></div>
+ <div class="unit-badge">4</div>
+ <div class="mode-btns"><button class="mode-es" onclick="setMode('ES')">Spanish → English</button></div>
 </header>
 
 <main>
 <div class="card">
  <div class="counter" id="counter">0 / 0</div>
  <div class="check-box-manual" id="mainCheck" onclick="markAsDone(this)"></div>
- <button class="star-btn" id="starBtn" onclick="toggleStar()">★</button>
 
  <div id="langLabel" class="lang" style="margin-top: 10px;">ANGLÈS</div>
  <div id="blockContainer" class="blocks"></div>
 
  <div class="audio-container">
+  <button class="star-btn" id="starBtn" onclick="toggleStar()">★</button>
   <button class="audio-btn slow" onclick="playCurrent(0.75)">🐢</button>
   <button class="audio-btn" onclick="playCurrent(1.0)">🔊</button>
   <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
-  <button class="audio-btn rec" id="recBtn" onclick="toggleRecord()">🎤</button>
+  <button class="audio-btn rec" id="recBtn" onclick="toggleMic('recBtn')">🎤</button>
  </div>
+ 
  <div class="progress-wrapper"><input type="range" id="progressBar" value="0" min="0" max="100" step="0.1"></div>
  <div id="es" class="es hidden"></div>
  <div id="en" class="en hidden"></div>
@@ -132,7 +121,7 @@ const items = [
     {audio:"f016.mp3",en:"We need a much larger pot if we want to cook enough pasta for all the people who are coming to eat at our house this Sunday.",es:"Necesitamos una olla mucho más grande si queremos cocinar suficiente pasta para toda la gente que viene a comer a nuestra casa este domingo."},
     {audio:"f017.mp3",en:"I always use a wooden chopping board to cut the vegetables because it is much better for the knives and it is easier to clean after preparing dinner.",es:"Siempre uso una tabla de cortar de madera para cortar las verduras porque es mucho mejor para los cuchillos y es más fácil de limpiar después de preparar la cena."},
     {audio:"f018.mp3",en:"After the pasta was ready, I looked for the strainer in the sink to remove the hot water, but I realized that it was still inside the dishwasher.",es:"Cuando la pasta estuvo lista, busqué el colador en el fregadero para quitar el agua caliente, pero me di cuenta de que todavía estaba dentro del lavavajillas."},
-    {audio:"f019.mp3",en:"My mother always says that you should use a sieve for the flour when you make a sponge cake so that the texture is much lighter and without any lumps.",es:"Mi madre siempre dice que hay que usar un tamiz para la harina cuando haces un bizcocho para que la textura sea mucho más ligera y sin grumos."},
+    {audio:"f019.mp3",en:"Mi madre siempre dice que hay que usar un tamiz para la harina cuando haces un bizcocho para que la textura sea mucho más ligera y sin grumos.",es:"Mi madre siempre dice que hay que usar un tamiz para la harina cuando haces un bizcocho para que la textura sea mucho más ligera y sin grumos."},
     {audio:"f020.mp3",en:"I found a tin can of tomato soup in the back of the cupboard that had been there for months, so I decided to heat it up for a quick lunch.",es:"Encontré una lata de sopa de tomate al fondo del armario que llevaba allí meses, así que decidí calentarla para un almuerzo rápido."},
     {audio:"f021.mp3",en:"It is very difficult for me to open this jar of jam because the lid is stuck, so I might need to put it under some hot water for a few seconds.",es:"Me resulta muy difícil abrir este tarro de mermelada porque la tapa está atascada, así que puede que tenga que ponerlo bajo agua caliente unos segundos."},
     {audio:"f022.mp3",en:"We were ready to drink some cold sodas on the terrace, but we had to go back to the kitchen because nobody could find the bottle opener.",es:"Estábamos listos para beber unos refrescos fríos en la terraza, pero tuvimos que volver a la cocina porque nadie encontraba el abrebotellas."},
@@ -183,7 +172,7 @@ const items = [
     {audio:"f067.mp3",en:"This frying pan is very dirty after cooking the meat, so I will need to use a rough scrub and a lot of soap to leave it completely clean.",es:"Esta sartén está muy sucia después de cocinar la carne, así que necesitaré usar un estropajo áspero y mucho jabón para dejarla completamente limpia."},
     {audio:"f068.mp3",en:"I am very sad because I dropped some red wine on my new white sofa, and now I am afraid that the stain will stay there forever.",es:"Estoy muy triste porque se me cayó un poco de vino tinto en mi sofá blanco nuevo y ahora temo que la mancha se quede ahí para siempre."},
     {audio:"f069.mp3",en:"I was cleaning the bathroom very carefully, but a drop of liquid fell on my blue trousers and created a permanent bleach stain.",es:"Estaba limpiando el baño con mucho cuidado, pero una gota de líquido cayó sobre mis pantalones azules y creó una mancha permanente de lejía."},
-    {audio:"f070.mp3",en:"The water in the kitchen sink is going down very slowly today, so I think there is a clog in the pipes that I need to fix soon.",es:"El agua del fregadero de la cocina está bajando muy lentamente hoy, así que creo que hay un atasco en las tuberías que necesito arreglar pronto."},
+    {audio:"f070.mp3",en:"The water in the kitchen sink is going down very slowly hoy, so I think there is a clog in the pipes that I need to fix soon.",es:"El agua del fregadero de la cocina está bajando muy lentamente hoy, así que creo que hay un atasco en las tuberías que necesito arreglar pronto."},
     {audio:"f071.mp3",en:"You should be careful not to drop any food down the drain while you are washing the dishes, because it might cause a bad smell in the kitchen.",es:"Deberías tener cuidado de no dejar caer comida por el desagüe mientras lavas los platos, porque podría provocar un mal olor en la cocina."},
     {audio:"f072.mp3",en:"Every time I wash my black sweater, it comes out of the machine covered in white lint, so I have to spend a lot of time cleaning it.",es:"Cada vez que lavo mi jersey negro, sale de la lavadora cubierto de pelusa blanca, así que tengo que pasar mucho tiempo limpiándolo."},
     {audio:"f073.mp3",en:"I had to spend more than thirty minutes at the bank because they asked me to fill out a very long form with all my personal information.",es:"Tuve que pasar más de treinta minutos en el banco porque me pidieron rellenar un formulario muy largo con toda mi información personal."},
@@ -198,11 +187,10 @@ const progressBar = document.getElementById("progressBar");
 
 function getFolderName() { return "frases-76-hogar"; }
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
-
 let mediaRecorder, audioChunks = [], isRecording = false;
 
-async function toggleRecord(targetBtnId = "recBtn") {
-    const btn = document.getElementById(targetBtnId);
+async function toggleMic(targetId) {
+    const btn = document.getElementById(targetId);
     if (!isRecording) {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -210,17 +198,20 @@ async function toggleRecord(targetBtnId = "recBtn") {
             audioChunks = [];
             mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
             mediaRecorder.onstop = () => {
-                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-                const audioUrl = URL.createObjectURL(audioBlob);
-                new Audio(audioUrl).play();
+                const blob = new Blob(audioChunks, { type: 'audio/wav' });
+                const url = URL.createObjectURL(blob);
+                new Audio(url).play();
             };
             mediaRecorder.start();
             isRecording = true;
-            btn.classList.add("recording"); btn.textContent = "⏹";
-        } catch (err) { alert("Error al accedir al micròfon."); }
+            btn.classList.add("recording");
+            if(targetId === "recBtn") btn.textContent = "⏹";
+        } catch (err) { alert("Error micròfon"); }
     } else {
-        mediaRecorder.stop(); isRecording = false;
-        btn.classList.remove("recording"); btn.textContent = "🎤";
+        mediaRecorder.stop();
+        isRecording = false;
+        btn.classList.remove("recording");
+        if(targetId === "recBtn") btn.textContent = "🎤";
     }
 }
 
@@ -232,13 +223,11 @@ function initBlocks() {
   const numBlocks = Math.ceil(items.length / 10);
   const savedBlock = localStorage.getItem(getFolderName() + "_puntoLibro");
   container.innerHTML = "";
-  
   const allBtn = document.createElement("button");
   allBtn.className = "block all-btn";
   allBtn.textContent = "T";
   allBtn.onclick = () => loadAll();
   container.appendChild(allBtn);
-
   for (let i = 0; i < numBlocks; i++) {
     const btn = document.createElement("button");
     btn.className = "block";
@@ -246,25 +235,18 @@ function initBlocks() {
     btn.onclick = () => loadBlock(i);
     container.appendChild(btn);
   }
-  
-  if (savedBlock === "all") {
-    loadAll();
-  } else {
-    loadBlock((savedBlock !== null) ? parseInt(savedBlock) : 0);
-  }
+  if (savedBlock === "all") loadAll();
+  else loadBlock((savedBlock !== null) ? parseInt(savedBlock) : 0);
 }
 
 function loadBlock(b) {
   currentBlockID = b;
   localStorage.setItem(getFolderName() + "_puntoLibro", b);
   let temp = [];
-  let start = b * 10;
-  let end = Math.min(start + 10, items.length);
+  let start = b * 10, end = Math.min(start + 10, items.length);
   for (let i = start; i < end; i++) temp.push({...items[i]});
   currentBlockData = temp.sort(() => Math.random() - 0.5);
-  document.querySelectorAll(".block").forEach((btn, idx) => {
-      btn.classList.toggle("active", idx === (b + 1));
-  });
+  document.querySelectorAll(".block").forEach((btn, idx) => { btn.classList.toggle("active", idx === (b + 1)); });
   pos = 0; learnedCount = 0;
   document.getElementById("endMsg").classList.add("hidden");
   update(true);
@@ -274,9 +256,7 @@ function loadAll() {
   currentBlockID = -1;
   localStorage.setItem(getFolderName() + "_puntoLibro", "all");
   currentBlockData = items.map(i => ({...i})).sort(() => Math.random() - 0.5);
-  document.querySelectorAll(".block").forEach((btn, idx) => {
-      btn.classList.toggle("active", idx === 0);
-  });
+  document.querySelectorAll(".block").forEach((btn, idx) => { btn.classList.toggle("active", idx === 0); });
   pos = 0; learnedCount = 0;
   document.getElementById("endMsg").classList.add("hidden");
   update(true);
@@ -289,12 +269,10 @@ function update(fromAction = false) {
     document.getElementById("endMsg").classList.remove("hidden");
     return;
   }
-  progressBar.value = 0;
   const item = currentBlockData[pos];
   document.getElementById("es").classList.add("hidden");
   document.getElementById("en").classList.add("hidden");
   document.getElementById("starBtn").classList.toggle("active", starredIds.includes(item.audio));
-  
   if (mode === "EN") {
     document.getElementById("langLabel").textContent = "ANGLÈS";
     document.getElementById("en").innerHTML = item.en;
@@ -308,31 +286,19 @@ function update(fromAction = false) {
   document.getElementById("counter").textContent = `${learnedCount} / ${currentBlockData.length + learnedCount}`;
 }
 
-function playAudio(src, speed) { audioObj.src = src; audioObj.playbackRate = speed; audioObj.play().catch(() => {}); }
+function playAudio(src, speed) { audioObj.src = src; audioObj.playbackRate = speed; audioObj.play().catch(()=>{}); }
 function playCurrent(speed) { if (currentBlockData.length > 0) playAudio(currentBlockData[pos].audio, speed); }
 function pauseAudio() { audioObj.pause(); }
 
 function reveal() {
   if (currentBlockData.length === 0) return;
-  const item = currentBlockData[pos];
-  const esDiv = document.getElementById("es");
-  const enDiv = document.getElementById("en");
-  if (!enDiv.classList.contains("hidden") && mode === "EN") {
-      esDiv.classList.add("hidden");
-  } else if (!enDiv.classList.contains("hidden") && mode === "ES") {
-      enDiv.classList.add("hidden");
-  } else {
-      esDiv.innerHTML = item.es;
-      enDiv.innerHTML = item.en;
-      esDiv.classList.remove("hidden");
-      enDiv.classList.remove("hidden");
-  }
+  document.getElementById("es").classList.remove("hidden");
+  document.getElementById("en").classList.remove("hidden");
 }
 
 function know() {
   if (currentBlockData.length === 0) return;
-  learnedCount++; 
-  currentBlockData.splice(pos, 1);
+  learnedCount++; currentBlockData.splice(pos, 1);
   if (pos >= currentBlockData.length) pos = 0;
   update(true);
 }
@@ -347,21 +313,15 @@ function setMode(m) { mode = m; update(true); }
 
 function toggleStar(forcedId = null) {
   const audio = forcedId || currentBlockData[pos].audio;
-  if (starredIds.includes(audio)) {
-    starredIds = starredIds.filter(id => id !== audio);
-  } else {
-    starredIds.push(audio);
-  }
+  if (starredIds.includes(audio)) starredIds = starredIds.filter(id => id !== audio);
+  else starredIds.push(audio);
   localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
   update();
 }
 
 function toggleList(type) {
   const box = document.getElementById("listBox");
-  if (!box.classList.contains("hidden") && box.dataset.activeType === type) { 
-    box.classList.add("hidden"); 
-    return; 
-  }
+  if (!box.classList.contains("hidden") && box.dataset.activeType === type) { box.classList.add("hidden"); return; }
   box.dataset.activeType = type;
   renderList(type);
   box.classList.remove("hidden");
@@ -370,29 +330,22 @@ function toggleList(type) {
 function renderList(type) {
   const box = document.getElementById("listBox");
   box.innerHTML = type === 'stars' ? "<h3>Frases destacades (★):</h3>" : "<h3>Tota la llista:</h3>";
+  const listToRender = type === 'stars' 
+    ? items.filter(i => starredIds.includes(i.audio))
+    : (currentBlockID === -1 ? items : items.slice(currentBlockID * 10, (currentBlockID + 1) * 10));
   
-  let listToRender = [];
-  if (type === 'stars') {
-      listToRender = items.filter(i => starredIds.includes(i.audio));
-  } else {
-      listToRender = (currentBlockID === -1) ? items : items.slice(currentBlockID * 10, (currentBlockID + 1) * 10);
-  }
-
-  if (listToRender.length === 0) {
-    box.innerHTML += "<p style='padding:10px;'>Buit.</p>";
-    return;
-  }
+  if (listToRender.length === 0) { box.innerHTML += "<p style='padding:10px;'>Buit.</p>"; return; }
 
   listToRender.forEach((i, index) => {
     const isStarred = starredIds.includes(i.audio);
     const itemDiv = document.createElement("div");
     itemDiv.className = "list-item";
-    const recId = `rec-list-${index}`;
+    const micId = `mic-list-${index}`;
     itemDiv.innerHTML = `
       <div class="list-controls-side">
         <button class="star-btn-list ${isStarred ? 'active' : ''}" onclick="toggleStar('${i.audio}'); renderList('${type}')">★</button>
         <button class="mini-btn btn-audio" onclick="playAudio('${i.audio}', 1.0)">🔊</button>
-        <button class="mini-btn btn-rec-mini" id="${recId}" onclick="toggleRecord('${recId}')">🎤</button>
+        <button class="mini-btn btn-mic-list" id="${micId}" onclick="toggleMic('${micId}')">🎤</button>
       </div>
       <div class="list-texts">
         <div style="color:#2563eb; font-weight:700;">${i.es}</div>
@@ -406,7 +359,6 @@ function renderList(type) {
 function markAsDone(el) {
     localStorage.setItem(getFolderName(), new Date().toISOString());
     el.innerHTML = "✓"; el.classList.add('marked');
-    alert("Lliçó completada ✅");
 }
 
 if (localStorage.getItem(getFolderName())) { 

@@ -16,7 +16,6 @@ main{display:flex;justify-content:center;padding:24px}
 .counter{position:absolute;top:18px;left:22px;font-weight:800;color:#2563eb}
 .lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
 
-/* Estrella a la izquierda, debajo del contador */
 .star-main{font-size:32px;cursor:pointer;color:#d1d5db;background:none;border:none;padding:0;transition:0.2s; position: absolute; left: 22px; top: 45px; z-index: 10;}
 .star-main.active{color:#facc15}
 
@@ -57,7 +56,10 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 
 .mini-icon-btn{width:36px;height:36px;border:none;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px}
 .btn-play-mini{background:#dbeafe}
-.btn-rec-mini{background:#fbcfe8} /* Botón micro rosa para la lista */
+.btn-rec-mini{background:#fbcfe8; transition: background 0.3s;}
+/* Clase para el estado activo en el listado */
+.btn-rec-mini.recording { background: #ef4444; color: white; animation: pulse 1.5s infinite; }
+
 .star-btn-list{font-size:24px;cursor:pointer;color:#d1d5db;background:none;border:none}
 .star-btn-list.active{color:#facc15}
 
@@ -87,7 +89,7 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
   <button class="audio-btn slow" onclick="play(0.75)">🐢</button>
   <button class="audio-btn" onclick="play(1.0)">🔊</button>
   <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
-  <button class="audio-btn rec" id="recBtn" onclick="toggleRecord()">🎤</button>
+  <button class="audio-btn rec" id="recBtn" onclick="toggleRecord('recBtn')">🎤</button>
  </div>
 
  <div class="progress-wrapper">
@@ -142,9 +144,16 @@ const progressBar = document.getElementById("progressBar");
 let mediaRecorder;
 let audioChunks = [];
 let isRecording = false;
+let currentActiveBtnId = null;
 
-async function toggleRecord(btnId = "recBtn") {
+async function toggleRecord(btnId) {
     const btn = document.getElementById(btnId);
+    
+    // Si ya estamos grabando con otro botón, lo detenemos primero
+    if (isRecording && currentActiveBtnId !== btnId) {
+        mediaRecorder.stop();
+    }
+
     if (!isRecording) {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -156,17 +165,24 @@ async function toggleRecord(btnId = "recBtn") {
                 const audioUrl = URL.createObjectURL(audioBlob);
                 const userAudio = new Audio(audioUrl);
                 userAudio.play();
+                
+                // Resetear estado visual al terminar
+                const activeBtn = document.getElementById(currentActiveBtnId);
+                if (activeBtn) {
+                    activeBtn.classList.remove("recording");
+                    activeBtn.textContent = "🎤";
+                }
+                isRecording = false;
+                currentActiveBtnId = null;
             };
             mediaRecorder.start();
             isRecording = true;
+            currentActiveBtnId = btnId;
             btn.classList.add("recording");
             btn.textContent = "⏹";
         } catch (err) { alert("Error al acceder al micrófono."); }
     } else {
         mediaRecorder.stop();
-        isRecording = false;
-        btn.classList.remove("recording");
-        btn.textContent = "🎤";
     }
 }
 

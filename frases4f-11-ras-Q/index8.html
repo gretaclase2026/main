@@ -26,12 +26,8 @@ main{display:flex;justify-content:center;padding:24px}
 .audio-btn.slow{background:#fef08a;}
 .audio-btn.pause{background:#fee2e2; color: inherit;} 
 .audio-btn.rec{background:#fca5a5; color: white;}
-
-/* Animación y estado de grabación unificado */
+.audio-btn.rec.recording { animation: pulse 1.5s infinite; background: #ef4444; }
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-.recording { animation: pulse 1.5s infinite; background: #ef4444 !important; color: white !important; }
-.btn-rec-mini.recording { background: #f472b6 !important; }
-
 .star-btn { background: none; border: none; font-size: 32px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px 0 0; margin-right: 5px; }
 .star-btn.active { color: #f59e0b !important; }
 .progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
@@ -51,7 +47,7 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 .list-item { display: flex; align-items: flex-start; gap: 15px; padding: 15px 0; border-bottom: 1px solid #eee; }
 .list-controls-side { display: flex; flex-direction: column; gap: 8px; min-width: 44px; align-items: center; }
 .list-texts { flex-grow: 1; display: flex; flex-direction: column; gap: 6px; }
-.mini-btn { border: none; border-radius: 10px; width: 38px; height: 38px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+.mini-btn { border: none; border-radius: 10px; width: 38px; height: 38px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
 .btn-audio { background: #dbeafe; }
 .btn-rec-mini { background: #fbcfe8; }
 .star-btn-list { background: none; border: none; font-size: 26px; cursor: pointer; color: #cbd5e1; padding: 0; line-height: 1; }
@@ -81,7 +77,7 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
   <button class="audio-btn slow" onclick="playCurrent(0.75)">🐢</button>
   <button class="audio-btn" onclick="playCurrent(1.0)">🔊</button>
   <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
-  <button class="audio-btn rec" id="recBtn" onclick="toggleRecord('recBtn')">🎤</button>
+  <button class="audio-btn rec" id="recBtn" onclick="toggleRecord()">🎤</button>
  </div>
  
  <div class="progress-wrapper"><input type="range" id="progressBar" value="0" min="0" max="100" step="0.1"></div>
@@ -189,7 +185,7 @@ function getFolderName() { return "frases-76-hogar"; }
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
 let mediaRecorder, audioChunks = [], isRecording = false;
 
-async function toggleRecord(targetBtnId) {
+async function toggleRecord(targetBtnId = "recBtn") {
     const btn = document.getElementById(targetBtnId);
     if (!isRecording) {
         try {
@@ -204,15 +200,11 @@ async function toggleRecord(targetBtnId) {
             };
             mediaRecorder.start();
             isRecording = true;
-            btn.classList.add("recording");
-            // Icono de stop ⏹ para el botón principal, para los mini se mantiene el cambio de color
-            if(targetBtnId === "recBtn") btn.textContent = "⏹";
+            btn.classList.add("recording"); btn.textContent = "⏹";
         } catch (err) { alert("Error al accedir al micròfon."); }
     } else {
-        mediaRecorder.stop(); 
-        isRecording = false;
-        btn.classList.remove("recording");
-        if(targetBtnId === "recBtn") btn.textContent = "🎤";
+        mediaRecorder.stop(); isRecording = false;
+        btn.classList.remove("recording"); btn.textContent = "🎤";
     }
 }
 
@@ -298,6 +290,8 @@ function reveal() {
   const item = currentBlockData[pos];
   const esDiv = document.getElementById("es");
   const enDiv = document.getElementById("en");
+  
+  // Muestra ambos idiomas al pulsar el botón "Veure"
   esDiv.innerHTML = item.es;
   enDiv.innerHTML = item.en;
   esDiv.classList.remove("hidden");
