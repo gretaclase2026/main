@@ -8,25 +8,33 @@
 body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .card{max-width:720px;margin:20px auto;background:#fff;border-radius:24px;padding:24px;box-shadow:0 8px 18px rgba(0,0,0,.15);position:relative}
 
-.modes{display:flex;gap:10px;margin-bottom:10px;width:100%}
+.modes{display:flex;align-items:center;gap:10px;margin-bottom:10px;width:100%}
 .mode{flex:1;text-align:center;padding:14px;border-radius:24px;font-weight:bold;cursor:pointer;border:2px solid transparent}
 .mode.en{background:#d6e6f5}
 .mode.es{background:#f4d6e6}
 .mode.active{border-color:#999;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
+.unit-number{font-weight:bold;font-size:18px;color:#2563eb;padding:0 5px}
 
-.blocks{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0;justify-content:center}
+.blocks{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0;justify-content:center;align-items:center}
 .block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#f1f5f9;cursor:pointer;transition:0.2s}
 .block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1);box-shadow:0 4px 10px rgba(37,99,235,0.3)}
 
-.main-box-container{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;margin:20px 0}
+.main-box-container{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;margin:30px 0 20px 0}
 .audio-controls{display:flex;align-items:center;gap:12px;margin-bottom:15px}
 
-.audio-btn{font-size:35px;background:#dcfce7;border:none;cursor:pointer;width:75px;height:75px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
-.audio-btn.slow{background:#fef08a;width:60px;height:60px;font-size:28px}
-.audio-btn.pause{background:#fee2e2;width:60px;height:60px;font-size:28px}
+.audio-btn, .mic-btn{font-size:28px;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s; -webkit-tap-highlight-color: transparent;}
+.audio-btn{background:#dcfce7}
+.audio-btn.slow{background:#fef08a}
+.audio-btn.pause{background:#fee2e2}
 
-.mic-btn{font-size:30px;background:#fee2e2;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.3s}
-.mic-btn.listening{background:#ef4444; color:white; animation: pulse 1.5s infinite; transform: scale(1.1);}
+/* Botón de grabado (Azul) */
+.mic-btn.rec-mode { background: #d6e6f5; color: #2563eb; }
+.mic-btn.rec-mode.recording { background: #ef4444; color: white; animation: pulse 1.5s infinite; }
+
+/* Botón de dictado (Rosa) */
+.mic-btn.dict-mode {background:#fee2e2; color: #333;}
+.mic-btn.dict-mode.listening{background:#ef4444; color:white; animation: pulse 1.5s infinite;}
+
 @keyframes pulse { 0% {box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);} 70% {box-shadow: 0 0 0 15px rgba(239, 68, 68, 0);} 100% {box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);} }
 
 .star-main { background: none; border: none; font-size: 35px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px; }
@@ -35,14 +43,13 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .progress-wrapper { width: 100%; max-width: 300px; margin: 10px 0; }
 input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 5px; accent-color: #2563eb; }
 
-.counter-side{position:absolute;right:10px;top:0;font-weight:bold;color:#2563eb;font-size:22px}
+.counter-side{position:absolute;right:10px;top:-25px;font-weight:bold;color:#2563eb;font-size:22px}
 
 #word{font-size:24px;font-weight:800;margin:20px 0;line-height:1.4;min-height:120px;text-align:center;display:flex;align-items:center;justify-content:center;padding:0 10px}
 .txt-es{color:#2563eb} 
 #answer{font-size:20px;font-weight:bold;margin-top:-10px;margin-bottom:20px;text-align:center;min-height:30px;color:#666}
 
-#speech-feedback { font-style: italic; color: #ef4444; font-size: 19px; margin-bottom: 10px; min-height: 24px; text-align: center; transition: 0.2s;}
-.speech-success { color: #22c55e !important; font-weight: bold; font-style: normal !important; }
+#speech-feedback { font-style: italic; color: #ef4444; font-size: 19px; margin-bottom: 10px; min-height: 24px; text-align: center;}
 
 .actions{display:flex;gap:12px}
 .btn{flex:1;padding:18px;border-radius:18px;border:none;font-weight:bold;font-size:18px;cursor:pointer}
@@ -55,19 +62,20 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 .btn-stars-main { background: #fef3c7; color: #92400e; }
 
 #list{margin-top:20px;background:#fff;border-radius:15px;display:none;border:1px solid #ddd;padding:15px}
-.list-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #eee; }
-.list-content { flex: 1; margin-right: 10px; }
-.list-actions-side { display: flex; align-items: center; gap: 10px; }
-.mini-btn { border: none; border-radius: 8px; width: 32px; height: 32px; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+.list-item { display: flex; align-items: center; padding: 15px 0; border-bottom: 1px solid #eee; }
+.list-content { flex: 1; order: 2; } 
+.list-actions-side { display: flex; align-items: center; gap: 8px; order: 1; margin-right: 12px; } 
+
+.mini-btn { border: none; border-radius: 8px; width: 35px; height: 35px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
 .btn-audio-list { background: #dcfce7; }
-.btn-eye-list { background: #fee2e2; }
-.star-list { background: none; border: none; font-size: 20px; color: #cbd5e1; cursor: pointer; padding: 0; }
+.star-list { background: none; border: none; font-size: 22px; color: #cbd5e1; cursor: pointer; padding: 0; }
 .star-list.active { color: #f59e0b !important; }
-.blur { filter: blur(5px); transition: filter 0.3s; cursor: pointer; }
+
+.blur { filter: blur(5px); transition: filter 0.2s; cursor: pointer; user-select: none; }
 .blur.revealed { filter: blur(0); }
 
 .check-box-manual {
-    position: absolute; top: 85px; right: 22px; width: 24px; height: 24px;
+    position: absolute; top: 110px; right: 22px; width: 24px; height: 24px;
     background: #fff !important; border: 1.5px solid #22c55e !important;
     border-radius: 6px; display: flex; align-items: center; justify-content: center;
     cursor: pointer; z-index: 10; transition: all 0.2s; font-size: 14px;
@@ -80,6 +88,7 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 <div class="card">
   <div class="modes">
     <div id="modeEN" class="mode en active" onclick="setMode('EN')">ENG → ESP</div>
+    <div class="unit-number">11</div>
     <div id="modeES" class="mode es" onclick="setMode('ES')">ESP → ENG</div>
   </div>
 
@@ -91,11 +100,11 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
     </div>
     
     <div class="audio-controls">
-      <button class="star-main" id="starMain" onclick="toggleStar()">★</button>
       <button class="audio-btn slow" onclick="playAudio(0.75)">🐢</button>
       <button class="audio-btn" onclick="playAudio(1.0)">🔊</button>
       <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
-      <button class="mic-btn" id="micBtn" onclick="startDictation()">🎤</button>
+      <button class="mic-btn rec-mode" id="recBtn" onclick="toggleRecording()">🎤</button>
+      <button class="mic-btn dict-mode" id="micBtn" onclick="startDictation()">🎤</button>
     </div>
 
     <div class="progress-wrapper">
@@ -121,8 +130,10 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 </div>
 
 <audio id="audio"></audio>
+<audio id="player" style="display:none;"></audio>
 
 <script>
+// Datos (abreviados por espacio, usa los tuyos completos)
 const data = [
   {audio:"f077.mp3", en:"We need to get a move on if we want to catch the train.", es:"Tenemos que darnos prisa si queremos coger el tren."},
   {audio:"f078.mp3", en:"You need to get a grip and stop worrying about it.", es:"Tienes que controlarte y dejar de preocuparte por eso."},
@@ -190,6 +201,7 @@ let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockI
 const a = document.getElementById("audio");
 const progressBar = document.getElementById("progressBar");
 
+// --- Lógica de Dictado (Rosa) ---
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = SpeechRecognition ? new SpeechRecognition() : null;
 if (recognition) { recognition.lang = 'en-US'; recognition.interimResults = false; }
@@ -200,15 +212,12 @@ function startDictation() {
     const feedback = document.getElementById("speech-feedback");
     btn.classList.add("listening");
     feedback.textContent = "Escoltant...";
-    feedback.classList.remove("speech-success");
     recognition.start();
-
     recognition.onresult = (event) => {
         const transcript = event.results[0][0].transcript.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,"").trim();
         const original = currentBlockData[pos].en.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,"").trim();
         if (transcript === original) {
             feedback.innerHTML = `"${event.results[0][0].transcript}" 🎉`;
-            feedback.classList.add("speech-success");
             setTimeout(() => { feedback.textContent = ""; know(); }, 1200);
         } else {
             feedback.textContent = `"${event.results[0][0].transcript}"`;
@@ -217,6 +226,51 @@ function startDictation() {
     recognition.onend = () => btn.classList.remove("listening");
 }
 
+// --- Lógica de Grabado Rápido (Azul) - Pulsar una vez para grabar, otra para parar ---
+let mediaRecorder;
+let audioChunks = [];
+let isRecording = false;
+const recBtn = document.getElementById('recBtn');
+const player = document.getElementById('player');
+
+if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(stream => {
+            mediaRecorder = new MediaRecorder(stream);
+            
+            mediaRecorder.ondataavailable = event => {
+                audioChunks.push(event.data);
+            };
+
+            mediaRecorder.onstop = () => {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                const audioUrl = URL.createObjectURL(audioBlob);
+                player.src = audioUrl;
+                audioChunks = [];
+                player.play();
+            };
+        }).catch(err => console.error("Error acceso micro:", err));
+}
+
+function toggleRecording() {
+    if (!mediaRecorder) return;
+    
+    if (!isRecording) {
+        // Iniciar grabación
+        isRecording = true;
+        recBtn.classList.add('recording');
+        audioChunks = [];
+        a.pause(); 
+        mediaRecorder.start();
+    } else {
+        // Parar grabación
+        isRecording = false;
+        recBtn.classList.remove('recording');
+        mediaRecorder.stop();
+    }
+}
+
+// --- Lógica General App ---
 function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "collocations_60"; }
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
 
@@ -238,6 +292,14 @@ function initBlocks() {
   btnT.className = "block"; btnT.textContent = "T";
   btnT.onclick = () => loadBlock('T');
   container.appendChild(btnT);
+  
+  const starMain = document.createElement("button");
+  starMain.className = "star-main";
+  starMain.id = "starMain";
+  starMain.innerHTML = "★";
+  starMain.onclick = () => toggleStar();
+  container.appendChild(starMain);
+
   loadBlock((savedBlock !== null) ? (savedBlock === 'T' ? 'T' : parseInt(savedBlock)) : 0);
 }
 
@@ -271,10 +333,8 @@ function update(fromNextAction = false) {
   document.getElementById("starMain").classList.toggle("active", starredIds.includes(item.realIdx));
   const w = document.getElementById("word");
   const ans = document.getElementById("answer");
-  const feedback = document.getElementById("speech-feedback");
   progressBar.value = 0;
   ans.style.display = "none";
-  feedback.textContent = "";
 
   if (mode === "EN") {
     w.innerHTML = ``; 
@@ -295,7 +355,7 @@ function toggleStar(forcedIdx = null) {
   if (starredIds.includes(idx)) starredIds = starredIds.filter(id => id !== idx);
   else starredIds.push(idx);
   localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
-  if (forcedIdx === null) update();
+  document.getElementById("starMain").classList.toggle("active", starredIds.includes(currentBlockData[pos]?.realIdx));
 }
 
 function playAudio(speed, forcedAudio = null) {
@@ -352,6 +412,10 @@ function toggleList(type) {
   l.style.display = "block";
 }
 
+function toggleBlur(element) {
+    element.classList.toggle('revealed');
+}
+
 function renderList(type) {
   const l = document.getElementById("list");
   l.innerHTML = type === 'stars' ? "<b>Favorites (★):</b><br><br>" : "<b>Llista del bloc:</b><br><br>";
@@ -370,16 +434,15 @@ function renderList(type) {
     const itemDiv = document.createElement("div");
     itemDiv.className = "list-item";
     itemDiv.innerHTML = `
+      <div class="list-actions-side">
+        <button class="star-list ${isStarred ? 'active' : ''}" onclick="event.stopPropagation(); toggleStar(${item.realIdx}); renderList('${type}')">★</button>
+        <button class="mini-btn btn-audio-list" onclick="event.stopPropagation(); playAudio(1.0, '${item.audio}')">🔊</button>
+      </div>
       <div class="list-content">
         <div class="list-texts">
           <div class="txt-es" style="font-weight:bold; font-size:14px;">${item.es}</div>
-          <div id="list-rev-${index}" class="blur" style="font-weight:bold; font-size:16px;" onclick="this.classList.add('revealed')">${item.en}</div>
+          <div class="blur" style="font-weight:bold; font-size:16px;" onclick="toggleBlur(this)">${item.en}</div>
         </div>
-      </div>
-      <div class="list-actions-side">
-        <button class="star-list ${isStarred ? 'active' : ''}" onclick="toggleStar(${item.realIdx}); renderList('${type}')">★</button>
-        <button class="mini-btn btn-audio-list" onclick="playAudio(1.0, '${item.audio}')">🔊</button>
-        <button class="mini-btn btn-eye-list" onclick="document.getElementById('list-rev-${index}').classList.add('revealed')">👁️</button>
       </div>
     `;
     l.appendChild(itemDiv);
