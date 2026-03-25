@@ -16,10 +16,10 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#f1f5f9;cursor:pointer;transition:0.2s}
 .block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1);box-shadow:0 4px 10px rgba(37,99,235,0.3)}
 
-.main-box-container{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;margin:20px 0}
+.main-box-container{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;margin:20px 0 10px 0}
 .audio-controls{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:15px;flex-wrap:wrap}
 
-.audio-btn{font-size:35px;background:#dcfce7;border:none;cursor:pointer;width:75px;height:75px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
+.audio-btn{font-size:28px;background:#dcfce7;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
 .audio-btn.slow{background:#fef08a;width:60px;height:60px;font-size:28px}
 .audio-btn.pause{background:#fee2e2;width:60px;height:60px;font-size:28px}
 
@@ -32,17 +32,19 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 @keyframes pulse-red { 0% {box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);} 70% {box-shadow: 0 0 0 15px rgba(239, 68, 68, 0);} 100% {box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);} }
 @keyframes pulse-blue { 0% {box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7);} 70% {box-shadow: 0 0 0 15px rgba(37, 99, 235, 0);} 100% {box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);} }
 
-.star-main-block { font-size: 24px; background: #f1f5f9; border: none; cursor: pointer; color: #cbd5e1; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
-.star-main-block.active { color: #f59e0b !important; background: #fef3c7; }
+.star-main-block { font-size: 32px; background: none; border: none; cursor: pointer; color: #cbd5e1; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; transition: 0.2s; padding: 0; }
+.star-main-block.active { color: #f59e0b !important; }
 
 .progress-wrapper { width: 100%; max-width: 300px; margin: 10px 0; }
 input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 5px; accent-color: #2563eb; }
 
-.counter-side{position:absolute;right:10px;top:0;font-weight:bold;color:#2563eb;font-size:22px}
-#word{font-size:22px;font-weight:800;margin:20px 0;line-height:1.4;min-height:120px;text-align:center;display:flex;align-items:center;justify-content:center;padding:0 10px}
+/* He subido el top de 0 a -15px para separarlo de los botones en móvil */
+.counter-side{position:absolute;right:10px;top:-15px;font-weight:bold;color:#2563eb;font-size:22px}
+
+#word{font-size:22px;font-weight:800;margin:10px 0 5px 0;line-height:1.2;min-height:auto;text-align:center;display:flex;align-items:center;justify-content:center;padding:0 10px}
 .txt-es{color:#2563eb} 
-#answer{font-size:20px;font-weight:bold;margin-top:-10px;margin-bottom:20px;text-align:center;min-height:30px;color:#666}
-#speech-feedback { font-style: italic; color: #ef4444; font-size: 19px; margin-bottom: 10px; min-height: 24px; text-align: center; transition: 0.2s;}
+#speech-feedback { font-style: italic; color: #ef4444; font-size: 19px; margin: 0; min-height: 24px; text-align: center; transition: 0.2s; line-height: 1.2;}
+#answer{font-size:20px;font-weight:bold;margin: 5px 0 20px 0;text-align:center;min-height:30px;color:#666; line-height: 1.2;}
 .speech-success { color: #22c55e !important; font-weight: bold; font-style: normal !important; }
 
 .actions{display:flex;gap:12px}
@@ -312,7 +314,6 @@ function initBlocks() {
   btnT.onclick = () => loadBlock('T');
   container.appendChild(btnT);
 
-  // Botón estrella añadido al final de los bloques
   const btnStar = document.createElement("button");
   btnStar.id = "starMainBlock";
   btnStar.className = "star-main-block";
@@ -350,7 +351,6 @@ function update(fromNextAction = false) {
     return;
   }
   const item = currentBlockData[pos];
-  // Actualizar estrella del bloque
   const starBtn = document.getElementById("starMainBlock");
   if(starBtn) starBtn.classList.toggle("active", starredIds.includes(item.realIdx));
 
@@ -361,14 +361,22 @@ function update(fromNextAction = false) {
   feedback.textContent = "";
 
   if (mode === "EN") {
-    w.innerHTML = ``; 
+    if (ans.style.display === "none") {
+        w.innerHTML = ``; 
+    } else {
+        w.innerHTML = `<span>${item.en}</span>`;
+    }
     ans.innerHTML = `<span class="txt-es">${item.es}</span>`;
     if (fromNextAction) playAudio(1.0);
   } else {
     w.innerHTML = `<div class="txt-es">${item.es}</div>`;
     ans.innerHTML = `<span>${item.en}</span>`;
   }
-  ans.style.display = "none";
+  
+  if (fromNextAction) {
+    ans.style.display = "none";
+  }
+  
   document.getElementById("pos").textContent = learnedCount;
   document.getElementById("total").textContent = currentBlockData.length + learnedCount;
 }
@@ -379,7 +387,12 @@ function toggleStar(forcedIdx = null) {
   if (starredIds.includes(idx)) starredIds = starredIds.filter(id => id !== idx);
   else starredIds.push(idx);
   localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
-  if (forcedIdx === null) update();
+  
+  if (forcedIdx === null) {
+    const item = currentBlockData[pos];
+    const starBtn = document.getElementById("starMainBlock");
+    if(starBtn) starBtn.classList.toggle("active", starredIds.includes(item.realIdx));
+  }
 }
 
 function playAudio(speed, forcedAudio = null) {
@@ -456,7 +469,6 @@ function renderList(type) {
     const isStarred = starredIds.includes(item.realIdx);
     const itemDiv = document.createElement("div");
     itemDiv.className = "list-item";
-    // El texto en inglés ahora tiene el toggle de blur al hacer clic directamente
     itemDiv.innerHTML = `
       <div class="list-actions-side">
         <button class="star-list ${isStarred ? 'active' : ''}" onclick="toggleStar(${item.realIdx}); renderList('${type}')">★</button>

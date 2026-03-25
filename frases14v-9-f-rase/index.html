@@ -7,11 +7,15 @@
 <style>
 body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .card{max-width:720px;margin:20px auto;background:#fff;border-radius:24px;padding:24px;box-shadow:0 8px 18px rgba(0,0,0,.15);position:relative}
-.modes{display:flex;gap:10px;margin-bottom:10px;width:100%}
+
+/* Estilos para la cabecera con el número de unidad */
+.modes{display:flex;gap:10px;margin-bottom:10px;width:100%;align-items:center}
 .mode{flex:1;text-align:center;padding:14px;border-radius:24px;font-weight:bold;cursor:pointer;border:2px solid transparent}
 .mode.en{background:#d6e6f5}
 .mode.es{background:#f4d6e6}
 .mode.active{border-color:#999;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
+.unit-badge { font-size: 24px; font-weight: 900; color: #999; padding: 0 5px; min-width: 30px; text-align: center; }
+
 .blocks{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0;justify-content:center;align-items:center}
 .block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#f1f5f9;cursor:pointer;transition:0.2s}
 .block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1);box-shadow:0 4px 10px rgba(37,99,235,0.3)}
@@ -20,8 +24,8 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .audio-controls{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:15px;flex-wrap:wrap}
 
 .audio-btn{font-size:28px;background:#dcfce7;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
-.audio-btn.slow{background:#fef08a;width:60px;height:60px;font-size:28px}
-.audio-btn.pause{background:#fee2e2;width:60px;height:60px;font-size:28px}
+.audio-btn.slow{background:#fef08a;width:60px;height:60px}
+.audio-btn.pause{background:#fee2e2;width:60px;height:60px}
 
 .mic-btn{font-size:30px;background:#fee2e2;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.3s}
 .mic-btn.listening{background:#ef4444; color:white; animation: pulse-red 1.5s infinite; transform: scale(1.1);}
@@ -38,14 +42,13 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .progress-wrapper { width: 100%; max-width: 300px; margin: 10px 0; }
 input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 5px; accent-color: #2563eb; }
 
-/* He subido el top de 0 a -15px para separarlo de los botones en móvil */
-.counter-side{position:absolute;right:10px;top:-15px;font-weight:bold;color:#2563eb;font-size:22px}
+/* Contador subido a -30px para que no moleste abajo */
+.counter-side{position:absolute;right:10px;top:-30px;font-weight:bold;color:#2563eb;font-size:22px}
 
-#word{font-size:22px;font-weight:800;margin:10px 0 5px 0;line-height:1.2;min-height:auto;text-align:center;display:flex;align-items:center;justify-content:center;padding:0 10px}
+#word{font-size:22px;font-weight:800;margin:10px 0 5px 0;line-height:1.2;text-align:center;display:flex;align-items:center;justify-content:center;padding:0 10px}
 .txt-es{color:#2563eb} 
 #speech-feedback { font-style: italic; color: #ef4444; font-size: 19px; margin: 0; min-height: 24px; text-align: center; transition: 0.2s; line-height: 1.2;}
 #answer{font-size:20px;font-weight:bold;margin: 5px 0 20px 0;text-align:center;min-height:30px;color:#666; line-height: 1.2;}
-.speech-success { color: #22c55e !important; font-weight: bold; font-style: normal !important; }
 
 .actions{display:flex;gap:12px}
 .btn{flex:1;padding:18px;border-radius:18px;border:none;font-weight:bold;font-size:18px;cursor:pointer}
@@ -62,7 +65,7 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 .list-actions-side { display: flex; flex-direction: row; gap: 8px; padding-top: 5px; }
 .list-content { flex: 1; display: flex; flex-direction: column; gap: 4px; }
 
-.mini-btn { border: none; border-radius: 10px; width: 36px; height: 36px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+.mini-btn { border: none; border-radius: 10px; width: 36px; height: 36px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
 .btn-audio-list { background: #dcfce7; }
 .star-list { background: none; border: none; font-size: 24px; color: #cbd5e1; cursor: pointer; padding: 0; }
 .star-list.active { color: #f59e0b !important; }
@@ -84,6 +87,7 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 <div class="card">
   <div class="modes">
     <div id="modeEN" class="mode en active" onclick="setMode('EN')">ENG → CAT</div>
+    <div class="unit-badge">14</div>
     <div id="modeES" class="mode es" onclick="setMode('CA')">CAT → ENG</div>
   </div>
 
@@ -186,7 +190,7 @@ const data = [
     {audio:"f056.mp3",en:"I'd have called you if I'd known you were ill.",es:"T'hauria trucat si hagués sabut que estaves malalt."},
     {audio:"f057.mp3",en:"If we'd left earlier, we wouldn't have missed the flight.",es:"Si haguéssim sortit abans, no hauríem perdut el vol."},
     {audio:"f058.mp3",en:"She would've finished the report if she'd had more time.",es:"Ella hauria acabat l'informe si hagués tingut més temps."},
-    {audio:"f059.mp3",en:"If you'd told me, I'd have helped you.",es:"Si m'ho haguessis dit, t'hauria ajudat."},
+    {audio:"f059.mp3",en:"If you'd told me, I'd have helped you.",es:"Si m'ho haguessis dit, t'hauria ajut."},
     {audio:"f060.mp3",en:"They would've won the match if they'd played better.",es:"Haurien guanyat el partit si haguessin jugat millor."},
     {audio:"f061.mp3",en:"If it hadn't rained, we would've gone to the park.",es:"Si no hagués plogut, hauríem anat al parc."},
     {audio:"f062.mp3",en:"I'd have bought that coat if it'd been on sale.",es:"Hauria comprat aquell abric si hagués estat de rebaixes."},
@@ -244,7 +248,6 @@ function startDictation() {
     const feedback = document.getElementById("speech-feedback");
     btn.classList.add("listening");
     feedback.textContent = "Escoltant...";
-    feedback.classList.remove("speech-success");
     recognition.start();
 
     recognition.onresult = (event) => {
@@ -261,10 +264,7 @@ function startDictation() {
     recognition.onend = () => btn.classList.remove("listening");
 }
 
-let mediaRecorder;
-let audioChunks = [];
-let isRecording = false;
-
+let mediaRecorder, audioChunks = [], isRecording = false;
 async function toggleRecord() {
     const btn = document.getElementById("recBtn");
     if (!isRecording) {
@@ -276,8 +276,7 @@ async function toggleRecord() {
             mediaRecorder.onstop = () => {
                 const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
                 const audioUrl = URL.createObjectURL(audioBlob);
-                const userAudio = new Audio(audioUrl);
-                userAudio.play();
+                new Audio(audioUrl).play();
             };
             mediaRecorder.start();
             isRecording = true;
@@ -361,11 +360,8 @@ function update(fromNextAction = false) {
   feedback.textContent = "";
 
   if (mode === "EN") {
-    if (ans.style.display === "none") {
-        w.innerHTML = ``; 
-    } else {
-        w.innerHTML = `<span>${item.en}</span>`;
-    }
+    if (ans.style.display === "none") { w.innerHTML = ``; } 
+    else { w.innerHTML = `<span>${item.en}</span>`; }
     ans.innerHTML = `<span class="txt-es">${item.es}</span>`;
     if (fromNextAction) playAudio(1.0);
   } else {
@@ -373,9 +369,7 @@ function update(fromNextAction = false) {
     ans.innerHTML = `<span>${item.en}</span>`;
   }
   
-  if (fromNextAction) {
-    ans.style.display = "none";
-  }
+  if (fromNextAction) { ans.style.display = "none"; }
   
   document.getElementById("pos").textContent = learnedCount;
   document.getElementById("total").textContent = currentBlockData.length + learnedCount;
@@ -389,9 +383,8 @@ function toggleStar(forcedIdx = null) {
   localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
   
   if (forcedIdx === null) {
-    const item = currentBlockData[pos];
     const starBtn = document.getElementById("starMainBlock");
-    if(starBtn) starBtn.classList.toggle("active", starredIds.includes(item.realIdx));
+    if(starBtn) starBtn.classList.toggle("active", starredIds.includes(currentBlockData[pos].realIdx));
   }
 }
 
@@ -407,10 +400,7 @@ function pauseAudio() { a.pause(); }
 
 function reveal() {
   if (currentBlockData.length > 0) {
-    const item = currentBlockData[pos];
-    const ans = document.getElementById("answer");
-    const w = document.getElementById("word");
-    
+    const item = currentBlockData[pos], ans = document.getElementById("answer"), w = document.getElementById("word");
     if (ans.style.display === "none") {
         if (mode === "EN") w.innerHTML = `<span>${item.en}</span>`;
         ans.style.display = "block";
@@ -445,15 +435,12 @@ function setMode(m) {
 function toggleList(type) {
   const l = document.getElementById("list");
   if (l.style.display === "block" && l.dataset.type === type) { l.style.display = "none"; return; }
-  l.dataset.type = type;
-  renderList(type);
-  l.style.display = "block";
+  l.dataset.type = type; renderList(type); l.style.display = "block";
 }
 
 function renderList(type) {
   const l = document.getElementById("list");
   l.innerHTML = type === 'stars' ? "<b>Favorites (★):</b><br><br>" : "<b>Llista del bloc:</b><br><br>";
-  
   let listToRender = [];
   if (type === 'stars') {
     listToRender = data.map((item, index) => ({...item, realIdx: index})).filter(i => starredIds.includes(i.realIdx));
@@ -462,9 +449,7 @@ function renderList(type) {
     let end = currentBlockID === 'T' ? data.length : Math.min(start + 10, data.length);
     listToRender = data.slice(start, end).map((item, index) => ({...item, realIdx: start + index}));
   }
-
   if (listToRender.length === 0) { l.innerHTML += "<i>Buit.</i>"; return; }
-
   listToRender.forEach((item, index) => {
     const isStarred = starredIds.includes(item.realIdx);
     const itemDiv = document.createElement("div");
