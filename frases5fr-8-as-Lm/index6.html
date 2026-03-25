@@ -5,28 +5,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Estudi FRASES - Repàs Avançat</title>
 <style>
+/* Estilos restaurados del original y combinados */
 body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
-header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center}
+
+/* Cabecera idéntica al original */
+header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center;align-items:center;gap:15px}
 .mode-btns button{margin:0 6px;padding:8px 14px;border:none;border-radius:14px;font-weight:700;cursor:pointer}
 .mode-en{background:#dbeafe}
 .mode-es{background:#fde68a}
-main{display:flex;justify-content:center;padding:24px}
-.card{position:relative;width:100%;max-width:560px;background:#ffffff;border-radius:28px;padding:32px;box-shadow:0 10px 24px rgba(0,0,0,0.06);text-align:center}
-.counter{position:absolute;top:18px;left:22px;font-weight:800;color:#2563eb}
-.lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
-.blocks{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:15px 0 20px}
-.block{width:32px;height:32px;border-radius:50%;border:none;background:#f1f5f9;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.2s}
-.block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1);box-shadow:0 4px 10px rgba(37,99,235,0.3)}
 
-.audio-container { display: flex; justify-content: center; gap: 10px; margin: 10px 0 10px; align-items: center; }
-.audio-btn{width:60px;height:60px;border-radius:50%;border:none;background:#dbeafe;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+/* Número central azul estilo original */
+.unit-badge{color:#2563eb;padding:8px 12px;border-radius:14px;font-weight:800;font-size:24px}
+
+main{display:flex;justify-content:center;padding:20px 10px}
+.card{position:relative;width:100%;max-width:560px;background:#ffffff;border-radius:28px;padding:32px 20px;box-shadow:0 10px 24px rgba(0,0,0,0.06);text-align:center}
+.counter{position:absolute;top:18px;left:22px;font-weight:800;color:#2563eb}
+
+.blocks{display:flex;flex-wrap:wrap;gap:4px;justify-content:flex-start;margin:15px 0 20px;padding-left:2px}
+.block{width:30px;height:30px;border-radius:50%;border:none;background:#f1f5f9;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.2s}
+.block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1)}
+
+.audio-container { display: flex; justify-content: center; gap: 8px; margin: 10px 0; align-items: center; }
+.audio-btn{width:55px;height:55px;border-radius:50%;border:none;background:#dbeafe;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .audio-btn.slow{background:#fef08a;}
 .audio-btn.pause{background:#fee2e2;}
-.audio-btn.rec { background: #cbd5e1; }
+.audio-btn.rec { background: #fbcfe8; } 
 .audio-btn.rec.recording { background: #f87171; animation: blink 1.5s infinite; color: white; }
+
 @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
 
-.star-btn { background: none; border: none; font-size: 32px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 10px; }
+.star-btn { background: none; border: none; font-size: 32px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px; }
 .star-btn.active { color: #f59e0b !important; }
 
 .progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
@@ -36,8 +44,8 @@ input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius:
 .es{font-size:19px;color:#2563eb;margin-top:14px;line-height:1.4;font-weight:600}
 .en{font-size:19px;color:#0f172a;margin-top:14px;font-weight:700;line-height:1.4}
 
-.buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:22px}
-button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;cursor:pointer}
+.buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:22px}
+button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;cursor:pointer;font-size:14px}
 .reveal{background:#e0f2fe}
 .know{background:#dcfce7}
 .next{background:#fbcfe8}
@@ -48,16 +56,16 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 
 .list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
 .list-item { display: flex; align-items: flex-start; gap: 15px; padding: 15px 0; border-bottom: 1px solid #eee; }
-.list-controls-side { display: flex; flex-direction: column; gap: 8px; min-width: 40px; align-items: center; }
-.list-texts { flex-grow: 1; display: flex; flex-direction: column; gap: 6px; }
+.list-controls-side { display: flex; flex-direction: column; gap: 8px; min-width: 45px; align-items: center; }
+.list-texts { flex-grow: 1; display: flex; flex-direction: column; gap: 6px; padding-top: 4px; }
 
-.mini-btn { border: none; border-radius: 10px; width: 36px; height: 36px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
-.btn-audio { background: #dbeafe; }
-.btn-eye { background: #fee2e2; }
-.star-btn-list { background: none; border: none; font-size: 24px; cursor: pointer; color: #cbd5e1; padding: 0; line-height: 1; }
+.mini-btn { border: none; border-radius: 50%; width: 38px; height: 38px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+.btn-audio { background: #dcfce7; color: #166534; } 
+.btn-mic-list { background: #fbcfe8; color: #9d174d; }
+.star-btn-list { background: none; border: none; font-size: 26px; cursor: pointer; color: #cbd5e1; padding: 0; line-height: 1; }
 .star-btn-list.active { color: #f59e0b !important; }
 
-.blur { filter: blur(5px); transition: filter 0.3s; cursor: pointer; }
+.blur { filter: blur(5px); transition: filter 0.3s; cursor: pointer; user-select: none; }
 .blur.revealed { filter: blur(0); }
 
 .check-box-manual { position: absolute; top: 18px; right: 22px; width: 24px; height: 24px; background: #fff; border: 1.5px solid #22c55e; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 14px; }
@@ -67,17 +75,16 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 <body>
 
 <header>
- <div class="mode-btns">
   <button class="mode-en" onclick="setMode('EN')">Mode anglès → català</button>
+  <div class="unit-badge">5</div>
   <button class="mode-es" onclick="setMode('CA')">Mode català → anglès</button>
- </div>
 </header>
 
 <main>
 <div class="card">
  <div class="counter" id="counter">0 / 0</div>
  <div class="check-box-manual" id="mainCheck" onclick="markAsDone(this)"></div>
- <div id="langLabel" class="lang">ANGLÈS</div>
+ <div id="langLabel" class="lang" style="font-size:14px; font-weight:800; letter-spacing:1px; color:#64748b; margin-bottom:6px">ANGLÈS</div>
  <div id="blockContainer" class="blocks"></div>
  <div class="audio-container">
   <button class="star-btn" id="starBtn" onclick="toggleStar()">★</button>
@@ -149,7 +156,7 @@ const items = [
     {audio:"f042.mp3",en:"They've <b>been married for</b> over twenty years and they're <b>still</b> very happy.",es:"Fa <b>més de vint anys que estan casats</b> i <b>encara</b> són molt feliços."},
     {audio:"f043.mp3",en:"I'm <b>looking for</b> a new apartment <b>near the city center</b>.",es:"Estic <b>buscant</b> un pis nou <b>a prop del centre</b> de la ciutat."},
     {audio:"f044.mp3",en:"You <b>don't have to come</b> if you <b>don't feel like it</b>.",es:"<b>No cal que vingues</b> si <b>no en tens ganes</b>."},
-    {audio:"f045.mp3",en:"I <b>wish I could</b> speak more languages <b>fluently</b>.",es:"<b>M'agradaria poder</b> parlar més idiomes <b>amb fluïdesa</b>."},
+    {audio:"f045.mp3",en:"I <b>wish I could</b> speak more languages <b>fluently</b>.",es:"<b>M'agradaria poder</b> parlar más idiomes <b>amb fluïdesa</b>."},
     {audio:"f046.mp3",en:"The flight <b>was cancelled due to</b> the bad weather conditions.",es:"El vol <b>es va cancel·lar a causa de</b> les males condicions meteorològiques."},
     {audio:"f047.mp3",en:"I'm <b>going to take a nap</b> because I <b>didn't sleep well</b> last night.",es:"<b>Faré una migdiada</b> perquè <b>no he dormit bé</b> aquesta nit."},
     {audio:"f048.mp3",en:"We <b>should have left</b> earlier to <b>avoid the rush hour</b>.",es:"Hauríem d'haver <b>marxat més d'hora</b> per <b>evitar l'hora punta</b>."},
@@ -198,8 +205,8 @@ let mediaRecorder;
 let audioChunks = [];
 let isRecording = false;
 
-async function toggleMic() {
-  const recBtn = document.getElementById("recBtn");
+async function toggleMic(btnId = "recBtn") {
+  const recBtn = (btnId === "recBtn") ? document.getElementById("recBtn") : document.getElementById(btnId);
   if (!isRecording) {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -215,7 +222,7 @@ async function toggleMic() {
       mediaRecorder.start();
       isRecording = true;
       recBtn.classList.add("recording");
-      recBtn.textContent = "⏹";
+      recBtn.innerHTML = "⏹";
     } catch (err) {
       alert("No s'ha pogut accedir al micròfon.");
     }
@@ -223,7 +230,7 @@ async function toggleMic() {
     mediaRecorder.stop();
     isRecording = false;
     recBtn.classList.remove("recording");
-    recBtn.textContent = "🎤";
+    recBtn.innerHTML = "🎤";
   }
 }
 
@@ -303,6 +310,7 @@ function reveal() {
     divEn.innerHTML = item.en;
     divEs.classList.remove("hidden");
     divEn.classList.remove("hidden");
+    if (mode === "CA") playAudio(item.audio, 1.0);
   }
 }
 
@@ -337,14 +345,16 @@ function toggleList(type) {
 
 function renderList(type) {
   const box = document.getElementById("listBox");
-  box.innerHTML = type === 'stars' ? "<h3>Frases destacades (★):</h3>" : "<h3>Tota la llista (bloc actual):</h3>";
+  box.innerHTML = type === 'stars' ? "<h3>Frases destacades (★):</h3>" : "<h3>Tota la llista:</h3>";
   const listToRender = type === 'stars' 
     ? items.filter(i => starredIds.includes(i.audio))
     : items.slice(currentBlockID * 10, (currentBlockID + 1) * 10);
+  
   if (listToRender.length === 0) {
     box.innerHTML += "<p style='padding:10px;'>Buit.</p>";
     return;
   }
+
   listToRender.forEach((i, index) => {
     const isStarred = starredIds.includes(i.audio);
     const itemDiv = document.createElement("div");
@@ -353,7 +363,7 @@ function renderList(type) {
       <div class="list-controls-side">
         <button class="star-btn-list ${isStarred ? 'active' : ''}" onclick="toggleStar('${i.audio}'); renderList('${type}')">★</button>
         <button class="mini-btn btn-audio" onclick="playAudio('${i.audio}', 1.0)">🔊</button>
-        <button class="mini-btn btn-eye" onclick="document.getElementById('rev-${index}').classList.toggle('revealed')">👁️</button>
+        <button class="mini-btn btn-mic-list" id="mic-list-${index}" onclick="toggleMic('mic-list-${index}')">🎤</button>
       </div>
       <div class="list-texts">
         <div style="color:#2563eb; font-weight:700;">${i.es}</div>

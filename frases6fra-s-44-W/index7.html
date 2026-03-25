@@ -255,12 +255,14 @@ function reveal() {
   const item = currentBlockData[pos];
   const esDiv = document.getElementById("es");
   const enDiv = document.getElementById("en");
-
-  // Muestra ambos textos
-  esDiv.innerHTML = item.es;
-  enDiv.innerHTML = item.en;
-  esDiv.classList.remove("hidden");
-  enDiv.classList.remove("hidden");
+  if (!enDiv.classList.contains("hidden") && mode === "EN") esDiv.classList.add("hidden");
+  else if (!enDiv.classList.contains("hidden") && mode === "ES") enDiv.classList.add("hidden");
+  else {
+      esDiv.innerHTML = item.es;
+      enDiv.innerHTML = item.en;
+      esDiv.classList.remove("hidden");
+      enDiv.classList.remove("hidden");
+  }
 }
 
 function know() {
