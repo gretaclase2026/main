@@ -3,45 +3,78 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fast English - 50</title>
+<title>Fast English - 8</title>
 <style>
 body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .card{max-width:720px;margin:20px auto;background:#fff;border-radius:24px;padding:24px;box-shadow:0 8px 18px rgba(0,0,0,.15);position:relative}
-.modes{display:flex;gap:10px;margin-bottom:10px;width:100%}
-.mode{flex:1;text-align:center;padding:14px;border-radius:24px;font-weight:bold;cursor:pointer;border:2px solid transparent}
+
+/* Contenedor para los modos y el número de unidad */
+.modes-container { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding-right: 40px; }
+.unit-number { 
+    color: #2563eb; 
+    font-weight: bold; 
+    font-size: 24px; 
+    min-width: 30px; 
+    text-align: center; 
+}
+.mode{flex:1;text-align:center;padding:14px;border-radius:24px;font-weight:bold;cursor:pointer;border:2px solid transparent; font-size: 13px;}
 .mode.en{background:#d6e6f5}
 .mode.es{background:#f4d6e6}
 .mode.active{border-color:#999;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
+
+/* Nuevo estilo para el contador arriba a la derecha */
+.counter {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    font-weight: bold;
+    color: #2563eb;
+    font-size: 18px;
+}
+
 .blocks{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0;justify-content:center}
 .block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#f1f5f9;cursor:pointer;box-shadow:0 2px 4px rgba(0,0,0,0.1);transition: 0.2s;}
 .block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1);box-shadow:0 4px 10px rgba(37,99,235,0.3)}
 
 .lang-label{text-align:center;font-weight:bold;color:#888;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px}
-.audio-section{display:flex;align-items:center;justify-content:center;position:relative;margin:30px 0;gap:20px}
-.audio-btn{width:100px;height:100px;background:#d1e7dd;border:6px solid #f0f0f0;border-radius:50%;font-size:45px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform 0.1s}
-.audio-btn.slow{background:#fef08a; font-size:35px; width:70px; height:70px;}
-.audio-btn:active{transform:scale(0.9)}
 
-.mic-btn{font-size:30px;background:#fee2e2;border:none;cursor:pointer;width:70px;height:70px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.3s}
-.mic-btn.listening{background:#ef4444; color:white; animation: pulse 1.5s infinite; transform: scale(1.1);}
+.audio-section{display:flex;align-items:center;justify-content:center;position:relative;margin:30px 0;gap:15px}
+
+.round-btn {
+    width: 80px; height: 80px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.1s, background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.round-btn:active{transform:scale(0.95)}
+
+#btnNormal { background: #dcfce7; font-size: 35px; color: #166534; }
+#btnSlow { background: #fef08a; font-size: 35px; color: #854d0e; }
+#micBtn { background: #d6e6f5; font-size: 30px; color: #1e40af; } 
+#recBtn { background: #fbcfe8; font-size: 30px; color: #9d174d; }
+
+#micBtn.listening{background:#ef4444; color:white; animation: pulse 1.5s infinite;}
+#recBtn.active{background:#f87171 !important; color:white !important; animation: pulse 1.5s infinite;}
+
 @keyframes pulse { 0% {box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);} 70% {box-shadow: 0 0 0 15px rgba(239, 68, 68, 0);} 100% {box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);} }
 
-.star-main { background: none; border: none; font-size: 35px; cursor: pointer; color: #cbd5e1; transition: 0.2s; }
+.star-main { background: none; border: none; font-size: 35px; cursor: pointer; color: #cbd5e1; transition: 0.2s; margin-right: 10px;}
 .star-main.active { color: #f59e0b !important; }
 
-.counter{position:absolute;right:10px;font-weight:bold;color:#2563eb;font-size:24px}
 .word{text-align:center;font-size:28px;font-weight:bold;margin:20px 0;min-height:35px}
 .answer{text-align:center;font-size:22px;color:#2563eb;margin-top:10px;display:none;font-weight:bold}
 .pron{color:#9333ea;font-size:16px;margin-top:5px;font-style:italic}
 
-#speech-feedback { font-style: italic; color: #ef4444; font-size: 19px; margin-bottom: 10px; min-height: 24px; text-align: center; transition: 0.2s;}
+#speech-feedback { font-style: italic; color: #ef4444; font-size: 19px; margin: -10px 0 15px 0; min-height: 24px; text-align: center; transition: 0.2s;}
 .speech-success { color: #22c55e !important; font-weight: bold; font-style: normal !important; }
 
-/* AJUSTE BOTONES ACCIÓN: Mismo tamaño y sin bordes grises */
 .actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:25px}
-.btn{height:60px; border-radius:20px; border:none; font-weight:bold; cursor:pointer; font-size:16px; outline:none; -webkit-tap-highlight-color:transparent;}
+.btn{height:60px; border-radius:20px; border:none; font-weight:bold; cursor:pointer; font-size:16px; outline:none; -webkit-tap-highlight-color:transparent; transition: background 0.2s;}
 .btn-reveal{background:#d6e6f5}
-.btn-know{background:#d1e7dd}
+.btn-know{background:#dcfce7; color: #166534;}
 .btn-next{background:#f8d7da}
 
 .list-toggle-btns { display: flex; gap: 10px; margin-top: 20px; }
@@ -51,14 +84,14 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 #list{margin-top:20px;background:#f9f9f9;border-radius:15px;display:none;padding:15px;border:1px solid #ddd}
 .list-item { padding: 15px 0; border-bottom: 1px solid #eee; display: flex; align-items: center; justify-content: flex-start; gap: 12px; }
 .list-content { flex: 1; }
-.list-actions-side { display: flex; gap: 4px; align-items: center; order: -1; } /* Mueve a la izquierda */
-.mini-btn { border: none; border-radius: 10px; width: 38px; height: 38px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
-.btn-audio-list { background: #dcfce7; }
-.btn-mic-list { background: #fee2e2; }
-.star-list { background: none; border: none; font-size: 24px; color: #cbd5e1; cursor: pointer; padding: 0 2px; }
+.list-actions-side { display: flex; gap: 8px; align-items: center; order: -1; }
+.mini-btn { border: none; border-radius: 10px; width: 45px; height: 45px; cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; }
+.btn-audio-list { background: #dcfce7; color: #166534; }
+.btn-rec-list { background: #fbcfe8; color: #9d174d; }
+
+.star-list { background: none; border: none; font-size: 26px; color: #cbd5e1; cursor: pointer; padding: 0 2px; }
 .star-list.active { color: #f59e0b !important; }
 
-/* DESENFOQUE MEJORADO */
 .blur { filter: blur(5px); transition: filter 0.2s; cursor: pointer; user-select: none; }
 .blur.revealed { filter: blur(0); }
 
@@ -75,22 +108,28 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 </head>
 <body>
 <div class="card">
-  <div class="modes">
-    <div id="mEN" class="mode en active" onclick="setMode('EN')">ANGLÈS → CATALÀ</div>
-    <div id="mES" class="mode es" onclick="setMode('ES')">CATALÀ → ANGLÈS</div>
+  <div class="counter" id="counterDisplay">0 / 10</div>
+  
+  <div class="modes-container">
+    <div id="mEN" class="mode en active" onclick="setMode('EN')">ENG → CAT</div>
+    <div class="unit-number">8</div>
+    <div id="mES" class="mode es" onclick="setMode('ES')">CAT → ENG</div>
   </div>
+  
   <div class="blocks" id="blockContainer"></div>
   <div class="lang-label" id="langLabel">ANGLÈS RÀPID</div>
   <div class="audio-section">
     <button class="star-main" id="starMain" onclick="toggleStar()">★</button>
-    <button class="audio-btn" id="btnNormal" onclick="playAudio(1.0)">🔊</button>
-    <button class="audio-btn slow" id="btnSlow" onclick="playAudio(0.75)">🐢</button>
-    <button class="mic-btn" id="micBtn" onclick="startDictation()">🎤</button>
-    <div class="counter" id="counterDisplay">0 / 10</div>
+    <button class="round-btn" id="btnNormal" onclick="playAudio(1.0)">🔊</button>
+    <button class="round-btn" id="btnSlow" onclick="playAudio(0.75)">🐢</button>
+    <button class="round-btn" id="micBtn" onclick="startDictation()">🎤</button>
+    <button class="round-btn" id="recBtn" onclick="toggleRecording('recBtn')">🎤</button>
   </div>
+  
   <div class="word" id="word"></div>
   <div id="speech-feedback"></div>
   <div id="answer" class="answer"></div>
+  
   <div class="actions">
     <button class="btn btn-reveal" onclick="toggleReveal()">VEURE</button>
     <button class="btn btn-know" onclick="know()">JA LA SÉ</button>
@@ -105,6 +144,7 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 <audio id="audio"></audio>
 
 <script>
+// El resto del script permanece igual que en tu versión anterior
 const data = [
   {en:"I am going to do it", ca:"Ho faré", fast:"Gonna"},
   {en:"I want to go now", ca:"Vull anar-me'n ara", fast:"Wanna"},
@@ -159,83 +199,109 @@ const data = [
 ];
 
 let mode="EN", currentBlockID='T', currentBlockData=[], pos=0, learnedCount=0, totalInBlock=50;
+let mediaRecorder;
+let audioChunks = [];
+let isRecording = false;
+let currentRecordingBtn = null;
+
+async function toggleRecording(btnId) {
+  const btn = document.getElementById(btnId);
+  if (isRecording && currentRecordingBtn === btnId) {
+      stopRecordingProcess(btn);
+      return;
+  }
+  if (isRecording && currentRecordingBtn !== btnId) {
+      const oldBtn = document.getElementById(currentRecordingBtn);
+      stopRecordingProcess(oldBtn);
+      await new Promise(r => setTimeout(r, 100));
+  }
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    mediaRecorder = new MediaRecorder(stream);
+    audioChunks = [];
+    mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+    mediaRecorder.onstop = () => {
+      const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' });
+      const audioUrl = URL.createObjectURL(audioBlob);
+      const playRec = new Audio(audioUrl);
+      playRec.play();
+    };
+    mediaRecorder.start();
+    isRecording = true;
+    currentRecordingBtn = btnId;
+    btn.classList.add("active");
+  } catch (err) { 
+    isRecording = false;
+    currentRecordingBtn = null;
+  }
+}
+
+function stopRecordingProcess(btn) {
+    if (mediaRecorder && mediaRecorder.state !== "inactive") mediaRecorder.stop();
+    isRecording = false;
+    currentRecordingBtn = null;
+    if (btn) btn.classList.remove("active");
+}
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = SpeechRecognition ? new SpeechRecognition() : null;
 if (recognition) { recognition.lang = 'en-US'; recognition.interimResults = false; }
 
-function startDictation(specificIdx = null) {
-    if (!recognition) return;
-    
-    // Si no se pasa un índice específico, usamos el actual del juego
-    const targetIdx = specificIdx !== null ? specificIdx : (currentBlockData.length > 0 ? currentBlockData[pos].realIdx : null);
-    if (targetIdx === null) return;
-
-    const btn = specificIdx !== null ? document.getElementById(`mic-list-${specificIdx}`) : document.getElementById("micBtn");
+function startDictation() {
+    if (!recognition || currentBlockData.length === 0) return;
+    const targetIdx = currentBlockData[pos].realIdx;
+    const btn = document.getElementById("micBtn");
     const feedback = document.getElementById("speech-feedback");
     
-    btn.classList.add("listening");
-    if (feedback) {
-        feedback.textContent = "Escoltant...";
-        feedback.classList.remove("speech-success");
+    const w = document.getElementById("word");
+    if (mode === "EN" && w.innerText === "") {
+        w.innerText = currentBlockData[pos].en;
     }
     
+    btn.classList.add("listening");
+    if (feedback) { feedback.textContent = "Escoltant..."; feedback.classList.remove("speech-success"); }
     recognition.start();
-
     recognition.onresult = (event) => {
         const transcript = event.results[0][0].transcript.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,"").trim();
         const original = data[targetIdx].en.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,"").trim();
-        
         if (transcript === original) {
-            if (feedback) {
-                feedback.innerHTML = `"${event.results[0][0].transcript}" 🎉`;
-                feedback.classList.add("speech-success");
-            }
-            if (specificIdx === null) {
-                setTimeout(() => { feedback.textContent = ""; know(); }, 1200);
-            } else {
-                const blurTxt = document.getElementById(`list-rev-${targetIdx}`);
-                if(blurTxt) blurTxt.classList.add('revealed');
-            }
-        } else {
-            if (feedback) feedback.textContent = `"${event.results[0][0].transcript}"`;
+            if (feedback) { feedback.innerHTML = `"${event.results[0][0].transcript}" 🎉`; feedback.classList.add("speech-success"); }
+            setTimeout(() => { if(feedback) feedback.textContent = ""; know(); }, 1200);
+        } else { if (feedback) feedback.textContent = `"${event.results[0][0].transcript}"`; }
+    };
+    recognition.onerror = () => { if(feedback) feedback.textContent = "Error."; };
+    recognition.onend = () => {
+        btn.classList.remove("listening");
+        if (mode === "EN" && document.getElementById("answer").style.display === "none") {
+             setTimeout(() => {
+                 if (document.getElementById("answer").style.display === "none") w.innerText = "";
+             }, 1000);
         }
     };
-    recognition.onend = () => btn.classList.remove("listening");
 }
 
-function getFolderName() {
-    return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "fast_50";
-}
-
+function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "fast_8"; }
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
 
 function initBlocks(){
   const container=document.getElementById("blockContainer");
   const savedBlock = localStorage.getItem(getFolderName() + "_currentBlock");
-  
   container.innerHTML = "";
   const tBtn=document.createElement("button");
   tBtn.className="block"; tBtn.innerText="T"; tBtn.onclick=()=>setBlock('T');
   container.appendChild(tBtn);
-  
   for(let i=0; i<5; i++){
     const b=document.createElement("button");
     b.className="block"; b.innerText=i+1;
     b.onclick=()=>setBlock(i);
     container.appendChild(b);
   }
-
   const blockToLoad = (savedBlock !== null) ? (savedBlock === 'T' ? 'T' : parseInt(savedBlock)) : 'T';
   setBlock(blockToLoad);
-
   const card = document.querySelector(".card");
   const box = document.createElement("div");
   box.className = "check-box-manual";
-  if (localStorage.getItem(getFolderName())) {
-      box.innerHTML = "✓";
-      box.classList.add('marked');
-  }
+  if (localStorage.getItem(getFolderName())) { box.innerHTML = "✓"; box.classList.add('marked'); }
   box.onclick = function() { markAsDone(this); };
   card.appendChild(box);
 }
@@ -243,7 +309,6 @@ function initBlocks(){
 function setBlock(id){
   currentBlockID=id; learnedCount=0;
   localStorage.setItem(getFolderName() + "_currentBlock", id);
-
   if(id==='T'){
     currentBlockData=data.map((d,i)=>({...d, realIdx:i}));
     totalInBlock=50;
@@ -267,12 +332,11 @@ function update(newWord){
   const feedback = document.getElementById("speech-feedback");
   a.style.display="none";
   if(feedback) feedback.textContent = "";
-  
   if(currentBlockData.length===0){w.innerText="Bloc completat!"; return;}
-  
   const item=currentBlockData[pos];
+  
   document.getElementById("starMain").classList.toggle("active", starredIds.includes(item.realIdx));
-
+  
   if(mode==="EN"){
     lb.innerText="ANGLÈS RÀPID"; 
     w.innerText="";
@@ -287,26 +351,20 @@ function update(newWord){
 function toggleStar(forcedIdx = null) {
   const idx = forcedIdx !== null ? forcedIdx : (currentBlockData.length > 0 ? currentBlockData[pos].realIdx : null);
   if (idx === null) return;
-  if (starredIds.includes(idx)) starredIds = starredIds.filter(id => id !== idx);
-  else starredIds.push(idx);
+  if (starredIds.includes(idx)) { starredIds = starredIds.filter(id => id !== idx); } 
+  else { starredIds.push(idx); }
   localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
-  if (forcedIdx === null) update();
+  if (forcedIdx === null) { document.getElementById("starMain").classList.toggle("active", starredIds.includes(idx)); }
 }
 
 function playAudio(speed, forcedIdx = null) {
   let finalIdx;
-  if (forcedIdx !== null) {
-    finalIdx = forcedIdx;
-  } else {
-    if (currentBlockData.length === 0) return;
-    finalIdx = currentBlockData[pos].realIdx;
-  }
-  
+  if (forcedIdx !== null) finalIdx = forcedIdx;
+  else { if (currentBlockData.length === 0) return; finalIdx = currentBlockData[pos].realIdx; }
   const num = (finalIdx + 1).toString().padStart(3, "0");
   const a = document.getElementById("audio");
   a.src = "f" + num + ".mp3";
   a.playbackRate = speed;
-  
   if(forcedIdx === null) {
     const btn = speed === 1.0 ? document.getElementById('btnNormal') : document.getElementById('btnSlow');
     if(btn) { btn.classList.remove('vibrate'); void btn.offsetWidth; btn.classList.add('vibrate'); }
@@ -319,19 +377,13 @@ function toggleReveal(){
     const item=currentBlockData[pos];
     const a=document.getElementById("answer");
     const w=document.getElementById("word");
-
     if(a.style.display === "none") {
         if(mode === "EN") {
             w.innerText = item.en;
             a.innerHTML = `<div class="pron">Sona com: ${item.fast}</div><span style="color:#2563eb;">${item.ca}</span>`;
-        } else {
-            a.innerHTML = `<div>${item.en}</div><div class="pron">Sona com: ${item.fast}</div>`;
-        }
+        } else { a.innerHTML = `<div>${item.en}</div><div class="pron">Sona com: ${item.fast}</div>`; }
         a.style.display = "block";
-    } else {
-        if(mode === "EN") w.innerText = "";
-        a.style.display = "none";
-    }
+    } else { if(mode === "EN") w.innerText = ""; a.style.display = "none"; }
   }
 }
 
@@ -367,30 +419,24 @@ function toggleList(type){
 function renderList(type) {
   const l = document.getElementById("list");
   l.innerHTML = type === 'stars' ? "<b>Favorits (★):</b><br><br>" : "<b>Llista del bloc:</b><br><br>";
-  
   let listToRender = [];
-  if (type === 'stars') {
-    listToRender = data.map((item, index) => ({...item, realIdx: index})).filter(i => starredIds.includes(i.realIdx));
-  } else {
-    if (currentBlockID === 'T') {
-      listToRender = data.map((item, index) => ({...item, realIdx: index}));
-    } else {
-      let start = currentBlockID * 10;
-      listToRender = data.slice(start, start + 10).map((item, index) => ({...item, realIdx: start + index}));
-    }
+  if (type === 'stars') listToRender = data.map((item, index) => ({...item, realIdx: index})).filter(i => starredIds.includes(i.realIdx));
+  else {
+    if (currentBlockID === 'T') listToRender = data.map((item, index) => ({...item, realIdx: index}));
+    else { let start = currentBlockID * 10; listToRender = data.slice(start, start + 10).map((item, index) => ({...item, realIdx: start + index})); }
   }
-
   if (listToRender.length === 0) { l.innerHTML += "<i>Buit.</i>"; return; }
 
   listToRender.forEach((item) => {
     const isStarred = starredIds.includes(item.realIdx);
     const itemDiv = document.createElement("div");
     itemDiv.className = "list-item";
+    const listRecId = `recBtnList_${item.realIdx}`;
     itemDiv.innerHTML = `
       <div class="list-actions-side">
         <button class="star-list ${isStarred ? 'active' : ''}" onclick="toggleStar(${item.realIdx}); renderList('${type}')">★</button>
         <button class="mini-btn btn-audio-list" onclick="playAudio(1.0, ${item.realIdx})">🔊</button>
-        <button class="mini-btn btn-mic-list" id="mic-list-${item.realIdx}" onclick="startDictation(${item.realIdx})">🎤</button>
+        <button id="${listRecId}" class="mini-btn btn-rec-list" onclick="toggleRecording('${listRecId}')">🎤</button>
       </div>
       <div class="list-content">
         <div style="color:#2563eb; font-weight:bold; font-size:14px;">${item.ca}</div>
@@ -403,9 +449,7 @@ function renderList(type) {
 
 function markAsDone(element) {
     localStorage.setItem(getFolderName(), new Date().toISOString());
-    element.innerHTML = "✓";
-    element.classList.add('marked');
-    alert("Lliçó marcada ✅");
+    element.innerHTML = "✓"; element.classList.add('marked'); alert("Lliçó marcada ✅");
 }
 
 initBlocks();

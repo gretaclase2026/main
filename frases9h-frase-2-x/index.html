@@ -26,10 +26,12 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .audio-btn{font-size:35px;background:#dcfce7;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
 .audio-btn.slow{background:#fef08a;font-size:28px}
 .audio-btn.pause{background:#fee2e2;font-size:28px}
+
 .audio-btn.rec{background:#dbeafe;font-size:28px} 
-.audio-btn.rec.active{background:#3b82f6;color:white;animation:pulse 1.5s infinite}
+.audio-btn.rec.active, .audio-btn.rec.listening {background:#3b82f6 !important;color:white !important;animation:pulse 1.5s infinite}
+
 .audio-btn.mic{background:#fbcfe8;font-size:28px} 
-.audio-btn.mic.listening{background:#f87171;animation:pulse 1.5s infinite}
+.audio-btn.mic.active{background:#f87171 !important; color:white !important; animation:pulse 1.5s infinite}
 
 @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.1);} 100% {transform: scale(1);} }
 
@@ -66,7 +68,6 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 .mini-btn { border: none; border-radius: 8px; width: 36px; height: 36px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
 .btn-audio-list { background: #dcfce7; }
 
-/* CAMBIO A ROSA para los micros de la lista */
 .btn-rec-list { background: #fbcfe8; font-size: 18px; }
 .btn-rec-list.active { background: #f87171; color: white; animation: pulse 1.5s infinite; }
 
@@ -104,8 +105,8 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
       <button class="audio-btn slow" onclick="playAudio(0.75)">🐢</button>
       <button class="audio-btn" onclick="playAudio(1.0)">🔊</button>
       <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
-      <button id="recBtn" class="audio-btn rec" onclick="toggleRecording()">🎤</button>
-      <button id="micBtn" class="audio-btn mic" onclick="toggleMic()">🎤</button>
+      <button id="recBtn" class="audio-btn rec" onclick="toggleMic()">🎤</button>
+      <button id="micBtn" class="audio-btn mic" onclick="toggleRecording('micBtn')">🎤</button>
     </div>
 
     <div class="progress-wrapper">
@@ -243,13 +244,13 @@ if (SpeechRecognition) {
     recognition.interimResults = false;
     recognition.onstart = () => {
         isListening = true;
-        document.getElementById("micBtn").classList.add("listening");
+        document.getElementById("recBtn").classList.add("listening");
         const fb = document.getElementById("speechFeedback");
         if(fb) fb.innerHTML = "...";
     };
     recognition.onend = () => {
         isListening = false;
-        document.getElementById("micBtn").classList.remove("listening");
+        document.getElementById("recBtn").classList.remove("listening");
     };
     recognition.onresult = (event) => {
         const transcript = event.results[0][0].transcript.toLowerCase().replace(/[.,?!]/g, "").trim();
@@ -332,8 +333,10 @@ function update(fromNextAction = false) {
   const aElement = document.getElementById("answer");
   const wasAnswerVisible = (aElement.style.display === "block");
   progressBar.value = 0;
+  
   if (mode === "EN") {
-    w.innerHTML = fromNextAction ? "" : `<span style="color:#333;">${item.en}</span>`; 
+    // Al pasar a la siguiente frase (fromNextAction), el texto en inglés nace oculto (display:none)
+    w.innerHTML = `<span class="txt-main-word" style="color:#333; display:${fromNextAction ? 'none' : 'inline'};">${item.en}</span>`; 
     w.innerHTML += `<div id="speechFeedback"></div>`;
     aElement.innerHTML = `<span class="txt-es">${item.es}</span>`;
     if (fromNextAction) playAudio(1.0);
@@ -341,9 +344,25 @@ function update(fromNextAction = false) {
     w.innerHTML = `<div style='font-size:22px;' class="txt-es">${item.es}</div><div id="speechFeedback"></div>`;
     aElement.innerHTML = `<span style="font-size:24px;">${item.en}</span>`;
   }
+  
   aElement.style.display = fromNextAction ? "none" : (wasAnswerVisible ? "block" : "none");
   document.getElementById("pos").textContent = learnedCount;
   document.getElementById("total").textContent = currentBlockData.length + learnedCount;
+}
+
+function reveal() {
+  if (currentBlockData.length > 0) {
+    const w = document.getElementById("word");
+    const aElement = document.getElementById("answer");
+
+    if (mode === "EN") {
+      const textSpan = w.querySelector("span.txt-main-word");
+      if (textSpan) {
+        textSpan.style.display = (textSpan.style.display === "none") ? "inline" : "none";
+      }
+    }
+    aElement.style.display = (aElement.style.display === "block") ? "none" : "block";
+  }
 }
 
 function toggleStar(forcedIdx = null) {
@@ -364,20 +383,6 @@ function playAudio(speed, forcedIdx = null) {
 }
 
 function pauseAudio() { a.pause(); }
-
-function reveal() {
-  if (currentBlockData.length > 0) {
-    const item = currentBlockData[pos];
-    const w = document.getElementById("word");
-    const aElement = document.getElementById("answer");
-    if (mode === "EN") {
-      const textSpan = w.querySelector("span");
-      if (textSpan) textSpan.style.display = (textSpan.style.display === "none") ? "inline" : "none";
-      else w.innerHTML = `<span style="color:#333;">${item.en}</span><div id="speechFeedback"></div>`;
-    }
-    aElement.style.display = (aElement.style.display === "block") ? "none" : "block";
-  }
-}
 
 function know() {
   if (currentBlockData.length === 0) return;

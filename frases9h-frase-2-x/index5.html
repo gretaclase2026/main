@@ -26,9 +26,9 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .audio-btn{font-size:35px;background:#dcfce7;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
 .audio-btn.slow{background:#fef08a;font-size:28px}
 .audio-btn.pause{background:#fee2e2;font-size:28px}
-.audio-btn.rec{background:#dbeafe;font-size:28px} /* Blau per gravar */
+.audio-btn.rec{background:#dbeafe;font-size:28px} 
 .audio-btn.rec.active{background:#3b82f6;color:white;animation:pulse 1.5s infinite}
-.audio-btn.mic{background:#fbcfe8;font-size:28px} /* Rosa per reconèixer */
+.audio-btn.mic{background:#fbcfe8;font-size:28px} 
 .audio-btn.mic.listening{background:#f87171;animation:pulse 1.5s infinite}
 
 @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.1);} 100% {transform: scale(1);} }
@@ -39,7 +39,6 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .progress-wrapper { width: 100%; max-width: 300px; margin: 10px 0; }
 input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 5px; accent-color: #2563eb; }
 
-/* MODIFICACIÓ: Pujat el marcador una mica més */
 .counter-side{position:absolute;right:10px;top:-22px;font-weight:bold;color:#2563eb;font-size:22px}
 
 #word{font-size:22px;font-weight:800;margin:20px 0;line-height:1.4;min-height:120px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 10px}
@@ -67,9 +66,9 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 .mini-btn { border: none; border-radius: 8px; width: 36px; height: 36px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
 .btn-audio-list { background: #dcfce7; }
 
-/* MODIFICACIÓ: Estil per al micro blau de la llista */
-.btn-rec-list { background: #dbeafe; font-size: 18px; }
-.btn-rec-list.active { background: #3b82f6; color: white; animation: pulse 1.5s infinite; }
+/* CAMBIO A ROSA para los micros de la lista */
+.btn-rec-list { background: #fbcfe8; font-size: 18px; }
+.btn-rec-list.active { background: #f87171; color: white; animation: pulse 1.5s infinite; }
 
 .star-list { background: none; border: none; font-size: 22px; color: #cbd5e1; cursor: pointer; padding: 0; }
 .star-list.active { color: #f59e0b !important; }
@@ -133,7 +132,6 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 <audio id="audio"></audio>
 
 <script>
-// --- DATA (50 Frases) ---
 const data = [
   {en: "Don't forget to check the pressure on the boiler before winter starts, because if it's too low, the heating won't turn on when you need it most.", es: "No olvides revisar la presión de la caldera antes de que empiece el invierno, porque si está muy baja, la calefacción no se encenderá cuando más la necesites"},
   {en: "You should back up all your photos to the cloud tonight, since your phone's storage is almost full and you might lose them if the system crashes.", es: "Deberías hacer una copia de seguridad de todas tus fotos en la nube esta noche, ya que el almacenamiento de tu móvil está casi lleno y podrías perderlas si el sistema falla"},
@@ -191,30 +189,22 @@ let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockI
 const a = document.getElementById("audio");
 const progressBar = document.getElementById("progressBar");
 
-// --- GRABADORA (Boto Blau) ---
 let mediaRecorder;
 let audioChunks = [];
 let isRecording = false;
-let currentRecordingBtn = null; // Para saber qué botón de la lista está activo
+let currentRecordingBtn = null;
 
 async function toggleRecording(btnId = "recBtn") {
   const btn = document.getElementById(btnId);
-  
-  // Si ya estamos grabando y pulsamos el MISMO botón, paramos
   if (isRecording && currentRecordingBtn === btnId) {
       stopRecordingProcess(btn);
       return;
   }
-  
-  // Si estamos grabando y pulsamos OTRO botón, paramos el anterior y empezamos este
   if (isRecording && currentRecordingBtn !== btnId) {
       const oldBtn = document.getElementById(currentRecordingBtn);
       stopRecordingProcess(oldBtn);
-      // Pequeña pausa para asegurar que el anterior ha cerrado bien
       await new Promise(r => setTimeout(r, 100));
   }
-
-  // Empezar a gravar
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     mediaRecorder = new MediaRecorder(stream);
@@ -231,22 +221,18 @@ async function toggleRecording(btnId = "recBtn") {
     currentRecordingBtn = btnId;
     btn.classList.add("active");
   } catch (err) { 
-    alert("Error accedint al micro. Assegura't de donar permisos: " + err); 
     isRecording = false;
     currentRecordingBtn = null;
   }
 }
 
 function stopRecordingProcess(btn) {
-    if (mediaRecorder && mediaRecorder.state !== "inactive") {
-        mediaRecorder.stop();
-    }
+    if (mediaRecorder && mediaRecorder.state !== "inactive") mediaRecorder.stop();
     isRecording = false;
     currentRecordingBtn = null;
     if (btn) btn.classList.remove("active");
 }
 
-// --- RECONEIXEMENT (Boto Rosa) ---
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition;
 let isListening = false;
@@ -255,23 +241,19 @@ if (SpeechRecognition) {
     recognition = new SpeechRecognition();
     recognition.lang = 'en-US';
     recognition.interimResults = false;
-
     recognition.onstart = () => {
         isListening = true;
         document.getElementById("micBtn").classList.add("listening");
         const fb = document.getElementById("speechFeedback");
         if(fb) fb.innerHTML = "...";
     };
-
     recognition.onend = () => {
         isListening = false;
         document.getElementById("micBtn").classList.remove("listening");
     };
-
     recognition.onresult = (event) => {
         const transcript = event.results[0][0].transcript.toLowerCase().replace(/[.,?!]/g, "").trim();
         const original = currentBlockData[pos].en.toLowerCase().replace(/[.,?!]/g, "").trim();
-        
         const fb = document.getElementById("speechFeedback");
         if (fb) {
           if (transcript === original) {
@@ -284,7 +266,7 @@ if (SpeechRecognition) {
 }
 
 function toggleMic() {
-    if (!recognition) { alert("El teu navegador no suporta reconeixement de veu."); return; }
+    if (!recognition) return;
     if (isListening) recognition.stop();
     else recognition.start();
 }
@@ -310,14 +292,10 @@ function initBlocks() {
   btnT.className = "block"; btnT.textContent = "T";
   btnT.onclick = () => loadBlock('T');
   container.appendChild(btnT);
-
   const starBtn = document.createElement("button");
-  starBtn.id = "starMain";
-  starBtn.className = "star-main";
-  starBtn.innerHTML = "★";
+  starBtn.id = "starMain"; starBtn.className = "star-main"; starBtn.innerHTML = "★";
   starBtn.onclick = () => toggleStar();
   container.appendChild(starBtn);
-
   const blockToLoad = (savedBlock !== null) ? (savedBlock === 'T' ? 'T' : parseInt(savedBlock)) : 0;
   loadBlock(blockToLoad);
 }
@@ -350,27 +328,20 @@ function update(fromNextAction = false) {
   }
   const item = currentBlockData[pos];
   document.getElementById("starMain").classList.toggle("active", starredIds.includes(item.realIdx));
-  
   const w = document.getElementById("word");
   const aElement = document.getElementById("answer");
-  
   const wasAnswerVisible = (aElement.style.display === "block");
-
   progressBar.value = 0;
-
   if (mode === "EN") {
     w.innerHTML = fromNextAction ? "" : `<span style="color:#333;">${item.en}</span>`; 
     w.innerHTML += `<div id="speechFeedback"></div>`;
     aElement.innerHTML = `<span class="txt-es">${item.es}</span>`;
     if (fromNextAction) playAudio(1.0);
   } else {
-    w.innerHTML = `<div style='font-size:22px;' class="txt-es">${item.es}</div>`;
-    w.innerHTML += `<div id="speechFeedback"></div>`;
+    w.innerHTML = `<div style='font-size:22px;' class="txt-es">${item.es}</div><div id="speechFeedback"></div>`;
     aElement.innerHTML = `<span style="font-size:24px;">${item.en}</span>`;
   }
-
   aElement.style.display = fromNextAction ? "none" : (wasAnswerVisible ? "block" : "none");
-  
   document.getElementById("pos").textContent = learnedCount;
   document.getElementById("total").textContent = currentBlockData.length + learnedCount;
 }
@@ -387,7 +358,7 @@ function playAudio(speed, forcedIdx = null) {
   const num = forcedIdx || (currentBlockData.length > 0 ? currentBlockData[pos].realIdx : null);
   if (!num) return;
   const fileName = "frase" + num + ".mp3";
-  if (!a.src.includes(fileName)) { a.src = fileName; }
+  if (!a.src.includes(fileName)) a.src = fileName;
   a.playbackRate = speed;
   a.play().catch(() => {});
 }
@@ -399,16 +370,11 @@ function reveal() {
     const item = currentBlockData[pos];
     const w = document.getElementById("word");
     const aElement = document.getElementById("answer");
-
     if (mode === "EN") {
       const textSpan = w.querySelector("span");
-      if (textSpan) {
-        textSpan.style.display = (textSpan.style.display === "none") ? "inline" : "none";
-      } else {
-        w.innerHTML = `<span style="color:#333;">${item.en}</span><div id="speechFeedback"></div>`;
-      }
+      if (textSpan) textSpan.style.display = (textSpan.style.display === "none") ? "inline" : "none";
+      else w.innerHTML = `<span style="color:#333;">${item.en}</span><div id="speechFeedback"></div>`;
     }
-    
     aElement.style.display = (aElement.style.display === "block") ? "none" : "block";
   }
 }
@@ -437,9 +403,7 @@ function setMode(m) {
 function toggleList(type) {
   const l = document.getElementById("list");
   if (l.style.display === "block" && l.dataset.type === type) { l.style.display = "none"; return; }
-  l.dataset.type = type;
-  renderList(type);
-  l.style.display = "block";
+  l.dataset.type = type; renderList(type); l.style.display = "block";
 }
 
 function toggleBlur(el) { el.classList.toggle('revealed'); }
@@ -447,7 +411,6 @@ function toggleBlur(el) { el.classList.toggle('revealed'); }
 function renderList(type) {
   const l = document.getElementById("list");
   l.innerHTML = type === 'stars' ? "<b>Favorites (★):</b><br><br>" : "<b>Llista del bloc:</b><br><br>";
-  
   let listToRender = [];
   if (type === 'stars') {
     listToRender = data.map((item, index) => ({...item, realIdx: index+1})).filter(i => starredIds.includes(i.realIdx));
@@ -456,17 +419,12 @@ function renderList(type) {
     let end = currentBlockID === 'T' ? data.length : Math.min(start + 10, data.length);
     listToRender = data.slice(start, end).map((item, index) => ({...item, realIdx: start + index + 1}));
   }
-
   if (listToRender.length === 0) { l.innerHTML += "<i>Buit.</i>"; return; }
-
   listToRender.forEach((item, index) => {
     const isStarred = starredIds.includes(item.realIdx);
     const itemDiv = document.createElement("div");
     itemDiv.className = "list-item";
-    
-    // MODIFICACIÓ: Afegit el botó de micro blau a la llista amb ID únic
     const listRecBtnId = `recBtnList_${item.realIdx}`;
-    
     itemDiv.innerHTML = `
       <div class="list-btns-col">
         <button class="star-list ${isStarred ? 'active' : ''}" onclick="toggleStar(${item.realIdx}); renderList('${type}')">★</button>
@@ -485,11 +443,9 @@ function renderList(type) {
 function markAsDone(element) {
     localStorage.setItem(getFolderName(), new Date().toISOString());
     element.innerHTML = "✓"; element.classList.add('marked');
-    alert("Lliçó marcada ✅");
 }
 
 initBlocks();
-
 const card = document.querySelector(".card");
 const box = document.createElement("div");
 box.className = "check-box-manual";
