@@ -24,9 +24,11 @@ main{display:flex;justify-content:center;padding:24px}
 .audio-btn.slow{background:#fef08a;}
 .audio-btn.pause{background:#fee2e2;}
 .audio-btn.rec{background:#fca5a5; color: white;}
-.audio-btn.rec.recording { animation: pulse 1.5s infinite; background: #ef4444; }
 
+/* Estilos de grabación del index44 */
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+.recording { animation: pulse 1.5s infinite; background: #ef4444 !important; color: white !important; }
+.btn-rec-mini.recording { background: #f472b6 !important; }
 
 .progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
 input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
@@ -56,9 +58,7 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 
 .mini-icon-btn{width:36px;height:36px;border:none;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px}
 .btn-play-mini{background:#dbeafe}
-.btn-rec-mini{background:#fbcfe8; transition: background 0.3s;}
-/* Clase para el estado activo en el listado */
-.btn-rec-mini.recording { background: #ef4444; color: white; animation: pulse 1.5s infinite; }
+.btn-rec-mini{background:#fce7f3}
 
 .star-btn-list{font-size:24px;cursor:pointer;color:#d1d5db;background:none;border:none}
 .star-btn-list.active{color:#facc15}
@@ -144,16 +144,10 @@ const progressBar = document.getElementById("progressBar");
 let mediaRecorder;
 let audioChunks = [];
 let isRecording = false;
-let currentActiveBtnId = null;
 
-async function toggleRecord(btnId) {
-    const btn = document.getElementById(btnId);
-    
-    // Si ya estamos grabando con otro botón, lo detenemos primero
-    if (isRecording && currentActiveBtnId !== btnId) {
-        mediaRecorder.stop();
-    }
-
+// Función de grabación unificada (basada en index44)
+async function toggleRecord(targetBtnId) {
+    const btn = document.getElementById(targetBtnId);
     if (!isRecording) {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -163,26 +157,18 @@ async function toggleRecord(btnId) {
             mediaRecorder.onstop = () => {
                 const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
                 const audioUrl = URL.createObjectURL(audioBlob);
-                const userAudio = new Audio(audioUrl);
-                userAudio.play();
-                
-                // Resetear estado visual al terminar
-                const activeBtn = document.getElementById(currentActiveBtnId);
-                if (activeBtn) {
-                    activeBtn.classList.remove("recording");
-                    activeBtn.textContent = "🎤";
-                }
-                isRecording = false;
-                currentActiveBtnId = null;
+                new Audio(audioUrl).play();
             };
             mediaRecorder.start();
             isRecording = true;
-            currentActiveBtnId = btnId;
             btn.classList.add("recording");
-            btn.textContent = "⏹";
+            if(targetBtnId === "recBtn") btn.textContent = "⏹";
         } catch (err) { alert("Error al acceder al micrófono."); }
     } else {
-        mediaRecorder.stop();
+        mediaRecorder.stop(); 
+        isRecording = false;
+        btn.classList.remove("recording");
+        if(targetBtnId === "recBtn") btn.textContent = "🎤";
     }
 }
 
@@ -269,7 +255,7 @@ function toggleList(){
  const lb = document.getElementById("listBox");
  if (!lb.classList.contains("hidden")) { lb.classList.add("hidden"); return; }
  lb.innerHTML="";
- items.forEach(i=>{
+ items.forEach((i, idx)=>{
   const isStarred = localStorage.getItem('star_' + i.id) === 'true';
   const d=document.createElement("div");
   d.className="list-item";
@@ -277,7 +263,7 @@ function toggleList(){
     <div class="list-controls-side">
         <button class="star-btn-list ${isStarred ? 'active' : ''}" onclick="toggleStar('${i.id}', this)">★</button>
         <button class="mini-icon-btn btn-play-mini" onclick="play(1.0, '${i.audio}')">🔊</button>
-        <button class="mini-icon-btn btn-rec-mini" id="rec-list-${i.id}" onclick="toggleRecord('rec-list-${i.id}')">🎤</button>
+        <button class="mini-icon-btn btn-rec-mini" id="rec-list-${idx}" onclick="toggleRecord('rec-list-${idx}')">🎤</button>
     </div>
     <div class="list-texts">
         <div class="list-es">${i.es}</div>

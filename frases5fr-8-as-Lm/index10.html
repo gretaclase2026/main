@@ -5,14 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Estudi FRASES - Repàs Avançat</title>
 <style>
-/* Estilos base */
+/* Estilos restaurados del original y combinados */
 body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
 
+/* Cabecera con botones redondeados y número menos gordo */
 header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center;align-items:center;gap:15px}
 .mode-btns button{margin:0 6px;padding:8px 14px;border:none;border-radius:20px;font-weight:700;cursor:pointer}
 .mode-en{background:#dbeafe; border-radius: 20px; padding: 8px 16px; border: none; font-weight: 700; cursor: pointer;}
 .mode-es{background:#fde68a; border-radius: 20px; padding: 8px 16px; border: none; font-weight: 700; cursor: pointer;}
 
+/* Número central con peso reducido */
 .unit-badge{color:#2563eb;padding:8px 12px;border-radius:14px;font-weight:500;font-size:24px}
 
 main{display:flex;justify-content:center;padding:20px 10px}
@@ -23,18 +25,14 @@ main{display:flex;justify-content:center;padding:20px 10px}
 .block{width:30px;height:30px;border-radius:50%;border:none;background:#f1f5f9;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.2s}
 .block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1)}
 
-/* Audio y Grabación - Estética index.html */
 .audio-container { display: flex; justify-content: center; gap: 8px; margin: 10px 0; align-items: center; }
 .audio-btn{width:55px;height:55px;border-radius:50%;border:none;background:#dbeafe;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .audio-btn.slow{background:#fef08a;}
 .audio-btn.pause{background:#fee2e2;}
+.audio-btn.rec { background: #fbcfe8; } 
+.audio-btn.rec.recording { background: #f87171; animation: blink 1.5s infinite; color: white; }
 
-/* Botón REC principal y de lista */
-.audio-btn.rec, .btn-mic-list { background: #fce7f3 !important; color: #9d174d !important; }
-
-/* Animación de pulso cuando graba */
-@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-.recording { animation: pulse 1.5s infinite !important; background: #f472b6 !important; color: white !important; }
+@keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
 
 .star-btn { background: none; border: none; font-size: 32px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px; }
 .star-btn.active { color: #f59e0b !important; }
@@ -63,6 +61,7 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 
 .mini-btn { border: none; border-radius: 50%; width: 38px; height: 38px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
 .btn-audio { background: #dcfce7; color: #166534; } 
+.btn-mic-list { background: #fbcfe8; color: #9d174d; }
 .star-btn-list { background: none; border: none; font-size: 26px; cursor: pointer; color: #cbd5e1; padding: 0; line-height: 1; }
 .star-btn-list.active { color: #f59e0b !important; }
 
@@ -85,14 +84,14 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 <div class="card">
  <div class="counter" id="counter">0 / 0</div>
  <div class="check-box-manual" id="mainCheck" onclick="markAsDone(this)"></div>
- <div id="langLabel" class="lang" style="font-size:14px; font-weight:800; letter-spacing:1px; color:#64748b; margin-bottom:66px">ANGLÈS</div>
+ <div id="langLabel" class="lang" style="font-size:14px; font-weight:800; letter-spacing:1px; color:#64748b; margin-bottom:6px">ANGLÈS</div>
  <div id="blockContainer" class="blocks"></div>
  <div class="audio-container">
   <button class="star-btn" id="starBtn" onclick="toggleStar()">★</button>
   <button class="audio-btn slow" onclick="playCurrent(0.75)">🐢</button>
   <button class="audio-btn" onclick="playCurrent(1.0)">🔊</button>
   <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
-  <button class="audio-btn rec" id="recBtn" onclick="toggleMic('recBtn')">🎤</button>
+  <button class="audio-btn rec" id="recBtn" onclick="toggleMic()">🎤</button>
  </div>
  <div class="progress-wrapper"><input type="range" id="progressBar" value="0" min="0" max="100" step="0.1"></div>
  <div id="es" class="es hidden"></div>
@@ -112,6 +111,7 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 <div id="listBox" class="list-box hidden"></div>
 
 <script>
+// (El resto del script se mantiene idéntico al original)
 const items = [
     {audio:"f001.mp3",en:"The doctor told me I <b>had to stop</b> smoking and start exercising.",es:"El metge em va dir que <b>havia de deixar de</b> fumar i començar a fer exercici."},
     {audio:"f002.mp3",en:"We went to the bank yesterday morning <b>to open</b> a savings account, but it was closed <b>because it was</b> a holiday.",es:"Vam anar al banc ahir al matí <b>per obrir</b> un compte d'estalvis, però estava tancat <b>perquè era</b> festiu."},
@@ -206,8 +206,8 @@ let mediaRecorder;
 let audioChunks = [];
 let isRecording = false;
 
-async function toggleMic(btnId) {
-  const recBtn = document.getElementById(btnId);
+async function toggleMic(btnId = "recBtn") {
+  const recBtn = (btnId === "recBtn") ? document.getElementById("recBtn") : document.getElementById(btnId);
   if (!isRecording) {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -223,7 +223,7 @@ async function toggleMic(btnId) {
       mediaRecorder.start();
       isRecording = true;
       recBtn.classList.add("recording");
-      if(btnId === "recBtn") recBtn.innerHTML = "⏹";
+      recBtn.innerHTML = "⏹";
     } catch (err) {
       alert("No s'ha pogut accedir al micròfon.");
     }
@@ -231,7 +231,7 @@ async function toggleMic(btnId) {
     mediaRecorder.stop();
     isRecording = false;
     recBtn.classList.remove("recording");
-    if(btnId === "recBtn") recBtn.innerHTML = "🎤";
+    recBtn.innerHTML = "🎤";
   }
 }
 

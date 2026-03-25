@@ -16,17 +16,18 @@ main{display:flex;justify-content:center;padding:24px}
 .counter{position:absolute;top:18px;left:22px;font-weight:800;color:#2563eb}
 .lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
 
-/* Audio y Grabación */
+/* Audio y Grabación (Estilo index44) */
 .audio-container { display: flex; justify-content: center; gap: 8px; margin: 10px 0; align-items: center; flex-wrap: nowrap; }
 .audio-btn{width:54px;height:54px;border-radius:50%;border:none;background:#dbeafe;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;flex-shrink:0}
 .audio-btn.slow{background:#fef08a;}
 .audio-btn.pause{background:#fee2e2; color: inherit;} 
 .audio-btn.rec{background:#fca5a5; color: white;}
-.audio-btn.rec.recording { animation: pulse 1.5s infinite; background: #ef4444; }
 
+/* Animación y estado de grabación */
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+.recording { animation: pulse 1.5s infinite !important; background: #ef4444 !important; color: white !important; }
+.btn-rec-mini.recording { background: #f472b6 !important; }
 
-/* Estrella posicionada a la izquierda */
 .star-main{font-size:28px;cursor:pointer;color:#d1d5db;background:none;border:none;padding:0;transition:0.2s;margin-right:4px}
 .star-main.active{color:#facc15}
 
@@ -59,7 +60,7 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 
 .mini-icon-btn{width:36px;height:36px;border:none;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px}
 .btn-play-mini{background:#dbeafe}
-.btn-rec-mini{background:#fbcfe8} /* Rosa pastel */
+.btn-rec-mini{background:#fce7f3}
 .star-btn-list{font-size:24px;cursor:pointer;color:#d1d5db;background:none;border:none}
 .star-btn-list.active{color:#facc15}
 
@@ -90,7 +91,7 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
   <button class="audio-btn slow" onclick="play(0.75)">🐢</button>
   <button class="audio-btn" onclick="play(1.0)">🔊</button>
   <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
-  <button class="audio-btn rec" id="recBtn" onclick="toggleRecord()">🎤</button>
+  <button class="audio-btn rec" id="recBtn" onclick="toggleRecord('recBtn')">🎤</button>
  </div>
 
  <div class="progress-wrapper">
@@ -139,8 +140,9 @@ let mediaRecorder;
 let audioChunks = [];
 let isRecording = false;
 
-async function toggleRecord(btnId = "recBtn") {
-    const btn = document.getElementById(btnId);
+// Función de grabación unificada de index44
+async function toggleRecord(targetBtnId) {
+    const btn = document.getElementById(targetBtnId);
     if (!isRecording) {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -150,19 +152,18 @@ async function toggleRecord(btnId = "recBtn") {
             mediaRecorder.onstop = () => {
                 const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
                 const audioUrl = URL.createObjectURL(audioBlob);
-                const userAudio = new Audio(audioUrl);
-                userAudio.play();
+                new Audio(audioUrl).play();
             };
             mediaRecorder.start();
             isRecording = true;
             btn.classList.add("recording");
-            if(btnId === "recBtn") btn.textContent = "⏹";
+            if(targetBtnId === "recBtn") btn.textContent = "⏹";
         } catch (err) { alert("Error en accedir al micròfon."); }
     } else {
         mediaRecorder.stop();
         isRecording = false;
         btn.classList.remove("recording");
-        if(btnId === "recBtn") btn.textContent = "🎤";
+        if(targetBtnId === "recBtn") btn.textContent = "🎤";
     }
 }
 
@@ -268,7 +269,7 @@ function toggleList(){
  const lb = document.getElementById("listBox");
  if (!lb.classList.contains("hidden")) { lb.classList.add("hidden"); return; }
  lb.innerHTML="";
- items.forEach(i=>{
+ items.forEach((i, idx)=>{
   const isStarred = localStorage.getItem('star_' + i.id) === 'true';
   const d=document.createElement("div");
   d.className="list-item";
@@ -276,7 +277,7 @@ function toggleList(){
     <div class="list-controls-side">
         <button class="star-btn-list ${isStarred ? 'active' : ''}" onclick="toggleStar('${i.id}', this)">★</button>
         <button class="mini-icon-btn btn-play-mini" onclick="play(1.0, '${i.audio}')">🔊</button>
-        <button class="mini-icon-btn btn-rec-mini" id="rec-mini-${i.id}" onclick="toggleRecord('rec-mini-${i.id}')">🎤</button>
+        <button class="mini-icon-btn btn-rec-mini" id="rec-mini-${idx}" onclick="toggleRecord('rec-mini-${idx}')">🎤</button>
     </div>
     <div class="list-texts">
         <div class="list-ca">${i.ca}</div>

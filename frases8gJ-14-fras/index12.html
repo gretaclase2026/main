@@ -7,92 +7,42 @@
 <style>
 body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .card{max-width:720px;margin:20px auto;background:#fff;border-radius:24px;padding:24px;box-shadow:0 8px 18px rgba(0,0,0,.15);position:relative}
-
-/* Contenedor para los modos y el número de unidad */
 .modes-container { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding-right: 40px; }
-.unit-number { 
-    color: #2563eb; 
-    font-weight: bold; 
-    font-size: 24px; 
-    min-width: 30px; 
-    text-align: center; 
-}
+.unit-number { color: #2563eb; font-weight: bold; font-size: 24px; min-width: 30px; text-align: center; }
 .mode{flex:1;text-align:center;padding:14px;border-radius:24px;font-weight:bold;cursor:pointer;border:2px solid transparent; font-size: 13px;}
 .mode.en{background:#d6e6f5}
 .mode.es{background:#f4d6e6}
 .mode.active{border-color:#999;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
-
-/* Nuevo estilo para el contador arriba a la derecha */
-.counter {
-    position: absolute;
-    top: 24px;
-    right: 24px;
-    font-weight: bold;
-    color: #2563eb;
-    font-size: 18px;
-}
-
-/* MODIFICADO: Contenedor de bloques con margen izquierdo sutil y alineado al inicio */
+.counter { position: absolute; top: 24px; right: 24px; font-weight: bold; color: #2563eb; font-size: 18px; }
 .blocks{display:flex;flex-wrap:wrap;gap:4px;margin:15px 0 15px 10px;justify-content:flex-start; align-items: center;}
 .block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#f1f5f9;cursor:pointer;box-shadow:0 2px 4px rgba(0,0,0,0.1);transition: 0.2s;}
 .block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1);box-shadow:0 4px 10px rgba(37,99,235,0.3)}
-
 .lang-label{text-align:center;font-weight:bold;color:#888;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px}
-
 .audio-section{display:flex;align-items:center;justify-content:center;position:relative;margin:30px 0;gap:15px}
-
-.round-btn {
-    width: 80px; height: 80px;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: transform 0.1s, background 0.2s, box-shadow 0.2s;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
+.round-btn { width: 80px; height: 80px; border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.1s, background 0.2s, box-shadow 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
 .round-btn:active{transform:scale(0.95)}
-
 #btnNormal { background: #dcfce7; font-size: 35px; color: #166534; }
 #btnSlow { background: #fef08a; font-size: 35px; color: #854d0e; }
 #micBtn { background: #d6e6f5; font-size: 30px; color: #1e40af; } 
 #recBtn { background: #fbcfe8; font-size: 30px; color: #9d174d; }
-
 #micBtn.listening{background:#ef4444; color:white; animation: pulse 1.5s infinite;}
 #recBtn.active{background:#f87171 !important; color:white !important; animation: pulse 1.5s infinite;}
-
 @keyframes pulse { 0% {box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);} 70% {box-shadow: 0 0 0 15px rgba(239, 68, 68, 0);} 100% {box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);} }
-
-/* MODIFICADO: Estilos de la estrella principal en la fila de bloques */
-.star-main { 
-    background: none; 
-    border: none; 
-    font-size: 35px; 
-    cursor: pointer; 
-    color: #cbd5e1; 
-    transition: 0.2s; 
-    margin-left: 10px; /* Espacio con el último bloque */
-    padding: 0;
-    line-height: 1;
-}
+.star-main { background: none; border: none; font-size: 35px; cursor: pointer; color: #cbd5e1; transition: 0.2s; margin-left: 10px; padding: 0; line-height: 1; }
 .star-main.active { color: #f59e0b !important; }
-
 .word{text-align:center;font-size:28px;font-weight:bold;margin:20px 0;min-height:35px}
 .answer{text-align:center;font-size:22px;color:#2563eb;margin-top:10px;display:none;font-weight:bold}
 .pron{color:#9333ea;font-size:16px;margin-top:5px;font-style:italic}
-
 #speech-feedback { font-style: italic; color: #ef4444; font-size: 19px; margin: -10px 0 15px 0; min-height: 24px; text-align: center; transition: 0.2s;}
 .speech-success { color: #22c55e !important; font-weight: bold; font-style: normal !important; }
-
 .actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:25px}
 .btn{height:60px; border-radius:20px; border:none; font-weight:bold; cursor:pointer; font-size:16px; outline:none; -webkit-tap-highlight-color:transparent; transition: background 0.2s;}
 .btn-reveal{background:#d6e6f5}
 .btn-know{background:#dcfce7; color: #166534;}
 .btn-next{background:#f8d7da}
-
 .list-toggle-btns { display: flex; gap: 10px; margin-top: 20px; }
 .btn-list-main { flex: 1; padding: 16px; border-radius: 20px; border: none; background: #e9d5ff; font-weight: bold; cursor: pointer; font-size: 16px; }
 .btn-stars-main { background: #fef3c7; color: #92400e; }
-
 #list{margin-top:20px;background:#f9f9f9;border-radius:15px;display:none;padding:15px;border:1px solid #ddd}
 .list-item { padding: 15px 0; border-bottom: 1px solid #eee; display: flex; align-items: center; justify-content: flex-start; gap: 12px; }
 .list-content { flex: 1; }
@@ -100,41 +50,25 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .mini-btn { border: none; border-radius: 10px; width: 45px; height: 45px; cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; }
 .btn-audio-list { background: #dcfce7; color: #166534; }
 .btn-rec-list { background: #fbcfe8; color: #9d174d; }
-
 .star-list { background: none; border: none; font-size: 26px; color: #cbd5e1; cursor: pointer; padding: 0 2px; }
 .star-list.active { color: #f59e0b !important; }
-
 .blur { filter: blur(5px); transition: filter 0.2s; cursor: pointer; user-select: none; }
 .blur.revealed { filter: blur(0); }
-
 .vibrate{animation:vibrate 0.3s linear}
 @keyframes vibrate{0%{transform:rotate(0)}25%{transform:rotate(5deg)}50%{transform:rotate(0)}75%{transform:rotate(-5deg)}100%{transform:rotate(0)}}
-
-/* MODIFICADO: Posición del checkbox manual alineado a la derecha en la fila de bloques */
-.check-box-manual {
-    position: absolute; 
-    top: 85px; /* Alineado con la fila de bloques */
-    right: 22px; 
-    width: 24px; 
-    height: 24px;
-    background: #fff; border: 1.5px solid #22c55e; border-radius: 6px; 
-    display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 14px;
-}
+.check-box-manual { position: absolute; top: 85px; right: 22px; width: 24px; height: 24px; background: #fff; border: 1.5px solid #22c55e; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 14px; }
 .check-box-manual.marked { background: #22c55e !important; color: white !important; }
 </style>
 </head>
 <body>
 <div class="card">
   <div class="counter" id="counterDisplay">0 / 10</div>
-  
   <div class="modes-container">
     <div id="mEN" class="mode en active" onclick="setMode('EN')">ENG → CAT</div>
     <div class="unit-number">8</div>
     <div id="mES" class="mode es" onclick="setMode('ES')">CAT → ENG</div>
   </div>
-  
   <div class="blocks" id="blockContainer"></div>
-  
   <div class="lang-label" id="langLabel">ANGLÈS RÀPID</div>
   <div class="audio-section">
     <button class="round-btn" id="btnNormal" onclick="playAudio(1.0)">🔊</button>
@@ -142,11 +76,9 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
     <button class="round-btn" id="micBtn" onclick="startDictation()">🎤</button>
     <button class="round-btn" id="recBtn" onclick="toggleRecording('recBtn')">🎤</button>
   </div>
-  
   <div class="word" id="word"></div>
   <div id="speech-feedback"></div>
   <div id="answer" class="answer"></div>
-  
   <div class="actions">
     <button class="btn btn-reveal" onclick="toggleReveal()">VEURE</button>
     <button class="btn btn-know" onclick="know()">JA LA SÉ</button>
@@ -222,10 +154,7 @@ let currentRecordingBtn = null;
 
 async function toggleRecording(btnId) {
   const btn = document.getElementById(btnId);
-  if (isRecording && currentRecordingBtn === btnId) {
-      stopRecordingProcess(btn);
-      return;
-  }
+  if (isRecording && currentRecordingBtn === btnId) { stopRecordingProcess(btn); return; }
   if (isRecording && currentRecordingBtn !== btnId) {
       const oldBtn = document.getElementById(currentRecordingBtn);
       stopRecordingProcess(oldBtn);
@@ -246,10 +175,7 @@ async function toggleRecording(btnId) {
     isRecording = true;
     currentRecordingBtn = btnId;
     btn.classList.add("active");
-  } catch (err) { 
-    isRecording = false;
-    currentRecordingBtn = null;
-  }
+  } catch (err) { isRecording = false; currentRecordingBtn = null; }
 }
 
 function stopRecordingProcess(btn) {
@@ -268,32 +194,30 @@ function startDictation() {
     const targetIdx = currentBlockData[pos].realIdx;
     const btn = document.getElementById("micBtn");
     const feedback = document.getElementById("speech-feedback");
-    
-    const w = document.getElementById("word");
-    if (mode === "EN" && w.innerText === "") {
-        w.innerText = currentBlockData[pos].en;
-    }
+    const answerDiv = document.getElementById("answer");
     
     btn.classList.add("listening");
     if (feedback) { feedback.textContent = "Escoltant..."; feedback.classList.remove("speech-success"); }
+    
     recognition.start();
+    
     recognition.onresult = (event) => {
         const transcript = event.results[0][0].transcript.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,"").trim();
         const original = data[targetIdx].en.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,"").trim();
+        
         if (transcript === original) {
             if (feedback) { feedback.innerHTML = `"${event.results[0][0].transcript}" 🎉`; feedback.classList.add("speech-success"); }
             setTimeout(() => { if(feedback) feedback.textContent = ""; know(); }, 1200);
-        } else { if (feedback) feedback.textContent = `"${event.results[0][0].transcript}"`; }
-    };
-    recognition.onerror = () => { if(feedback) feedback.textContent = "Error."; };
-    recognition.onend = () => {
-        btn.classList.remove("listening");
-        if (mode === "EN" && document.getElementById("answer").style.display === "none") {
-             setTimeout(() => {
-                 if (document.getElementById("answer").style.display === "none") w.innerText = "";
-             }, 1000);
+        } else {
+            if (feedback) feedback.textContent = `"${event.results[0][0].transcript}"`;
+            // Si falla, mostramos la respuesta para que pueda ver el error si no estaba ya visible
+            if (answerDiv.style.display === "none") {
+               toggleReveal();
+            }
         }
     };
+    recognition.onerror = () => { if(feedback) feedback.textContent = "Error."; };
+    recognition.onend = () => { btn.classList.remove("listening"); };
 }
 
 function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "fast_8"; }
@@ -303,31 +227,23 @@ function initBlocks(){
   const container=document.getElementById("blockContainer");
   const savedBlock = localStorage.getItem(getFolderName() + "_currentBlock");
   container.innerHTML = "";
-  
-  // Bloque T
   const tBtn=document.createElement("button");
   tBtn.className="block"; tBtn.id="btnBlockT"; tBtn.innerText="T"; tBtn.onclick=()=>setBlock('T');
   container.appendChild(tBtn);
-  
-  // Bloques numéricos
   for(let i=0; i<5; i++){
     const b=document.createElement("button");
     b.className="block"; b.id="btnBlock"+i; b.innerText=i+1;
     b.onclick=()=>setBlock(i);
     container.appendChild(b);
   }
-  
-  // CORREGIDO: Añadir la estrella aquí CON ID y asegurar que update() la referencia
   const starBtn = document.createElement("button");
   starBtn.className = "star-main";
-  starBtn.id = "starMain"; // ID crucial para update()
+  starBtn.id = "starMain";
   starBtn.innerText = "★";
-  starBtn.onclick = () => toggleStar(); // Usar función anónima para evitar problemas de 'this'
+  starBtn.onclick = () => toggleStar();
   container.appendChild(starBtn);
-
   const blockToLoad = (savedBlock !== null) ? (savedBlock === 'T' ? 'T' : parseInt(savedBlock)) : 'T';
   setBlock(blockToLoad);
-  
   const card = document.querySelector(".card");
   const box = document.createElement("div");
   box.className = "check-box-manual";
@@ -339,26 +255,12 @@ function initBlocks(){
 function setBlock(id){
   currentBlockID=id; learnedCount=0;
   localStorage.setItem(getFolderName() + "_currentBlock", id);
-  if(id==='T'){
-    currentBlockData=data.map((d,i)=>({...d, realIdx:i}));
-    totalInBlock=50;
-  }else{
-    const start=id*10;
-    currentBlockData=data.slice(start, start+10).map((d,i)=>({...d, realIdx:start+i}));
-    totalInBlock=10;
-  }
+  if(id==='T'){ currentBlockData=data.map((d,i)=>({...d, realIdx:i})); totalInBlock=50; }
+  else{ const start=id*10; currentBlockData=data.slice(start, start+10).map((d,i)=>({...d, realIdx:start+i})); totalInBlock=10; }
   pos=0;
-  
-  // Actualizar estado activo de bloques
   document.querySelectorAll(".block").forEach(b => b.classList.remove("active"));
-  if(id === 'T') {
-      const tBtn = document.getElementById("btnBlockT");
-      if(tBtn) tBtn.classList.add("active");
-  } else {
-      const bBtn = document.getElementById("btnBlock"+id);
-      if(bBtn) bBtn.classList.add("active");
-  }
-
+  if(id === 'T') { const tBtn = document.getElementById("btnBlockT"); if(tBtn) tBtn.classList.add("active"); }
+  else { const bBtn = document.getElementById("btnBlock"+id); if(bBtn) bBtn.classList.add("active"); }
   update(true);
 }
 
@@ -371,42 +273,20 @@ function update(newWord){
   if(feedback) feedback.textContent = "";
   if(currentBlockData.length===0){w.innerText="Bloc completat!"; return;}
   const item=currentBlockData[pos];
-  
-  // CORREGIDO: Asegurar que starMain existe antes de intentar cambiar clase
   const starMain = document.getElementById("starMain");
-  if(starMain) {
-      starMain.classList.toggle("active", starredIds.includes(item.realIdx));
-  }
-  
-  if(mode==="EN"){
-    lb.innerText="ANGLÈS RÀPID"; 
-    w.innerText="";
-    if(newWord) playAudio(1.0);
-  }else{
-    lb.innerText="CATALÀ";
-    w.innerHTML=`<span style="color:#2563eb;">${item.ca}</span>`;
-  }
+  if(starMain) { starMain.classList.toggle("active", starredIds.includes(item.realIdx)); }
+  if(mode==="EN"){ lb.innerText="ANGLÈS RÀPID"; w.innerText=""; if(newWord) playAudio(1.0); }
+  else{ lb.innerText="CATALÀ"; w.innerHTML=`<span style="color:#2563eb;">${item.ca}</span>`; }
   document.getElementById("counterDisplay").innerText=`${learnedCount} / ${totalInBlock}`;
 }
 
 function toggleStar(forcedIdx = null) {
   const idx = forcedIdx !== null ? forcedIdx : (currentBlockData.length > 0 ? currentBlockData[pos].realIdx : null);
   if (idx === null) return;
-  
-  if (starredIds.includes(idx)) { 
-      starredIds = starredIds.filter(id => id !== idx); 
-  } else { 
-      starredIds.push(idx); 
-  }
+  if (starredIds.includes(idx)) { starredIds = starredIds.filter(id => id !== idx); }
+  else { starredIds.push(idx); }
   localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
-  
-  // CORREGIDO: Si es la estrella principal, actualizar su estado visual inmediatamente
-  if (forcedIdx === null) { 
-      const starMain = document.getElementById("starMain");
-      if(starMain) {
-          starMain.classList.toggle("active", starredIds.includes(idx)); 
-      }
-  }
+  if (forcedIdx === null) { const starMain = document.getElementById("starMain"); if(starMain) { starMain.classList.toggle("active", starredIds.includes(idx)); } }
 }
 
 function playAudio(speed, forcedIdx = null) {
@@ -478,7 +358,6 @@ function renderList(type) {
     else { let start = currentBlockID * 10; listToRender = data.slice(start, start + 10).map((item, index) => ({...item, realIdx: start + index})); }
   }
   if (listToRender.length === 0) { l.innerHTML += "<i>Buit.</i>"; return; }
-
   listToRender.forEach((item) => {
     const isStarred = starredIds.includes(item.realIdx);
     const itemDiv = document.createElement("div");
@@ -503,7 +382,6 @@ function markAsDone(element) {
     localStorage.setItem(getFolderName(), new Date().toISOString());
     element.innerHTML = "✓"; element.classList.add('marked'); alert("Lliçó marcada ✅");
 }
-
 initBlocks();
 </script>
 </body>

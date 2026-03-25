@@ -8,7 +8,10 @@
 body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .card{max-width:720px;margin:20px auto;background:#fff;border-radius:24px;padding:24px;box-shadow:0 8px 18px rgba(0,0,0,.15);position:relative}
 
-.modes{display:flex;gap:10px;margin-bottom:10px;width:100%}
+.header-row { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+.unit-badge { color: #2563eb; padding: 0 10px; font-weight: bold; font-size: 24px; }
+
+.modes{display:flex;gap:10px;width:100%}
 .mode{flex:1;text-align:center;padding:14px;border-radius:24px;font-weight:bold;cursor:pointer;border:2px solid transparent}
 .mode.en{background:#d6e6f5}
 .mode.es{background:#f4d6e6}
@@ -18,17 +21,35 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#fff4cc;cursor:pointer;transition:0.2s;color:#333}
 .block.active{background:#2563eb !important; color: white !important; transform: scale(1.1); box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3)}
 
-.main-box-container{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;margin:20px 0}
+.main-box-container{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;margin:10px 0}
 .audio-controls{display:flex;align-items:center;gap:12px;margin-bottom:15px}
 
-.audio-btn{font-size:35px;background:#dcfce7;border:none;cursor:pointer;width:75px;height:75px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
-.audio-btn.slow{background:#fef08a;width:60px;height:60px;font-size:28px}
-.audio-btn.pause{background:#fee2e2;width:60px;height:60px;font-size:28px}
+.audio-btn, .mic-btn{font-size:24px; border:none; cursor:pointer; width:50px; height:50px; border-radius:50%; display:flex; align-items:center; justify-content:center; transition: 0.2s}
+.audio-btn{background:#dcfce7}
+.audio-btn.slow{background:#fef08a}
+.audio-btn.pause{background:#fee2e2}
 
-.mic-btn{font-size:30px;background:#fee2e2;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.3s}
-.mic-btn.listening{background:#ef4444; color:white; animation: pulse 1.5s infinite; transform: scale(1.1);}
+/* Micrófono Reconocimiento (Azul) */
+.mic-btn.speech{background:#dbeafe; color: #1e40af;}
+.mic-btn.listening{background:#2563eb !important; color:white; animation: pulse-blue 1.5s infinite;}
 
-@keyframes pulse { 0% {box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);} 70% {box-shadow: 0 0 0 15px rgba(239, 68, 68, 0);} 100% {box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);} }
+/* Micrófono Grabación (Rosa) */
+.mic-btn.rec{background:#fbcfe8; color: #9d174d;}
+/* Estado activo para el micro principal y los pequeños de la lista */
+.mic-btn.rec.active, .mini-btn-list.rec.active {background:#ec4899 !important; color:white !important; animation: pulse-pink 1.5s infinite;}
+
+/* Animaciones diferenciadas por color */
+@keyframes pulse-blue { 
+  0% {box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7);} 
+  70% {box-shadow: 0 0 0 10px rgba(37, 99, 235, 0);} 
+  100% {box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);} 
+}
+
+@keyframes pulse-pink { 
+  0% {box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.7);} 
+  70% {box-shadow: 0 0 0 10px rgba(236, 72, 153, 0);} 
+  100% {box-shadow: 0 0 0 0 rgba(236, 72, 153, 0);} 
+}
 
 .star-main { background: none; border: none; font-size: 35px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px; }
 .star-main.active { color: #f59e0b !important; }
@@ -36,7 +57,7 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .progress-wrapper { width: 100%; max-width: 300px; margin: 10px 0; }
 input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 5px; accent-color: #2563eb; }
 
-.counter-side{position:absolute;right:10px;top:0;font-weight:bold;color:#2563eb;font-size:22px}
+.counter-side{position:absolute;right:10px;top:-25px;font-weight:bold;color:#2563eb;font-size:20px}
 
 #word{font-size:24px;font-weight:800;margin:20px 0;line-height:1.4;min-height:120px;text-align:center;display:flex;align-items:center;justify-content:center;padding:0 10px}
 .txt-es{color:#2563eb} 
@@ -53,13 +74,14 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 .list-toggle-btns { display: flex; gap: 10px; margin-top: 20px; }
 .btn-list-main { flex: 1; padding: 12px; border-radius: 12px; border: none; background: #e9d5ff; font-weight: bold; cursor: pointer; }
 #list{margin-top:20px;background:#fff;border-radius:15px;display:none;border:1px solid #ddd;padding:10px}
+
 .list-item { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #eee; }
-.mini-btn { border: none; border-radius: 8px; width: 32px; height: 32px; cursor: pointer; }
-.blur { filter: blur(5px); transition: filter 0.3s; cursor: pointer; }
+.mini-btn-list { border: none; border-radius: 8px; width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: 0.2s;}
+.blur { filter: blur(5px); transition: filter 0.2s; cursor: pointer; user-select: none; }
 .blur.revealed { filter: blur(0); }
 
 .check-box-manual {
-    position: absolute; top: 85px; right: 22px; width: 24px; height: 24px;
+    position: absolute; top: 110px; right: 22px; width: 24px; height: 24px;
     background: #fff !important; border: 1.5px solid #22c55e !important;
     border-radius: 6px; display: flex; align-items: center; justify-content: center;
     cursor: pointer; z-index: 10; transition: all 0.2s; font-size: 14px;
@@ -70,8 +92,9 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 <body>
 
 <div class="card">
-  <div class="modes">
+  <div class="header-row">
     <div id="modeEN" class="mode en active" onclick="setMode('EN')">ENG → ESP</div>
+    <div class="unit-badge">7</div>
     <div id="modeES" class="mode es" onclick="setMode('ES')">ESP → ENG</div>
   </div>
 
@@ -84,7 +107,8 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
       <button class="audio-btn slow" onclick="playAudio(0.75)">🐢</button>
       <button class="audio-btn" onclick="playAudio(1.0)">🔊</button>
       <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
-      <button class="mic-btn" id="micBtn" onclick="startDictation()">🎤</button>
+      <button class="mic-btn speech" id="speechBtn" onclick="startDictation()">🎤</button>
+      <button class="mic-btn rec" id="recBtn" onclick="toggleRecording('recBtn')">🎤</button>
     </div>
     <div class="progress-wrapper"><input type="range" id="progressBar" value="0" step="0.1"></div>
   </div>
@@ -156,7 +180,7 @@ const data = [
   {en: "Never mind, I'll do it myself.", es: "Olvídalo, lo haré yo mismo"},
   {en: "Is there a problem? No, never mind, it's fine.", es: "¿Hay algún problema? No, olvídalo, está bien"},
   {en: "After months of exercise, I’m fit as a fiddle.", es: "Después de meses de ejercicio, estoy sano como una pera"},
-  {en: "My grandfather is 80, but he's fit as a fiddle.", es: "Mi abuelo tiene 80 años, pero está como un roble"},
+  {en: "My grandfather is 80, but he's fit as a fiddle.", es: "My grandfather is 80, but he's fit as a fiddle."},
   {en: "I feel fit as a fiddle after my morning run.", es: "Me siento estupendamente después de mi carrera matutina"},
   {en: "I've been working all day and I'm worn out.", es: "He estado trabajando todo el día y estoy agotado"},
   {en: "The kids are finally asleep, but I'm worn out.", es: "Los niños por fin duermen, pero estoy reventado"},
@@ -209,13 +233,68 @@ let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockI
 const a = document.getElementById("audio");
 const progressBar = document.getElementById("progressBar");
 
+// --- GRABACIÓN Y REPRODUCCIÓN ---
+let mediaRecorder;
+let audioChunks = [];
+let isRecording = false;
+let currentRecordingBtnId = null;
+
+async function toggleRecording(btnId = "recBtn") {
+  const btn = document.getElementById(btnId);
+  
+  // Si ya estamos grabando...
+  if (isRecording) {
+      // Y pulsamos el mismo botón -> Parar
+      if (currentRecordingBtnId === btnId) {
+          stopRecordingProcess(btn);
+          return;
+      } 
+      // Y pulsamos otro botón distinto -> Parar el anterior y esperar un poco
+      else {
+          const oldBtn = document.getElementById(currentRecordingBtnId);
+          stopRecordingProcess(oldBtn);
+          await new Promise(r => setTimeout(r, 150));
+      }
+  }
+
+  // Empezar nueva grabación
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    mediaRecorder = new MediaRecorder(stream);
+    audioChunks = [];
+    mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+    mediaRecorder.onstop = () => {
+      const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' });
+      const audioUrl = URL.createObjectURL(audioBlob);
+      const playRec = new Audio(audioUrl);
+      playRec.play();
+    };
+    mediaRecorder.start();
+    isRecording = true;
+    currentRecordingBtnId = btnId;
+    btn.classList.add("active");
+  } catch (err) { 
+    console.error("No se pudo acceder al micro:", err);
+    isRecording = false;
+    currentRecordingBtnId = null;
+  }
+}
+
+function stopRecordingProcess(btn) {
+    if (mediaRecorder && mediaRecorder.state !== "inactive") mediaRecorder.stop();
+    isRecording = false;
+    currentRecordingBtnId = null;
+    if (btn) btn.classList.remove("active");
+}
+
+// --- RECONOCIMIENTO DE VOZ ---
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = SpeechRecognition ? new SpeechRecognition() : null;
 if (recognition) { recognition.lang = 'en-US'; recognition.interimResults = false; }
 
 function startDictation() {
     if (!recognition) return;
-    const btn = document.getElementById("micBtn");
+    const btn = document.getElementById("speechBtn");
     const feedback = document.getElementById("speech-feedback");
     btn.classList.add("listening");
     feedback.textContent = "Escoltant...";
@@ -268,6 +347,8 @@ function loadBlock(b) {
   document.querySelectorAll(".block").forEach((btn, idx) => btn.classList.toggle("active", idx === b));
   pos = 0; learnedCount = 0;
   document.getElementById("list").style.display = "none";
+  // Al cambiar de bloque, nos aseguramos de parar cualquier grabación
+  if (isRecording) stopRecordingProcess(document.getElementById(currentRecordingBtnId));
   update(true); 
 }
 
@@ -301,10 +382,14 @@ function update(fromNextAction = false) {
 
 function toggleStar(forcedIdx = null) {
   const idx = forcedIdx || currentBlockData[pos].realIdx;
-  if (starredIds.includes(idx)) starredIds = starredIds.filter(id => id !== idx);
-  else starredIds.push(idx);
+  if (starredIds.includes(idx)) {
+    starredIds = starredIds.filter(id => id !== idx);
+    if(!forcedIdx) document.getElementById("starMain").classList.remove("active");
+  } else {
+    starredIds.push(idx);
+    if(!forcedIdx) document.getElementById("starMain").classList.add("active");
+  }
   localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
-  update();
 }
 
 function playAudio(speed, forcedIdx = null) {
@@ -316,7 +401,6 @@ function playAudio(speed, forcedIdx = null) {
 
 function pauseAudio() { a.pause(); }
 
-// "veure" ahora alterna y no pone audio
 function toggleReveal() {
   const aElement = document.getElementById("answer");
   const wElement = document.getElementById("word");
@@ -336,12 +420,16 @@ function know() {
   learnedCount++;
   currentBlockData.splice(pos, 1);
   if (pos >= currentBlockData.length) pos = 0;
+  // Si estamos grabando, paramos antes de pasar a la siguiente
+  if (isRecording) stopRecordingProcess(document.getElementById(currentRecordingBtnId));
   update(true);
 }
 
 function next() {
   if (currentBlockData.length === 0) return;
   pos = (pos + 1) % currentBlockData.length;
+  // Si estamos grabando, paramos antes de pasar a la siguiente
+  if (isRecording) stopRecordingProcess(document.getElementById(currentRecordingBtnId));
   update(true);
 }
 
@@ -360,6 +448,10 @@ function toggleList(type) {
   l.style.display = "block";
 }
 
+function toggleBlur(element) {
+    element.classList.toggle("revealed");
+}
+
 function renderList(type) {
   const l = document.getElementById("list");
   l.innerHTML = `<b>${type === 'stars' ? 'Favorites (★)' : 'Llista del bloc'}:</b><br><br>`;
@@ -371,19 +463,25 @@ function renderList(type) {
     listToRender = data.slice(start, end).map((item, index) => ({...item, realIdx: start + index + 1}));
   }
   if (listToRender.length === 0) { l.innerHTML += "<i>Buit.</i>"; return; }
+  
   listToRender.forEach((item, index) => {
     const isStarred = starredIds.includes(item.realIdx);
     const itemDiv = document.createElement("div");
+    const listRecBtnId = `recBtnList_${item.realIdx}`;
     itemDiv.className = "list-item";
+    
+    // Asignamos la clase 'active' si este botón es el que está grabando actualmente
+    const isActive = (isRecording && currentRecordingBtnId === listRecBtnId) ? "active" : "";
+
     itemDiv.innerHTML = `
-      <div style="display:flex; gap:5px;">
-        <button class="star-list ${isStarred ? 'active' : ''}" onclick="toggleStar(${item.realIdx}); renderList('${type}')">★</button>
-        <button class="mini-btn" style="background:#dcfce7" onclick="playAudio(1.0, ${item.realIdx})">🔊</button>
-        <button class="mini-btn" style="background:#fee2e2" onclick="document.getElementById('l-rev-${index}').classList.add('revealed')">👁️</button>
+      <div style="display:flex; flex-direction:column; gap:5px;">
+        <button class="star-main ${isStarred ? 'active' : ''}" style="font-size:22px" onclick="toggleStar(${item.realIdx}); renderList('${type}')">★</button>
+        <button class="mini-btn-list" style="background:#dcfce7" onclick="playAudio(1.0, ${item.realIdx})">🔊</button>
+        <button id="${listRecBtnId}" class="mini-btn-list rec ${isActive}" style="background:#fbcfe8; color:#9d174d;" onclick="toggleRecording('${listRecBtnId}')">🎤</button>
       </div>
       <div style="flex:1; margin-left:10px;">
         <div class="txt-es" style="font-weight:bold; font-size:14px;">${item.es}</div>
-        <div id="l-rev-${index}" class="blur" style="font-size:15px;" onclick="this.classList.add('revealed')">${item.en}</div>
+        <div id="l-rev-${index}" class="blur" style="font-size:15px;" onclick="toggleBlur(this)">${item.en}</div>
       </div>
     `;
     l.appendChild(itemDiv);
