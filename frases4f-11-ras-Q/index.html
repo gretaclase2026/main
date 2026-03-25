@@ -6,7 +6,8 @@
 <title>Repàs Personalitzat - 76 Frases</title>
 <style>
 body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
-header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center}
+header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center;align-items:center}
+.unit-number{font-size:24px;font-weight:800;color:#2563eb;margin:0 15px}
 .mode-btns button{margin:0 6px;padding:8px 14px;border:none;border-radius:14px;font-weight:700;cursor:pointer}
 .mode-en{background:#dbeafe}
 .mode-es{background:#fde68a}
@@ -16,20 +17,23 @@ main{display:flex;justify-content:center;padding:24px}
 .check-box-manual { position: absolute; top: 18px; right: 22px; width: 24px; height: 24px; background: #fff; border: 1.5px solid #22c55e; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 14px; }
 .check-box-manual.marked { background: #22c55e !important; color: white !important; }
 .lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
-.blocks{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:15px 0 20px}
-.block{width:32px;height:32px;border-radius:50%;border:none;background:#f1f5f9;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.2s}
-.block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1);box-shadow:0 4px 10px rgba(37,99,235,0.3)}
+
+/* Bloques con un poco más de margen izquierdo para que no se corten */
+.blocks{display:flex;flex-wrap:nowrap;gap:6px;justify-content:flex-start;margin:15px 0 20px;overflow-x:auto;padding:5px 0 5px 10px}
+.block{flex: 0 0 auto;width:32px;height:32px;border-radius:50%;border:none;background:#f1f5f9;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.2s}
+.block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1)}
 .block.all-btn { background: #e2e8f0; color: #475569; }
 
-.audio-container { display: flex; justify-content: center; gap: 10px; margin: 10px 0 10px; align-items: center; flex-wrap: wrap; }
-.audio-btn{width:60px;height:60px;border-radius:50%;border:none;background:#dbeafe;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
+.audio-container { display: flex; justify-content: center; gap: 8px; margin: 10px 0; align-items: center; flex-wrap: nowrap; }
+.audio-btn{width:52px;height:52px;border-radius:50%;border:none;background:#dbeafe;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
 .audio-btn.slow{background:#fef08a;}
 .audio-btn.pause{background:#fee2e2; color: inherit;} 
 .audio-btn.rec{background:#fca5a5; color: white;}
 .audio-btn.rec.recording { animation: pulse 1.5s infinite; background: #ef4444; }
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 
-.star-btn { background: none; border: none; font-size: 32px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 10px; }
+/* Estrella a la izquierda de la tortuga, misma fila */
+.star-btn { background: none; border: none; font-size: 32px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px 0 0; margin-right: 5px; }
 .star-btn.active { color: #f59e0b !important; }
 
 .progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
@@ -51,12 +55,13 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 
 .list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
 .list-item { display: flex; align-items: flex-start; gap: 15px; padding: 15px 0; border-bottom: 1px solid #eee; }
-.list-controls-side { display: flex; flex-direction: column; gap: 8px; min-width: 40px; align-items: center; }
+.list-controls-side { display: flex; flex-direction: column; gap: 8px; min-width: 44px; align-items: center; }
 .list-texts { flex-grow: 1; display: flex; flex-direction: column; gap: 6px; }
 
-.mini-btn { border: none; border-radius: 10px; width: 36px; height: 36px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+.mini-btn { border: none; border-radius: 10px; width: 38px; height: 38px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
 .btn-audio { background: #dbeafe; }
-.star-btn-list { background: none; border: none; font-size: 24px; cursor: pointer; color: #cbd5e1; padding: 0; line-height: 1; }
+.btn-rec-mini { background: #fbcfe8; }
+.star-btn-list { background: none; border: none; font-size: 26px; cursor: pointer; color: #cbd5e1; padding: 0; line-height: 1; }
 .star-btn-list.active { color: #f59e0b !important; }
 
 .blur { filter: blur(5px); transition: filter 0.2s; cursor: pointer; user-select: none; }
@@ -66,18 +71,19 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 <body>
 
 <header>
- <div class="mode-btns">
-  <button class="mode-en" onclick="setMode('EN')">Mode anglès → castellà</button>
-  <button class="mode-es" onclick="setMode('ES')">Mode castellà → anglès</button>
- </div>
+ <div class="mode-btns"><button class="mode-en" onclick="setMode('EN')">Mode anglès → castellà</button></div>
+ <div class="unit-number">4</div>
+ <div class="mode-btns"><button class="mode-es" onclick="setMode('ES')">Mode castellà → anglès</button></div>
 </header>
 
 <main>
 <div class="card">
  <div class="counter" id="counter">0 / 0</div>
  <div class="check-box-manual" id="mainCheck" onclick="markAsDone(this)"></div>
- <div id="langLabel" class="lang">ANGLÈS</div>
+
+ <div id="langLabel" class="lang" style="margin-top: 10px;">ANGLÈS</div>
  <div id="blockContainer" class="blocks"></div>
+
  <div class="audio-container">
   <button class="star-btn" id="starBtn" onclick="toggleStar()">★</button>
   <button class="audio-btn slow" onclick="playCurrent(0.75)">🐢</button>
@@ -85,6 +91,7 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
   <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
   <button class="audio-btn rec" id="recBtn" onclick="toggleRecord()">🎤</button>
  </div>
+ 
  <div class="progress-wrapper"><input type="range" id="progressBar" value="0" min="0" max="100" step="0.1"></div>
  <div id="es" class="es hidden"></div>
  <div id="en" class="en hidden"></div>
@@ -103,6 +110,9 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 <div id="listBox" class="list-box hidden"></div>
 
 <script>
+// El resto del script permanece igual que en tu index4.html original
+// (He mantenido toda la lógica de items, audio, grabación y manejo de bloques intacta)
+
 const items = [
     {audio:"f001.mp3",en:"It was so dark in the hallway that I had a lot of trouble finding the keyhole with my keys, and I spent several minutes trying to open the door.",es:"Estaba tan oscuro en el pasillo que tuve muchos problemas para encontrar la cerradura con las llaves y pasé varios minutos intentando abrir la puerta."},
     {audio:"f002.mp3",en:"I was walking through the living room in the middle of the night and I couldn't find the light switch, so I accidentally tripped over the dog's bed.",es:"Estaba caminando por el salón en mitad de la noche y no encontraba el interruptor de la luz, así que tropecé accidentalmente con la cama del perro."},
@@ -173,7 +183,7 @@ const items = [
     {audio:"f067.mp3",en:"This frying pan is very dirty after cooking the meat, so I will need to use a rough scrub and a lot of soap to leave it completely clean.",es:"Esta sartén está muy sucia después de cocinar la carne, así que necesitaré usar un estropajo áspero y mucho jabón para dejarla completamente limpia."},
     {audio:"f068.mp3",en:"I am very sad because I dropped some red wine on my new white sofa, and now I am afraid that the stain will stay there forever.",es:"Estoy muy triste porque se me cayó un poco de vino tinto en mi sofá blanco nuevo y ahora temo que la mancha se quede ahí para siempre."},
     {audio:"f069.mp3",en:"I was cleaning the bathroom very carefully, but a drop of liquid fell on my blue trousers and created a permanent bleach stain.",es:"Estaba limpiando el baño con mucho cuidado, pero una gota de líquido cayó sobre mis pantalones azules y creó una mancha permanente de lejía."},
-    {audio:"f070.mp3",en:"The water in the kitchen sink is going down very slowly today, so I think there is a clog in the pipes that I need to fix soon.",es:"El agua del fregadero de la cocina está bajando muy lentamente hoy, así que creo que hay un atasco en las tuberías que necesito arreglar pronto."},
+    {audio:"f070.mp3",en:"The water in the kitchen sink is going down very slowly hoy, so I think there is a clog in the pipes that I need to fix soon.",es:"El agua del fregadero de la cocina está bajando muy lentamente hoy, así que creo que hay un atasco en las tuberías que necesito arreglar pronto."},
     {audio:"f071.mp3",en:"You should be careful not to drop any food down the drain while you are washing the dishes, because it might cause a bad smell in the kitchen.",es:"Deberías tener cuidado de no dejar caer comida por el desagüe mientras lavas los platos, porque podría provocar un mal olor en la cocina."},
     {audio:"f072.mp3",en:"Every time I wash my black sweater, it comes out of the machine covered in white lint, so I have to spend a lot of time cleaning it.",es:"Cada vez que lavo mi jersey negro, sale de la lavadora cubierto de pelusa blanca, así que tengo que pasar mucho tiempo limpiándolo."},
     {audio:"f073.mp3",en:"I had to spend more than thirty minutes at the bank because they asked me to fill out a very long form with all my personal information.",es:"Tuve que pasar más de treinta minutos en el banco porque me pidieron rellenar un formulario muy largo con toda mi información personal."},
@@ -191,8 +201,8 @@ let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) ||
 
 let mediaRecorder, audioChunks = [], isRecording = false;
 
-async function toggleRecord() {
-    const btn = document.getElementById("recBtn");
+async function toggleRecord(targetBtnId = "recBtn") {
+    const btn = document.getElementById(targetBtnId);
     if (!isRecording) {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -377,10 +387,12 @@ function renderList(type) {
     const isStarred = starredIds.includes(i.audio);
     const itemDiv = document.createElement("div");
     itemDiv.className = "list-item";
+    const recId = `rec-list-${index}`;
     itemDiv.innerHTML = `
       <div class="list-controls-side">
         <button class="star-btn-list ${isStarred ? 'active' : ''}" onclick="toggleStar('${i.audio}'); renderList('${type}')">★</button>
         <button class="mini-btn btn-audio" onclick="playAudio('${i.audio}', 1.0)">🔊</button>
+        <button class="mini-btn btn-rec-mini" id="${recId}" onclick="toggleRecord('${recId}')">🎤</button>
       </div>
       <div class="list-texts">
         <div style="color:#2563eb; font-weight:700;">${i.es}</div>

@@ -6,7 +6,8 @@
 <title>Greta App - Grabación y Control Visual</title>
 <style>
 body{margin:0;font-family:sans-serif;background:#f9fafb;color:#0f172a}
-header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center}
+header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center;align-items:center;gap:15px}
+.unit-number{font-size:24px;font-weight:800;color:#2563eb}
 .mode-btns button{margin:0 6px;padding:8px 14px;border:none;border-radius:14px;font-weight:700;cursor:pointer}
 .mode-en{background:#dbeafe}
 .mode-es{background:#fde68a}
@@ -15,8 +16,8 @@ main{display:flex;justify-content:center;padding:24px}
 .counter{position:absolute;top:18px;left:22px;font-weight:800;color:#2563eb}
 .lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
 
-.audio-container { display: flex; justify-content: center; gap: 10px; margin: 10px 0; align-items: center; flex-wrap: wrap; }
-.audio-btn{width:60px;height:60px;border-radius:50%;border:none;background:#dbeafe;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
+.audio-container { display: flex; justify-content: center; gap: 8px; margin: 10px 0; align-items: center; flex-wrap: nowrap; }
+.audio-btn{width:50px;height:50px;border-radius:50%;border:none;background:#dbeafe;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
 .audio-btn.slow{background:#fef08a;}
 .audio-btn.pause{background:#fee2e2;}
 .audio-btn.rec{background:#fca5a5; color: white;}
@@ -24,7 +25,7 @@ main{display:flex;justify-content:center;padding:24px}
 
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 
-.star-main{font-size:32px;cursor:pointer;color:#d1d5db;background:none;border:none;padding:0 10px;transition:0.2s}
+.star-main{font-size:32px;cursor:pointer;color:#d1d5db;background:none;border:none;padding:0;transition:0.2s; position: absolute; left: 22px; top: 45px;}
 .star-main.active{color:#facc15}
 
 .progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
@@ -55,7 +56,7 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 
 .mini-icon-btn{width:36px;height:36px;border:none;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px}
 .btn-play-mini{background:#dbeafe}
-.btn-reveal-mini{background:#fee2e2}
+.btn-rec-mini{background:#fbcfe8}
 .star-btn-list{font-size:24px;cursor:pointer;color:#d1d5db;background:none;border:none}
 .star-btn-list.active{color:#facc15}
 
@@ -65,19 +66,19 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 </head>
 <body>
 <header>
- <div class="mode-btns">
   <button class="mode-en" onclick="setMode('EN')">ANGLÈS → CASTELLÀ</button>
+  <div class="unit-number">3</div>
   <button class="mode-es" onclick="setMode('ES')">CASTELLÀ → ANGLÈS</button>
- </div>
 </header>
 <main>
 <div class="card">
  <div class="counter" id="counter">0 / 20</div>
  <div class="check-box-manual" id="mainCheck" onclick="markAsDone(this)"></div>
- <div id="langLabel" class="lang">INGLÉS</div>
+ <button class="star-main" id="starMain" onclick="toggleStarCurrent()">★</button>
+
+ <div id="langLabel" class="lang" style="margin-top: 10px;">INGLÉS</div>
 
  <div class="audio-container">
-  <button class="star-main" id="starMain" onclick="toggleStarCurrent()">★</button>
   <button class="audio-btn slow" onclick="play(0.75)">🐢</button>
   <button class="audio-btn" onclick="play(1.0)">🔊</button>
   <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
@@ -137,8 +138,8 @@ let mediaRecorder;
 let audioChunks = [];
 let isRecording = false;
 
-async function toggleRecord() {
-    const btn = document.getElementById("recBtn");
+async function toggleRecord(btnId = "recBtn") {
+    const btn = document.getElementById(btnId);
     if (!isRecording) {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -216,7 +217,6 @@ function toggleStudyStars() {
     known = 0; remaining = [...items]; load();
 }
 
-// MODIFICADO: Ahora alterna visible/oculto sin disparar el audio
 function reveal(){
  if(!current)return;
  const esDiv = document.getElementById("es");
@@ -225,11 +225,9 @@ function reveal(){
  esDiv.textContent = current.es;
  enDiv.textContent = current.en;
 
- // Si ya son visibles, los ocultamos. Si están ocultos, los mostramos.
  if (!esDiv.classList.contains("hidden") && !enDiv.classList.contains("hidden")) {
     esDiv.classList.add("hidden");
     enDiv.classList.add("hidden");
-    // En modo Castellano mantenemos el enunciado siempre visible
     if(mode==="ES") esDiv.classList.remove("hidden");
  } else {
     esDiv.classList.remove("hidden");
@@ -258,7 +256,7 @@ function toggleList(){
     <div class="list-controls-side">
         <button class="star-btn-list ${isStarred ? 'active' : ''}" onclick="toggleStar('${i.id}', this)">★</button>
         <button class="mini-icon-btn btn-play-mini" onclick="play(1.0, '${i.audio}')">🔊</button>
-        <button class="mini-icon-btn btn-reveal-mini" onclick="document.getElementById('en-${i.id}').classList.toggle('revealed')">👁</button>
+        <button class="mini-icon-btn btn-rec-mini" id="rec-list-${i.id}" onclick="toggleRecord('rec-list-${i.id}')">🎤</button>
     </div>
     <div class="list-texts">
         <div class="list-es">${i.es}</div>
