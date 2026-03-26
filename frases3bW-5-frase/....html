@@ -142,12 +142,25 @@ const items = [
     {"id": "020", "audio": "f020.mp3", "en": "I finally decided to organize the kitchen drawers where I keep all the plastic containers, but it seems impossible to find the right lid for any of them no matter how hard I look.", "es": "Finalmente decidi organizar los cajones de la cocina donde guardo todos los recipientes de plastico, pero parece imposible encontrar la tapa adecuada para ninguno de ellos sin importar cuanto busque."}
 ];
 
+// Equivalencias de contracciones del index50.html
+const expansions = {
+    "dont": ["do", "not"], "didnt": ["did", "not"], "isnt": ["is", "not"], "arent": ["are", "not"],
+    "wasnt": ["was", "not"], "werent": ["were", "not"], "havent": ["have", "not"], "hasnt": ["has", "not"],
+    "hadnt": ["had", "not"], "wont": ["will", "not"], "wouldnt": ["would", "not"], "cant": ["can", "not"],
+    "couldnt": ["could", "not"], "im": ["i", "am"], "youre": ["you", "are"], "hes": ["he", "is"],
+    "shes": ["she", "is"], "its": ["it", "is"], "were": ["we", "are"], "theyre": ["they", "are"],
+    "ive": ["i", "have"], "youve": ["you", "have"], "weve": ["we", "have"], "theyve": ["they", "have"],
+    "id": ["i", "would"], "youd": ["you", "would"], "hed": ["he", "would"], "shed": ["she", "would"],
+    "wed": ["we", "would"], "theyd": ["they", "would"], "ill": ["i", "will"], "youll": ["you", "will"],
+    "hell": ["he", "will"], "shell": ["she", "will"], "well": ["we", "will"], "theyll": ["they", "will"]
+};
+
 let remaining=[...items], current=null, mode="EN", known=0, studyStarsOnly=false;
 const audioObj = new Audio();
 const progressBar = document.getElementById("progressBar");
 let mediaRecorder, audioChunks = [], isRecording = false;
 
-// Configuración de Reconocimiento de Voz
+// Reconocimiento de Voz
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition, isListening = false;
 
@@ -155,7 +168,7 @@ if (SpeechRecognition) {
     recognition = new SpeechRecognition();
     recognition.lang = 'en-US';
     recognition.interimResults = false;
-    recognition.continuous = true; // Escucha continua activa
+    recognition.continuous = true;
 
     recognition.onstart = () => { 
         isListening = true; 
@@ -174,56 +187,68 @@ if (SpeechRecognition) {
     };
 }
 
-// Función de limpieza para normalizar apóstrofes y puntuación
-function cleanForComparison(text) {
+// Limpieza simplificada del index50.html
+function simpleClean(text) {
     if(!text) return "";
-    return text.toLowerCase()
-        .replace(/\b(i am)\b/g, "i'm")
-        .replace(/\b(do not)\b/g, "don't")
-        .replace(/\b(cannot)\b/g, "can't")
-        .replace(/\b(is not)\b/g, "isn't")
-        .replace(/\b(are not)\b/g, "aren't")
-        .replace(/\b(have not)\b/g, "haven't")
-        .replace(/\b(will not)\b/g, "won't")
-        .replace(/\b(would not)\b/g, "wouldn't")
-        .replace(/\b(did not)\b/g, "didn't")
-        .replace(/'m\b/g, " am").replace(/'t\b/g, " not").replace(/'re\b/g, " are").replace(/'s\b/g, " is").replace(/'ve\b/g, " have").replace(/'ll\b/g, " will").replace(/'d\b/g, " would")
-        .replace(/[.,?!'"]/g, "")
-        .replace(/\s+/g, " ")
-        .trim();
+    return text.toLowerCase().replace(/[.,?!'"]/g, "").trim();
 }
 
+// Lógica de comparación mejorada del index50.html
 function compareSentences(original, spoken) {
     const feedbackDiv = document.getElementById("speechFeedback");
     const origWords = original.split(/\s+/);
-    const spokenCleaned = cleanForComparison(spoken).split(/\s+/);
+    const spokenWords = spoken.split(/\s+/);
+    const spokenCleaned = spokenWords.map(w => simpleClean(w));
     
     let resultHTML = "";
-    let spokenIdx = 0;
+    let sIdx = 0;
 
     origWords.forEach((word) => {
-        const cleanO = cleanForComparison(word);
+        const cleanO = simpleClean(word);
         if(!cleanO) return;
 
-        if (spokenIdx < spokenCleaned.length && spokenCleaned[spokenIdx] === cleanO) {
+        let matched = false;
+
+        // 1. Coincidencia exacta
+        if (sIdx < spokenCleaned.length && spokenCleaned[sIdx] === cleanO) {
             resultHTML += `<span class="word-correct">${word}</span>`;
-            spokenIdx++;
-        } else if (spokenCleaned.slice(spokenIdx).includes(cleanO)) {
-            while(spokenIdx < spokenCleaned.length && spokenCleaned[spokenIdx] !== cleanO) {
-                resultHTML += `<span class="word-error">${spokenCleaned[spokenIdx]}</span>`;
-                spokenIdx++;
+            sIdx++;
+            matched = true;
+        } 
+        // 2. Coincidencia de expansión (Si el texto tiene "didn't" y dices "did", "not")
+        else if (expansions[cleanO]) {
+            const parts = expansions[cleanO];
+            if (sIdx + 1 < spokenCleaned.length && 
+                spokenCleaned[sIdx] === parts[0] && 
+                spokenCleaned[sIdx+1] === parts[1]) {
+                resultHTML += `<span class="word-correct">${word}</span>`;
+                sIdx += 2;
+                matched = true;
             }
-            resultHTML += `<span class="word-correct">${word}</span>`;
-            spokenIdx++;
-        } else {
+        }
+        
+        // 3. Búsqueda por si se ha saltado palabras (look-ahead)
+        if(!matched){
+            let foundAhead = false;
+            for(let j = sIdx; j < sIdx + 3 && j < spokenCleaned.length; j++) {
+                if(spokenCleaned[j] === cleanO) {
+                    for(let k = sIdx; k < j; k++) {
+                        resultHTML += `<span class="word-error">${spokenWords[k]}</span>`;
+                    }
+                    resultHTML += `<span class="word-correct">${word}</span>`;
+                    sIdx = j + 1;
+                    foundAhead = true;
+                    matched = true;
+                    break;
+                }
+            }
+        }
+
+        if (!matched) {
             resultHTML += `<span class="word-missing">${word}</span>`;
         }
     });
 
-    while(spokenIdx < spokenCleaned.length) {
-        resultHTML += `<span class="word-error">${spokenCleaned[spokenIdx]}</span>`;
-        spokenIdx++;
-    }
     feedbackDiv.innerHTML = resultHTML;
 }
 
