@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Greta App - Grabación y Control Visual</title>
+<title>Greta App - Feedback Inteligente</title>
 <style>
 body{margin:0;font-family:sans-serif;background:#f9fafb;color:#0f172a}
 header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center;align-items:center}
@@ -19,16 +19,15 @@ main{display:flex;justify-content:center;padding:24px}
 .star-main{font-size:32px;cursor:pointer;color:#d1d5db;background:none;border:none;padding:0;transition:0.2s; position: absolute; left: 22px; top: 45px; z-index: 10;}
 .star-main.active{color:#facc15}
 
-.audio-container { display: flex; justify-content: center; gap: 10px; margin: 10px 0; align-items: center; flex-wrap: nowrap; }
+.audio-container { display: flex; justify-content: center; gap: 10px; margin: 10px 0; align-items: center; }
 .audio-btn{width:55px;height:55px;border-radius:50%;border:none;background:#dbeafe;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
 .audio-btn.slow{background:#fef08a;}
 .audio-btn.pause{background:#fee2e2;}
 .audio-btn.rec{background:#fca5a5; color: white;}
+.audio-btn.stt{background:#dbeafe; font-size: 22px;}
 
-/* Estilos de grabación del index44 */
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-.recording { animation: pulse 1.5s infinite; background: #ef4444 !important; color: white !important; }
-.btn-rec-mini.recording { background: #f472b6 !important; }
+.recording, .listening { animation: pulse 1.5s infinite; background: #ef4444 !important; color: white !important; }
 
 .progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
 input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
@@ -36,6 +35,22 @@ input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius:
 .hidden{display:none}
 .es{font-size:20px;color:#2563eb;margin-top:14px;line-height:1.4}
 .en{font-size:20px;color:#0f172a;margin-top:14px;font-weight:700;line-height:1.4}
+
+#speechFeedback { 
+    font-size: 19px; 
+    margin: 15px 0; 
+    font-weight: bold; 
+    min-height: 28px; 
+    line-height: 1.5; 
+    padding: 0 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px;
+}
+.word-correct { color: #16a34a; }
+.word-error { color: #dc2626; text-decoration: line-through; }
+.word-missing { color: #94a3b8; font-style: italic; }
 
 .buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:22px}
 button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;cursor:pointer}
@@ -69,42 +84,32 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 </head>
 <body>
 <header>
- <div class="mode-btns">
-  <button class="mode-en" onclick="setMode('EN')">ANGLÈS → CASTELLÀ</button>
- </div>
+ <div class="mode-btns"><button class="mode-en" onclick="setMode('EN')">ANGLÈS → CASTELLÀ</button></div>
  <div class="unit-number">3</div>
- <div class="mode-btns">
-  <button class="mode-es" onclick="setMode('ES')">CASTELLÀ → ANGLÈS</button>
- </div>
+ <div class="mode-btns"><button class="mode-es" onclick="setMode('ES')">CASTELLÀ → ANGLÈS</button></div>
 </header>
 <main>
 <div class="card">
  <div class="counter" id="counter">0 / 20</div>
  <div class="check-box-manual" id="mainCheck" onclick="markAsDone(this)"></div>
  <button class="star-main" id="starMain" onclick="toggleStarCurrent()">★</button>
-
  <div id="langLabel" class="lang" style="margin-top: 10px;">INGLÉS</div>
-
  <div class="audio-container">
   <button class="audio-btn slow" onclick="play(0.75)">🐢</button>
   <button class="audio-btn" onclick="play(1.0)">🔊</button>
   <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
   <button class="audio-btn rec" id="recBtn" onclick="toggleRecord('recBtn')">🎤</button>
+  <button class="audio-btn stt" id="sttBtn" onclick="toggleMic()">🎤</button>
  </div>
-
- <div class="progress-wrapper">
-  <input type="range" id="progressBar" value="0" step="0.1">
- </div>
-
+ <div class="progress-wrapper"><input type="range" id="progressBar" value="0" step="0.1"></div>
  <div id="es" class="es hidden"></div>
+ <div id="speechFeedback"></div>
  <div id="en" class="en hidden"></div>
- 
  <div class="buttons">
   <button class="action reveal" onclick="reveal()">Veure</button>
   <button class="action know" onclick="know()">Ja la sé</button>
   <button class="action next" onclick="nextOne()">Següent</button>
  </div>
-
  <div class="bottom-nav">
     <button class="nav-btn btn-list" onclick="toggleList()">Veure llista</button>
     <button class="nav-btn btn-study-stars" id="btnStudyStars" onclick="toggleStudyStars()">Estudiar ⭐</button>
@@ -137,15 +142,126 @@ const items = [
     {"id": "020", "audio": "f020.mp3", "en": "I finally decided to organize the kitchen drawers where I keep all the plastic containers, but it seems impossible to find the right lid for any of them no matter how hard I look.", "es": "Finalmente decidi organizar los cajones de la cocina donde guardo todos los recipientes de plastico, pero parece imposible encontrar la tapa adecuada para ninguno de ellos sin importar cuanto busque."}
 ];
 
+// Equivalencias de contracciones del index50.html
+const expansions = {
+    "dont": ["do", "not"], "didnt": ["did", "not"], "isnt": ["is", "not"], "arent": ["are", "not"],
+    "wasnt": ["was", "not"], "werent": ["were", "not"], "havent": ["have", "not"], "hasnt": ["has", "not"],
+    "hadnt": ["had", "not"], "wont": ["will", "not"], "wouldnt": ["would", "not"], "cant": ["can", "not"],
+    "couldnt": ["could", "not"], "im": ["i", "am"], "youre": ["you", "are"], "hes": ["he", "is"],
+    "shes": ["she", "is"], "its": ["it", "is"], "were": ["we", "are"], "theyre": ["they", "are"],
+    "ive": ["i", "have"], "youve": ["you", "have"], "weve": ["we", "have"], "theyve": ["they", "have"],
+    "id": ["i", "would"], "youd": ["you", "would"], "hed": ["he", "would"], "shed": ["she", "would"],
+    "wed": ["we", "would"], "theyd": ["they", "would"], "ill": ["i", "will"], "youll": ["you", "will"],
+    "hell": ["he", "will"], "shell": ["she", "will"], "well": ["we", "will"], "theyll": ["they", "will"]
+};
+
 let remaining=[...items], current=null, mode="EN", known=0, studyStarsOnly=false;
 const audioObj = new Audio();
 const progressBar = document.getElementById("progressBar");
+let mediaRecorder, audioChunks = [], isRecording = false;
 
-let mediaRecorder;
-let audioChunks = [];
-let isRecording = false;
+// Reconocimiento de Voz
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition, isListening = false;
 
-// Función de grabación unificada (basada en index44)
+if (SpeechRecognition) {
+    recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    recognition.continuous = true;
+
+    recognition.onstart = () => { 
+        isListening = true; 
+        document.getElementById("sttBtn").classList.add("listening"); 
+    };
+    recognition.onend = () => { 
+        isListening = false; 
+        document.getElementById("sttBtn").classList.remove("listening"); 
+    };
+    recognition.onresult = (event) => {
+        let fullTranscript = "";
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+            fullTranscript += event.results[i][0].transcript + " ";
+        }
+        compareSentences(current.en, fullTranscript.trim());
+    };
+}
+
+// Limpieza simplificada del index50.html
+function simpleClean(text) {
+    if(!text) return "";
+    return text.toLowerCase().replace(/[.,?!'"]/g, "").trim();
+}
+
+// Lógica de comparación mejorada del index50.html
+function compareSentences(original, spoken) {
+    const feedbackDiv = document.getElementById("speechFeedback");
+    const origWords = original.split(/\s+/);
+    const spokenWords = spoken.split(/\s+/);
+    const spokenCleaned = spokenWords.map(w => simpleClean(w));
+    
+    let resultHTML = "";
+    let sIdx = 0;
+
+    origWords.forEach((word) => {
+        const cleanO = simpleClean(word);
+        if(!cleanO) return;
+
+        let matched = false;
+
+        // 1. Coincidencia exacta
+        if (sIdx < spokenCleaned.length && spokenCleaned[sIdx] === cleanO) {
+            resultHTML += `<span class="word-correct">${word}</span>`;
+            sIdx++;
+            matched = true;
+        } 
+        // 2. Coincidencia de expansión (Si el texto tiene "didn't" y dices "did", "not")
+        else if (expansions[cleanO]) {
+            const parts = expansions[cleanO];
+            if (sIdx + 1 < spokenCleaned.length && 
+                spokenCleaned[sIdx] === parts[0] && 
+                spokenCleaned[sIdx+1] === parts[1]) {
+                resultHTML += `<span class="word-correct">${word}</span>`;
+                sIdx += 2;
+                matched = true;
+            }
+        }
+        
+        // 3. Búsqueda por si se ha saltado palabras (look-ahead)
+        if(!matched){
+            let foundAhead = false;
+            for(let j = sIdx; j < sIdx + 3 && j < spokenCleaned.length; j++) {
+                if(spokenCleaned[j] === cleanO) {
+                    for(let k = sIdx; k < j; k++) {
+                        resultHTML += `<span class="word-error">${spokenWords[k]}</span>`;
+                    }
+                    resultHTML += `<span class="word-correct">${word}</span>`;
+                    sIdx = j + 1;
+                    foundAhead = true;
+                    matched = true;
+                    break;
+                }
+            }
+        }
+
+        if (!matched) {
+            resultHTML += `<span class="word-missing">${word}</span>`;
+        }
+    });
+
+    feedbackDiv.innerHTML = resultHTML;
+}
+
+function toggleMic() {
+    if (!recognition) return;
+    if (isListening) {
+        recognition.stop();
+    } else {
+        document.getElementById("speechFeedback").innerHTML = "";
+        recognition.start();
+    }
+}
+
 async function toggleRecord(targetBtnId) {
     const btn = document.getElementById(targetBtnId);
     if (!isRecording) {
@@ -156,39 +272,20 @@ async function toggleRecord(targetBtnId) {
             mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
             mediaRecorder.onstop = () => {
                 const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-                const audioUrl = URL.createObjectURL(audioBlob);
-                new Audio(audioUrl).play();
+                new Audio(URL.createObjectURL(audioBlob)).play();
             };
             mediaRecorder.start();
             isRecording = true;
             btn.classList.add("recording");
-            if(targetBtnId === "recBtn") btn.textContent = "⏹";
-        } catch (err) { alert("Error al acceder al micrófono."); }
+        } catch (err) { alert("Error micro"); }
     } else {
-        mediaRecorder.stop(); 
-        isRecording = false;
+        mediaRecorder.stop(); isRecording = false;
         btn.classList.remove("recording");
-        if(targetBtnId === "recBtn") btn.textContent = "🎤";
     }
 }
 
 audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
 progressBar.oninput = () => { if (audioObj.duration) audioObj.currentTime = (progressBar.value / 100) * audioObj.duration; };
-
-function updateCounter(){ 
-    const total = studyStarsOnly ? items.filter(i => localStorage.getItem('star_' + i.id) === 'true').length : items.length;
-    document.getElementById("counter").textContent = known + " / " + total; 
-}
-
-function play(speed = 1.0, specificAudio = null){ 
-    const source = specificAudio || (current ? current.audio : null);
-    if(source) {
-        if (!audioObj.src.includes(source)) { audioObj.src = source; progressBar.value = 0; }
-        audioObj.playbackRate = speed;
-        audioObj.play().catch(e => console.log("Error audio"));
-    }
-}
-function pauseAudio() { audioObj.pause(); }
 
 function load(){
  let pool = studyStarsOnly ? remaining.filter(i => localStorage.getItem('star_' + i.id) === 'true') : remaining;
@@ -196,9 +293,9 @@ function load(){
  current = pool[Math.floor(Math.random()*pool.length)];
  document.getElementById("es").classList.add("hidden");
  document.getElementById("en").classList.add("hidden");
+ document.getElementById("speechFeedback").innerHTML = "";
  progressBar.value = 0;
- const starMain = document.getElementById("starMain");
- starMain.classList.toggle('active', localStorage.getItem('star_' + current.id) === 'true');
+ document.getElementById("starMain").classList.toggle('active', localStorage.getItem('star_' + current.id) === 'true');
 
  if(mode==="EN"){
   document.getElementById("langLabel").textContent="INGLÉS";
@@ -211,46 +308,42 @@ function load(){
  updateCounter();
 }
 
+function play(speed = 1.0, specificAudio = null){ 
+    const source = specificAudio || (current ? current.audio : null);
+    if(source) {
+        if (!audioObj.src.includes(source)) { audioObj.src = source; }
+        audioObj.playbackRate = speed; audioObj.play();
+    }
+}
+function pauseAudio() { audioObj.pause(); }
+function reveal(){
+    const esDiv = document.getElementById("es");
+    const enDiv = document.getElementById("en");
+    esDiv.textContent = current.es; enDiv.textContent = current.en;
+    if (!esDiv.classList.contains("hidden") && !enDiv.classList.contains("hidden")) {
+        esDiv.classList.add("hidden"); enDiv.classList.add("hidden");
+        if(mode==="ES") esDiv.classList.remove("hidden");
+    } else {
+        esDiv.classList.remove("hidden"); enDiv.classList.remove("hidden");
+    }
+}
+function know(){ if(!current)return; remaining=remaining.filter(i=>i.id!==current.id); known++; load(); }
+function nextOne(){ load(); }
+function setMode(m){ mode=m; load(); }
+function updateCounter(){ 
+    const total = studyStarsOnly ? items.filter(i => localStorage.getItem('star_' + i.id) === 'true').length : items.length;
+    document.getElementById("counter").textContent = known + " / " + total; 
+}
 function toggleStarCurrent() {
     if(!current) return;
     const active = document.getElementById("starMain").classList.toggle('active');
     localStorage.setItem('star_' + current.id, active);
 }
-
 function toggleStudyStars() {
     studyStarsOnly = !studyStarsOnly;
-    const btn = document.getElementById("btnStudyStars");
-    btn.classList.toggle('active', studyStarsOnly);
+    document.getElementById("btnStudyStars").classList.toggle('active', studyStarsOnly);
     known = 0; remaining = [...items]; load();
 }
-
-function reveal(){
- if(!current)return;
- const esDiv = document.getElementById("es");
- const enDiv = document.getElementById("en");
-
- esDiv.textContent = current.es;
- enDiv.textContent = current.en;
-
- if (!esDiv.classList.contains("hidden") && !enDiv.classList.contains("hidden")) {
-    esDiv.classList.add("hidden");
-    enDiv.classList.add("hidden");
-    if(mode==="ES") esDiv.classList.remove("hidden");
- } else {
-    esDiv.classList.remove("hidden");
-    enDiv.classList.remove("hidden");
- }
-}
-
-function know(){
- if(!current)return;
- remaining=remaining.filter(i=>i.id!==current.id);
- known++; load();
-}
-
-function nextOne(){ load(); }
-function setMode(m){ mode=m; load(); }
-
 function toggleList(){
  const lb = document.getElementById("listBox");
  if (!lb.classList.contains("hidden")) { lb.classList.add("hidden"); return; }
@@ -273,20 +366,14 @@ function toggleList(){
  });
  lb.classList.remove("hidden");
 }
-
 function toggleStar(id, btn) {
     const active = btn.classList.toggle('active');
     localStorage.setItem('star_' + id, active);
-    if(current && current.id === id) document.getElementById("starMain").classList.toggle('active', active);
 }
-
-function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "index6"; }
 function markAsDone(el) {
-    localStorage.setItem(getFolderName(), new Date().toISOString());
     el.innerHTML = "✓"; el.classList.add('marked');
     alert("Lliçó marcada ✅");
 }
-
 load();
 </script>
 </body>

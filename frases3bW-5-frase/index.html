@@ -119,6 +119,7 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 <div id="listBox" class="list-box hidden"></div>
 
 <script>
+// Datos de las frases
 const items = [
     {"id": "001", "audio": "f001.mp3", "en": "Even though the weather forecast predicted heavy rain all weekend, we decided to go hiking because we had already packed our gear and didn't want to waste the opportunity.", "es": "Aunque el pronostico del tiempo predecia lluvia intensa todo el fin de semana, decidimos ir de excursion porque ya habiamos empacado nuestro equipo y no queriamos desperdiciar la oportunidad."},
     {"id": "002", "audio": "f002.mp3", "en": "The company that I told you about yesterday is looking for a professional who has extensive experience in digital marketing and who is also willing to travel abroad.", "es": "La empresa de la que te hable ayer esta buscando a un profesional que tenga amplia experiencia en marketing digital y que tambien este dispuesto a viajar al extranjero."},
@@ -142,17 +143,26 @@ const items = [
     {"id": "020", "audio": "f020.mp3", "en": "I finally decided to organize the kitchen drawers where I keep all the plastic containers, but it seems impossible to find the right lid for any of them no matter how hard I look.", "es": "Finalmente decidi organizar los cajones de la cocina donde guardo todos los recipientes de plastico, pero parece imposible encontrar la tapa adecuada para ninguno de ellos sin importar cuanto busque."}
 ];
 
-// Equivalencias de contracciones del index50.html
-const expansions = {
-    "dont": ["do", "not"], "didnt": ["did", "not"], "isnt": ["is", "not"], "arent": ["are", "not"],
-    "wasnt": ["was", "not"], "werent": ["were", "not"], "havent": ["have", "not"], "hasnt": ["has", "not"],
-    "hadnt": ["had", "not"], "wont": ["will", "not"], "wouldnt": ["would", "not"], "cant": ["can", "not"],
-    "couldnt": ["could", "not"], "im": ["i", "am"], "youre": ["you", "are"], "hes": ["he", "is"],
-    "shes": ["she", "is"], "its": ["it", "is"], "were": ["we", "are"], "theyre": ["they", "are"],
-    "ive": ["i", "have"], "youve": ["you", "have"], "weve": ["we", "have"], "theyve": ["they", "have"],
-    "id": ["i", "would"], "youd": ["you", "would"], "hed": ["he", "would"], "shed": ["she", "would"],
-    "wed": ["we", "would"], "theyd": ["they", "would"], "ill": ["i", "will"], "youll": ["you", "will"],
-    "hell": ["he", "will"], "shell": ["she", "will"], "well": ["we", "will"], "theyll": ["they", "will"]
+// MAPA DE NORMALIZACIÓN MEJORADO
+const normalizationMap = {
+    "dont": "do not", "doesn't": "does not", "doesnt": "does not", "didnt": "did not", "didn't": "did not",
+    "isnt": "is not", "isn't": "is not", "arent": "are not", "aren't": "are not",
+    "wasnt": "was not", "wasn't": "was not", "werent": "were not", "weren't": "were not",
+    "havent": "have not", "haven't": "have not", "hasnt": "has not", "hasn't": "has not",
+    "hadnt": "had not", "hadn't": "had not", "wont": "will not", "won't": "will not",
+    "wouldnt": "would not", "wouldn't": "would not", "cant": "can not", "can't": "can not",
+    "couldnt": "could not", "couldn't": "could not", "im": "i am", "i'm": "i am",
+    "youre": "you are", "you're": "you are", "hes": "he is", "he's": "he is",
+    "shes": "she is", "she's": "she is", "its": "it is", "it's": "it is",
+    "were": "we are", "we're": "we are", "theyre": "they are", "they're": "they are",
+    "ive": "i have", "i've": "i have", "youve": "you have", "you've": "you have",
+    "weve": "we have", "we've": "we have", "theyve": "they have", "they've": "they have",
+    "id": "i would", "i'd": "i would", "youd": "you would", "you'd": "you would",
+    "hed": "he would", "he'd": "he would", "shed": "she would", "she'd": "she would",
+    "wed": "we would", "we'd": "we would", "theyd": "they would", "they'd": "they would",
+    "ill": "i will", "i'll": "i will", "youll": "you will", "you'll": "you will",
+    "hell": "he will", "he'll": "he will", "shell": "she will", "she'll": "she will",
+    "well": "we will", "we'll": "we will", "theyll": "they will", "they'll": "they will"
 };
 
 let remaining=[...items], current=null, mode="EN", known=0, studyStarsOnly=false;
@@ -187,68 +197,52 @@ if (SpeechRecognition) {
     };
 }
 
-// Limpieza simplificada del index50.html
-function simpleClean(text) {
-    if(!text) return "";
-    return text.toLowerCase().replace(/[.,?!'"]/g, "").trim();
+// Nueva función de normalización que gestiona apóstrofes
+function normalizeText(text) {
+    if (!text) return "";
+    let clean = text.toLowerCase().replace(/[.,?!"]/g, "").trim();
+    let words = clean.split(/\s+/);
+    
+    return words.map(word => {
+        let key = word.replace("'", ""); 
+        return normalizationMap[word] || normalizationMap[key] || word;
+    }).join(" ");
 }
 
-// Lógica de comparación mejorada del index50.html
+// Lógica de comparación mejorada con normalización de apóstrofes
 function compareSentences(original, spoken) {
     const feedbackDiv = document.getElementById("speechFeedback");
-    const origWords = original.split(/\s+/);
-    const spokenWords = spoken.split(/\s+/);
-    const spokenCleaned = spokenWords.map(w => simpleClean(w));
+    
+    const normOriginalWords = normalizeText(original).split(/\s+/);
+    const normSpokenWords = normalizeText(spoken).split(/\s+/);
+    const origWordsRaw = original.split(/\s+/);
     
     let resultHTML = "";
     let sIdx = 0;
 
-    origWords.forEach((word) => {
-        const cleanO = simpleClean(word);
-        if(!cleanO) return;
-
+    normOriginalWords.forEach((normWord, index) => {
+        const originalWordRaw = origWordsRaw[index];
         let matched = false;
 
-        // 1. Coincidencia exacta
-        if (sIdx < spokenCleaned.length && spokenCleaned[sIdx] === cleanO) {
-            resultHTML += `<span class="word-correct">${word}</span>`;
+        if (sIdx < normSpokenWords.length && normSpokenWords[sIdx] === normWord) {
+            resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
             sIdx++;
             matched = true;
-        } 
-        // 2. Coincidencia de expansión (Si el texto tiene "didn't" y dices "did", "not")
-        else if (expansions[cleanO]) {
-            const parts = expansions[cleanO];
-            if (sIdx + 1 < spokenCleaned.length && 
-                spokenCleaned[sIdx] === parts[0] && 
-                spokenCleaned[sIdx+1] === parts[1]) {
-                resultHTML += `<span class="word-correct">${word}</span>`;
-                sIdx += 2;
-                matched = true;
-            }
-        }
-        
-        // 3. Búsqueda por si se ha saltado palabras (look-ahead)
-        if(!matched){
-            let foundAhead = false;
-            for(let j = sIdx; j < sIdx + 3 && j < spokenCleaned.length; j++) {
-                if(spokenCleaned[j] === cleanO) {
-                    for(let k = sIdx; k < j; k++) {
-                        resultHTML += `<span class="word-error">${spokenWords[k]}</span>`;
+        } else {
+            for (let j = sIdx + 1; j < sIdx + 5 && j < normSpokenWords.length; j++) {
+                if (normSpokenWords[j] === normWord) {
+                    for (let k = sIdx; k < j; k++) {
+                        resultHTML += `<span class="word-error">${normSpokenWords[k]}</span>`;
                     }
-                    resultHTML += `<span class="word-correct">${word}</span>`;
+                    resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
                     sIdx = j + 1;
-                    foundAhead = true;
                     matched = true;
                     break;
                 }
             }
         }
-
-        if (!matched) {
-            resultHTML += `<span class="word-missing">${word}</span>`;
-        }
+        if (!matched) resultHTML += `<span class="word-missing">${originalWordRaw}</span>`;
     });
-
     feedbackDiv.innerHTML = resultHTML;
 }
 
