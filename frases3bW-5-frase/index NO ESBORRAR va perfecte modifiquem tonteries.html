@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Greta App - Feedback Inteligente</title>
+<title>Greta App - Grabación y Control Visual</title>
 <style>
 body{margin:0;font-family:sans-serif;background:#f9fafb;color:#0f172a}
 header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center;align-items:center}
@@ -19,7 +19,7 @@ main{display:flex;justify-content:center;padding:24px}
 .star-main{font-size:32px;cursor:pointer;color:#d1d5db;background:none;border:none;padding:0;transition:0.2s; position: absolute; left: 22px; top: 45px; z-index: 10;}
 .star-main.active{color:#facc15}
 
-.audio-container { display: flex; justify-content: center; gap: 10px; margin: 10px 0; align-items: center; }
+.audio-container { display: flex; justify-content: center; gap: 10px; margin: 10px 0; align-items: center; flex-wrap: nowrap; }
 .audio-btn{width:55px;height:55px;border-radius:50%;border:none;background:#dbeafe;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
 .audio-btn.slow{background:#fef08a;}
 .audio-btn.pause{background:#fee2e2;}
@@ -28,6 +28,7 @@ main{display:flex;justify-content:center;padding:24px}
 
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 .recording, .listening { animation: pulse 1.5s infinite; background: #ef4444 !important; color: white !important; }
+.audio-btn.stt.listening { background: #3b82f6 !important; }
 
 .progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
 input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
@@ -36,18 +37,8 @@ input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius:
 .es{font-size:20px;color:#2563eb;margin-top:14px;line-height:1.4}
 .en{font-size:20px;color:#0f172a;margin-top:14px;font-weight:700;line-height:1.4}
 
-#speechFeedback { 
-    font-size: 19px; 
-    margin: 15px 0; 
-    font-weight: bold; 
-    min-height: 28px; 
-    line-height: 1.5; 
-    padding: 0 10px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 4px;
-}
+/* Feedback de voz mejorado */
+#speechFeedback { font-size: 18px; margin: 15px 0; font-weight: bold; min-height: 28px; line-height: 1.5; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
 .word-correct { color: #16a34a; }
 .word-error { color: #dc2626; text-decoration: line-through; }
 .word-missing { color: #94a3b8; font-style: italic; }
@@ -84,16 +75,22 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 </head>
 <body>
 <header>
- <div class="mode-btns"><button class="mode-en" onclick="setMode('EN')">ANGLÈS → CASTELLÀ</button></div>
+ <div class="mode-btns">
+  <button class="mode-en" onclick="setMode('EN')">ANGLÈS → CASTELLÀ</button>
+ </div>
  <div class="unit-number">3</div>
- <div class="mode-btns"><button class="mode-es" onclick="setMode('ES')">CASTELLÀ → ANGLÈS</button></div>
+ <div class="mode-btns">
+  <button class="mode-es" onclick="setMode('ES')">CASTELLÀ → ANGLÈS</button>
+ </div>
 </header>
 <main>
 <div class="card">
  <div class="counter" id="counter">0 / 20</div>
  <div class="check-box-manual" id="mainCheck" onclick="markAsDone(this)"></div>
  <button class="star-main" id="starMain" onclick="toggleStarCurrent()">★</button>
+
  <div id="langLabel" class="lang" style="margin-top: 10px;">INGLÉS</div>
+
  <div class="audio-container">
   <button class="audio-btn slow" onclick="play(0.75)">🐢</button>
   <button class="audio-btn" onclick="play(1.0)">🔊</button>
@@ -101,15 +98,21 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
   <button class="audio-btn rec" id="recBtn" onclick="toggleRecord('recBtn')">🎤</button>
   <button class="audio-btn stt" id="sttBtn" onclick="toggleMic()">🎤</button>
  </div>
- <div class="progress-wrapper"><input type="range" id="progressBar" value="0" step="0.1"></div>
+
+ <div class="progress-wrapper">
+  <input type="range" id="progressBar" value="0" step="0.1">
+ </div>
+
  <div id="es" class="es hidden"></div>
  <div id="speechFeedback"></div>
  <div id="en" class="en hidden"></div>
+ 
  <div class="buttons">
   <button class="action reveal" onclick="reveal()">Veure</button>
   <button class="action know" onclick="know()">Ja la sé</button>
   <button class="action next" onclick="nextOne()">Següent</button>
  </div>
+
  <div class="bottom-nav">
     <button class="nav-btn btn-list" onclick="toggleList()">Veure llista</button>
     <button class="nav-btn btn-study-stars" id="btnStudyStars" onclick="toggleStudyStars()">Estudiar ⭐</button>
@@ -119,7 +122,6 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 <div id="listBox" class="list-box hidden"></div>
 
 <script>
-// Datos de las frases
 const items = [
     {"id": "001", "audio": "f001.mp3", "en": "Even though the weather forecast predicted heavy rain all weekend, we decided to go hiking because we had already packed our gear and didn't want to waste the opportunity.", "es": "Aunque el pronostico del tiempo predecia lluvia intensa todo el fin de semana, decidimos ir de excursion porque ya habiamos empacado nuestro equipo y no queriamos desperdiciar la oportunidad."},
     {"id": "002", "audio": "f002.mp3", "en": "The company that I told you about yesterday is looking for a professional who has extensive experience in digital marketing and who is also willing to travel abroad.", "es": "La empresa de la que te hable ayer esta buscando a un profesional que tenga amplia experiencia en marketing digital y que tambien este dispuesto a viajar al extranjero."},
@@ -127,7 +129,7 @@ const items = [
     {"id": "004", "audio": "f004.mp3", "en": "If you had told me that the meeting was going to be postponed until next Monday, I wouldn't have spent the entire night preparing the presentation that you requested.", "es": "Si me hubieras dicho que la reunion se iba a posponer hasta el proximo lunes, no habria pasado la noche entera preparando la presentacion que me pediste."},
     {"id": "005", "audio": "f005.mp3", "en": "I usually try to wake up early to exercise before going to work, but this morning I was so tired that I decided to hit the snooze button and sleep for another thirty minutes.", "es": "Normalmente trato de despertarme temprano para hacer ejercicio antes de ir a trabajar, pero esta mañana estaba tan cansado que decidi posponer la alarma y dormir otros treinta minutos."},
     {"id": "006", "audio": "f006.mp3", "en": "Since the fridge was almost empty, I went to the supermarket to buy some groceries, only to realize when I got to the checkout that I had left my wallet inside my other jacket.", "es": "Como la nevera estaba casi vacia, fui al supermercado a comprar comida, solo para darme cuenta al llegar a la caja de que habia dejado mi cartera dentro de mi otra chaqueta."},
-    {"id": "007", "audio": "f007.mp3", "en": "I was planning to spend the afternoon cleaning the house, but I ended up watching a new series on Netflix that was so addictive that I couldn't stop until I finished the whole season.", "es": "Tenia planeado pasar la tarde limpiando la casa, pero termine viendo una serie nueva en Netflix que era tan adictiva que no pude parar hasta que termine la temporada completa."},
+    {"id": "007", "audio": "f007.mp3", "en": "I was planning to spend the afternoon cleaning the house, but I ended up watching a new series on Netflix that was so addictive that I couldn't stop until I finished the whole season.", "es": "Estaba planeando pasar la tarde limpiando la casa, pero termine viendo una serie nueva en Netflix que era tan adictiva que no pude parar hasta que termine la temporada completa."},
     {"id": "008", "audio": "f008.mp3", "en": "While I was waiting for the bus to go downtown, I ran into an old friend from high school whom I hadn't seen in years, so we decided to grab a quick coffee and catch up.", "es": "Mientras esperaba el autobus para ir al centro, me encontre con un viejo amigo de la secundaria a quien no habia visto en años, asi que decidimos tomar un cafe rapido y ponernos al dia."},
     {"id": "009", "audio": "f009.mp3", "en": "I spent the whole morning looking for a specific ingredient for the cake I wanted to bake, only to find out that the small grocery store around the corner had it all along.", "es": "Pase toda la mañana buscando un ingrediente especifico para el pastel que queria hornear, solo para descubrir que la pequeña tienda de comestibles a la vuelta de la esquina lo tuvo todo el tiempo."},
     {"id": "010", "audio": "f010.mp3", "en": "Every time I want to sort out my wardrobe, I end up trying on clothes that I haven't worn in years and looking at myself in the mirror instead of actually organizing anything.", "es": "Cada vez que quiero limpiar mi armario, termino probandome ropa que no me he puesto en años y mirandome en el espejo en lugar de organizar algo realmente."},
@@ -143,7 +145,7 @@ const items = [
     {"id": "020", "audio": "f020.mp3", "en": "I finally decided to organize the kitchen drawers where I keep all the plastic containers, but it seems impossible to find the right lid for any of them no matter how hard I look.", "es": "Finalmente decidi organizar los cajones de la cocina donde guardo todos los recipientes de plastico, pero parece imposible encontrar la tapa adecuada para ninguno de ellos sin importar cuanto busque."}
 ];
 
-// MAPA DE NORMALIZACIÓN MEJORADO
+// MAPA DE NORMALIZACIÓN (de index.html)
 const normalizationMap = {
     "dont": "do not", "doesn't": "does not", "doesnt": "does not", "didnt": "did not", "didn't": "did not",
     "isnt": "is not", "isn't": "is not", "arent": "are not", "aren't": "are not",
@@ -168,11 +170,14 @@ const normalizationMap = {
 let remaining=[...items], current=null, mode="EN", known=0, studyStarsOnly=false;
 const audioObj = new Audio();
 const progressBar = document.getElementById("progressBar");
-let mediaRecorder, audioChunks = [], isRecording = false;
 
-// Reconocimiento de Voz
+let mediaRecorder;
+let audioChunks = [];
+let isRecording = false;
+
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-let recognition, isListening = false;
+let recognition;
+let isListening = false;
 
 if (SpeechRecognition) {
     recognition = new SpeechRecognition();
@@ -180,13 +185,14 @@ if (SpeechRecognition) {
     recognition.interimResults = false;
     recognition.continuous = true;
 
-    recognition.onstart = () => { 
-        isListening = true; 
-        document.getElementById("sttBtn").classList.add("listening"); 
+    recognition.onstart = () => {
+        isListening = true;
+        document.getElementById("sttBtn").classList.add("listening");
+        document.getElementById("speechFeedback").innerHTML = "";
     };
-    recognition.onend = () => { 
-        isListening = false; 
-        document.getElementById("sttBtn").classList.remove("listening"); 
+    recognition.onend = () => {
+        isListening = false;
+        document.getElementById("sttBtn").classList.remove("listening");
     };
     recognition.onresult = (event) => {
         let fullTranscript = "";
@@ -197,22 +203,18 @@ if (SpeechRecognition) {
     };
 }
 
-// Nueva función de normalización que gestiona apóstrofes
 function normalizeText(text) {
     if (!text) return "";
     let clean = text.toLowerCase().replace(/[.,?!"]/g, "").trim();
     let words = clean.split(/\s+/);
-    
     return words.map(word => {
         let key = word.replace("'", ""); 
         return normalizationMap[word] || normalizationMap[key] || word;
     }).join(" ");
 }
 
-// Lógica de comparación mejorada con normalización de apóstrofes
 function compareSentences(original, spoken) {
     const feedbackDiv = document.getElementById("speechFeedback");
-    
     const normOriginalWords = normalizeText(original).split(/\s+/);
     const normSpokenWords = normalizeText(spoken).split(/\s+/);
     const origWordsRaw = original.split(/\s+/);
@@ -247,13 +249,9 @@ function compareSentences(original, spoken) {
 }
 
 function toggleMic() {
-    if (!recognition) return;
-    if (isListening) {
-        recognition.stop();
-    } else {
-        document.getElementById("speechFeedback").innerHTML = "";
-        recognition.start();
-    }
+    if (!recognition) { alert("Tu navegador no soporta reconocimiento de voz."); return; }
+    if (isListening) recognition.stop();
+    else recognition.start();
 }
 
 async function toggleRecord(targetBtnId) {
@@ -266,20 +264,39 @@ async function toggleRecord(targetBtnId) {
             mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
             mediaRecorder.onstop = () => {
                 const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-                new Audio(URL.createObjectURL(audioBlob)).play();
+                const audioUrl = URL.createObjectURL(audioBlob);
+                new Audio(audioUrl).play();
             };
             mediaRecorder.start();
             isRecording = true;
             btn.classList.add("recording");
-        } catch (err) { alert("Error micro"); }
+            if(targetBtnId === "recBtn") btn.textContent = "⏹";
+        } catch (err) { alert("Error al acceder al micrófono."); }
     } else {
-        mediaRecorder.stop(); isRecording = false;
+        mediaRecorder.stop(); 
+        isRecording = false;
         btn.classList.remove("recording");
+        if(targetBtnId === "recBtn") btn.textContent = "🎤";
     }
 }
 
 audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
 progressBar.oninput = () => { if (audioObj.duration) audioObj.currentTime = (progressBar.value / 100) * audioObj.duration; };
+
+function updateCounter(){ 
+    const total = studyStarsOnly ? items.filter(i => localStorage.getItem('star_' + i.id) === 'true').length : items.length;
+    document.getElementById("counter").textContent = known + " / " + total; 
+}
+
+function play(speed = 1.0, specificAudio = null){ 
+    const source = specificAudio || (current ? current.audio : null);
+    if(source) {
+        if (!audioObj.src.includes(source)) { audioObj.src = source; progressBar.value = 0; }
+        audioObj.playbackRate = speed;
+        audioObj.play().catch(e => console.log("Error audio"));
+    }
+}
+function pauseAudio() { audioObj.pause(); }
 
 function load(){
  let pool = studyStarsOnly ? remaining.filter(i => localStorage.getItem('star_' + i.id) === 'true') : remaining;
@@ -287,9 +304,10 @@ function load(){
  current = pool[Math.floor(Math.random()*pool.length)];
  document.getElementById("es").classList.add("hidden");
  document.getElementById("en").classList.add("hidden");
- document.getElementById("speechFeedback").innerHTML = "";
+ document.getElementById("speechFeedback").innerHTML = ""; 
  progressBar.value = 0;
- document.getElementById("starMain").classList.toggle('active', localStorage.getItem('star_' + current.id) === 'true');
+ const starMain = document.getElementById("starMain");
+ starMain.classList.toggle('active', localStorage.getItem('star_' + current.id) === 'true');
 
  if(mode==="EN"){
   document.getElementById("langLabel").textContent="INGLÉS";
@@ -302,42 +320,46 @@ function load(){
  updateCounter();
 }
 
-function play(speed = 1.0, specificAudio = null){ 
-    const source = specificAudio || (current ? current.audio : null);
-    if(source) {
-        if (!audioObj.src.includes(source)) { audioObj.src = source; }
-        audioObj.playbackRate = speed; audioObj.play();
-    }
-}
-function pauseAudio() { audioObj.pause(); }
-function reveal(){
-    const esDiv = document.getElementById("es");
-    const enDiv = document.getElementById("en");
-    esDiv.textContent = current.es; enDiv.textContent = current.en;
-    if (!esDiv.classList.contains("hidden") && !enDiv.classList.contains("hidden")) {
-        esDiv.classList.add("hidden"); enDiv.classList.add("hidden");
-        if(mode==="ES") esDiv.classList.remove("hidden");
-    } else {
-        esDiv.classList.remove("hidden"); enDiv.classList.remove("hidden");
-    }
-}
-function know(){ if(!current)return; remaining=remaining.filter(i=>i.id!==current.id); known++; load(); }
-function nextOne(){ load(); }
-function setMode(m){ mode=m; load(); }
-function updateCounter(){ 
-    const total = studyStarsOnly ? items.filter(i => localStorage.getItem('star_' + i.id) === 'true').length : items.length;
-    document.getElementById("counter").textContent = known + " / " + total; 
-}
 function toggleStarCurrent() {
     if(!current) return;
     const active = document.getElementById("starMain").classList.toggle('active');
     localStorage.setItem('star_' + current.id, active);
 }
+
 function toggleStudyStars() {
     studyStarsOnly = !studyStarsOnly;
-    document.getElementById("btnStudyStars").classList.toggle('active', studyStarsOnly);
+    const btn = document.getElementById("btnStudyStars");
+    btn.classList.toggle('active', studyStarsOnly);
     known = 0; remaining = [...items]; load();
 }
+
+function reveal(){
+ if(!current)return;
+ const esDiv = document.getElementById("es");
+ const enDiv = document.getElementById("en");
+
+ esDiv.textContent = current.es;
+ enDiv.textContent = current.en;
+
+ if (!esDiv.classList.contains("hidden") && !enDiv.classList.contains("hidden")) {
+    esDiv.classList.add("hidden");
+    enDiv.classList.add("hidden");
+    if(mode==="ES") esDiv.classList.remove("hidden");
+ } else {
+    esDiv.classList.remove("hidden");
+    enDiv.classList.remove("hidden");
+ }
+}
+
+function know(){
+ if(!current)return;
+ remaining=remaining.filter(i=>i.id!==current.id);
+ known++; load();
+}
+
+function nextOne(){ load(); }
+function setMode(m){ mode=m; load(); }
+
 function toggleList(){
  const lb = document.getElementById("listBox");
  if (!lb.classList.contains("hidden")) { lb.classList.add("hidden"); return; }
@@ -360,14 +382,20 @@ function toggleList(){
  });
  lb.classList.remove("hidden");
 }
+
 function toggleStar(id, btn) {
     const active = btn.classList.toggle('active');
     localStorage.setItem('star_' + id, active);
+    if(current && current.id === id) document.getElementById("starMain").classList.toggle('active', active);
 }
+
+function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "index6"; }
 function markAsDone(el) {
+    localStorage.setItem(getFolderName(), new Date().toISOString());
     el.innerHTML = "✓"; el.classList.add('marked');
     alert("Lliçó marcada ✅");
 }
+
 load();
 </script>
 </body>

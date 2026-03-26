@@ -31,9 +31,11 @@ main{display:flex;justify-content:center;padding:24px}
 .audio-btn.slow{background:#fef08a;}
 .audio-btn.pause{background:#fee2e2; color: inherit;} 
 .audio-btn.rec{background:#fca5a5; color: white;}
-.audio-btn.rec.recording { animation: pulse 1.5s infinite; background: #ef4444; }
 
+/* Animación y estado de grabación */
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+.recording { animation: pulse 1.5s infinite; background: #ef4444 !important; color: white !important; }
+.btn-rec-mini.recording { background: #f472b6 !important; }
 
 .progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
 input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
@@ -96,7 +98,7 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
   <button class="audio-btn slow" onclick="play(0.75)">🐢</button>
   <button class="audio-btn" onclick="play(1.0)">🔊</button>
   <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
-  <button class="audio-btn rec" id="recBtn" onclick="toggleRecord()">🎤</button>
+  <button class="audio-btn rec" id="recBtn" onclick="toggleRecord('recBtn')">🎤</button>
  </div>
 
  <div class="progress-wrapper">
@@ -157,7 +159,7 @@ const progressBar = document.getElementById("progressBar");
 
 let mediaRecorder, audioChunks = [], isRecording = false;
 
-async function toggleRecord(targetBtnId = "recBtn") {
+async function toggleRecord(targetBtnId) {
     const btn = document.getElementById(targetBtnId);
     if (!isRecording) {
         try {
@@ -176,7 +178,8 @@ async function toggleRecord(targetBtnId = "recBtn") {
             if(targetBtnId === "recBtn") btn.textContent = "⏹";
         } catch (err) { alert("Error al acceder al micrófono."); }
     } else {
-        mediaRecorder.stop(); isRecording = false;
+        mediaRecorder.stop(); 
+        isRecording = false;
         btn.classList.remove("recording");
         if(targetBtnId === "recBtn") btn.textContent = "🎤";
     }
