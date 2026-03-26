@@ -21,26 +21,23 @@ main{display:flex;justify-content:center;padding:24px}
 
 .audio-container { display: flex; justify-content: center; gap: 10px; margin: 10px 0; align-items: center; flex-wrap: nowrap; }
 
+/* Altavoces en verde (#dcfce7) */
 .audio-btn{width:55px;height:55px;border-radius:50%;border:none;background:#dcfce7;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
 .audio-btn.slow{background:#fef08a;}
 .audio-btn.pause{background:#fee2e2;}
 .audio-btn.rec{background:#fca5a5; color: white;}
+
+/* Micro STT en azul (#dbeafe) */
 .audio-btn.stt{background:#dbeafe; font-size: 22px;}
 
-/* Estilo Rosa Chicle y Animación para micros activos */
-@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-.recording, .listening { animation: pulse 1.5s infinite; background: #ec4899 !important; color: white !important; }
-
-/* Micro rosa de la lista */
-.mini-icon-btn.recording { background: #ec4899 !important; color: white !important; }
-
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+.recording, .listening { animation: pulse 1.5s infinite; background: #ef4444 !important; color: white !important; }
 .audio-btn.stt.listening { background: #3b82f6 !important; }
 
 .progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
 input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
 
 .hidden{display:none}
-.key-label{font-size:16px;font-weight:900;color:#9333ea;margin:10px 0}
 .es{font-size:20px;color:#2563eb;margin-top:14px;line-height:1.4}
 .en{font-size:20px;color:#0f172a;margin-top:14px;font-weight:700;line-height:1.4}
 
@@ -82,16 +79,16 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 <body>
 <header>
  <div class="mode-btns">
-  <button class="mode-en" onclick="setMode('EN')">INGLÉS → ESPAÑOL</button>
+  <button class="mode-en" onclick="setMode('EN')">ANGLÈS → CASTELLÀ</button>
  </div>
- <div class="unit-number">1</div>
+ <div class="unit-number">3</div>
  <div class="mode-btns">
-  <button class="mode-es" onclick="setMode('ES')">ESPAÑOL → INGLÉS</button>
+  <button class="mode-es" onclick="setMode('ES')">CASTELLÀ → ANGLÈS</button>
  </div>
 </header>
 <main>
 <div class="card">
- <div class="counter" id="counter">0 / 10</div>
+ <div class="counter" id="counter">0 / 20</div>
  <div class="check-box-manual" id="mainCheck" onclick="markAsDone(this)"></div>
  <button class="star-main" id="starMain" onclick="toggleStarCurrent()">★</button>
 
@@ -109,19 +106,18 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
   <input type="range" id="progressBar" value="0" step="0.1">
  </div>
 
- <div id="key" class="key-label hidden"></div>
  <div id="es" class="es hidden"></div>
  <div id="speechFeedback"></div>
  <div id="en" class="en hidden"></div>
  
  <div class="buttons">
-  <button class="action reveal" onclick="reveal()">Ver</button>
-  <button class="action know" onclick="know()">Ya la sé</button>
-  <button class="action next" onclick="nextOne()">Siguiente</button>
+  <button class="action reveal" onclick="reveal()">Veure</button>
+  <button class="action know" onclick="know()">Ja la sé</button>
+  <button class="action next" onclick="nextOne()">Següent</button>
  </div>
 
  <div class="bottom-nav">
-    <button class="nav-btn btn-list" onclick="toggleList()">Ver lista</button>
+    <button class="nav-btn btn-list" onclick="toggleList()">Veure llista</button>
     <button class="nav-btn btn-study-stars" id="btnStudyStars" onclick="toggleStudyStars()">Estudiar ⭐</button>
  </div>
 </div>
@@ -130,16 +126,26 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 
 <script>
 const items = [
-    {"id":"001","key":"tricky","audio":"f001.mp3","es":"Creo que encontrar un apartamento barato en el centro de la ciudad es bastante complicado porque hay mucha gente buscando lo mismo ahora mismo.","en":"I think that finding a cheap apartment in the center of the city is quite tricky because there are many people looking for the same thing right now."},
-    {"id":"002","key":"broad","audio":"f002.mp3","es":"La vista desde la cima de la montaña era muy amplia y podíamos ver todos los pueblos pequeños y el bosque verde cerca del río.","en":"The view from the top of the mountain was very broad and we could see all the small villages and the green forest near the river."},
-    {"id":"003","key":"willing","audio":"f003.mp3","es":"Mi hermano siempre está dispuesto a llevarme al aeropuerto temprano por la mañana aunque tenga que trabajar más tarde ese día.","en":"My brother is always willing to drive me to the airport early in the morning even if he has to work later that day."},
-    {"id":"004","key":"call off","audio":"f004.mp3","es":"El gerente decidió cancelar el evento al aire libre porque el pronóstico del tiempo decía que haría mucho frío y viento toda la noche.","en":"The manager decided to call off the outdoor event because the weather forecast said it would be very cold and windy all night."},
-    {"id":"005","key":"harmless","audio":"f005.mp3","es":"No hace falta que tengas miedo de aquel insecto porque es completamente inofensivo y solo quiere volar cerca de la luz de la lámpara.","en":"You don't need to be afraid of that insect because it is completely harmless and it just wants to fly near the light of the lamp."},
-    {"id":"006","key":"as long as","audio":"f006.mp3","es":"Te dejaré mi libro favorito siempre que prometas cuidarlo y devolvérmelo la semana que viene.","en":"I will lend you my favorite book as long as you promise to take care of it and give it back to me next week."},
-    {"id":"007","key":"worth","audio":"f007.mp3","es":"Sé que la entrada al museo es cara, pero realmente vale la pena visitarlo porque las pinturas de dentro son las más famosas del mundo.","en":"I know the museum ticket is expensive, but it is really worth visiting because the paintings inside are the most famous in the world."},
-    {"id":"008","key":"awkward","audio":"f008.mp3","es":"Fue muy incómodo cuando me encontré a mi antiguo jefe en el supermercado y no sabía qué decirle después de tantos años.","en":"It was very awkward when I met my old boss at the supermarket and I didn't know what to say to him after so many years."},
-    {"id":"009","key":"provided that","audio":"f009.mp3","es":"Compraremos el coche nuevo el mes que viene siempre que el banco nos dé el dinero que necesitamos para el primer pago.","en":"We are going to buy the new car next month provided that the bank gives us the money we need for the first payment."},
-    {"id":"010","key":"tough","audio":"f010.mp3","es":"El examen fue muy difícil y largo, pero me siento contenta porque estudié mucho y creo que respondí todas las preguntas correctamente.","en":"The exam was very tough and long, but I feel happy because I studied a lot and I think I answered all the questions correctly."}
+    {"id": "001", "audio": "f001.mp3", "en": "Even though the weather forecast predicted heavy rain all weekend, we decided to go hiking because we had already packed our gear and didn't want to waste the opportunity.", "es": "Aunque el pronostico del tiempo predecia lluvia intensa todo el fin de semana, decidimos ir de excursion porque ya habiamos empacado nuestro equipo y no queriamos desperdiciar la oportunidad."},
+    {"id": "002", "audio": "f002.mp3", "en": "The company that I told you about yesterday is looking for a professional who has extensive experience in digital marketing and who is also willing to travel abroad.", "es": "La empresa de la que te hable ayer esta buscando a un profesional que tenga amplia experiencia en marketing digital y que tambien este dispuesto a viajar al extranjero."},
+    {"id": "003", "audio": "f003.mp3", "en": "While I was walking through the park listening to my favorite podcast, I realized that I had forgotten to lock the front door, so I had to run back home as fast as I could.", "es": "Mientras caminaba por el parque escuchando mi podcast favorito, me di cuenta de que habia olvidado cerrar la puerta principal, asi que tuve que volver corriendo a casa lo mas rapido que pude."},
+    {"id": "004", "audio": "f004.mp3", "en": "If you had told me that the meeting was going to be postponed until next Monday, I wouldn't have spent the entire night preparing the presentation that you requested.", "es": "Si me hubieras dicho que la reunion se iba a posponer hasta el proximo lunes, no habria pasado la noche entera preparando la presentacion que me pediste."},
+    {"id": "005", "audio": "f005.mp3", "en": "I usually try to wake up early to exercise before going to work, but this morning I was so tired that I decided to hit the snooze button and sleep for another thirty minutes.", "es": "Normalmente trato de despertarme temprano para hacer ejercicio antes de ir a trabajar, pero esta mañana estaba tan cansado que decidi posponer la alarma y dormir otros treinta minutos."},
+    {"id": "006", "audio": "f006.mp3", "en": "Since the fridge was almost empty, I went to the supermarket to buy some groceries, only to realize when I got to the checkout that I had left my wallet inside my other jacket.", "es": "Como la nevera estaba casi vacia, fui al supermercado a comprar comida, solo para darme cuenta al llegar a la caja de que habia dejado mi cartera dentro de mi otra chaqueta."},
+    {"id": "007", "audio": "f007.mp3", "en": "I was planning to spend the afternoon cleaning the house, but I ended up watching a new series on Netflix that was so addictive that I couldn't stop until I finished the whole season.", "es": "Estaba planeando pasar la tarde limpiando la casa, pero termine viendo una serie nueva en Netflix que era tan adictiva que no pude parar hasta que termine la temporada completa."},
+    {"id": "008", "audio": "f008.mp3", "en": "While I was waiting for the bus to go downtown, I ran into an old friend from high school whom I hadn't seen in years, so we decided to grab a quick coffee and catch up.", "es": "Mientras esperaba el autobus para ir al centro, me encontre con un viejo amigo de la secundaria a quien no habia visto en años, asi que decidimos tomar un cafe rapido y ponernos al dia."},
+    {"id": "009", "audio": "f009.mp3", "en": "I spent the whole morning looking for a specific ingredient for the cake I wanted to bake, only to find out that the small grocery store around the corner had it all along.", "es": "Pase toda la mañana buscando un ingrediente especifico para el pastel que queria hornear, solo para descubrir que la pequeña tienda de comestibles a la vuelta de la esquina lo tuvo todo el tiempo."},
+    {"id": "010", "audio": "f010.mp3", "en": "Every time I want to sort out my wardrobe, I end up trying on clothes that I haven't worn in years and looking at myself in the mirror instead of actually organizing anything.", "es": "Cada vez que quiero limpiar mi armario, termino probandome ropa que no me he puesto en años y mirandome en el espejo en lugar de organizar algo realmente."},
+    {"id": "011", "audio": "f011.mp3", "en": "My cat has the strange habit of sleeping on top of the television, which is quite annoying because she blocks the screen right when I am watching the most interesting part of a movie.", "es": "Mi gata tiene la extraña costumbre de dormir encima del televisor, lo cual es bastante molesto porque bloquea la pantalla justo cuando estoy viendo la parte mas interesante de una pelicula."},
+    {"id": "012", "audio": "f012.mp3", "en": "It was so hot inside the house today that I had to open all the windows to let some fresh air in, but then a lot of mosquitoes entered and I spent the night trying to catch them.", "es": "Hacia tanto calor dentro de casa hoy que tuve que abrir todas las ventanas para dejar entrar un poco de aire fresco, pero luego entraron muchos mosquitos y pase la noche intentando atraparlos."},
+    {"id": "013", "audio": "f013.mp3", "en": "I went to the market to buy some fresh fruit and vegetables, but the smell of the bakery next door was so tempting that I ended up buying three chocolate croissants that I didn't need.", "es": "Fui al mercado a comprar algunas frutas y verduras frescas, pero el olor de la panaderia de al lado era tan tentador que termine comprando tres croissants de chocolate que no necesitaba."},
+    {"id": "014", "audio": "f014.mp3", "en": "I’ve been trying to learn how to play the guitar by watching videos on the internet, but my fingers hurt so much after ten minutes that I usually give up and go watch TV instead.", "es": "He estado intentando aprender a tocar la guitarra viendo videos en internet, pero me duelen tanto los dedos despues de diez minutos que normalmente me rindo y me voy a ver la tele en su lugar."},
+    {"id": "015", "audio": "f015.mp3", "en": "While I was taking a walk around the neighborhood this afternoon, I noticed that they are building a new park where the old parking lot used to be, and I think it will look beautiful.", "es": "Mientras daba un paseo por el barrio esta tarde, note que estan construyendo un parque nuevo donde solia estar el antiguo estacionamiento, y creo que se vera hermoso."},
+    {"id": "016", "audio": "f016.mp3", "en": "My old coffee machine broke down this morning, so I had to go to the kitchen and prepare my coffee the traditional way, which took much longer than I expected but tasted much better.", "es": "Mi vieja cafetera se estropeo esta mañana, asi que tuve que ir a la cocina y preparar mi cafe de la manera tradicional, lo que tomo mucho mas tiempo de lo que esperaba pero sabia mucho mejor."},
+    {"id": "017", "audio": "f017.mp3", "en": "I was going to take a short nap after lunch to recover some energy, but the neighbor started using a drill to hang some pictures and the noise made it impossible for me to sleep.", "es": "Iba a tomar una siesta corta despues de almorzar para recuperar algo de energia, pero el vecino empezo a usar un taladro para colgar unos cuadros y el ruido hizo que me fuera imposible dormir."},
+    {"id": "018", "audio": "f018.mp3", "en": "I forgot to water the plants on the balcony for a whole week because I was too busy reading a book, so now I have to hope that they don't dry out completely before tomorrow.", "es": "Olvide regar las plantas del balcon durante una semana entera porque estaba demasiado ocupado leyendo un libro, asi que ahora tengo que esperar que no se sequen por completo antes de mañana."},
+    {"id": "019", "audio": "f019.mp3", "en": "I haven't called my sister in a while, so I'm going to make some tea and sit on the sofa for an hour to have a long conversation with her about everything that has happened lately.", "es": "No he llamado a mi hermana en un tiempo, asi que voy a preparar un poco de te y sentarme en el sofa durante una hora para tener una conversacion larga con ella sobre todo lo que ha pasado ultimamente."},
+    {"id": "020", "audio": "f020.mp3", "en": "I finally decided to organize the kitchen drawers where I keep all the plastic containers, but it seems impossible to find the right lid for any of them no matter how hard I look.", "es": "Finalmente decidi organizar los cajones de la cocina donde guardo todos los recipientes de plastico, pero parece imposible encontrar la tapa adecuada para ninguno de ellos sin importar cuanto busque."}
 ];
 
 let remaining=[...items], current=null, currentIndex=0, mode="EN", known=0, studyStarsOnly=false;
@@ -180,7 +186,8 @@ if (SpeechRecognition) {
 
 function normalizeText(text) {
     if (!text) return "";
-    return text.toLowerCase().replace(/[.,?!"]/g, "").trim();
+    let clean = text.toLowerCase().replace(/[.,?!"]/g, "").trim();
+    return clean;
 }
 
 function compareSentences(original, spoken) {
@@ -240,11 +247,13 @@ async function toggleRecord(targetBtnId) {
             mediaRecorder.start();
             isRecording = true;
             btn.classList.add("recording");
+            if(targetBtnId === "recBtn") btn.textContent = "⏹";
         } catch (err) { alert("Error al acceder al micrófono."); }
     } else {
         mediaRecorder.stop(); 
         isRecording = false;
         btn.classList.remove("recording");
+        if(targetBtnId === "recBtn") btn.textContent = "🎤";
     }
 }
 
@@ -275,7 +284,6 @@ function load(){
 
  document.getElementById("es").classList.add("hidden");
  document.getElementById("en").classList.add("hidden");
- document.getElementById("key").classList.add("hidden");
  document.getElementById("speechFeedback").innerHTML = ""; 
  progressBar.value = 0;
  const starMain = document.getElementById("starMain");
@@ -285,7 +293,7 @@ function load(){
   document.getElementById("langLabel").textContent="INGLÉS";
   play(1.0);
  } else {
-  document.getElementById("langLabel").textContent="ESPAÑOL";
+  document.getElementById("langLabel").textContent="CASTELLANO";
   document.getElementById("es").textContent=current.es;
   document.getElementById("es").classList.remove("hidden");
  }
@@ -309,21 +317,15 @@ function reveal(){
  if(!current)return;
  const esDiv = document.getElementById("es");
  const enDiv = document.getElementById("en");
- const keyDiv = document.getElementById("key");
- 
  esDiv.textContent = current.es;
  enDiv.textContent = current.en;
- keyDiv.textContent = "Palabra clave: " + current.key;
-
- if (!enDiv.classList.contains("hidden")) {
+ if (!esDiv.classList.contains("hidden") && !enDiv.classList.contains("hidden")) {
     esDiv.classList.add("hidden");
     enDiv.classList.add("hidden");
-    keyDiv.classList.add("hidden");
     if(mode==="ES") esDiv.classList.remove("hidden");
  } else {
     esDiv.classList.remove("hidden");
     enDiv.classList.remove("hidden");
-    keyDiv.classList.remove("hidden");
  }
 }
 
@@ -331,6 +333,7 @@ function know(){
  if(!current)return;
  remaining=remaining.filter(i=>i.id!==current.id);
  known++; 
+ // No incrementamos currentIndex porque al filtrar la lista, el siguiente ya ocupa la posición actual
  load();
 }
 
@@ -370,11 +373,11 @@ function toggleStar(id, btn) {
     if(current && current.id === id) document.getElementById("starMain").classList.toggle('active', active);
 }
 
-function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "unit_1"; }
+function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "index6"; }
 function markAsDone(el) {
     localStorage.setItem(getFolderName(), new Date().toISOString());
     el.innerHTML = "✓"; el.classList.add('marked');
-    alert("Lección marcada ✅");
+    alert("Lliçó marcada ✅");
 }
 
 load();

@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+s<!DOCTYPE html>
 <html lang="ca">
 <head>
 <meta charset="UTF-8">
@@ -27,10 +27,12 @@ main{display:flex;justify-content:center;padding:24px}
 .audio-btn.rec{background:#fca5a5; color: white;}
 .audio-btn.stt{background:#dbeafe; font-size: 22px;}
 
-@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-.recording, .listening { animation: pulse 1.5s infinite; background: #ef4444 !important; color: white !important; }
+/* Animación y color Rosa Chicle para estado activo */
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+.recording, .listening { animation: pulse 1.5s infinite; background: #ec4899 !important; color: white !important; }
 
-.mini-icon-btn.recording { background: #ff00ff !important; color: white !important; }
+/* Micro de la lista con el mismo Rosa Chicle */
+.mini-icon-btn.recording { background: #ec4899 !important; color: white !important; }
 
 .audio-btn.stt.listening { background: #3b82f6 !important; }
 
@@ -134,7 +136,7 @@ const items = [
     {"id":"004","key":"awkward","audio":"f004.mp3","ca":"Estava en una festa gran amb molta gent i vaig oblidar el nom del meu cap, així que hi va haver un silenci incòmode durant molt de temps i em vaig posar molt vermell de cara.","en":"I was at a big party with many people and I forgot the name of my boss, so there was an awkward silence for a long time and I felt very red in the face."},
     {"id":"005","key":"amusing","audio":"f005.mp3","ca":"Ahir vaig veure una pel·lícula molt divertida sobre un grup de gossos que saben parlar espanyol i van a una ciutat gran per trobar un tresor secret en una casa petita.","en":"Yesterday I saw a very amusing movie about a group of dogs that can speak Spanish and they go to a big city to find a secret treasure in a small house."},
     {"id":"006","key":"amazing","audio":"f006.mp3","ca":"La vista des de la finestra del meu hotel és increïble perquè puc veure l'oceà blau, les muntanyes altes amb neu, i el sol preciós cada matí quan bec el meu cafè.","en":"The view from the window of my hotel is amazing because I can see the blue ocean, the tall mountains with snow, and the beautiful sun every morning when I drink my coffee."},
-    {"id":"007","key":"harmless","audio":"f007.mp3","ca":"No cal que tinguis por d'aquell animal petit al jardí perquè és completament inofensiu, només vol menjar una mica d'herba verda i dormir sota l'arbre gran.","en":"You do not need to be afraid of that small animal in the garden because it is completely harmless, it only wants to eat some green grass and sleep under the big tree."},
+    {"id":"007","key":"harmless","audio":"f007.mp3","ca":"No cal que tinguis por d'aquell animal petit al jardí perquè es completament inofensiu, només vol menjar una mica d'herba verda i dormir sota l'arbre gran.","en":"You do not need to be afraid of that small animal in the garden because it is completely harmless, it only wants to eat some green grass and sleep under the big tree."},
     {"id":"008","key":"Whereas","audio":"f008.mp3","ca":"El meu germà sempre sopa molta menjar escombraria com hamburgueses i pizza, mentre que jo prefereixo menjar una amanida saludable amb tomàquets i pollastre perquè vull estar en forma.","en":"My brother always eats a lot of junk food like burgers and pizza for dinner, whereas I prefer to eat a healthy salad with tomatoes and chicken because I want to be fit."},
     {"id":"009","key":"Therefore","audio":"f009.mp3","ca":"Ahir em vaig despertar molt tard i no vaig tenir temps de esmorzar a casa; per tant, vaig tenir molta gana durant la meva classe d'anglès i no em vaig poder concentrar bé.","en":"Yesterday I woke up very late and I didn't have time to eat breakfast at home; so, I was very hungry during my English class and I couldn't concentrate well."},
     {"id":"010","key":"Broad","audio":"f010.mp3","ca":"La carretera nova a prop del parc és molt ampla i maca, així que molta gent hi va cada cap de setmana per caminar amb els seus gossos o per anar en bicicleta amb els seus amics.","en":"The new road near the park is very broad and beautiful, so many people go there every weekend to walk with their dogs or to ride their bicycles with their friends."},

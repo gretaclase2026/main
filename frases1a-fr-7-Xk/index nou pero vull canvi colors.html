@@ -1,16 +1,16 @@
  <!DOCTYPE html>
-<html lang="es">
+<html lang="ca">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Greta App - Grabación y Control Visual</title>
+<title>Greta App - Unitat 1</title>
 <style>
 body{margin:0;font-family:sans-serif;background:#f9fafb;color:#0f172a}
 header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center;align-items:center}
 .unit-number{font-size:24px;font-weight:800;color:#2563eb;margin:0 10px}
 .mode-btns button{margin:0 6px;padding:8px 14px;border:none;border-radius:14px;font-weight:700;cursor:pointer}
 .mode-en{background:#dbeafe}
-.mode-es{background:#fde68a}
+.mode-ca{background:#fde68a}
 main{display:flex;justify-content:center;padding:24px}
 .card{position:relative;width:100%;max-width:560px;background:#fff;border-radius:28px;padding:32px;box-shadow:0 12px 30px rgba(0,0,0,0.08);text-align:center}
 .counter{position:absolute;top:18px;left:22px;font-weight:800;color:#2563eb}
@@ -27,12 +27,11 @@ main{display:flex;justify-content:center;padding:24px}
 .audio-btn.rec{background:#fca5a5; color: white;}
 .audio-btn.stt{background:#dbeafe; font-size: 22px;}
 
-/* Estilo Rosa Chicle y Animación para micros activos */
-@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-.recording, .listening { animation: pulse 1.5s infinite; background: #ec4899 !important; color: white !important; }
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+.recording, .listening { animation: pulse 1.5s infinite; background: #ef4444 !important; color: white !important; }
 
-/* Micro rosa de la lista */
-.mini-icon-btn.recording { background: #ec4899 !important; color: white !important; }
+/* Micro rosa de la llista en fúcsia intens al gravar */
+.mini-icon-btn.recording { background: #ff00ff !important; color: white !important; }
 
 .audio-btn.stt.listening { background: #3b82f6 !important; }
 
@@ -41,7 +40,7 @@ input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius:
 
 .hidden{display:none}
 .key-label{font-size:16px;font-weight:900;color:#9333ea;margin:10px 0}
-.es{font-size:20px;color:#2563eb;margin-top:14px;line-height:1.4}
+.ca{font-size:20px;color:#2563eb;margin-top:14px;line-height:1.4}
 .en{font-size:20px;color:#0f172a;margin-top:14px;font-weight:700;line-height:1.4}
 
 #speechFeedback { font-size: 18px; margin: 15px 0; font-weight: bold; min-height: 28px; line-height: 1.5; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
@@ -64,7 +63,7 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 .list-item{padding:15px 0;border-bottom:1px solid #e5e7eb;display:flex;gap:15px;align-items:flex-start}
 .list-controls-side{display:flex;flex-direction:column;gap:8px;min-width:40px;align-items:center}
 .list-texts{flex-grow:1;display:flex;flex-direction:column;gap:6px}
-.list-es{color:#2563eb;font-weight:700;font-size:15px}
+.list-ca{color:#2563eb;font-weight:700;font-size:15px}
 .list-en{color:#0f172a;font-weight:800;font-size:15px;filter: blur(5px);transition: filter 0.3s;cursor:pointer}
 .list-en.revealed{filter: blur(0)}
 
@@ -82,11 +81,11 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 <body>
 <header>
  <div class="mode-btns">
-  <button class="mode-en" onclick="setMode('EN')">INGLÉS → ESPAÑOL</button>
+  <button class="mode-en" onclick="setMode('EN')">ANGLÈS → CATALÀ</button>
  </div>
  <div class="unit-number">1</div>
  <div class="mode-btns">
-  <button class="mode-es" onclick="setMode('ES')">ESPAÑOL → INGLÉS</button>
+  <button class="mode-ca" onclick="setMode('CA')">CATALÀ → ANGLÈS</button>
  </div>
 </header>
 <main>
@@ -95,7 +94,7 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
  <div class="check-box-manual" id="mainCheck" onclick="markAsDone(this)"></div>
  <button class="star-main" id="starMain" onclick="toggleStarCurrent()">★</button>
 
- <div id="langLabel" class="lang" style="margin-top: 10px;">INGLÉS</div>
+ <div id="langLabel" class="lang" style="margin-top: 10px;">ANGLÈS</div>
 
  <div class="audio-container">
   <button class="audio-btn slow" onclick="play(0.75)">🐢</button>
@@ -110,18 +109,18 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
  </div>
 
  <div id="key" class="key-label hidden"></div>
- <div id="es" class="es hidden"></div>
+ <div id="ca" class="ca hidden"></div>
  <div id="speechFeedback"></div>
  <div id="en" class="en hidden"></div>
  
  <div class="buttons">
-  <button class="action reveal" onclick="reveal()">Ver</button>
-  <button class="action know" onclick="know()">Ya la sé</button>
-  <button class="action next" onclick="nextOne()">Siguiente</button>
+  <button class="action reveal" onclick="reveal()">Veure</button>
+  <button class="action know" onclick="know()">Ja la sé</button>
+  <button class="action next" onclick="nextOne()">Següent</button>
  </div>
 
  <div class="bottom-nav">
-    <button class="nav-btn btn-list" onclick="toggleList()">Ver lista</button>
+    <button class="nav-btn btn-list" onclick="toggleList()">Veure llista</button>
     <button class="nav-btn btn-study-stars" id="btnStudyStars" onclick="toggleStudyStars()">Estudiar ⭐</button>
  </div>
 </div>
@@ -130,16 +129,16 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 
 <script>
 const items = [
-    {"id":"001","key":"tricky","audio":"f001.mp3","es":"Creo que encontrar un apartamento barato en el centro de la ciudad es bastante complicado porque hay mucha gente buscando lo mismo ahora mismo.","en":"I think that finding a cheap apartment in the center of the city is quite tricky because there are many people looking for the same thing right now."},
-    {"id":"002","key":"broad","audio":"f002.mp3","es":"La vista desde la cima de la montaña era muy amplia y podíamos ver todos los pueblos pequeños y el bosque verde cerca del río.","en":"The view from the top of the mountain was very broad and we could see all the small villages and the green forest near the river."},
-    {"id":"003","key":"willing","audio":"f003.mp3","es":"Mi hermano siempre está dispuesto a llevarme al aeropuerto temprano por la mañana aunque tenga que trabajar más tarde ese día.","en":"My brother is always willing to drive me to the airport early in the morning even if he has to work later that day."},
-    {"id":"004","key":"call off","audio":"f004.mp3","es":"El gerente decidió cancelar el evento al aire libre porque el pronóstico del tiempo decía que haría mucho frío y viento toda la noche.","en":"The manager decided to call off the outdoor event because the weather forecast said it would be very cold and windy all night."},
-    {"id":"005","key":"harmless","audio":"f005.mp3","es":"No hace falta que tengas miedo de aquel insecto porque es completamente inofensivo y solo quiere volar cerca de la luz de la lámpara.","en":"You don't need to be afraid of that insect because it is completely harmless and it just wants to fly near the light of the lamp."},
-    {"id":"006","key":"as long as","audio":"f006.mp3","es":"Te dejaré mi libro favorito siempre que prometas cuidarlo y devolvérmelo la semana que viene.","en":"I will lend you my favorite book as long as you promise to take care of it and give it back to me next week."},
-    {"id":"007","key":"worth","audio":"f007.mp3","es":"Sé que la entrada al museo es cara, pero realmente vale la pena visitarlo porque las pinturas de dentro son las más famosas del mundo.","en":"I know the museum ticket is expensive, but it is really worth visiting because the paintings inside are the most famous in the world."},
-    {"id":"008","key":"awkward","audio":"f008.mp3","es":"Fue muy incómodo cuando me encontré a mi antiguo jefe en el supermercado y no sabía qué decirle después de tantos años.","en":"It was very awkward when I met my old boss at the supermarket and I didn't know what to say to him after so many years."},
-    {"id":"009","key":"provided that","audio":"f009.mp3","es":"Compraremos el coche nuevo el mes que viene siempre que el banco nos dé el dinero que necesitamos para el primer pago.","en":"We are going to buy the new car next month provided that the bank gives us the money we need for the first payment."},
-    {"id":"010","key":"tough","audio":"f010.mp3","es":"El examen fue muy difícil y largo, pero me siento contenta porque estudié mucho y creo que respondí todas las preguntas correctamente.","en":"The exam was very tough and long, but I feel happy because I studied a lot and I think I answered all the questions correctly."}
+    {"id":"001","key":"tricky","audio":"f001.mp3","ca":"Crec que trobar un apartament barat al centre de la ciutat és força complicat perquè hi ha molta gent buscant el mateix ara mateix.","en":"I think that finding a cheap apartment in the center of the city is quite tricky because there are many people looking for the same thing right now."},
+    {"id":"002","key":"broad","audio":"f002.mp3","ca":"La vista des del cim de la muntanya era molt àmplia i podíem veure tots els pobles petits i el bosc verd a prop del riu.","en":"The view from the top of the mountain was very broad and we could see all the small villages and the green forest near the river."},
+    {"id":"003","key":"willing","audio":"f003.mp3","ca":"El meu germà sempre està disposat a portar-me a l’aeroport d’hora al matí encara que hagi de treballar més tard aquell dia.","en":"My brother is always willing to drive me to the airport early in the morning even if he has to work later that day."},
+    {"id":"004","key":"call off","audio":"f004.mp3","ca":"El gerent va decidir cancel·lar l’esdeveniment a l’aire lliure perquè la previsió del temps deia que faria molt fred i vent tota la nit.","en":"The manager decided to call off the outdoor event because the weather forecast said it would be very cold and windy all night."},
+    {"id":"005","key":"harmless","audio":"f005.mp3","ca":"No cal que tinguis por d’aquell insecte perquè és completament inofensiu i només vol volar a prop de la llum del llum.","en":"You don't need to be afraid of that insect because it is completely harmless and it just wants to fly near the light of the lamp."},
+    {"id":"006","key":"as long as","audio":"f006.mp3","ca":"Et deixaré el meu llibre preferit sempre que prometis cuidar-lo i tornar-me’l la setmana vinent.","en":"I will lend you my favorite book as long as you promise to take care of it and give it back to me next week."},
+    {"id":"007","key":"worth","audio":"f007.mp3","ca":"Sé que l’entrada al museu és cara, però realment val la pena visitar-lo perquè las pintures de dins són les més famoses del món.","en":"I know the museum ticket is expensive, but it is really worth visiting because the paintings inside are the most famous in the world."},
+    {"id":"008","key":"awkward","audio":"f008.mp3","ca":"Va ser molt incòmode quan em vaig trobar el meu antic cap al supermercat i no sabia què dir-li després de tants anys.","en":"It was very awkward when I met my old boss at the supermarket and I didn't know what to say to him after so many years."},
+    {"id":"009","key":"provided that","audio":"f009.mp3","ca":"Comprarem el cotxe nou el mes que ve sempre que el banc ens doni els diners que necessitem per al primer pagament.","en":"We are going to buy the new car next month provided that the bank gives us the money we need for the first payment."},
+    {"id":"010","key":"tough","audio":"f010.mp3","ca":"L’examen va ser molt difícil i llarg, però em sento contenta perquè vaig estudiar molt i crec que vaig respondre totes les preguntes correctament.","en":"The exam was very tough and long, but I feel happy because I studied a lot and I think I answered all the questions correctly."}
 ];
 
 let remaining=[...items], current=null, currentIndex=0, mode="EN", known=0, studyStarsOnly=false;
@@ -219,7 +218,7 @@ function compareSentences(original, spoken) {
 }
 
 function toggleMic() {
-    if (!recognition) { alert("Tu navegador no soporta reconocimiento de voz."); return; }
+    if (!recognition) { alert("El teu navegador no suporta reconeixement de veu."); return; }
     if (isListening) recognition.stop();
     else recognition.start();
 }
@@ -240,7 +239,7 @@ async function toggleRecord(targetBtnId) {
             mediaRecorder.start();
             isRecording = true;
             btn.classList.add("recording");
-        } catch (err) { alert("Error al acceder al micrófono."); }
+        } catch (err) { alert("Error en accedir al micròfon."); }
     } else {
         mediaRecorder.stop(); 
         isRecording = false;
@@ -273,7 +272,7 @@ function load(){
  if (currentIndex >= pool.length) currentIndex = 0;
  current = pool[currentIndex]; 
 
- document.getElementById("es").classList.add("hidden");
+ document.getElementById("ca").classList.add("hidden");
  document.getElementById("en").classList.add("hidden");
  document.getElementById("key").classList.add("hidden");
  document.getElementById("speechFeedback").innerHTML = ""; 
@@ -282,12 +281,12 @@ function load(){
  starMain.classList.toggle('active', localStorage.getItem('star_' + current.id) === 'true');
 
  if(mode==="EN"){
-  document.getElementById("langLabel").textContent="INGLÉS";
+  document.getElementById("langLabel").textContent="ANGLÈS";
   play(1.0);
  } else {
-  document.getElementById("langLabel").textContent="ESPAÑOL";
-  document.getElementById("es").textContent=current.es;
-  document.getElementById("es").classList.remove("hidden");
+  document.getElementById("langLabel").textContent="CATALÀ";
+  document.getElementById("ca").textContent=current.ca;
+  document.getElementById("ca").classList.remove("hidden");
  }
  updateCounter();
 }
@@ -307,21 +306,21 @@ function toggleStudyStars() {
 
 function reveal(){
  if(!current)return;
- const esDiv = document.getElementById("es");
+ const caDiv = document.getElementById("ca");
  const enDiv = document.getElementById("en");
  const keyDiv = document.getElementById("key");
  
- esDiv.textContent = current.es;
+ caDiv.textContent = current.ca;
  enDiv.textContent = current.en;
- keyDiv.textContent = "Palabra clave: " + current.key;
+ keyDiv.textContent = "Paraula clau: " + current.key;
 
  if (!enDiv.classList.contains("hidden")) {
-    esDiv.classList.add("hidden");
+    caDiv.classList.add("hidden");
     enDiv.classList.add("hidden");
     keyDiv.classList.add("hidden");
-    if(mode==="ES") esDiv.classList.remove("hidden");
+    if(mode==="CA") caDiv.classList.remove("hidden");
  } else {
-    esDiv.classList.remove("hidden");
+    caDiv.classList.remove("hidden");
     enDiv.classList.remove("hidden");
     keyDiv.classList.remove("hidden");
  }
@@ -356,7 +355,7 @@ function toggleList(){
         <button class="mini-icon-btn btn-rec-mini" id="rec-list-${idx}" onclick="toggleRecord('rec-list-${idx}')">🎤</button>
     </div>
     <div class="list-texts">
-        <div class="list-es">${i.es}</div>
+        <div class="list-ca">${i.ca}</div>
         <div class="list-en" id="en-${i.id}" onclick="this.classList.toggle('revealed')">${i.en}</div>
     </div>`;
   lb.appendChild(d);
@@ -374,7 +373,7 @@ function getFolderName() { return window.location.pathname.split('/').filter(Boo
 function markAsDone(el) {
     localStorage.setItem(getFolderName(), new Date().toISOString());
     el.innerHTML = "✓"; el.classList.add('marked');
-    alert("Lección marcada ✅");
+    alert("Lliçó marcada ✅");
 }
 
 load();
