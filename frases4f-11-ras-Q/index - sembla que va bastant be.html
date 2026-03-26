@@ -6,65 +6,72 @@
 <title>Repàs Personalitzat - 76 Frases</title>
 <style>
 body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
-/* Ajuste de cabecera para ahorrar espacio */
 header{padding:8px 4px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center;align-items:center;gap:4px}
 .unit-number{font-size:22px;font-weight:800;color:#2563eb;margin:0 8px;min-width:20px;text-align:center}
-/* Botones más pequeños y compactos */
 .mode-btns button{padding:6px 10px;border:none;border-radius:12px;font-weight:700;cursor:pointer;font-size:11px;white-space:nowrap;line-height:1.2}
 .mode-en{background:#dbeafe}
 .mode-es{background:#fde68a}
-
 main{display:flex;justify-content:center;padding:24px}
 .card{position:relative;width:100%;max-width:560px;background:#ffffff;border-radius:28px;padding:32px;box-shadow:0 10px 24px rgba(0,0,0,0.06);text-align:center}
 .counter{position:absolute;top:18px;left:22px;font-weight:800;color:#2563eb}
 .check-box-manual { position: absolute; top: 18px; right: 22px; width: 24px; height: 24px; background: #fff; border: 1.5px solid #22c55e; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 14px; }
 .check-box-manual.marked { background: #22c55e !important; color: white !important; }
 .lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
-
 .blocks{display:flex;flex-wrap:nowrap;gap:6px;justify-content:flex-start;margin:15px 0 20px;overflow-x:auto;padding:5px 0 5px 10px}
 .block{flex: 0 0 auto;width:32px;height:32px;border-radius:50%;border:none;background:#f1f5f9;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.2s}
 .block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1)}
 .block.all-btn { background: #e2e8f0; color: #475569; }
-
 .audio-container { display: flex; justify-content: center; gap: 8px; margin: 10px 0; align-items: center; flex-wrap: nowrap; }
 .audio-btn{width:52px;height:52px;border-radius:50%;border:none;background:#dbeafe;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
 .audio-btn.slow{background:#fef08a;}
 .audio-btn.pause{background:#fee2e2; color: inherit;} 
 .audio-btn.rec{background:#fca5a5; color: white;}
-.audio-btn.rec.recording { animation: pulse 1.5s infinite; background: #ef4444; }
+.audio-btn.stt{background:#dbeafe; font-size: 22px;}
+
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+.listening { animation: pulse 1.5s infinite; background: #ef4444 !important; color: white !important; }
+.recording { background: #ef4444 !important; color: white !important; }
+
+#speechFeedback { 
+    font-size: 18px; 
+    margin: 15px 0; 
+    font-weight: bold; 
+    min-height: 28px; 
+    line-height: 1.5; 
+    padding: 0 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px;
+}
+.word-correct { color: #16a34a; }
+.word-error { color: #dc2626; text-decoration: line-through; }
+.word-missing { color: #94a3b8; font-style: italic; }
 
 .star-btn { background: none; border: none; font-size: 32px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px 0 0; margin-right: 5px; }
 .star-btn.active { color: #f59e0b !important; }
-
 .progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
 input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
-
 .hidden{display:none}
 .es{font-size:19px;color:#2563eb;margin-top:14px;line-height:1.4;font-weight:600}
 .en{font-size:19px;color:#0f172a;margin-top:14px;font-weight:700;line-height:1.4}
-
 .buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:22px}
 button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;cursor:pointer}
 .reveal{background:#e0f2fe}
 .know{background:#dcfce7}
 .next{background:#fbcfe8}
-
 .list-controls { display: flex; gap: 10px; margin-top: 16px; }
 .list-btn{ flex:1; background:#e9d5ff; border:none; border-radius:16px; padding:14px; font-weight:800; cursor:pointer; font-size:13px }
 .review-btn { background: #fef3c7; color: #92400e; }
-
 .list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
 .list-item { display: flex; align-items: flex-start; gap: 15px; padding: 15px 0; border-bottom: 1px solid #eee; }
 .list-controls-side { display: flex; flex-direction: column; gap: 8px; min-width: 44px; align-items: center; }
 .list-texts { flex-grow: 1; display: flex; flex-direction: column; gap: 6px; }
-
-.mini-btn { border: none; border-radius: 10px; width: 38px; height: 38px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+.mini-btn { border: none; border-radius: 10px; width: 38px; height: 38px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
 .btn-audio { background: #dbeafe; }
 .btn-rec-mini { background: #fbcfe8; }
 .star-btn-list { background: none; border: none; font-size: 26px; cursor: pointer; color: #cbd5e1; padding: 0; line-height: 1; }
 .star-btn-list.active { color: #f59e0b !important; }
-
 .blur { filter: blur(5px); transition: filter 0.2s; cursor: pointer; user-select: none; }
 .blur.revealed { filter: blur(0); }
 </style>
@@ -90,11 +97,13 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
   <button class="audio-btn slow" onclick="playCurrent(0.75)">🐢</button>
   <button class="audio-btn" onclick="playCurrent(1.0)">🔊</button>
   <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
-  <button class="audio-btn rec" id="recBtn" onclick="toggleRecord()">🎤</button>
+  <button class="audio-btn rec" id="recBtn" onclick="toggleRecord('recBtn')">🎤</button>
+  <button class="audio-btn stt" id="sttBtn" onclick="toggleMic()">🎤</button>
  </div>
  
  <div class="progress-wrapper"><input type="range" id="progressBar" value="0" min="0" max="100" step="0.1"></div>
  <div id="es" class="es hidden"></div>
+ <div id="speechFeedback"></div>
  <div id="en" class="en hidden"></div>
  <div class="buttons">
   <button class="action reveal" onclick="reveal()">Veure</button>
@@ -130,7 +139,7 @@ const items = [
     {audio:"f016.mp3",en:"We need a much larger pot if we want to cook enough pasta for all the people who are coming to eat at our house this Sunday.",es:"Necesitamos una olla mucho más grande si queremos cocinar suficiente pasta para toda la gente que viene a comer a nuestra casa este domingo."},
     {audio:"f017.mp3",en:"I always use a wooden chopping board to cut the vegetables because it is much better for the knives and it is easier to clean after preparing dinner.",es:"Siempre uso una tabla de cortar de madera para cortar las verduras porque es mucho mejor para los cuchillos y es más fácil de limpiar después de preparar la cena."},
     {audio:"f018.mp3",en:"After the pasta was ready, I looked for the strainer in the sink to remove the hot water, but I realized that it was still inside the dishwasher.",es:"Cuando la pasta estuvo lista, busqué el colador en el fregadero para quitar el agua caliente, pero me di cuenta de que todavía estaba dentro del lavavajillas."},
-    {audio:"f019.mp3",en:"Mi madre siempre dice que hay que usar un tamiz para la harina cuando haces un bizcocho para que la textura sea mucho más ligera y sin grumos.",es:"Mi madre siempre dice que hay que usar un tamiz para la harina cuando haces un bizcocho para que la textura sea mucho más ligera y sin grumos."},
+    {audio:"f019.mp3",en:"My mother always says that you have to use a sieve for the flour when you make a cake so that the texture is much lighter and without lumps.",es:"Mi madre siempre dice que hay que usar un tamiz para la harina cuando haces un bizcocho para que la textura sea mucho más ligera y sin grumos."},
     {audio:"f020.mp3",en:"I found a tin can of tomato soup in the back of the cupboard that had been there for months, so I decided to heat it up for a quick lunch.",es:"Encontré una lata de sopa de tomate al fondo del armario que llevaba allí meses, así que decidí calentarla para un almuerzo rápido."},
     {audio:"f021.mp3",en:"It is very difficult for me to open this jar of jam because the lid is stuck, so I might need to put it under some hot water for a few seconds.",es:"Me resulta muy difícil abrir este tarro de mermelada porque la tapa está atascada, así que puede que tenga que ponerlo bajo agua caliente unos segundos."},
     {audio:"f022.mp3",en:"We were ready to drink some cold sodas on the terrace, but we had to go back to the kitchen because nobody could find the bottle opener.",es:"Estábamos listos para beber unos refrescos fríos en la terraza, pero tuvimos que volver a la cocina porque nadie encontraba el abrebotellas."},
@@ -164,12 +173,12 @@ const items = [
     {audio:"f050.mp3",en:"There is a small water leak under the bathroom sink, so I think I need a wrench to tighten the pipe before the whole floor gets wet.",es:"Hay una pequeña fuga de agua debajo del lavabo del baño, así que creo que necesito una llave inglesa para apretar el tubo antes de que se moje todo el suelo."},
     {audio:"f051.mp3",en:"We should use a tape measure to see if the new sofa will fit in the living room, because it looks much larger in the store than it does here.",es:"Deberíamos usar una cinta métrica para ver si el sofá nuevo cabrá en el salón, porque en la tienda parece mucho más grande que aquí."},
     {audio:"f052.mp3",en:"I had to climb up the ladder to change the light bulb in the ceiling because it is so high that I cannot reach it even if I stand on a chair.",es:"Tuve que subir por la escalera para cambiar la bombilla del techo porque está tan alta que no puedo alcanzarla ni siquiera subiéndose a una silla."},
-    {audio:"f053.mp3",en:"I put a small plant on the window ledge because I wanted it to get more sunlight, but now I have to be careful when I open the window so it doesn't fall.",es:"Puse una planta pequeña en el alféizar de la ventana porque quería que recibiera más luz solar, pero ahora tengo que tener cuidado al abrir la ventana para que no se caiga."},
+    {audio:"f053.mp3",en:"I put a small plant on the window ledge because I wanted it to get more sunlight, but now I have to be careful when I open the window so it doesn't fall.",es:"Puse una planta pequeña en el alféizar de la ventana porque quería que recibiera más luz solar, pero ahora que tener cuidado al abrir la ventana para que no se caiga."},
     {audio:"f054.mp3",en:"It was so windy last night that the shutter in my bedroom kept hitting the wall, making a loud noise that didn't let me sleep until I went to close it.",es:"Hacía tanto viento anoche que la contraventana de mi dormitorio no dejaba de golpear la pared, haciendo un ruido fuerte que no me dejó dormir hasta que fui a cerrarla."},
     {audio:"f055.mp3",en:"The curtains in the living room are very difficult to move because the rail is a bit rusty, so I think I should put some oil on it to make it slide better.",es:"Las cortinas del salón son muy difíciles de mover porque el riel está un poco oxidado, así que creo que debería ponerle un poco de aceite para que deslice mejor."},
     {audio:"f056.mp3",en:"This old house has a beautiful wooden beam across the ceiling of the kitchen, which gives the whole room a very cozy and traditional feeling.",es:"Esta casa antigua tiene una hermosa viga de madera que cruza el techo de la cocina, lo que le da a toda la estancia un ambiente muy acogedor y tradicional."},
     {audio:"f057.mp3",en:"We decided to change the flooring in the hallway because the old wood was starting to make too much noise every time someone walked on it at night.",es:"Decidimos cambiar el suelo del pasillo porque la madera vieja empezaba a hacer demasiado ruido cada vez que alguien caminaba sobre ella por la noche."},
-    {audio:"f058.mp3",en:"I was using the grater to prepare some cheese for the pizza, but I had to be very careful because the edges are very sharp and I didn't want to cut my fingers.",es:"Estaba usando el rallador para preparar queso para la pizza, pero tuvé que tener mucho cuidado porque los bordes son muy afilados y no quería cortarme los dedos."},
+    {audio:"f058.mp3",en:"I was using the grater to prepare some cheese for the pizza, but I had to be very careful because the edges are very sharp and I didn't want to cut my fingers.",es:"Estaba usando el rallador para preparar algo de queso para la pizza, pero tuve que tener mucho cuidado porque los bordes están muy afilados y no quería cortarme los dedos."},
     {audio:"f059.mp3",en:"It is much faster to use a peeler than a knife when you have to prepare a lot of potatoes for a big family dinner, and it is also much safer.",es:"Es mucho más rápido usar un pelador que un cuchillo cuando tienes que preparar muchas patatas para una cena familiar grande, y además es mucho más seguro."},
     {audio:"f060.mp3",en:"Please use the metal tongs to take the meat out of the pan so you don't burn yourself with the hot oil while you are cooking.",es:"Por favor, usa las pinzas metálicas para sacar la carne de la sartén y no quemarte con el aceite caliente mientras cocinas."},
     {audio:"f061.mp3",en:"I couldn't find the rolling pin to flatten the dough for the cookies, so I had to use a clean glass bottle instead to finish the recipe.",es:"No pude encontrar el rodillo para aplanar la masa de las galletas, así que tuve que usar una botella de vidrio limpia para terminar la receta."},
@@ -181,7 +190,7 @@ const items = [
     {audio:"f067.mp3",en:"This frying pan is very dirty after cooking the meat, so I will need to use a rough scrub and a lot of soap to leave it completely clean.",es:"Esta sartén está muy sucia después de cocinar la carne, así que necesitaré usar un estropajo áspero y mucho jabón para dejarla completamente limpia."},
     {audio:"f068.mp3",en:"I am very sad because I dropped some red wine on my new white sofa, and now I am afraid that the stain will stay there forever.",es:"Estoy muy triste porque se me cayó un poco de vino tinto en mi sofá blanco nuevo y ahora temo que la mancha se quede ahí para siempre."},
     {audio:"f069.mp3",en:"I was cleaning the bathroom very carefully, but a drop of liquid fell on my blue trousers and created a permanent bleach stain.",es:"Estaba limpiando el baño con mucho cuidado, pero una gota de líquido cayó sobre mis pantalones azules y creó una mancha permanente de lejía."},
-    {audio:"f070.mp3",en:"The water in the kitchen sink is going down very slowly hoy, so I think there is a clog in the pipes that I need to fix soon.",es:"El agua del fregadero de la cocina está bajando muy lentamente hoy, así que creo que hay un atasco en las tuberías que necesito arreglar pronto."},
+    {audio:"f070.mp3",en:"The water in the kitchen sink is going down very slowly today, so I think there is a blockage in the pipes that I need to fix soon.",es:"El agua del fregadero de la cocina está bajando muy lentamente hoy, así que creo que hay un atasco en las tuberías que necesito arreglar pronto."},
     {audio:"f071.mp3",en:"You should be careful not to drop any food down the drain while you are washing the dishes, because it might cause a bad smell in the kitchen.",es:"Deberías tener cuidado de no dejar caer comida por el desagüe mientras lavas los platos, porque podría provocar un mal olor en la cocina."},
     {audio:"f072.mp3",en:"Every time I wash my black sweater, it comes out of the machine covered in white lint, so I have to spend a lot of time cleaning it.",es:"Cada vez que lavo mi jersey negro, sale de la lavadora cubierto de pelusa blanca, así que tengo que pasar mucho tiempo limpiándolo."},
     {audio:"f073.mp3",en:"I had to spend more than thirty minutes at the bank because they asked me to fill out a very long form with all my personal information.",es:"Tuve que pasar más de treinta minutos en el banco porque me pidieron rellenar un formulario muy largo con toda mi información personal."},
@@ -190,16 +199,122 @@ const items = [
     {audio:"f076.mp3",en:"The jacket I ordered online was too small for me, so I sent it back to the store and now I am waiting for them to give me a full refund.",es:"La chaqueta que pedí por internet me quedaba pequeña, así que la devolví a la tienda y ahora estoy esperando a que me hagan un reembolso completo."}
 ];
 
+// MAPA DE NORMALIZACIÓN MEJORADO
+const normalizationMap = {
+    "dont": "do not", "doesn't": "does not", "doesnt": "does not", "didnt": "did not", "didn't": "did not",
+    "isnt": "is not", "isn't": "is not", "arent": "are not", "aren't": "are not",
+    "wasnt": "was not", "wasn't": "was not", "werent": "were not", "weren't": "were not",
+    "havent": "have not", "haven't": "have not", "hasnt": "has not", "hasn't": "has not",
+    "hadnt": "had not", "hadn't": "had not", "wont": "will not", "won't": "will not",
+    "wouldnt": "would not", "wouldn't": "would not", "cant": "can not", "can't": "can not",
+    "couldnt": "could not", "couldn't": "could not", "im": "i am", "i'm": "i am",
+    "youre": "you are", "you're": "you are", "hes": "he is", "he's": "he is",
+    "shes": "she is", "she's": "she is", "its": "it is", "it's": "it is",
+    "were": "we are", "we're": "we are", "theyre": "they are", "they're": "they are",
+    "ive": "i have", "i've": "i have", "youve": "you have", "you've": "you have",
+    "weve": "we have", "we've": "we have", "theyve": "they have", "they've": "they have",
+    "id": "i would", "i'd": "i would", "youd": "you would", "you'd": "you would",
+    "hed": "he would", "he'd": "he would", "shed": "she would", "she'd": "she would",
+    "wed": "we would", "we'd": "we would", "theyd": "they would", "they'd": "they would",
+    "ill": "i will", "i'll": "i will", "youll": "you will", "you'll": "you will",
+    "hell": "he will", "he'll": "he will", "shell": "she will", "she'll": "she will",
+    "well": "we will", "we'll": "we will", "theyll": "they will", "they'll": "they will"
+};
+
 let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0;
 const audioObj = new Audio();
 const progressBar = document.getElementById("progressBar");
 
 function getFolderName() { return "frases-76-hogar"; }
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
-
 let mediaRecorder, audioChunks = [], isRecording = false;
 
-async function toggleRecord(targetBtnId = "recBtn") {
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition, isListening = false;
+
+if (SpeechRecognition) {
+    recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    recognition.continuous = true;
+
+    recognition.onstart = () => { isListening = true; document.getElementById("sttBtn").classList.add("listening"); };
+    recognition.onend = () => { isListening = false; document.getElementById("sttBtn").classList.remove("listening"); };
+    recognition.onresult = (event) => {
+        let fullTranscript = "";
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+            fullTranscript += event.results[i][0].transcript + " ";
+        }
+        compareSentences(currentBlockData[pos].en, fullTranscript.trim());
+    };
+}
+
+function normalizeText(text) {
+    if (!text) return "";
+    // Limpieza agresiva: minúsculas y fuera signos raros excepto el espacio
+    let clean = text.toLowerCase().replace(/[.,?!"]/g, "").trim();
+    let words = clean.split(/\s+/);
+    
+    // Convertimos cada palabra usando el mapa de normalización
+    return words.map(word => {
+        // Quitamos el apóstrofo solo para buscar en el mapa si no lo encuentra con él
+        let key = word.replace("'", ""); 
+        return normalizationMap[word] || normalizationMap[key] || word;
+    }).join(" ");
+}
+
+function compareSentences(original, spoken) {
+    const feedbackDiv = document.getElementById("speechFeedback");
+    
+    // Normalizamos y separamos por palabras para comparar "limpio"
+    const normOriginalWords = normalizeText(original).split(/\s+/);
+    const normSpokenWords = normalizeText(spoken).split(/\s+/);
+    
+    const origWordsRaw = original.split(/\s+/);
+    
+    let resultHTML = "";
+    let sIdx = 0;
+
+    // Recorremos la frase original palabra por palabra
+    normOriginalWords.forEach((normWord, index) => {
+        const originalWordRaw = origWordsRaw[index];
+        let matched = false;
+
+        // Comprobamos si la palabra normalizada coincide con lo que dijo el usuario
+        if (sIdx < normSpokenWords.length && normSpokenWords[sIdx] === normWord) {
+            resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
+            sIdx++;
+            matched = true;
+        } else {
+            // Margen de error: buscamos un poco más adelante por si se saltó algo
+            for (let j = sIdx + 1; j < sIdx + 5 && j < normSpokenWords.length; j++) {
+                if (normSpokenWords[j] === normWord) {
+                    for (let k = sIdx; k < j; k++) {
+                        resultHTML += `<span class="word-error">${normSpokenWords[k]}</span>`;
+                    }
+                    resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
+                    sIdx = j + 1;
+                    matched = true;
+                    break;
+                }
+            }
+        }
+        if (!matched) resultHTML += `<span class="word-missing">${originalWordRaw}</span>`;
+    });
+    feedbackDiv.innerHTML = resultHTML;
+}
+
+function toggleMic() {
+    if (!recognition) { alert("Navegador no suportat."); return; }
+    if (isListening) {
+        recognition.stop();
+    } else {
+        document.getElementById("speechFeedback").innerHTML = "";
+        recognition.start();
+    }
+}
+
+async function toggleRecord(targetBtnId) {
     const btn = document.getElementById(targetBtnId);
     if (!isRecording) {
         try {
@@ -209,16 +324,18 @@ async function toggleRecord(targetBtnId = "recBtn") {
             mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
             mediaRecorder.onstop = () => {
                 const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-                const audioUrl = URL.createObjectURL(audioBlob);
-                new Audio(audioUrl).play();
+                new Audio(URL.createObjectURL(audioBlob)).play();
             };
             mediaRecorder.start();
             isRecording = true;
-            btn.classList.add("recording"); btn.textContent = "⏹";
+            btn.classList.add("recording");
+            if(targetBtnId === "recBtn") btn.textContent = "⏹";
         } catch (err) { alert("Error al accedir al micròfon."); }
     } else {
-        mediaRecorder.stop(); isRecording = false;
-        btn.classList.remove("recording"); btn.textContent = "🎤";
+        mediaRecorder.stop(); 
+        isRecording = false;
+        btn.classList.remove("recording");
+        if(targetBtnId === "recBtn") btn.textContent = "🎤";
     }
 }
 
@@ -230,13 +347,11 @@ function initBlocks() {
   const numBlocks = Math.ceil(items.length / 10);
   const savedBlock = localStorage.getItem(getFolderName() + "_puntoLibro");
   container.innerHTML = "";
-  
   const allBtn = document.createElement("button");
   allBtn.className = "block all-btn";
   allBtn.textContent = "T";
   allBtn.onclick = () => loadAll();
   container.appendChild(allBtn);
-
   for (let i = 0; i < numBlocks; i++) {
     const btn = document.createElement("button");
     btn.className = "block";
@@ -244,12 +359,8 @@ function initBlocks() {
     btn.onclick = () => loadBlock(i);
     container.appendChild(btn);
   }
-  
-  if (savedBlock === "all") {
-    loadAll();
-  } else {
-    loadBlock((savedBlock !== null) ? parseInt(savedBlock) : 0);
-  }
+  if (savedBlock === "all") loadAll();
+  else loadBlock((savedBlock !== null) ? parseInt(savedBlock) : 0);
 }
 
 function loadBlock(b) {
@@ -260,9 +371,7 @@ function loadBlock(b) {
   let end = Math.min(start + 10, items.length);
   for (let i = start; i < end; i++) temp.push({...items[i]});
   currentBlockData = temp.sort(() => Math.random() - 0.5);
-  document.querySelectorAll(".block").forEach((btn, idx) => {
-      btn.classList.toggle("active", idx === (b + 1));
-  });
+  document.querySelectorAll(".block").forEach((btn, idx) => { btn.classList.toggle("active", idx === (b + 1)); });
   pos = 0; learnedCount = 0;
   document.getElementById("endMsg").classList.add("hidden");
   update(true);
@@ -272,9 +381,7 @@ function loadAll() {
   currentBlockID = -1;
   localStorage.setItem(getFolderName() + "_puntoLibro", "all");
   currentBlockData = items.map(i => ({...i})).sort(() => Math.random() - 0.5);
-  document.querySelectorAll(".block").forEach((btn, idx) => {
-      btn.classList.toggle("active", idx === 0);
-  });
+  document.querySelectorAll(".block").forEach((btn, idx) => { btn.classList.toggle("active", idx === 0); });
   pos = 0; learnedCount = 0;
   document.getElementById("endMsg").classList.add("hidden");
   update(true);
@@ -284,6 +391,7 @@ function update(fromAction = false) {
   if (currentBlockData.length === 0) {
     document.getElementById("en").classList.add("hidden");
     document.getElementById("es").classList.add("hidden");
+    document.getElementById("speechFeedback").innerHTML = "";
     document.getElementById("endMsg").classList.remove("hidden");
     return;
   }
@@ -291,8 +399,8 @@ function update(fromAction = false) {
   const item = currentBlockData[pos];
   document.getElementById("es").classList.add("hidden");
   document.getElementById("en").classList.add("hidden");
+  document.getElementById("speechFeedback").innerHTML = "";
   document.getElementById("starBtn").classList.toggle("active", starredIds.includes(item.audio));
-  
   if (mode === "EN") {
     document.getElementById("langLabel").textContent = "ANGLÈS";
     document.getElementById("en").innerHTML = item.en;
@@ -313,18 +421,10 @@ function pauseAudio() { audioObj.pause(); }
 function reveal() {
   if (currentBlockData.length === 0) return;
   const item = currentBlockData[pos];
-  const esDiv = document.getElementById("es");
-  const enDiv = document.getElementById("en");
-  if (!enDiv.classList.contains("hidden") && mode === "EN") {
-      esDiv.classList.add("hidden");
-  } else if (!enDiv.classList.contains("hidden") && mode === "ES") {
-      enDiv.classList.add("hidden");
-  } else {
-      esDiv.innerHTML = item.es;
-      enDiv.innerHTML = item.en;
-      esDiv.classList.remove("hidden");
-      enDiv.classList.remove("hidden");
-  }
+  document.getElementById("es").innerHTML = item.es;
+  document.getElementById("en").innerHTML = item.en;
+  document.getElementById("es").classList.remove("hidden");
+  document.getElementById("en").classList.remove("hidden");
 }
 
 function know() {
@@ -345,21 +445,15 @@ function setMode(m) { mode = m; update(true); }
 
 function toggleStar(forcedId = null) {
   const audio = forcedId || currentBlockData[pos].audio;
-  if (starredIds.includes(audio)) {
-    starredIds = starredIds.filter(id => id !== audio);
-  } else {
-    starredIds.push(audio);
-  }
+  if (starredIds.includes(audio)) starredIds = starredIds.filter(id => id !== audio);
+  else starredIds.push(audio);
   localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
   update();
 }
 
 function toggleList(type) {
   const box = document.getElementById("listBox");
-  if (!box.classList.contains("hidden") && box.dataset.activeType === type) { 
-    box.classList.add("hidden"); 
-    return; 
-  }
+  if (!box.classList.contains("hidden") && box.dataset.activeType === type) { box.classList.add("hidden"); return; }
   box.dataset.activeType = type;
   renderList(type);
   box.classList.remove("hidden");
@@ -368,19 +462,10 @@ function toggleList(type) {
 function renderList(type) {
   const box = document.getElementById("listBox");
   box.innerHTML = type === 'stars' ? "<h3>Frases destacades (★):</h3>" : "<h3>Tota la llista:</h3>";
-  
   let listToRender = [];
-  if (type === 'stars') {
-      listToRender = items.filter(i => starredIds.includes(i.audio));
-  } else {
-      listToRender = (currentBlockID === -1) ? items : items.slice(currentBlockID * 10, (currentBlockID + 1) * 10);
-  }
-
-  if (listToRender.length === 0) {
-    box.innerHTML += "<p style='padding:10px;'>Buit.</p>";
-    return;
-  }
-
+  if (type === 'stars') listToRender = items.filter(i => starredIds.includes(i.audio));
+  else listToRender = (currentBlockID === -1) ? items : items.slice(currentBlockID * 10, (currentBlockID + 1) * 10);
+  if (listToRender.length === 0) { box.innerHTML += "<p style='padding:10px;'>Buit.</p>"; return; }
   listToRender.forEach((i, index) => {
     const isStarred = starredIds.includes(i.audio);
     const itemDiv = document.createElement("div");
@@ -404,7 +489,6 @@ function renderList(type) {
 function markAsDone(el) {
     localStorage.setItem(getFolderName(), new Date().toISOString());
     el.innerHTML = "✓"; el.classList.add('marked');
-    alert("Lliçó completada ✅");
 }
 
 if (localStorage.getItem(getFolderName())) { 

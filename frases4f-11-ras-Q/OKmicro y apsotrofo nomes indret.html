@@ -29,8 +29,7 @@ main{display:flex;justify-content:center;padding:24px}
 .audio-btn.stt{background:#dbeafe; font-size: 22px;}
 
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-.listening { animation: pulse 1.5s infinite; background: #ef4444 !important; color: white !important; }
-.recording { background: #ef4444 !important; color: white !important; }
+.recording, .listening { animation: pulse 1.5s infinite; background: #ef4444 !important; color: white !important; }
 
 #speechFeedback { 
     font-size: 18px; 
@@ -120,6 +119,7 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 <div id="listBox" class="list-box hidden"></div>
 
 <script>
+// Ítems (Mantenidos igual que el original)
 const items = [
     {audio:"f001.mp3",en:"It was so dark in the hallway that I had a lot of trouble finding the keyhole with my keys, and I spent several minutes trying to open the door.",es:"Estaba tan oscuro en el pasillo que tuve muchos problemas para encontrar la cerradura con las llaves y pasé varios minutos intentando abrir la puerta."},
     {audio:"f002.mp3",en:"I was walking through the living room in the middle of the night and I couldn't find the light switch, so I accidentally tripped over the dog's bed.",es:"Estaba caminando por el salón en mitad de la noche y no encontraba el interruptor de la luz, así que tropecé accidentalmente con la cama del perro."},
@@ -173,12 +173,12 @@ const items = [
     {audio:"f050.mp3",en:"There is a small water leak under the bathroom sink, so I think I need a wrench to tighten the pipe before the whole floor gets wet.",es:"Hay una pequeña fuga de agua debajo del lavabo del baño, así que creo que necesito una llave inglesa para apretar el tubo antes de que se moje todo el suelo."},
     {audio:"f051.mp3",en:"We should use a tape measure to see if the new sofa will fit in the living room, because it looks much larger in the store than it does here.",es:"Deberíamos usar una cinta métrica para ver si el sofá nuevo cabrá en el salón, porque en la tienda parece mucho más grande que aquí."},
     {audio:"f052.mp3",en:"I had to climb up the ladder to change the light bulb in the ceiling because it is so high that I cannot reach it even if I stand on a chair.",es:"Tuve que subir por la escalera para cambiar la bombilla del techo porque está tan alta que no puedo alcanzarla ni siquiera subiéndose a una silla."},
-    {audio:"f053.mp3",en:"I put a small plant on the window ledge because I wanted it to get more sunlight, but now I have to be careful when I open the window so it doesn't fall.",es:"Puse una planta pequeña en el alféizar de la ventana porque quería que recibiera más luz solar, pero ahora que tener cuidado al abrir la ventana para que no se caiga."},
+    {audio:"f053.mp3",en:"I put a small plant on the window ledge because I wanted it to get more sunlight, but now I have to be careful when I open the window so it doesn't fall.",es:"Puse una planta pequeña en el alféizar de la ventana porque quería que recibiera más luz solar, pero ahora tengo que tener cuidado al abrir la ventana para que no se caiga."},
     {audio:"f054.mp3",en:"It was so windy last night that the shutter in my bedroom kept hitting the wall, making a loud noise that didn't let me sleep until I went to close it.",es:"Hacía tanto viento anoche que la contraventana de mi dormitorio no dejaba de golpear la pared, haciendo un ruido fuerte que no me dejó dormir hasta que fui a cerrarla."},
     {audio:"f055.mp3",en:"The curtains in the living room are very difficult to move because the rail is a bit rusty, so I think I should put some oil on it to make it slide better.",es:"Las cortinas del salón son muy difíciles de mover porque el riel está un poco oxidado, así que creo que debería ponerle un poco de aceite para que deslice mejor."},
     {audio:"f056.mp3",en:"This old house has a beautiful wooden beam across the ceiling of the kitchen, which gives the whole room a very cozy and traditional feeling.",es:"Esta casa antigua tiene una hermosa viga de madera que cruza el techo de la cocina, lo que le da a toda la estancia un ambiente muy acogedor y tradicional."},
     {audio:"f057.mp3",en:"We decided to change the flooring in the hallway because the old wood was starting to make too much noise every time someone walked on it at night.",es:"Decidimos cambiar el suelo del pasillo porque la madera vieja empezaba a hacer demasiado ruido cada vez que alguien caminaba sobre ella por la noche."},
-    {audio:"f058.mp3",en:"I was using the grater to prepare some cheese for the pizza, but I had to be very careful because the edges are very sharp and I didn't want to cut my fingers.",es:"Estaba usando el rallador para preparar algo de queso para la pizza, pero tuve que tener mucho cuidado porque los bordes están muy afilados y no quería cortarme los dedos."},
+    {audio:"f058.mp3",en:"I was using the grater to prepare some cheese for the pizza, but I had to be very careful because the edges are very sharp and I didn't want to cut my fingers.",es:"I was using the grater to prepare some cheese for the pizza, but I had to be very careful because the edges are very sharp and I didn't want to cut my fingers."},
     {audio:"f059.mp3",en:"It is much faster to use a peeler than a knife when you have to prepare a lot of potatoes for a big family dinner, and it is also much safer.",es:"Es mucho más rápido usar un pelador que un cuchillo cuando tienes que preparar muchas patatas para una cena familiar grande, y además es mucho más seguro."},
     {audio:"f060.mp3",en:"Please use the metal tongs to take the meat out of the pan so you don't burn yourself with the hot oil while you are cooking.",es:"Por favor, usa las pinzas metálicas para sacar la carne de la sartén y no quemarte con el aceite caliente mientras cocinas."},
     {audio:"f061.mp3",en:"I couldn't find the rolling pin to flatten the dough for the cookies, so I had to use a clean glass bottle instead to finish the recipe.",es:"No pude encontrar el rodillo para aplanar la masa de las galletas, así que tuve que usar una botella de vidrio limpia para terminar la receta."},
@@ -199,26 +199,17 @@ const items = [
     {audio:"f076.mp3",en:"The jacket I ordered online was too small for me, so I sent it back to the store and now I am waiting for them to give me a full refund.",es:"La chaqueta que pedí por internet me quedaba pequeña, así que la devolví a la tienda y ahora estoy esperando a que me hagan un reembolso completo."}
 ];
 
-// MAPA DE NORMALIZACIÓN MEJORADO
-const normalizationMap = {
-    "dont": "do not", "doesn't": "does not", "doesnt": "does not", "didnt": "did not", "didn't": "did not",
-    "isnt": "is not", "isn't": "is not", "arent": "are not", "aren't": "are not",
-    "wasnt": "was not", "wasn't": "was not", "werent": "were not", "weren't": "were not",
-    "havent": "have not", "haven't": "have not", "hasnt": "has not", "hasn't": "has not",
-    "hadnt": "had not", "hadn't": "had not", "wont": "will not", "won't": "will not",
-    "wouldnt": "would not", "wouldn't": "would not", "cant": "can not", "can't": "can not",
-    "couldnt": "could not", "couldn't": "could not", "im": "i am", "i'm": "i am",
-    "youre": "you are", "you're": "you are", "hes": "he is", "he's": "he is",
-    "shes": "she is", "she's": "she is", "its": "it is", "it's": "it is",
-    "were": "we are", "we're": "we are", "theyre": "they are", "they're": "they are",
-    "ive": "i have", "i've": "i have", "youve": "you have", "you've": "you have",
-    "weve": "we have", "we've": "we have", "theyve": "they have", "they've": "they have",
-    "id": "i would", "i'd": "i would", "youd": "you would", "you'd": "you would",
-    "hed": "he would", "he'd": "he would", "shed": "she would", "she'd": "she would",
-    "wed": "we would", "we'd": "we would", "theyd": "they would", "they'd": "they would",
-    "ill": "i will", "i'll": "i will", "youll": "you will", "you'll": "you will",
-    "hell": "he will", "he'll": "he will", "shell": "she will", "she'll": "she will",
-    "well": "we will", "we'll": "we will", "theyll": "they will", "they'll": "they will"
+// Lógica de Expansión de contracciones (Copiada del index funcional)
+const expansions = {
+    "dont": ["do", "not"], "didnt": ["did", "not"], "isnt": ["is", "not"], "arent": ["are", "not"],
+    "wasnt": ["was", "not"], "werent": ["were", "not"], "havent": ["have", "not"], "hasnt": ["has", "not"],
+    "hadnt": ["had", "not"], "wont": ["will", "not"], "wouldnt": ["would", "not"], "cant": ["can", "not"],
+    "couldnt": ["could", "not"], "im": ["i", "am"], "youre": ["you", "are"], "hes": ["he", "is"],
+    "shes": ["she", "is"], "its": ["it", "is"], "were": ["we", "are"], "theyre": ["they", "are"],
+    "ive": ["i", "have"], "youve": ["you", "have"], "weve": ["we", "have"], "theyve": ["they", "have"],
+    "id": ["i", "would"], "youd": ["you", "would"], "hed": ["he", "would"], "shed": ["she", "would"],
+    "wed": ["we", "would"], "theyd": ["they", "would"], "ill": ["i", "will"], "youll": ["you", "will"],
+    "hell": ["he", "will"], "shell": ["she", "will"], "well": ["we", "will"], "theyll": ["they", "will"]
 };
 
 let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0;
@@ -229,6 +220,7 @@ function getFolderName() { return "frases-76-hogar"; }
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
 let mediaRecorder, audioChunks = [], isRecording = false;
 
+// Configuración STT (Speech to Text) - Mejorada con continuous = true
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition, isListening = false;
 
@@ -236,7 +228,7 @@ if (SpeechRecognition) {
     recognition = new SpeechRecognition();
     recognition.lang = 'en-US';
     recognition.interimResults = false;
-    recognition.continuous = true;
+    recognition.continuous = true; // No se detiene hasta que el usuario lo pide
 
     recognition.onstart = () => { isListening = true; document.getElementById("sttBtn").classList.add("listening"); };
     recognition.onend = () => { isListening = false; document.getElementById("sttBtn").classList.remove("listening"); };
@@ -249,57 +241,65 @@ if (SpeechRecognition) {
     };
 }
 
-function normalizeText(text) {
-    if (!text) return "";
-    // Limpieza agresiva: minúsculas y fuera signos raros excepto el espacio
-    let clean = text.toLowerCase().replace(/[.,?!"]/g, "").trim();
-    let words = clean.split(/\s+/);
-    
-    // Convertimos cada palabra usando el mapa de normalización
-    return words.map(word => {
-        // Quitamos el apóstrofo solo para buscar en el mapa si no lo encuentra con él
-        let key = word.replace("'", ""); 
-        return normalizationMap[word] || normalizationMap[key] || word;
-    }).join(" ");
+function simpleClean(text) {
+    if(!text) return "";
+    return text.toLowerCase().replace(/[.,?!'"]/g, "").trim();
 }
 
+// Lógica de comparación mejorada (Copiada del index funcional)
 function compareSentences(original, spoken) {
     const feedbackDiv = document.getElementById("speechFeedback");
-    
-    // Normalizamos y separamos por palabras para comparar "limpio"
-    const normOriginalWords = normalizeText(original).split(/\s+/);
-    const normSpokenWords = normalizeText(spoken).split(/\s+/);
-    
-    const origWordsRaw = original.split(/\s+/);
+    const origWords = original.split(/\s+/);
+    const spokenWords = spoken.split(/\s+/);
+    const spokenCleaned = spokenWords.map(w => simpleClean(w));
     
     let resultHTML = "";
     let sIdx = 0;
 
-    // Recorremos la frase original palabra por palabra
-    normOriginalWords.forEach((normWord, index) => {
-        const originalWordRaw = origWordsRaw[index];
+    origWords.forEach((word) => {
+        const cleanO = simpleClean(word);
+        if(!cleanO) return;
+
         let matched = false;
 
-        // Comprobamos si la palabra normalizada coincide con lo que dijo el usuario
-        if (sIdx < normSpokenWords.length && normSpokenWords[sIdx] === normWord) {
-            resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
+        // 1. Coincidencia exacta
+        if (sIdx < spokenCleaned.length && spokenCleaned[sIdx] === cleanO) {
+            resultHTML += `<span class="word-correct">${word}</span>`;
             sIdx++;
             matched = true;
-        } else {
-            // Margen de error: buscamos un poco más adelante por si se saltó algo
-            for (let j = sIdx + 1; j < sIdx + 5 && j < normSpokenWords.length; j++) {
-                if (normSpokenWords[j] === normWord) {
-                    for (let k = sIdx; k < j; k++) {
-                        resultHTML += `<span class="word-error">${normSpokenWords[k]}</span>`;
+        } 
+        // 2. Coincidencia de expansión
+        else if (expansions[cleanO]) {
+            const parts = expansions[cleanO];
+            if (sIdx + 1 < spokenCleaned.length && 
+                spokenCleaned[sIdx] === parts[0] && 
+                spokenCleaned[sIdx+1] === parts[1]) {
+                resultHTML += `<span class="word-correct">${word}</span>`;
+                sIdx += 2;
+                matched = true;
+            }
+        }
+        
+        // 3. Look-ahead (palabras saltadas)
+        if(!matched){
+            let foundAhead = false;
+            for(let j = sIdx; j < sIdx + 3 && j < spokenCleaned.length; j++) {
+                if(spokenCleaned[j] === cleanO) {
+                    for(let k = sIdx; k < j; k++) {
+                        resultHTML += `<span class="word-error">${spokenWords[k]}</span>`;
                     }
-                    resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
+                    resultHTML += `<span class="word-correct">${word}</span>`;
                     sIdx = j + 1;
+                    foundAhead = true;
                     matched = true;
                     break;
                 }
             }
         }
-        if (!matched) resultHTML += `<span class="word-missing">${originalWordRaw}</span>`;
+
+        if (!matched) {
+            resultHTML += `<span class="word-missing">${word}</span>`;
+        }
     });
     feedbackDiv.innerHTML = resultHTML;
 }
@@ -421,10 +421,12 @@ function pauseAudio() { audioObj.pause(); }
 function reveal() {
   if (currentBlockData.length === 0) return;
   const item = currentBlockData[pos];
-  document.getElementById("es").innerHTML = item.es;
-  document.getElementById("en").innerHTML = item.en;
-  document.getElementById("es").classList.remove("hidden");
-  document.getElementById("en").classList.remove("hidden");
+  const esDiv = document.getElementById("es");
+  const enDiv = document.getElementById("en");
+  esDiv.innerHTML = item.es;
+  enDiv.innerHTML = item.en;
+  esDiv.classList.remove("hidden");
+  enDiv.classList.remove("hidden");
 }
 
 function know() {
@@ -489,6 +491,7 @@ function renderList(type) {
 function markAsDone(el) {
     localStorage.setItem(getFolderName(), new Date().toISOString());
     el.innerHTML = "✓"; el.classList.add('marked');
+    alert("Lliçó completada ✅");
 }
 
 if (localStorage.getItem(getFolderName())) { 

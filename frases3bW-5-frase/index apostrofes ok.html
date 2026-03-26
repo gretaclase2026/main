@@ -142,7 +142,7 @@ const items = [
     {"id": "020", "audio": "f020.mp3", "en": "I finally decided to organize the kitchen drawers where I keep all the plastic containers, but it seems impossible to find the right lid for any of them no matter how hard I look.", "es": "Finalmente decidi organizar los cajones de la cocina donde guardo todos los recipientes de plastico, pero parece imposible encontrar la tapa adecuada para ninguno de ellos sin importar cuanto busque."}
 ];
 
-// Equivalencias de contracciones del index50.html
+// Equivalencias de contracciones
 const expansions = {
     "dont": ["do", "not"], "didnt": ["did", "not"], "isnt": ["is", "not"], "arent": ["are", "not"],
     "wasnt": ["was", "not"], "werent": ["were", "not"], "havent": ["have", "not"], "hasnt": ["has", "not"],
@@ -187,13 +187,11 @@ if (SpeechRecognition) {
     };
 }
 
-// Limpieza simplificada del index50.html
 function simpleClean(text) {
     if(!text) return "";
     return text.toLowerCase().replace(/[.,?!'"]/g, "").trim();
 }
 
-// Lógica de comparación mejorada del index50.html
 function compareSentences(original, spoken) {
     const feedbackDiv = document.getElementById("speechFeedback");
     const origWords = original.split(/\s+/);
@@ -215,7 +213,7 @@ function compareSentences(original, spoken) {
             sIdx++;
             matched = true;
         } 
-        // 2. Coincidencia de expansión (Si el texto tiene "didn't" y dices "did", "not")
+        // 2. Coincidencia de expansión (Texto "didn't" -> Tú dices "did", "not")
         else if (expansions[cleanO]) {
             const parts = expansions[cleanO];
             if (sIdx + 1 < spokenCleaned.length && 
@@ -226,8 +224,7 @@ function compareSentences(original, spoken) {
                 matched = true;
             }
         }
-        
-        // 3. Búsqueda por si se ha saltado palabras (look-ahead)
+        // 3. Búsqueda por si se ha saltado palabras
         if(!matched){
             let foundAhead = false;
             for(let j = sIdx; j < sIdx + 3 && j < spokenCleaned.length; j++) {
