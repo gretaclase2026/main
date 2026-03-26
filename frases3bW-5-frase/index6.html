@@ -24,12 +24,10 @@ main{display:flex;justify-content:center;padding:24px}
 .audio-btn.slow{background:#fef08a;}
 .audio-btn.pause{background:#fee2e2;}
 .audio-btn.rec{background:#fca5a5; color: white;}
-.audio-btn.stt{background:#dbeafe; font-size: 22px;} /* Micrófono azul */
 
-/* Estilos de grabación y escucha */
+/* Estilos de grabación del index44 */
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-.recording, .listening { animation: pulse 1.5s infinite; background: #ef4444 !important; color: white !important; }
-.audio-btn.stt.listening { background: #3b82f6 !important; }
+.recording { animation: pulse 1.5s infinite; background: #ef4444 !important; color: white !important; }
 .btn-rec-mini.recording { background: #f472b6 !important; }
 
 .progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
@@ -38,11 +36,6 @@ input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius:
 .hidden{display:none}
 .es{font-size:20px;color:#2563eb;margin-top:14px;line-height:1.4}
 .en{font-size:20px;color:#0f172a;margin-top:14px;font-weight:700;line-height:1.4}
-
-/* Feedback de voz */
-#speechFeedback { font-size: 18px; margin: 10px 0; font-weight: bold; min-height: 24px; }
-.feedback-correct { color: #16a34a; }
-.feedback-error { color: #dc2626; }
 
 .buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:22px}
 button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;cursor:pointer}
@@ -97,7 +90,6 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
   <button class="audio-btn" onclick="play(1.0)">🔊</button>
   <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
   <button class="audio-btn rec" id="recBtn" onclick="toggleRecord('recBtn')">🎤</button>
-  <button class="audio-btn stt" id="sttBtn" onclick="toggleMic()">🎤</button>
  </div>
 
  <div class="progress-wrapper">
@@ -105,7 +97,6 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
  </div>
 
  <div id="es" class="es hidden"></div>
- <div id="speechFeedback"></div>
  <div id="en" class="en hidden"></div>
  
  <div class="buttons">
@@ -154,42 +145,7 @@ let mediaRecorder;
 let audioChunks = [];
 let isRecording = false;
 
-// Reconocimiento de voz (Speech Recognition)
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-let recognition;
-let isListening = false;
-
-if (SpeechRecognition) {
-    recognition = new SpeechRecognition();
-    recognition.lang = 'en-US';
-    recognition.interimResults = false;
-    recognition.onstart = () => {
-        isListening = true;
-        document.getElementById("sttBtn").classList.add("listening");
-        document.getElementById("speechFeedback").innerHTML = "...";
-    };
-    recognition.onend = () => {
-        isListening = false;
-        document.getElementById("sttBtn").classList.remove("listening");
-    };
-    recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript.toLowerCase().replace(/[.,?!]/g, "").trim();
-        const original = current.en.toLowerCase().replace(/[.,?!]/g, "").trim();
-        const fb = document.getElementById("speechFeedback");
-        if (transcript === original) {
-            fb.innerHTML = `<span class="feedback-correct">${event.results[0][0].transcript} ✅</span>`;
-        } else {
-            fb.innerHTML = `<span class="feedback-error">${event.results[0][0].transcript}</span>`;
-        }
-    };
-}
-
-function toggleMic() {
-    if (!recognition) { alert("Tu navegador no soporta reconocimiento de voz."); return; }
-    if (isListening) recognition.stop();
-    else recognition.start();
-}
-
+// Función de grabación unificada (basada en index44)
 async function toggleRecord(targetBtnId) {
     const btn = document.getElementById(targetBtnId);
     if (!isRecording) {
@@ -240,7 +196,6 @@ function load(){
  current = pool[Math.floor(Math.random()*pool.length)];
  document.getElementById("es").classList.add("hidden");
  document.getElementById("en").classList.add("hidden");
- document.getElementById("speechFeedback").innerHTML = ""; // Limpiar feedback
  progressBar.value = 0;
  const starMain = document.getElementById("starMain");
  starMain.classList.toggle('active', localStorage.getItem('star_' + current.id) === 'true');
