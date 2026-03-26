@@ -26,11 +26,28 @@ main{display:flex;justify-content:center;padding:24px}
 .audio-btn.slow{background:#fef08a;}
 .audio-btn.pause{background:#fee2e2; color: inherit;} 
 .audio-btn.rec{background:#fca5a5; color: white;}
+.audio-btn.stt{background:#dbeafe; font-size: 22px;}
 
-/* Animación y estado de grabación unificado */
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 .recording { animation: pulse 1.5s infinite; background: #ef4444 !important; color: white !important; }
-.btn-rec-mini.recording { background: #f472b6 !important; }
+.listening { animation: pulse 1.5s infinite; background: #3b82f6 !important; color: white !important; }
+
+/* Feedback de voz */
+#speechFeedback { 
+    font-size: 18px; 
+    margin: 15px 0; 
+    font-weight: bold; 
+    min-height: 28px; 
+    line-height: 1.5; 
+    padding: 0 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px;
+}
+.word-correct { color: #16a34a; }
+.word-error { color: #dc2626; text-decoration: line-through; }
+.word-missing { color: #94a3b8; font-style: italic; }
 
 .star-btn { background: none; border: none; font-size: 32px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px 0 0; margin-right: 5px; }
 .star-btn.active { color: #f59e0b !important; }
@@ -82,10 +99,12 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
   <button class="audio-btn" onclick="playCurrent(1.0)">🔊</button>
   <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
   <button class="audio-btn rec" id="recBtn" onclick="toggleRecord('recBtn')">🎤</button>
+  <button class="audio-btn stt" id="sttBtn" onclick="toggleMic()">🎤</button>
  </div>
  
  <div class="progress-wrapper"><input type="range" id="progressBar" value="0" min="0" max="100" step="0.1"></div>
  <div id="es" class="es hidden"></div>
+ <div id="speechFeedback"></div>
  <div id="en" class="en hidden"></div>
  <div class="buttons">
   <button class="action reveal" onclick="reveal()">Veure</button>
@@ -172,7 +191,7 @@ const items = [
     {audio:"f067.mp3",en:"This frying pan is very dirty after cooking the meat, so I will need to use a rough scrub and a lot of soap to leave it completely clean.",es:"Esta sartén está muy sucia después de cocinar la carne, así que necesitaré usar un estropajo áspero y mucho jabón para dejarla completamente limpia."},
     {audio:"f068.mp3",en:"I am very sad because I dropped some red wine on my new white sofa, and now I am afraid that the stain will stay there forever.",es:"Estoy muy triste porque se me cayó un poco de vino tinto en mi sofá blanco nuevo y ahora temo que la mancha se quede ahí para siempre."},
     {audio:"f069.mp3",en:"I was cleaning the bathroom very carefully, but a drop of liquid fell on my blue trousers and created a permanent bleach stain.",es:"Estaba limpiando el baño con mucho cuidado, pero una gota de líquido cayó sobre mis pantalones azules y creó una mancha permanente de lejía."},
-    {audio:"f070.mp3",en:"The water in the kitchen sink is going down very slowly hoy, so I think there is a clog in the pipes that I need to fix soon.",es:"El agua del fregadero de la cocina está bajando muy lentamente hoy, así que creo que hay un atasco en las tuberías que necesito arreglar pronto."},
+    {audio:"f070.mp3",en:"El agua del fregadero de la cocina está bajando muy lentamente hoy, así que creo que hay un atasco en las tuberías que necesito arreglar pronto.",es:"El agua del fregadero de la cocina está bajando muy lentamente hoy, así que creo que hay un atasco en las tuberías que necesito arreglar pronto."},
     {audio:"f071.mp3",en:"You should be careful not to drop any food down the drain while you are washing the dishes, because it might cause a bad smell in the kitchen.",es:"Deberías tener cuidado de no dejar caer comida por el desagüe mientras lavas los platos, porque podría provocar un mal olor en la cocina."},
     {audio:"f072.mp3",en:"Every time I wash my black sweater, it comes out of the machine covered in white lint, so I have to spend a lot of time cleaning it.",es:"Cada vez que lavo mi jersey negro, sale de la lavadora cubierto de pelusa blanca, así que tengo que pasar mucho tiempo limpiándolo."},
     {audio:"f073.mp3",en:"I had to spend more than thirty minutes at the bank because they asked me to fill out a very long form with all my personal information.",es:"Tuve que pasar más de treinta minutos en el banco porque me pidieron rellenar un formulario muy largo con toda mi información personal."},
@@ -188,6 +207,69 @@ const progressBar = document.getElementById("progressBar");
 function getFolderName() { return "frases-76-hogar"; }
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
 let mediaRecorder, audioChunks = [], isRecording = false;
+
+// Configuración STT (Speech to Text)
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition, isListening = false;
+
+if (SpeechRecognition) {
+    recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    recognition.onstart = () => { isListening = true; document.getElementById("sttBtn").classList.add("listening"); };
+    recognition.onend = () => { isListening = false; document.getElementById("sttBtn").classList.remove("listening"); };
+    recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        compareSentences(currentBlockData[pos].en, transcript);
+    };
+}
+
+function clean(text) {
+    return text.toLowerCase()
+        .replace(/n't/g, " not")
+        .replace(/'m/g, " am")
+        .replace(/'re/g, " are")
+        .replace(/'s/g, " is")
+        .replace(/'ve/g, " have")
+        .replace(/'ll/g, " will")
+        .replace(/'d/g, " would")
+        .replace(/[.,?!]/g, "")
+        .trim();
+}
+
+function compareSentences(original, spoken) {
+    const feedbackDiv = document.getElementById("speechFeedback");
+    const origWords = original.split(" ");
+    const spokenWords = clean(spoken).split(" ");
+    const origCleaned = origWords.map(w => clean(w));
+    
+    let resultHTML = "";
+    let spokenIdx = 0;
+
+    origWords.forEach((word, i) => {
+        const cleanO = origCleaned[i];
+        
+        if (spokenIdx < spokenWords.length && spokenWords[spokenIdx] === cleanO) {
+            resultHTML += `<span class="word-correct">${word}</span>`;
+            spokenIdx++;
+        } else if (spokenWords.includes(cleanO, spokenIdx)) {
+            while(spokenIdx < spokenWords.length && clean(spokenWords[spokenIdx]) !== cleanO) {
+                resultHTML += `<span class="word-error">${spokenWords[spokenIdx]}</span>`;
+                spokenIdx++;
+            }
+            resultHTML += `<span class="word-correct">${word}</span>`;
+            spokenIdx++;
+        } else {
+            resultHTML += `<span class="word-missing">${word}</span>`;
+        }
+    });
+    feedbackDiv.innerHTML = resultHTML;
+}
+
+function toggleMic() {
+    if (!recognition) { alert("El teu navegador no suporta el reconeixement de veu."); return; }
+    isListening ? recognition.stop() : recognition.start();
+}
 
 async function toggleRecord(targetBtnId) {
     const btn = document.getElementById(targetBtnId);
@@ -205,7 +287,6 @@ async function toggleRecord(targetBtnId) {
             mediaRecorder.start();
             isRecording = true;
             btn.classList.add("recording");
-            // Icono de stop ⏹ para el botón principal, para los mini se mantiene el cambio de color
             if(targetBtnId === "recBtn") btn.textContent = "⏹";
         } catch (err) { alert("Error al accedir al micròfon."); }
     } else {
@@ -268,6 +349,7 @@ function update(fromAction = false) {
   if (currentBlockData.length === 0) {
     document.getElementById("en").classList.add("hidden");
     document.getElementById("es").classList.add("hidden");
+    document.getElementById("speechFeedback").innerHTML = "";
     document.getElementById("endMsg").classList.remove("hidden");
     return;
   }
@@ -275,6 +357,7 @@ function update(fromAction = false) {
   const item = currentBlockData[pos];
   document.getElementById("es").classList.add("hidden");
   document.getElementById("en").classList.add("hidden");
+  document.getElementById("speechFeedback").innerHTML = "";
   document.getElementById("starBtn").classList.toggle("active", starredIds.includes(item.audio));
   if (mode === "EN") {
     document.getElementById("langLabel").textContent = "ANGLÈS";
