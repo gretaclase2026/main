@@ -27,8 +27,13 @@ main{display:flex;justify-content:center;padding:24px}
 .audio-btn.rec{background:#fca5a5; color: white;}
 .audio-btn.stt{background:#dbeafe; font-size: 22px;}
 
-@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-.recording, .listening { animation: pulse 1.5s infinite; background: #ef4444 !important; color: white !important; }
+/* Animación y colores de grabación actualizados */
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+.recording, .listening { animation: pulse 1.5s infinite; background: #ec4899 !important; color: white !important; }
+
+/* Micro rosa de la llista con el nuevo rosa chicle */
+.mini-icon-btn.recording { background: #ec4899 !important; color: white !important; }
+
 .audio-btn.stt.listening { background: #3b82f6 !important; }
 
 .progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
@@ -235,13 +240,11 @@ async function toggleRecord(targetBtnId) {
             mediaRecorder.start();
             isRecording = true;
             btn.classList.add("recording");
-            if(targetBtnId === "recBtn") btn.textContent = "⏹";
         } catch (err) { alert("Error en accedir al micròfon."); }
     } else {
         mediaRecorder.stop(); 
         isRecording = false;
         btn.classList.remove("recording");
-        if(targetBtnId === "recBtn") btn.textContent = "🎤";
     }
 }
 
