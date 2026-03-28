@@ -29,24 +29,25 @@ main{display:flex;justify-content:center;padding:24px}
 .audio-btn.slow{background:#fef08a;}
 .audio-btn.pause{background:#fee2e2; color: inherit;} 
 .audio-btn.rec{background:#fbcfe8; color: #9d174d;}
-.audio-btn.stt{background:#dbeafe; font-size: 22px;}
 
-/* Animaciones y estados */
-@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-.recording-icon { display: inline-block; animation: pulse 1s infinite; color: #db2777 !important; }
-.listening { animation: pulse 1.5s infinite; background: #3b82f6 !important; color: white !important; }
+/* Nueva animación SOLO para el icono del micro */
+.recording-icon {
+    display: inline-block;
+    animation: pulse-mic-vibrant 1s infinite;
+    color: #db2777 !important; /* Rosa intenso para el icono */
+}
+
+@keyframes pulse-mic-vibrant {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.3); opacity: 0.7; }
+    100% { transform: scale(1); opacity: 1; }
+}
 
 .star-btn { background: none; border: none; font-size: 32px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px 0 0; margin-right: 5px; }
 .star-btn.active { color: #f59e0b !important; }
 
 .progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
 input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
-
-/* Estilos para el feedback de voz */
-#speechFeedback { font-size: 18px; margin: 15px 0; font-weight: bold; min-height: 28px; line-height: 1.5; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
-.word-correct { color: #16a34a; }
-.word-error { color: #dc2626; text-decoration: line-through; }
-.word-missing { color: #94a3b8; font-style: italic; }
 
 .hidden{display:none}
 .es{font-size:19px;color:#2563eb;margin-top:14px;line-height:1.4;font-weight:600}
@@ -99,15 +100,11 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
   <button class="audio-btn" onclick="playCurrent(1.0)">🔊</button>
   <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
   <button class="audio-btn rec" id="recBtn" onclick="toggleRecord('recBtn')">🎤</button>
-  <button class="audio-btn stt" id="sttBtn" onclick="toggleMic()">🎤</button>
  </div>
  
  <div class="progress-wrapper"><input type="range" id="progressBar" value="0" min="0" max="100" step="0.1"></div>
- 
  <div id="es" class="es hidden"></div>
- <div id="speechFeedback"></div>
  <div id="en" class="en hidden"></div>
-
  <div class="buttons">
   <button class="action reveal" onclick="reveal()">Veure</button>
   <button class="action know" onclick="know()">Ja la sé</button>
@@ -151,81 +148,6 @@ let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockI
 const audioObj = new Audio();
 const progressBar = document.getElementById("progressBar");
 
-// Lógica de Reconocimiento de Voz (STT)
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-let recognition;
-let isListening = false;
-
-if (SpeechRecognition) {
-    recognition = new SpeechRecognition();
-    recognition.lang = 'en-US';
-    recognition.interimResults = false;
-    recognition.continuous = true;
-
-    recognition.onstart = () => {
-        isListening = true;
-        document.getElementById("sttBtn").classList.add("listening");
-        document.getElementById("speechFeedback").innerHTML = "";
-    };
-    recognition.onend = () => {
-        isListening = false;
-        document.getElementById("sttBtn").classList.remove("listening");
-    };
-    recognition.onresult = (event) => {
-        let fullTranscript = "";
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-            fullTranscript += event.results[i][0].transcript + " ";
-        }
-        compareSentences(currentBlockData[pos].en, fullTranscript.trim());
-    };
-}
-
-function normalizeText(text) {
-    if (!text) return "";
-    return text.toLowerCase().replace(/[.,?!"]/g, "").trim();
-}
-
-function compareSentences(original, spoken) {
-    const feedbackDiv = document.getElementById("speechFeedback");
-    const normOriginalWords = normalizeText(original).split(/\s+/);
-    const normSpokenWords = normalizeText(spoken).split(/\s+/);
-    const origWordsRaw = original.split(/\s+/);
-    
-    let resultHTML = "";
-    let sIdx = 0;
-
-    normOriginalWords.forEach((normWord, index) => {
-        const originalWordRaw = origWordsRaw[index];
-        let matched = false;
-
-        if (sIdx < normSpokenWords.length && normSpokenWords[sIdx] === normWord) {
-            resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
-            sIdx++;
-            matched = true;
-        } else {
-            for (let j = sIdx + 1; j < sIdx + 5 && j < normSpokenWords.length; j++) {
-                if (normSpokenWords[j] === normWord) {
-                    for (let k = sIdx; k < j; k++) {
-                        resultHTML += `<span class="word-error">${normSpokenWords[k]}</span>`;
-                    }
-                    resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
-                    sIdx = j + 1;
-                    matched = true;
-                    break;
-                }
-            }
-        }
-        if (!matched) resultHTML += `<span class="word-missing">${originalWordRaw}</span>`;
-    });
-    feedbackDiv.innerHTML = resultHTML;
-}
-
-function toggleMic() {
-    if (!recognition) { alert("El teu navegador no suporta reconeixement de veu."); return; }
-    if (isListening) recognition.stop();
-    else recognition.start();
-}
-
 function getFolderName() { return "vocab-neural-b1-vibrant"; }
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
 
@@ -246,11 +168,13 @@ async function toggleRecord(targetBtnId) {
             };
             mediaRecorder.start();
             isRecording = true;
+            // Aplicar la animación envolviendo el icono en un span
             btn.innerHTML = '<span class="recording-icon">🎤</span>';
         } catch (err) { alert("Error al accedir al micròfon."); }
     } else {
         mediaRecorder.stop(); 
         isRecording = false;
+        // Restaurar el estado original
         btn.innerHTML = '🎤';
     }
 }
@@ -321,7 +245,6 @@ function update(fromAction = false) {
   const item = currentBlockData[pos];
   document.getElementById("es").classList.add("hidden");
   document.getElementById("en").classList.add("hidden");
-  document.getElementById("speechFeedback").innerHTML = "";
   document.getElementById("starBtn").classList.toggle("active", starredIds.includes(item.audio));
   
   if (mode === "EN") {

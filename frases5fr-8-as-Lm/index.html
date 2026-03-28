@@ -3,95 +3,84 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Repàs Personalitzat - Unitat 5</title>
+<title>Greta App - Unitat 9</title>
 <style>
-body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
-header{padding:8px 4px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center;align-items:center;gap:4px}
-.unit-number{font-size:22px;font-weight:800;color:#2563eb;margin:0 8px;min-width:20px;text-align:center}
-.mode-btns button{padding:6px 10px;border:none;border-radius:12px;font-weight:700;cursor:pointer;font-size:11px;white-space:nowrap;line-height:1.2}
+body{margin:0;font-family:sans-serif;background:#f9fafb;color:#0f172a}
+header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center;align-items:center}
+.unit-number{font-size:24px;font-weight:800;color:#2563eb;margin:0 10px}
+.mode-btns button{margin:0 6px;padding:8px 14px;border:none;border-radius:14px;font-weight:700;cursor:pointer}
 .mode-en{background:#dbeafe}
-.mode-es{background:#fde68a}
+.mode-ca{background:#fde68a}
 main{display:flex;justify-content:center;padding:24px}
-.card{position:relative;width:100%;max-width:560px;background:#ffffff;border-radius:28px;padding:32px;box-shadow:0 10px 24px rgba(0,0,0,0.06);text-align:center}
+.card{position:relative;width:100%;max-width:560px;background:#fff;border-radius:28px;padding:32px;box-shadow:0 12px 30px rgba(0,0,0,0.08);text-align:center}
 .counter{position:absolute;top:18px;left:22px;font-weight:800;color:#2563eb}
-.check-box-manual { position: absolute; top: 18px; right: 22px; width: 24px; height: 24px; background: #fff; border: 1.5px solid #22c55e; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 14px; color: transparent; transition: 0.2s; }
-.check-box-manual.marked { background: #22c55e !important; color: white !important; }
 .lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
-.blocks{display:flex;flex-wrap:nowrap;gap:6px;justify-content:flex-start;margin:15px 0 20px;overflow-x:auto;padding:5px 0 5px 10px}
-.block{flex: 0 0 auto;width:32px;height:32px;border-radius:50%;border:none;background:#f1f5f9;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.2s}
-.block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1)}
-.block.all-btn { background: #e2e8f0; color: #475569; }
-.audio-container { display: flex; justify-content: center; gap: 8px; margin: 10px 0; align-items: center; flex-wrap: nowrap; }
-.audio-btn{width:52px;height:52px;border-radius:50%;border:none;background:#dbeafe;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
+.star-main{font-size:32px;cursor:pointer;color:#d1d5db;background:none;border:none;padding:0;transition:0.2s; position: absolute; left: 22px; top: 45px; z-index: 10;}
+.star-main.active{color:#facc15}
+.audio-container { display: flex; justify-content: center; gap: 10px; margin: 10px 0; align-items: center; }
+.audio-btn{width:55px;height:55px;border-radius:50%;border:none;background:#dcfce7;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
 .audio-btn.slow{background:#fef08a;}
-.audio-btn.pause{background:#fee2e2; color: inherit;} 
+.audio-btn.pause{background:#fee2e2;}
 .audio-btn.rec{background:#fca5a5; color: white;}
-.audio-btn.stt{background:#dbeafe; font-size: 22px;}
-
-@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-.listening { animation: pulse 1.5s infinite; background: #90caf9 !important; color: #0f172a !important; }
-.recording { animation: pulse 1.5s infinite; background: #f48fb1 !important; color: white !important; }
-
-#speechFeedback { font-size: 18px; margin: 15px 0; font-weight: bold; min-height: 28px; line-height: 1.5; padding: 0 10px; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px;}
+.audio-btn.stt{background:#dbeafe;}
+.hidden{display:none}
+.key-label{font-size:16px;font-weight:900;color:#f06292;margin:10px 0}
+.ca{font-size:20px;color:#2563eb;margin-top:14px;line-height:1.4}
+.en{font-size:20px;color:#0f172a;margin-top:14px;font-weight:700;line-height:1.4}
+#speechFeedback { font-size: 18px; margin: 15px 0; font-weight: bold; min-height: 28px; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
 .word-correct { color: #16a34a; }
 .word-error { color: #dc2626; text-decoration: line-through; }
 .word-missing { color: #94a3b8; font-style: italic; }
-
-.star-btn { background: none; border: none; font-size: 32px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px 0 0; margin-right: 5px; }
-.star-btn.active { color: #f59e0b !important; }
-.progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
-input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
-.hidden{display:none}
-.es{font-size:19px;color:#2563eb;margin-top:14px;line-height:1.4;font-weight:600}
-.en{font-size:19px;color:#0f172a;margin-top:14px;font-weight:700;line-height:1.4}
 .buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:22px}
 button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;cursor:pointer}
 .reveal{background:#e0f2fe}
 .know{background:#dcfce7}
 .next{background:#fbcfe8}
-.list-controls { display: flex; gap: 10px; margin-top: 16px; }
-.list-btn{ flex:1; background:#e9d5ff; border:none; border-radius:16px; padding:14px; font-weight:800; cursor:pointer; font-size:13px }
-.review-btn { background: #fef3c7; color: #92400e; }
-.list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
-.list-item { display: flex; align-items: flex-start; gap: 15px; padding: 15px 0; border-bottom: 1px solid #eee; }
-.list-controls-side { display: flex; flex-direction: column; gap: 8px; min-width: 44px; align-items: center; }
-.list-texts { flex-grow: 1; display: flex; flex-direction: column; gap: 6px; }
-.mini-btn { border: none; border-radius: 10px; width: 38px; height: 38px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
-.btn-audio { background: #dbeafe; }
-.btn-rec-mini { background: #fbcfe8; }
-.star-btn-list { background: none; border: none; font-size: 26px; cursor: pointer; color: #cbd5e1; padding: 0; line-height: 1; }
-.star-btn-list.active { color: #f59e0b !important; }
-.blur { filter: blur(5px); transition: filter 0.2s; cursor: pointer; user-select: none; }
-.blur.revealed { filter: blur(0); }
+.bottom-nav{display:flex;gap:10px;margin-top:16px}
+.nav-btn{flex:1;border:none;border-radius:16px;padding:14px;font-weight:800;cursor:pointer;font-size:13px}
+.btn-list{background:#e9d5ff}
+.btn-study-stars{background:#fef08a}
+.list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px}
+.list-item{padding:15px 0;border-bottom:1px solid #e5e7eb;display:flex;gap:15px;align-items:flex-start}
+.list-controls-side{display:flex;flex-direction:column;gap:8px;min-width:40px;align-items:center}
+.list-texts{flex-grow:1;display:flex;flex-direction:column;gap:6px}
+.list-ca{color:#2563eb;font-weight:700;font-size:15px}
+.list-en{color:#0f172a;font-weight:800;font-size:15px;filter: blur(5px);transition: filter 0.3s;cursor:pointer}
+.list-en.revealed{filter: blur(0)}
+.mini-icon-btn{width:36px;height:36px;border:none;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px}
+.btn-play-mini{background:#dcfce7}
+.btn-rec-mini{background:#fce7f3}
+.star-btn-list{font-size:24px;cursor:pointer;color:#d1d5db;background:none;border:none}
+.star-btn-list.active{color:#facc15}
+.check-box-manual { position: absolute; top: 18px; right: 22px; width: 24px; height: 24px; background: #fff; border: 1.5px solid #22c55e; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; }
+.check-box-manual.marked { background: #22c55e !important; color: white !important; }
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+.recording, .listening { animation: pulse 1.5s infinite; background: #fca5a5 !important; color: white !important; }
+/* Estilo específico para el micro rosa de la lista */
+.mini-icon-btn.recording { background: #f06292 !important; color: white !important; }
 </style>
 </head>
 <body>
-
 <header>
- <div class="mode-btns"><button class="mode-en" onclick="setMode('EN')">Anglès → Castellà</button></div>
- <div class="unit-number">5</div>
- <div class="mode-btns"><button class="mode-es" onclick="setMode('ES')">Castellà → Anglès</button></div>
+ <div class="mode-btns"><button class="mode-en" onclick="setMode('EN')">Anglès → Català</button></div>
+ <div class="unit-number">9</div>
+ <div class="mode-btns"><button class="mode-ca" onclick="setMode('CA')">Català → Anglés</button></div>
 </header>
-
 <main>
 <div class="card">
- <div class="counter" id="counter">0 / 0</div>
- <div class="check-box-manual" id="mainCheck" onclick="markAsDone()"></div>
-
+ <div class="counter" id="counter">0 / 50</div>
+ <div class="check-box-manual" id="mainCheck" onclick="markAsDone(this)"></div>
+ <button class="star-main" id="starMain" onclick="toggleStarCurrent()">★</button>
  <div id="langLabel" class="lang" style="margin-top: 10px;">ANGLÈS</div>
- <div id="blockContainer" class="blocks"></div>
-
  <div class="audio-container">
-  <button class="star-btn" id="starBtn" onclick="toggleStar()">★</button>
-  <button class="audio-btn slow" onclick="playCurrent(0.75)">🐢</button>
-  <button class="audio-btn" onclick="playCurrent(1.0)">🔊</button>
-  <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
+  <button class="audio-btn slow" onclick="speak(0.7)">🐢</button>
+  <button class="audio-btn" onclick="speak(1.0)">🔊</button>
+  <button class="audio-btn pause" onclick="stopSpeak()">⏸</button>
   <button class="audio-btn rec" id="recBtn" onclick="toggleRecord('recBtn')">🎤</button>
-  <button class="audio-btn stt" id="sttBtn" onclick="toggleMic()">🎤</button>
+  <button class="audio-btn stt" id="sttBtn" onclick="toggleMic()">🎙️</button>
  </div>
- 
- <div class="progress-wrapper"><input type="range" id="progressBar" value="0" min="0" max="100" step="0.1"></div>
- <div id="es" class="es hidden"></div>
+ <div id="key" class="key-label hidden"></div>
+ <div id="ca" class="ca hidden"></div>
  <div id="speechFeedback"></div>
  <div id="en" class="en hidden"></div>
  <div class="buttons">
@@ -99,192 +88,110 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
   <button class="action know" onclick="know()">Ja la sé</button>
   <button class="action next" onclick="nextOne()">Següent</button>
  </div>
- <div class="list-controls">
-    <button class="list-btn" onclick="toggleList('all')">Tota la llista</button>
-    <button class="list-btn review-btn" onclick="toggleList('stars')">Repàs (★)</button>
+ <div class="bottom-nav">
+    <button class="nav-btn btn-list" onclick="toggleList()">Veure llista</button>
+    <button class="nav-btn btn-study-stars" id="btnStudyStars" onclick="toggleStudyStars()">Estudiar ⭐</button>
  </div>
- <div id="endMsg" class="hidden" style="margin-top:16px; font-weight:800; color:#16a34a;">✔ Bloc completat!</div>
 </div>
 </main>
 <div id="listBox" class="list-box hidden"></div>
 
 <script>
 const items = [
-  {audio:"f001.mp3", en:"The doctor told me I had to stop smoking and start exercising.", es:"El metge em va dir que havia de deixar de fumar i començar a fer exercici."},
-  {audio:"f002.mp3", en:"We went to the bank yesterday morning to open a savings account, but it was closed because it was a holiday.", es:"Vam anar al banc ahir al matí per obrir un compte d'estalvis, però estava tancat perquè era festiu."},
-  {audio:"f003.mp3", en:"My boss asked me if I could finish the report by the end of the day, but I told him it was impossible.", es:"El meu cap em va preguntar si podia acabar l'informe abans que acabés el dia, però li vaig dir que era impossible."},
-  {audio:"f004.mp3", en:"I was watching TV last night when suddenly I heard a strange noise coming from upstairs.", es:"Estava mirant la televisió ahir a la nit quan de cop vaig sentir un soroll estrany que venia de la planta de dalt."},
-  {audio:"f005.mp3", en:"The train was ten minutes late, so we had to hurry up to avoid missing the connection.", es:"El tren va sortir amb deu minuts de retard, així que vam haver de córrer per no perdre la connexió."},
-  {audio:"f006.mp3", en:"My father told me he'd help me fix the garage door this weekend, but he ended up not coming.", es:"El meu pare em va dir que m'ajudaria a arreglar la porta del garatge aquest cap de setmana, però al final no va poder venir."},
-  {audio:"f007.mp3", en:"I didn't know you'd already bought bread, so I bought two more loaves on my way home.", es:"No sabia que havies comprat el pa, així que vaig comprar dues barres més de camí a casa."},
-  {audio:"f008.mp3", en:"My brother decided to sell his old car because it used a lot of gas and he wanted a more modern one.", es:"El meu germà va decidir vendre el seu cotxe antic perquè gastava molta benzina i en volia un de més modern."},
-  {audio:"f009.mp3", en:"We were so tired after the long trip we fell asleep on the sofa right away.", es:"Estàvem tan cansats després del llarg viatge que ens vam quedar adormits al sofà de seguida."},
-  {audio:"f010.mp3", en:"My boss told me there'd be an important meeting first thing Monday morning.", es:"El meu cap em va dir que dilluns hi hauria una reunió important a primera hora del matí."},
-  {audio:"f011.mp3", en:"I've never been to London, but I'd like to go next summer if I've saved enough money.", es:"No he estat mai a Londres, però m'agradaria anar-hi l'estiu que ve si he estalviat prou diners."},
-  {audio:"f012.mp3", en:"My sister called me yesterday to tell me she wouldn't come to dinner because she had a lot of work at the office.", es:"La meva germana em va trucar ahir per dir-me que no vindria a sopar perquè tenia molta feina a l'oficina."},
-  {audio:"f013.mp3", en:"We bought my mother's birthday gift last Saturday, but she hasn't seen it yet.", es:"Vam comprar el regal d'aniversari de la meva mare dissabte passat, però ella encara no l'ha vist."},
-  {audio:"f014.mp3", en:"My boss asked me to send him the email by 5 pm, but I couldn't because I didn't have internet.", es:"El meu cap em va demanar que li enviés el correu electrònic abans de les cinc, però no vaig poder perquè no tenia connexió."},
-  {audio:"f015.mp3", en:"I didn't know you'd lost your house keys, so I waited for you at the door until you arrived.", es:"No sabia que havies perdut les claus de casa, així que et vaig esperar a la porta fins que vas arribar."},
-  {audio:"f016.mp3", en:"My brother told me he'd call me after finishing dinner, but he forgot in the end.", es:"El meu germà em va dir que em trucaria després de sopar, però al final se li va oblidar."},
-  {audio:"f017.mp3", en:"I'm sure they'll arrive late because they always lose their way.", es:"Estic segur que arribaran tard perquè sempre es perden."},
-  {audio:"f018.mp3", en:"She said she'd bring the dessert, but she showed up with nothing.", es:"Ella va dir que portaria les postres, però va aparèixer sense res."},
-  {audio:"f019.mp3", en:"We'd like to buy a bigger house, but we can't afford it right now.", es:"Ens agradaria comprar una casa més gran, però no ens ho podem permetre ara mateix."},
-  {audio:"f020.mp3", en:"I didn't think you'd come so early, so I haven't finished cleaning yet.", es:"No pensava que vindries tan d'hora, així que encara no he acabat de netejar."},
-  {audio:"f021.mp3", en:"My parents told me they're going on a trip next month.", es:"Els meus pares em van dir que se'n van de viatge el mes que ve."},
-  {audio:"f022.mp3", en:"It's better if we leave now to avoid the traffic.", es:"És millor si marxem ara per evitar el trànsit."},
-  {audio:"f023.mp3", en:"He asked me if I'd seen his glasses, but I had no idea where they were.", es:"Em va preguntar si havia vist les seves ulleres, però jo no tenia ni idea de on eren."},
-  {audio:"f024.mp3", en:"I've been waiting for two hours and I'm starting to get bored.", es:"Fa dues hores que espero i m'estic començant a avorrir."},
-  {audio:"f025.mp3", en:"They told us the project would be ready by Friday.", es:"Ens van dir que el projecte estaria llest per divendres."},
-  {audio:"f026.mp3", en:"I'm sorry, I can't help you right now because I'm very busy.", es:"Em sap greu, no t'puc ajudar ara mateix perquè estic molt ocupat."},
-  {audio:"f027.mp3", en:"We were walking in the park when it started to rain heavily.", es:"Estàvem caminant pel parc quan va començar a ploure fort."},
-  {audio:"f028.mp3", en:"If I have time tomorrow, I'll go to the gym in the afternoon.", es:"Si tinc temps demà, aniré al gimnàs a la tarda."},
-  {audio:"f029.mp3", en:"She's been living in Paris for three years and speaks French perfectly.", es:"Fa tres anys que viu a París i parla francès perfectament."},
-  {audio:"f030.mp3", en:"I'd rather stay at home tonight than go out to a club.", es:"Prefereixo quedar-me a casa aquesta nit que sortir de festa."},
-  {audio:"f031.mp3", en:"They haven't finished the work yet, so we'll have to wait.", es:"Encara no han acabat la feina, així que haurem d'esperar."},
-  {audio:"f032.mp3", en:"Can you tell me where the nearest pharmacy is?", es:"Em pots dir on és la farmàcia més propera?"},
-  {audio:"f033.mp3", en:"I forgot to bring my wallet, so I couldn't buy anything.", es:"Vaig oblidar portar la cartera, així que no vaig poder comprar res."},
-  {audio:"f034.mp3", en:"We're going to have a party next Saturday to celebrate his birthday.", es:"Farem una festa dissabte que ve per celebrar el seu aniversari."},
-  {audio:"f035.mp3", en:"I've already seen that movie twice, but I don't mind watching it again.", es:"Ja he vist aquesta pel·lícula dues vegades, però no m'importa veure-la de nou."},
-  {audio:"f036.mp3", en:"My car's making a strange noise; I should take it to the mechanic.", es:"El meu cotxe fa un soroll estrany; l'hauria de portar al mecànic."},
-  {audio:"f037.mp3", en:"It's too late to call him now; I'll do it tomorrow morning.", es:"És massa tard per trucar-lo ara; ho faré demà al matí."},
-  {audio:"f038.mp3", en:"I'm not sure if I'll be able to attend the wedding next month.", es:"No estic segur de si podré assistir al casament el mes que ve."},
-  {audio:"f039.mp3", en:"We used to go to the beach every summer when we were kids.", es:"Solíem anar a la platja cada estiu quan érem nens."},
-  {audio:"f040.mp3", en:"He's much taller than his brother, even though he's younger.", es:"És molt més alt que el seu germà, tot i que és més jove."},
-  {audio:"f041.mp3", en:"I'll let you know as soon as I have more information.", es:"T'ho faré saber tan bon punt tingui més informació."},
-  {audio:"f042.mp3", en:"They've been married for over twenty years and they're still very happy.", es:"Fa més de vint anys que estan casats i encara són molt feliços."},
-  {audio:"f043.mp3", en:"I'm looking for a new apartment near the city center.", es:"Estic buscant un pis nou a prop del centre de la ciutat."},
-  {audio:"f044.mp3", en:"You don't have to come if you don't feel like it.", es:"No cal que vingues si no en tens ganes."},
-  {audio:"f045.mp3", en:"I wish I could speak more languages fluently.", es:"M'agradaria poder parlar més idiomes amb fluïdesa."},
-  {audio:"f046.mp3", en:"The flight was cancelled due to the bad weather conditions.", es:"El vol es va cancel·lar a causa de les males condicions meteorològiques."},
-  {audio:"f047.mp3", en:"I'm going to take a nap because I didn't sleep well last night.", es:"Faré una migdiada perquè no he dormit bé aquesta nit."},
-  {audio:"f048.mp3", en:"We should have left earlier to avoid the rush hour.", es:"Hauríem d'haver marxat més d'hora per evitar l'hora punta."},
-  {audio:"f049.mp3", en:"I'm not used to drinking coffee so late in the day.", es:"No estic acostumat a beure cafè tan tard."},
-  {audio:"f050.mp3", en:"I hope you've had a great time at the party.", es:"Espero que t'ho hagis passat molt bé a la festa."},
-  {audio:"f051.mp3", en:"If I'd known you were coming, I'd have prepared something to eat.", es:"Si hagués sabut que venies, hauria preparat alguna cosa per menjar."},
-  {audio:"f052.mp3", en:"My car broke down again, so I'll have to take the bus tomorrow.", es:"El meu cotxe s'ha tornat a espatllar, així que hauré d'agafar l'autobús demà."},
-  {audio:"f053.mp3", en:"I'll call you as soon as I get home from work.", es:"Et trucaré tan bon punt arribi a casa de la feina."},
-  {audio:"f054.mp3", en:"We've been living here for five years and we love the neighborhood.", es:"Fa cinc anys que vivim aquí i ens encanta el barri."},
-  {audio:"f055.mp3", en:"I don't think it'll rain today, but I'll take an umbrella just in case.", es:"No crec que plogui avui, però agafaré un paraigua per si de cas."},
-  {audio:"f056.mp3", en:"He told me he'd be here at eight, but he's already twenty minutes late.", es:"Em va dir que seria aquí a les vuit, però ja arriba vint minuts tard."},
-  {audio:"f057.mp3", en:"I've never seen such a boring movie in my life.", es:"No he vist mai una pel·lícula tan avorrida en la meva vida."},
-  {audio:"f058.mp3", en:"They're planning to get married next summer in Italy.", es:"Tenen pensat casar-se l'estiu que ve a Itàlia."},
-  {audio:"f059.mp3", en:"I'm sorry, I didn't hear what you said because of the noise.", es:"Em sap greu, no he sentit el que has dit pel soroll."},
-  {audio:"f060.mp3", en:"We'd better leave now if we want to get a good seat.", es:"Més val que marxem ara si volem agafar un bon lloc."},
-  {audio:"f061.mp3", en:"She's been studying English since she was a child.", es:"Fa que estudia anglès des que era petita."},
-  {audio:"f062.mp3", en:"I wonder why they haven't called us yet.", es:"Em pregunto per què encara no ens han trucat."},
-  {audio:"f063.mp3", en:"It was so cold yesterday I had to wear two sweaters.", es:"Ahir feia tant de fred que em vaig haver de posar dos jerseis."},
-  {audio:"f064.mp3", en:"My sister's looking for a new job because she's tired of her boss.", es:"La meva germana està buscant una feina nova perquè està cansada del seu cap."},
-  {audio:"f065.mp3", en:"I'd love to go with you, but I have too much work to do.", es:"M'encantaria anar amb tu, però tinc massa feina a fer."},
-  {audio:"f066.mp3", en:"They've decided to sell their apartment and move to the countryside.", es:"Han decidit vendre el seu pis i marxar a viure al camp."},
-  {audio:"f067.mp3", en:"I'm not sure if I'll be able to finish this on time.", es:"No estic segur de si podré acabar això a temps."},
-  {audio:"f068.mp3", en:"He's the smartest person I've ever met.", es:"És la persona més intel·ligent que he conegut mai."},
-  {audio:"f069.mp3", en:"We were having dinner when the lights went out.", es:"Estàvem sopant quan se'n va anar la llum."},
-  {audio:"f070.mp3", en:"I'm looking forward to seeing you again soon.", es:"Tinc moltes ganes de tornar-te a veure aviat."},
-  {audio:"f071.mp3", en:"He shouldn't have said that to her; it was very rude.", es:"No li hauria d'haver dit això; va ser molt groller."},
-  {audio:"f072.mp3", en:"We've decided to cancel the meeting because half the team is sick.", es:"Hem decidit cancel·lar la reunió perquè la meitat de l'equip està malalt."},
-  {audio:"f073.mp3", en:"You'd better hurry up if you don't want to miss the train.", es:"Més val que t'afanyis si no vols perdre el tren."},
-  {audio:"f074.mp3", en:"I'm not used to waking up so early on weekends.", es:"No estic acostumat a despertar-me tan d'hora els caps de setmana."},
-  {audio:"f075.mp3", en:"She's been working there for ten years and she's still happy.", es:"Fa deu anys que treballa allí i encara és feliç."},
-  {audio:"f076.mp3", en:"It's the most beautiful place I've ever seen.", es:"És el lloc més bonic que he vist mai."},
-  {audio:"f077.mp3", en:"The doctor told me I had to stop smoking and start exercising.", es:"El metge em va dir que havia de deixar de fumar i començar a fer exercici."},
-  {audio:"f078.mp3", en:"We went to the bank yesterday morning to open a savings account, but it was closed because it was a holiday.", es:"Vam anar al banc ahir al matí per obrir un compte d'estalvis, però estava tancat perquè era festiu."},
-  {audio:"f079.mp3", en:"My boss asked me if I could finish the report by the end of the day, but I told him it was impossible.", es:"El meu cap em va preguntar si podia acabar l'informe abans que acabés el dia, però li vaig dir que era impossible."},
-  {audio:"f080.mp3", en:"I was watching TV last night when suddenly I heard a strange noise coming from upstairs.", es:"Estava mirant la televisió ahir a la nit quan de cop vaig sentir un soroll estrany que venia de la planta de dalt."},
-  {audio:"f081.mp3", en:"The train was ten minutes late, so we had to hurry up to avoid missing the connection.", es:"El tren va sortir amb deu minuts de retard, així que vam haver de córrer per no perdre la connexió."},
-  {audio:"f082.mp3", en:"My father told me he'd help me fix the garage door this weekend, but he ended up not coming.", es:"El meu pare em va dir que m'ajudaria a arreglar la porta del garatge aquest cap de setmana, però al final no va poder venir."},
-  {audio:"f083.mp3", en:"I didn't know you'd lost your house keys, so I waited for you at the door until you arrived.", es:"No sabia que havies perdut les claus de casa, així que et vaig esperar a la porta fins que vas arribar."}
+    {"id":"0901","key":"boiler","en":"Don't forget to check the pressure on the boiler before winter starts, because if it's too low, the heating won't turn on when you need it most.","ca":"No oblidis revisar la pressió de la caldera abans que comenci l'hivern, perquè si està molt baixa, la calefacció no s'encendrà quan més la necessitis"},
+    {"id":"0902","key":"back up","en":"You should back up all your photos to the cloud tonight, since your phone's storage is almost full and you might lose them if the system crashes.","ca":"Hauries de fer una còpia de seguretat de totes les teves fotos al núvol aquesta nit, ja que l'emmagatzematge del teu mòbil està gairebé ple i podries perdre-les si el sistema falla"},
+    {"id":"0903","key":"stretch","en":"Make sure you stretch your back for at least five minutes after sitting at the computer all day, otherwise you'll wake up with a terrible ache tomorrow morning.","ca":"Assegura't d'estirar l'esquena almenys cinc minuts després d'estar assegut a l'ordinador tot el dia; de lo contrari, et despertaràs amb un dolor terrible demà al matí"},
+    {"id":"0904","key":"rather","en":"I'd rather go to the supermarket early on Tuesday morning to avoid the crowds, even though I have to wake up an hour earlier than usual.","ca":"Preferiria anar al supermercat d'hora el dimarts al matí per evitar les aglomeracions, encara que hagi de despertar-me una hora abans de l'habitual"},
+    {"id":"0905","key":"unattended","en":"Be careful not to leave the pan unattended while you're frying the onions, as they can burn in a matter of seconds if the heat is too high.","ca":"Tingues cura de no deixar la paella desatesa mentre fregues les cebes, ja que es poden cremar en qüestió de segons si el foc està massa alt"},
+    {"id":"0906","key":"tire pressure","en":"Check the tire pressure before we leave for our road trip, since the car might handle differently if they're not properly inflated.","ca":"Revisa la pressió dels pneumàtics abans que ens anem de viatge, ja que el cotxe podria respondre de forma diferent si no estan ben inflats"},
+    {"id":"0907","key":"water the plants","en":"You should water the plants late in the evening instead of at noon, because the sun is too strong and the water will evaporate before it reaches the roots.","ca":"Hauries de regar les plantes a última hora de la tarda en lloc de migdia, perquè el sol és massa fort i l'aigua s'evaporarà abans d'arribar a les arrels"},
+    {"id":"0908","key":"valve","en":"Make sure you turn off the main water valve before you try to fix that leaky faucet, otherwise you'll end up flooding the entire kitchen floor.","ca":"Assegura't de tancar la clau de pas de l'aigua abans d'intentar arreglar aquella aixeta que goteja; de lo contrari, acabaràs inundant tot el terra de la cuina"},
+    {"id":"0909","key":"fridge","en":"Don't put that hot soup directly into the fridge, as it will raise the temperature inside and could spoil the rest of the food.","ca":"No fiquis aquella sopa calenta directament a la nevera, ja que pujarà la temperatura interior i podria estropejar la resta del menjar"},
+    {"id":"0910","key":"post office","en":"I need to go to the post office before they close at five, since I've been waiting for this package all week and I don't want to wait until Monday.","ca":"He d'anar a l'oficina de correus abans que tanquin a les cinc, ja que he estat esperant aquest paquet tota la setmana i no vull esperar fins dilluns"},
+    {"id":"0911","key":"air conditioning","en":"Try to keep the windows closed while the air conditioning is on, because if the cold air escapes, the electricity bill will be much higher this month.","ca":"Intenta mantenir les finestres tancades mentre l'aire condicionat estigui encès, perquè si l'aire fred s'escapa, la factura de la llum serà molt més alta aquest mes"},
+    {"id":"0912","key":"laundry","en":"Separate the dark clothes from the white ones before you start the laundry, as the black shirt might bleed and ruin your favorite white t-shirts.","ca":"Separa la roba fosca de la blanca abans de posar la rentadora, ja que la camisa negra podria destenyir i arruïnar les teves samarretes blanques preferides"},
+    {"id":"0913","key":"draining","en":"Your phone battery is draining quite fast lately, so you might want to check which apps are running in the background all the time.","ca":"La bateria del teu mòbil s'està esgotant bastant ràpid últimament, així que potser vulguis revisar quines aplicacions s'estan executant en segon pla tot el temps"},
+    {"id":"0914","key":"preheat","en":"Preheat the oven for at least ten minutes before putting the roast inside, so that the meat cooks evenly and doesn't stay raw in the middle.","ca":"Preescalfa el forn almenys deu minuts abans de ficar el rostit, perquè la carn es cuini de forma uniforme i no es quedi crua pel mig"},
+    {"id":"0915","key":"appointment","en":"I'd better call the doctor's office to confirm my appointment for tomorrow morning, just in case they've changed the time without telling me.","ca":"Serà millor que truqui a la consulta del metge per confirmar la meva cita de demà al matí, per si de cas han canviat l'hora sense dir-m'ho"},
+    {"id":"0916","key":"streaks","en":"Don't clean the windows while the sun is shining directly on them, because the glass will dry too fast and leave ugly streaks everywhere.","ca":"No netegis els vidres mentre el sol els doni directament, perquè el vidre s'assecarà massa ràpid i deixarà marques feies per tot arreu"},
+    {"id":"0917","key":"power drill","en":"Be careful when you use the power drill, as it can jump back if it hits a metal pipe inside the wall that you didn't know was there.","ca":"Tingues cura en usar el taladre elèctric, ja que pot fer un salt cap enrere si pica una canonada de metall dins la paret que no sabies que hi era"},
+    {"id":"0918","key":"heavy coat","en":"I think I'll wear my heavy coat today since the weather forecast says the temperature will drop significantly in the afternoon.","ca":"Crec que em posaré l'abric gruixut avui, ja que el pronòstic del temps diu que la temperatura baixarà significativament a la tarda"},
+    {"id":"0919","key":"descale","en":"Remember to descale the coffee machine once a month, otherwise the lime will build up and it'll stop working properly sooner than you think.","ca":"Recorda descalcificar la cafetera una vegada al mes; de lo contrari, la calç s'acumularà i deixarà de funcionar correctament abans del que creus"},
+    {"id":"0920","key":"password","en":"You shouldn't use the same password for every website you visit, because if one account gets hacked, all your personal information will be at risk.","ca":"No hauries d'usar la mateixa contrasenya per a cada lloc web que visitis, perquè si hackegen un compte, toda la teva informació personal estarà en risc"},
+    {"id":"0921","key":"alarms","en":"I'll set two different alarms on my phone just to be safe, because I'm so tired that I might sleep through the first one.","ca":"Posaré dues alarmes diferents al meu mòbil només per seguretat, perquè estic tan cansat que podria no assabentar-me de la primera"},
+    {"id":"0922","key":"expiration date","en":"Check the expiration date on the milk before you buy it, since sometimes the bottles at the front of the shelf are about to expire.","ca":"Revisa la data de caducitat de la llet abans de comprar-la, ja que a vegades les ampolles de la part davantera de l'estant estan a punt de caducar"},
+    {"id":"0923","key":"rush hour","en":"We should leave at least twenty minutes earlier than usual to avoid the heavy traffic that builds up near the city center during rush hour.","ca":"Hauríem de sortir almenys vint minuts abans de l'habitual per evitar el trànsit intens que es forma prop del centre de la ciutat en hora punta"},
+    {"id":"0924","key":"dishwasher","en":"Don't overload the dishwasher with too many plates, because the water won't be able to reach everything and you'll have to wash them by hand later.","ca":"No sobrecarreguis el rentavaixelles amb massa plats, perquè l'aigua no podrà arribar a tot i hauràs de rentar-los a mà després"},
+    {"id":"0925","key":"spare set","en":"I always keep a spare set of keys at my neighbor's house in case I accidentally lock myself out while I'm taking out the trash.","ca":"Sempre guardo un joc de claus de recanvi a casa del meu veí per si accidentalment em quedo fora mentre trec la brossa"},
+    {"id":"0926","key":"leftovers","en":"Make sure you heat up the leftovers until they're steaming hot, as eating cold chicken that's been in the fridge for three days might be dangerous.","ca":"Assegura't d'escalfar les sobres fins que estiguin fumejants, ja que menjar pollastre fred que ha estat a la nevera tres dies podria ser perillós"},
+    {"id":"0927","key":"waterproof","en":"You'd better wear your waterproof boots if you're going for a walk in the forest, because it rained last night and the ground will be very muddy.","ca":"Serà millor que portis les teves botes impermeables si vas a fer un passeig pel bosc, perquè va ploure anit i el terra estarà molt enfangat"},
+    {"id":"0928","key":"annoyed","en":"We should tell the neighbors that we're having a small party on Saturday, so they don't get annoyed if there's a bit of noise until midnight.","ca":"Hauríem de dir-los als veïns que farem una petita festa dissabte, perquè no es molestin si hi ha un poc de soroll fins a mitjanit"},
+    {"id":"0929","key":"sore muscles","en":"Don't push yourself too hard during your first workout after the holidays, or you'll end up with sore muscles that will last for a week.","ca":"No t'esforcis massa en el teu primer entrenament després de les vacances, o acabaràs amb agulletes que et duraran una setmana"},
+    {"id":"0930","key":"burnt out","en":"Watch your step while you're going down the stairs because the light bulb on the second floor has burnt out and it's completely dark.","ca":"Tingues cura per on trepitges mentre baixes les escales perquè la bombeta del segon pis s'ha fos i està completament a les fosques"},
+    {"id":"0931","key":"as long as","en":"You can borrow my car to go to the supermarket as long as you promise to drive carefully and refill the tank before you bring it back tonight.","ca":"Pots demanar prestat el meu cotxe per anar al supermercat sempre que prometis conduir amb cura i reomplir el dipòsit abans de portar-lo aquesta nit"},
+    {"id":"0932","key":"call off","en":"We had to call off the outdoor barbecue because the weather forecast predicted a heavy storm, so we decided to order some pizzas instead.","ca":"Vam haver de suspendre la barbacoa a l'aire lliure perquè el pronòstic del temps preveia una forta tempesta, així que vam decidir demanar unes pizzes en lloc d'això"},
+    {"id":"0933","key":"tough","en":"It was a really tough decision to sell the old house where I grew up, but I knew it was the right thing to do to start a new life in the city.","ca":"Va ser una decisió realment difícil vendre la vella casa on vaig créixer, però sabia que era el correcte per començar una nova vida a la ciutat"},
+    {"id":"0934","key":"tricky","en":"Assembling this new bookshelf is quite tricky because the instructions are not very clear, so we should take our time to avoid making any mistakes.","ca":"Muntar aquesta nova prestatgeria és bastant complicat perquè les instruccions no són molt clares, així que hauríem de prendre'ns el nostre temps per evitar cometre errors"},
+    {"id":"0935","key":"awkward","en":"There was an awkward silence during dinner when nobody knew what to say after John mentioned the problem with the neighbors.","ca":"Va haver-hi un silenci incòmode durant el sopar quan ningú sabia què dir després que en John esmentés el problema amb els veïns"},
+    {"id":"0936","key":"worth","en":"It's definitely worth paying a little bit more for a high-quality mattress, since you'll be spending a third of your life sleeping on it.","ca":"Definitivament val la pena pagar un poc més per un matalàs d'alta qualitat, ja que passaràs un terç de la teva vida dormint-hi"},
+    {"id":"0937","key":"handy","en":"Keep this multi-tool in your kitchen drawer because it's very handy for opening jars or fixing small things around the house without calling a professional.","ca":"Guarda aquesta multieina al calaix de la cuina perquè és molt pràctica per obrir bots o arreglar coses petites a casa sense trucar a un professional"},
+    {"id":"0938","key":"provided that","en":"The renovation of the kitchen will take roughly three weeks to finish, provided that the workers arrive on time every morning and we have all the materials.","ca":"La reforma de la cuina trigarà aproximadament tres setmanes a acabar-se, sempre que els treballadors arribin a temps cada matí i tinguem tots els materials"},
+    {"id":"0939","key":"hardly","en":"I can hardly hear what you're saying because the volume of the television is too high, so please turn it down for a moment.","ca":"Amb prou feines puc sentir el que dius perquè el volum de la televisió està massa alt, així que si us plau abaixa'l un moment"},
+    {"id":"0940","key":"oversleep","en":"Make sure you set your alarm clock tonight, otherwise you'll oversleep and miss the most important meeting of the month.","ca":"Assegura't de posar el despertador aquesta nit, de lo contrari se't enganxaran els llençols i et perdràs la reunió més important del mes"},
+    {"id":"0941","key":"lid / strainer","en":"Be careful when you lift the lid off the pot, because the steam is very hot; then, use the strainer to drain the pasta before it gets too soft.","ca":"Tingues cura quan aixequis la tapa de l'olla, perquè el vapor està molt calent; després, usa el colador per escórrer la pasta abans que s'estovi massa"},
+    {"id":"0942","key":"non-stick","en":"Don't leave the frying pan on the heat without any oil, otherwise the non-stick surface will be ruined and everything you cook will start to stick.","ca":"No deixis la paella al foc sense gens d'oli, de lo contrari la superfície antiadherent s'arruïnarà i tot el que cuinis se't començarà a enganxar"},
+    {"id":"0943","key":"splash","en":"If you want to heat up the leftovers in the microwave, make sure you use a proper lid so the food doesn't splash and mess up the whole interior.","ca":"Si vols escalfar les sobres al microones, assegura't d'usar una tapa adequada perquè el menjar no salpiqui i embruti tot l'interior"},
+    {"id":"0944","key":"ladle","en":"I need a bigger ladle to serve the soup, because this one is too small and I'll end up spilling everything on the clean tablecloth.","ca":"Necessito un cullerot més gran per servir la sopa, perquè aquest és massa petit i acabaré vessant-ho tot sobre les estovalles netes"},
+    {"id":"0945","key":"can opener","en":"I can't find the can opener anywhere, and I really need it to open this tin of crushed tomatoes if I want to finish the sauce on time.","ca":"No trobo l'obrellaunes per enlloc, i realment el necessito per obrir aquesta llauna de tomàquet triturat si vull acabar la salsa a temps"},
+    {"id":"0946","key":"corkscrew","en":"We should buy a new corkscrew soon, since the old one is getting rusty and I'm afraid the cork will break inside the bottle next time.","ca":"Hauríem de comprar un llevataps nou aviat, ja que el vell s'està rovellant i em temo que el suro es trencarà dins l'ampolla la propera vegada"},
+    {"id":"0947","key":"aluminum foil","en":"Wrap the rest of the roast chicken in aluminum foil before putting it in the oven to keep it warm, but make sure you don't put it in the microwave by mistake.","ca":"Embolica la resta del pollastre rostit en paper d'alumini abans de ficar-lo al forn perquè es mantingui calent, perquè no ficar-lo al microones per error"},
+    {"id":"0948","key":"plastic wrap","en":"You'd better cover the salad bowl with plastic wrap so the lettuce stays fresh and crunchy, otherwise it will wilt because of the air in the fridge.","ca":"Serà millor que cobreixis el bol de l'amanida amb paper film perquè l'enciam es mantingui fresc i cruixent, de lo contrari es poarà per l'aire de la nevera"},
+    {"id":"0949","key":"grater","en":"Watch your fingers while you're using the cheese grater, because it's extremely sharp and you could easily cut yourself if you're not paying attention.","ca":"Alerta amb els dits mentre uses el ratllador de formatge, perquè està extremadament afilat i podries tallar-te fàcilment si no estàs parant atenció"},
+    {"id":"0950","key":"scrubber","en":"Don't leave the dirty dishes in the sink overnight; use the scrubber to clean them now so the grease doesn't dry up and become impossible to remove.","ca":"No deixis els plats bruts a l'aigüera tota la nit; usa l'estropall per netejar-los ara perquè el greix no s'assequi i es torni impossible de treure"}
 ];
 
-const normalizationMap = {
-    "dont": "do not", "doesn't": "does not", "doesnt": "does not", "didnt": "did not", "didn't": "did not",
-    "isnt": "is not", "isn't": "is not", "arent": "are not", "aren't": "are not",
-    "wasnt": "was not", "wasn't": "was not", "werent": "were not", "weren't": "were not",
-    "havent": "have not", "haven't": "have not", "hasnt": "has not", "hasn't": "has not",
-    "hadnt": "had not", "hadn't": "had not", "wont": "will not", "won't": "will not",
-    "wouldnt": "would not", "wouldn't": "would not", "cant": "can not", "can't": "can not",
-    "couldnt": "could not", "couldn't": "could not", "im": "i am", "i'm": "i am",
-    "youre": "you are", "you're": "you are", "hes": "he is", "he's": "he is",
-    "shes": "she is", "she's": "she is", "its": "it is", "it's": "it is",
-    "were": "we are", "we're": "we are", "theyre": "they are", "they're": "they are",
-    "ive": "i have", "i've": "i have", "youve": "you have", "you've": "you have",
-    "weve": "we have", "we've": "we have", "theyve": "they have", "they've": "they have"
-};
-
-let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0;
-const audioObj = new Audio();
-const progressBar = document.getElementById("progressBar");
-
-function getFolderName() { return "repàs-unitat-5"; }
-
-let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
+let remaining=[...items], current=null, currentIndex=0, mode="EN", known=0, studyStarsOnly=false;
 let mediaRecorder, audioChunks = [], isRecording = false;
+
+function speak(rate = 1.0, text = null) {
+    window.speechSynthesis.cancel();
+    const toSpeak = text || (current ? current.en : "");
+    if (!toSpeak) return;
+    const utterance = new SpeechSynthesisUtterance(toSpeak);
+    utterance.lang = 'en-US';
+    utterance.rate = rate;
+    window.speechSynthesis.speak(utterance);
+}
+function stopSpeak() { window.speechSynthesis.cancel(); }
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition, isListening = false;
-
 if (SpeechRecognition) {
     recognition = new SpeechRecognition();
     recognition.lang = 'en-US';
-    recognition.interimResults = false;
-    recognition.continuous = true;
-    recognition.onstart = () => { isListening = true; document.getElementById("sttBtn").classList.add("listening"); };
-    recognition.onend = () => { isListening = false; document.getElementById("sttBtn").classList.remove("listening"); };
-    recognition.onresult = (event) => {
-        let fullTranscript = "";
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-            fullTranscript += event.results[i][0].transcript + " ";
-        }
-        compareSentences(currentBlockData[pos].en, fullTranscript.trim());
-    };
+    recognition.onstart = () => { isListening=true; document.getElementById("sttBtn").classList.add("listening"); };
+    recognition.onend = () => { isListening=false; document.getElementById("sttBtn").classList.remove("listening"); };
+    recognition.onresult = (e) => { compareSentences(current.en, e.results[0][0].transcript); };
+}
+function toggleMic() { 
+    if(!recognition) return; 
+    if(isListening) recognition.stop(); else recognition.start(); 
 }
 
-function normalizeText(text) {
-    if (!text) return "";
-    let clean = text.toLowerCase().replace(/[.,?!"]/g, "").trim();
-    let words = clean.split(/\s+/);
-    return words.map(word => normalizationMap[word] || word).join(" ");
-}
-
-function compareSentences(original, spoken) {
-    const feedbackDiv = document.getElementById("speechFeedback");
-    const normOriginalWords = normalizeText(original).split(/\s+/);
-    const normSpokenWords = normalizeText(spoken).split(/\s+/);
-    const origWordsRaw = original.split(/\s+/);
-    let resultHTML = "";
-    let sIdx = 0;
-    normOriginalWords.forEach((normWord, index) => {
-        const originalWordRaw = origWordsRaw[index];
-        let matched = false;
-        if (sIdx < normSpokenWords.length && normSpokenWords[sIdx] === normWord) {
-            resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
-            sIdx++;
-            matched = true;
-        } else {
-            for (let j = sIdx + 1; j < sIdx + 5 && j < normSpokenWords.length; j++) {
-                if (normSpokenWords[j] === normWord) {
-                    for (let k = sIdx; k < j; k++) {
-                        resultHTML += `<span class="word-error">${normSpokenWords[k]}</span>`;
-                    }
-                    resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
-                    sIdx = j + 1;
-                    matched = true;
-                    break;
-                }
-            }
-        }
-        if (!matched) resultHTML += `<span class="word-missing">${originalWordRaw}</span>`;
+function compareSentences(orig, spoken) {
+    const feedback = document.getElementById("speechFeedback");
+    const clean = (t) => t.toLowerCase().replace(/[.,?!]/g, "").trim();
+    const origWords = orig.split(" "), spokenWords = clean(spoken).split(" ");
+    let html = "";
+    origWords.forEach((w, i) => {
+        const isMatch = spokenWords.includes(clean(w));
+        html += `<span class="${isMatch ? 'word-correct' : 'word-missing'}">${w} </span>`;
     });
-    feedbackDiv.innerHTML = resultHTML;
+    feedback.innerHTML = html;
 }
 
-function toggleMic() {
-    if (!recognition) { alert("Navegador no suportat."); return; }
-    if (isListening) recognition.stop();
-    else { document.getElementById("speechFeedback").innerHTML = ""; recognition.start(); }
-}
-
-async function toggleRecord(targetBtnId) {
-    const btn = document.getElementById(targetBtnId);
+async function toggleRecord(btnId) {
+    const btn = document.getElementById(btnId);
     if (!isRecording) {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -292,187 +199,91 @@ async function toggleRecord(targetBtnId) {
             audioChunks = [];
             mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
             mediaRecorder.onstop = () => {
-                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-                new Audio(URL.createObjectURL(audioBlob)).play();
+                const blob = new Blob(audioChunks, { type: 'audio/wav' });
+                new Audio(URL.createObjectURL(blob)).play();
             };
             mediaRecorder.start();
-            isRecording = true;
-            btn.classList.add("recording");
-        } catch (err) { alert("Error al accedir al micròfon."); }
+            isRecording = true; btn.classList.add("recording");
+        } catch (err) { alert("Error mic"); }
     } else {
-        mediaRecorder.stop(); 
-        isRecording = false;
-        btn.classList.remove("recording");
+        mediaRecorder.stop(); isRecording = false; btn.classList.remove("recording");
     }
 }
 
-audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
-progressBar.oninput = () => { if (audioObj.duration) audioObj.currentTime = (progressBar.value / 100) * audioObj.duration; };
-
-function initBlocks() {
-  const container = document.getElementById("blockContainer");
-  const numBlocks = Math.ceil(items.length / 10);
-  const savedBlock = localStorage.getItem(getFolderName() + "_puntoLibro");
-  container.innerHTML = "";
-  const allBtn = document.createElement("button");
-  allBtn.className = "block all-btn";
-  allBtn.textContent = "T";
-  allBtn.onclick = () => loadAll();
-  container.appendChild(allBtn);
-  for (let i = 0; i < numBlocks; i++) {
-    const btn = document.createElement("button");
-    btn.className = "block";
-    btn.textContent = i + 1;
-    btn.onclick = () => loadBlock(i);
-    container.appendChild(btn);
-  }
-  if (savedBlock === "all") loadAll();
-  else loadBlock((savedBlock !== null) ? parseInt(savedBlock) : 0);
-  
-  // Sincronizar el check al cargar
-  const mc = document.getElementById("mainCheck");
-  if (localStorage.getItem(getFolderName() + "_isDone") === "true") {
-      mc.innerHTML = "✓";
-      mc.classList.add('marked');
-  }
-}
-
-function loadBlock(b) {
-  currentBlockID = b;
-  localStorage.setItem(getFolderName() + "_puntoLibro", b);
-  let temp = [];
-  let start = b * 10;
-  let end = Math.min(start + 10, items.length);
-  for (let i = start; i < end; i++) temp.push({...items[i]});
-  currentBlockData = temp.sort(() => Math.random() - 0.5);
-  document.querySelectorAll(".block").forEach((btn, idx) => { btn.classList.toggle("active", idx === (b + 1)); });
-  pos = 0; learnedCount = 0;
-  document.getElementById("endMsg").classList.add("hidden");
-  update(true);
-}
-
-function loadAll() {
-  currentBlockID = -1;
-  localStorage.setItem(getFolderName() + "_puntoLibro", "all");
-  currentBlockData = items.map(i => ({...i})).sort(() => Math.random() - 0.5);
-  document.querySelectorAll(".block").forEach((btn, idx) => { btn.classList.toggle("active", idx === 0); });
-  pos = 0; learnedCount = 0;
-  document.getElementById("endMsg").classList.add("hidden");
-  update(true);
-}
-
-function update(fromAction = false) {
-  if (currentBlockData.length === 0) {
+function load(){
+    let pool = studyStarsOnly ? remaining.filter(i => localStorage.getItem('star_' + i.id) === 'true') : remaining;
+    if(pool.length===0){ current = null; updateCounter(); return; }
+    if (currentIndex >= pool.length) currentIndex = 0;
+    current = pool[currentIndex]; 
+    document.getElementById("ca").classList.add("hidden");
     document.getElementById("en").classList.add("hidden");
-    document.getElementById("es").classList.add("hidden");
-    document.getElementById("speechFeedback").innerHTML = "";
-    document.getElementById("endMsg").classList.remove("hidden");
-    return;
-  }
-  progressBar.value = 0;
-  const item = currentBlockData[pos];
-  document.getElementById("es").classList.add("hidden");
-  document.getElementById("en").classList.add("hidden");
-  document.getElementById("speechFeedback").innerHTML = "";
-  document.getElementById("starBtn").classList.toggle("active", starredIds.includes(item.audio));
-  if (mode === "EN") {
-    document.getElementById("langLabel").textContent = "ANGLÈS";
-    document.getElementById("en").innerHTML = item.en;
-    document.getElementById("en").classList.remove("hidden");
-    if (fromAction) playAudio(item.audio, 1.0);
-  } else {
-    document.getElementById("langLabel").textContent = "CASTELLÀ";
-    document.getElementById("es").innerHTML = item.es;
-    document.getElementById("es").classList.remove("hidden");
-  }
-  document.getElementById("counter").textContent = `${learnedCount} / ${currentBlockData.length + learnedCount}`;
-}
-
-function playAudio(src, speed) { audioObj.src = src; audioObj.playbackRate = speed; audioObj.play().catch(() => {}); }
-function playCurrent(speed) { if (currentBlockData.length > 0) playAudio(currentBlockData[pos].audio, speed); }
-function pauseAudio() { audioObj.pause(); }
-
-function reveal() {
-  if (currentBlockData.length === 0) return;
-  const item = currentBlockData[pos];
-  document.getElementById("es").innerHTML = item.es;
-  document.getElementById("en").innerHTML = item.en;
-  document.getElementById("es").classList.remove("hidden");
-  document.getElementById("en").classList.remove("hidden");
-}
-
-function know() {
-  if (currentBlockData.length === 0) return;
-  learnedCount++; 
-  currentBlockData.splice(pos, 1);
-  if (pos >= currentBlockData.length) pos = 0;
-  update(true);
-}
-
-function nextOne() {
-  if (currentBlockData.length === 0) return;
-  pos = (pos + 1) % currentBlockData.length;
-  update(true);
-}
-
-function setMode(m) { mode = m; update(true); }
-
-function toggleStar(forcedId = null) {
-  const audio = forcedId || currentBlockData[pos].audio;
-  if (starredIds.includes(audio)) starredIds = starredIds.filter(id => id !== audio);
-  else starredIds.push(audio);
-  localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
-  update();
-}
-
-function toggleList(type) {
-  const box = document.getElementById("listBox");
-  if (!box.classList.contains("hidden") && box.dataset.activeType === type) { box.classList.add("hidden"); return; }
-  box.dataset.activeType = type;
-  renderList(type);
-  box.classList.remove("hidden");
-}
-
-function renderList(type) {
-  const box = document.getElementById("listBox");
-  box.innerHTML = type === 'stars' ? "<h3>Frases destacades (★):</h3>" : "<h3>Tota la llista:</h3>";
-  let listToRender = [];
-  if (type === 'stars') listToRender = items.filter(i => starredIds.includes(i.audio));
-  else listToRender = (currentBlockID === -1) ? items : items.slice(currentBlockID * 10, (currentBlockID + 1) * 10);
-  if (listToRender.length === 0) { box.innerHTML += "<p style='padding:10px;'>Buit.</p>"; return; }
-  listToRender.forEach((i, index) => {
-    const isStarred = starredIds.includes(i.audio);
-    const itemDiv = document.createElement("div");
-    itemDiv.className = "list-item";
-    const recId = `rec-list-${index}`;
-    itemDiv.innerHTML = `
-      <div class="list-controls-side">
-        <button class="star-btn-list ${isStarred ? 'active' : ''}" onclick="toggleStar('${i.audio}'); renderList('${type}')">★</button>
-        <button class="mini-btn btn-audio" onclick="playAudio('${i.audio}', 1.0)">🔊</button>
-        <button class="mini-btn btn-rec-mini" id="${recId}" onclick="toggleRecord('${recId}')">🎤</button>
-      </div>
-      <div class="list-texts">
-        <div style="color:#2563eb; font-weight:700;">${i.es}</div>
-        <div id="rev-${index}" class="blur" style="font-weight:800;" onclick="this.classList.toggle('revealed')">${i.en}</div>
-      </div>
-    `;
-    box.appendChild(itemDiv);
-  });
-}
-
-function markAsDone() {
-    const mc = document.getElementById("mainCheck");
-    const isMarked = mc.classList.toggle('marked');
-    if (isMarked) {
-        mc.innerHTML = "✓";
-        localStorage.setItem(getFolderName() + "_isDone", "true");
+    document.getElementById("key").classList.add("hidden");
+    document.getElementById("speechFeedback").innerHTML = ""; 
+    document.getElementById("starMain").classList.toggle('active', localStorage.getItem('star_' + current.id) === 'true');
+    if(mode==="EN"){
+        document.getElementById("langLabel").textContent="ANGLÈS";
+        speak(1.0);
     } else {
-        mc.innerHTML = "";
-        localStorage.setItem(getFolderName() + "_isDone", "false");
+        document.getElementById("langLabel").textContent="CATALÀ";
+        document.getElementById("ca").textContent=current.ca;
+        document.getElementById("ca").classList.remove("hidden");
     }
+    updateCounter();
 }
 
-initBlocks();
+function reveal(){
+    if(!current)return;
+    const caDiv = document.getElementById("ca"), enDiv = document.getElementById("en"), keyDiv = document.getElementById("key");
+    caDiv.textContent = current.ca; enDiv.textContent = current.en; keyDiv.textContent = "Key: " + current.key;
+    caDiv.classList.toggle("hidden"); enDiv.classList.toggle("hidden"); keyDiv.classList.toggle("hidden");
+}
+
+function know(){ if(current){ remaining=remaining.filter(i=>i.id!==current.id); known++; load(); } }
+function nextOne(){ currentIndex++; load(); }
+function setMode(m){ mode=m; load(); }
+function updateCounter(){ 
+    const total = studyStarsOnly ? items.filter(i => localStorage.getItem('star_' + i.id) === 'true').length : items.length;
+    document.getElementById("counter").textContent = known + " / " + total; 
+}
+function toggleStarCurrent() {
+    const active = document.getElementById("starMain").classList.toggle('active');
+    localStorage.setItem('star_' + current.id, active);
+}
+function toggleStudyStars() {
+    studyStarsOnly = !studyStarsOnly; known = 0; currentIndex = 0; remaining = [...items]; load();
+}
+
+// Llista amb estrella i micro rosa
+function toggleList(){
+    const lb = document.getElementById("listBox");
+    if (!lb.classList.contains("hidden")) { lb.classList.add("hidden"); return; }
+    lb.innerHTML = items.map((i, idx) => {
+        const isStarred = localStorage.getItem('star_' + i.id) === 'true';
+        return `
+        <div class="list-item">
+            <div class="list-controls-side">
+                <button class="star-btn-list ${isStarred ? 'active' : ''}" onclick="toggleStar('${i.id}', this)">★</button>
+                <button class="mini-icon-btn btn-play-mini" onclick="speak(1.0, '${i.en.replace(/'/g, "\\'")}')">🔊</button>
+                <button class="mini-icon-btn btn-rec-mini" id="rec-list-${idx}" onclick="toggleRecord('rec-list-${idx}')">🎤</button>
+            </div>
+            <div class="list-texts">
+                <div class="list-ca">${i.ca}</div>
+                <div class="list-en" onclick="this.classList.toggle('revealed')">${i.en}</div>
+            </div>
+        </div>`;
+    }).join("");
+    lb.classList.remove("hidden");
+}
+
+function toggleStar(id, btn) {
+    const active = btn.classList.toggle('active');
+    localStorage.setItem('star_' + id, active);
+    if(current && current.id === id) document.getElementById("starMain").classList.toggle('active', active);
+}
+
+function markAsDone(el) { el.innerHTML = "✓"; el.classList.add('marked'); alert("Fet!"); }
+
+load();
 </script>
 </body>
 </html>

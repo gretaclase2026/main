@@ -27,20 +27,22 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 
 .audio-controls{display:flex;align-items:center;gap:12px;margin-bottom:15px}
 .audio-btn{font-size:30px;background:#dcfce7;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
-.audio-btn.slow{background:#fef08a; font-size: 28px;}
-.audio-btn.pause{background:#fee2e2; font-size: 28px;}
+.audio-btn.slow{background:#fef08a}
+.audio-btn.pause{background:#fee2e2}
 
-/* --- ESTILOS DE MICRÓFONOS SEGÚN INDEX ADJUNTO --- */
+/* --- COLORES DE MICROS INTERCAMBIADOS --- */
 
-/* Micro de Grabación (🎙️) - ROSA */
-.audio-btn.rec { background: #fbcfe8; font-size: 28px; }
-.audio-btn.rec.active { background: #f87171 !important; color: white !important; animation: pulse 1.5s infinite; }
+/* Micro de Grabación (🎙️) - AHORA AZUL */
+.rec-btn{font-size:30px;background:#dbeafe;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.3s}
+.rec-btn.recording{background:#2563eb; color:white; animation: pulse-blue 1.5s infinite; transform: scale(1.1);}
 
-/* Micro de Dictado/STT (🎤) - AZUL */
-.audio-btn.stt { background: #dbeafe; font-size: 28px; }
-.audio-btn.stt.listening { background: #3b82f6 !important; color: white !important; animation: pulse 1.5s infinite; }
+/* Micro de Dictado/STT (🎤) - AHORA ROSA */
+.mic-btn{font-size:30px;background:#fbcfe8;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.3s}
+.mic-btn.listening{background:#db2777 !important; color:white !important; animation: pulse-pink 1.5s infinite; transform: scale(1.1);}
 
-@keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.1);} 100% {transform: scale(1);} }
+/* Animaciones de pulso */
+@keyframes pulse-blue { 0% {box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7);} 70% {box-shadow: 0 0 0 15px rgba(37, 99, 235, 0);} 100% {box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);} }
+@keyframes pulse-pink { 0% {box-shadow: 0 0 0 0 rgba(219, 39, 119, 0.7);} 70% {box-shadow: 0 0 0 15px rgba(219, 39, 119, 0);} 100% {box-shadow: 0 0 0 0 rgba(219, 39, 119, 0);} }
 
 .progress-wrapper { width: 100%; max-width: 300px; margin: 10px 0; }
 input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 5px; accent-color: #2563eb; }
@@ -49,7 +51,8 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 .txt-es{color:#2563eb} 
 #answer{font-size:20px;font-weight:bold;margin-top:-10px;margin-bottom:20px;text-align:center;min-height:30px;color:#666}
 
-#speechFeedback { font-size: 18px; margin-top: 10px; font-weight: bold; min-height: 28px; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
+/* Feedback de colores */
+#speechFeedback { font-size: 19px; margin-top: 10px; font-weight: bold; min-height: 28px; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
 .word-correct { color: #16a34a; }
 .word-error { color: #dc2626; text-decoration: line-through; }
 .word-missing { color: #94a3b8; font-style: italic; }
@@ -69,11 +72,8 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 .list-btns-col { display: flex; flex-direction: column; gap: 8px; align-items: center; }
 .list-content { flex: 1; }
 .list-texts { line-height: 1.4; }
-.mini-btn { border: none; border-radius: 8px; width: 36px; height: 36px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
+.mini-btn { border: none; border-radius: 8px; width: 32px; height: 32px; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; }
 .btn-audio-list { background: #dcfce7; }
-.btn-rec-list { background: #fbcfe8; font-size: 18px; }
-.btn-rec-list.active { background: #f87171; color: white; animation: pulse 1.5s infinite; }
-
 .star-list { background: none; border: none; font-size: 22px; color: #cbd5e1; cursor: pointer; padding: 0; }
 .star-list.active { color: #f59e0b !important; }
 .blur { filter: blur(5px); transition: filter 0.3s; cursor: pointer; display: inline-block; }
@@ -108,8 +108,8 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
       <button class="audio-btn slow" onclick="playAudio(0.75)">🐢</button>
       <button class="audio-btn" onclick="playAudio(1.0)">🔊</button>
       <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
-      <button id="recBtn" class="audio-btn rec" onclick="toggleRecording('recBtn')">🎙️</button>
-      <button id="sttBtn" class="audio-btn stt" onclick="toggleMic()">🎤</button>
+      <button class="rec-btn" id="recBtn" onclick="toggleRecord()" title="Gravar-se (Micro Blau)">🎙️</button>
+      <button class="mic-btn" id="sttBtn" onclick="toggleMic()" title="Dictat (Micro Rosa)">🎤</button>
     </div>
 
     <div class="progress-wrapper">
@@ -147,7 +147,7 @@ const data = [
   {en: "If you need any further information about the trip, just let me know.", es: "Si necesitas más información sobre el viaje, dímelo sin problemas"},
   {en: "I brought some wine so you wouldn't have to walk back and forth to the store.", es: "Traje un poco de vino para que no tuvieras que ir y venir a la tienda"},
   {en: "I thought we would be there within ten minutes, but we got lost.", es: "Pensé que estaríamos allí en diez minutos, pero nos perdimos"},
-  {en: "We saw each other yesterday and ate at that new place which is spotless.", es: "Nos vimos ayer y comimos en ese sitio nuevo que está impecable"},
+  {en: "We saw each other yesterday and ate at that new place which is spotless.", es: "Nos vimos ayer and comimos en ese sitio nuevo que está impecable"},
   {en: "I bought these flowers to thank you for giving us further directions.", es: "Compré estas flores para agradecerte que nos dieras indicaciones adicionales"},
   {en: "I knew it was the right way back as soon as I saw the park.", es: "Supe que era el camino de vuelta correcto en cuanto vi el parque"},
   {en: "I understood I ought to have embraced the challenge when I spoke to them.", es: "Entendí que debería haber aceptado el resto cuando hablé con ellos"},
@@ -159,7 +159,7 @@ const data = [
   {en: "They told me they got along with the neighbors right from the start.", es: "Me dijeron que se llevaron bien con los vecinos desde el principio"},
   {en: "By the way, I brought some wine so you wouldn't have to walk back and forth to the store.", es: "Por cierto, traje un poco de vino para que no tuvieras que ir y venir a la tienda"},
   {en: "To be honest, I thought we would be there within ten minutes, but we got lost.", es: "Para ser sincera, pensé que estaríamos allí en diez minutos, pero nos perdimos"},
-  {en: "Actually, we saw each other yesterday and ate at that new place which is spotless.", es: "De hecho, nos vimos ayer y comimos en ese sitio nuevo que está impecable"},
+  {en: "Actually, we saw each other yesterday and ate at that new place which is spotless.", es: "De hecho, nos vimos ayer and comimos en ese sitio nuevo que está impecable"},
   {en: "If you ask me, you should receive an answer from them within three days.", es: "Si me preguntas a mí, deberías recibir una respuesta por su parte en tres días"},
   {en: "By the way, my sister and I have got along really well since we were kids.", es: "Por cierto, mi hermana y yo nos llevamos muy bien desde que somos pequeñas"},
   {en: "Truth be told, I knew it was the right way back as soon as I saw the park.", es: "A decir verdad, supe que era el camino de vuelta en cuanto vi el parque"},
@@ -203,54 +203,12 @@ let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockI
 const a = document.getElementById("audio");
 const progressBar = document.getElementById("progressBar");
 
-let mediaRecorder;
-let audioChunks = [];
-let isRecording = false;
-let currentRecordingBtn = null;
-
-// LÓGICA DE PROGRESO AUDIO
+// --- LÓGICA DE LA BARRA DE PROGRESO (ARREGLADO) ---
 a.ontimeupdate = () => { if (a.duration) progressBar.value = (a.currentTime / a.duration) * 100; };
 progressBar.oninput = () => { if (a.duration) a.currentTime = (progressBar.value / 100) * a.duration; };
 
-// GRABACIÓN SIMPLE (🎙️ - ROSA/ROJO)
-async function toggleRecording(btnId = "recBtn") {
-  const btn = document.getElementById(btnId);
-  if (isRecording && currentRecordingBtn === btnId) {
-      stopRecordingProcess(btn);
-      return;
-  }
-  if (isRecording && currentRecordingBtn !== btnId) {
-      const oldBtn = document.getElementById(currentRecordingBtn);
-      stopRecordingProcess(oldBtn);
-      await new Promise(r => setTimeout(r, 100));
-  }
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    mediaRecorder = new MediaRecorder(stream);
-    audioChunks = [];
-    mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-    mediaRecorder.onstop = () => {
-      const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' });
-      new Audio(URL.createObjectURL(audioBlob)).play();
-    };
-    mediaRecorder.start();
-    isRecording = true;
-    currentRecordingBtn = btnId;
-    btn.classList.add("active");
-  } catch (err) { 
-    isRecording = false;
-    currentRecordingBtn = null;
-  }
-}
 
-function stopRecordingProcess(btn) {
-    if (mediaRecorder && mediaRecorder.state !== "inactive") mediaRecorder.stop();
-    isRecording = false;
-    currentRecordingBtn = null;
-    if (btn) btn.classList.remove("active");
-}
-
-// RECONOCIMIENTO (🎤 - AZUL/AZUL OSCURO)
+// --- LÓGICA MICRO ROSA (STT AVANÇAT) ---
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition;
 let isListening = false;
@@ -263,7 +221,7 @@ if (SpeechRecognition) {
 
     recognition.onstart = () => {
         isListening = true;
-        document.getElementById("sttBtn").classList.add("listening");
+        document.getElementById("sttBtn").classList.add("listening"); // Pulsa en rosa
         document.getElementById("speechFeedback").innerHTML = "";
     };
     recognition.onend = () => {
@@ -319,6 +277,7 @@ function compareSentences(original, spoken) {
         if (!matched) resultHTML += `<span class="word-missing">${originalWordRaw}</span> `;
     });
     feedbackDiv.innerHTML = resultHTML;
+
     if (!resultHTML.includes('word-missing') && !resultHTML.includes('word-error')) {
         setTimeout(know, 1000);
     }
@@ -328,6 +287,28 @@ function toggleMic() {
     if (!recognition) return;
     if (isListening) recognition.stop();
     else recognition.start();
+}
+
+// --- GRABACIÓ SIMPLE MICRO BLAU (🎙️) ---
+let mediaRecorder, audioChunks = [], isRecording = false;
+async function toggleRecord() {
+    const btn = document.getElementById("recBtn");
+    if (!isRecording) {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
+            mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+            mediaRecorder.onstop = () => {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                new Audio(URL.createObjectURL(audioBlob)).play();
+            };
+            mediaRecorder.start();
+            isRecording = true; btn.classList.add("recording"); btn.textContent = "⏹"; // Pulsa en blau
+        } catch (err) { alert("Error al accedir al micròfon."); }
+    } else {
+        mediaRecorder.stop(); isRecording = false; btn.classList.remove("recording"); btn.textContent = "🎙️";
+    }
 }
 
 function getFolderName() { return "social_c1_u10"; }
@@ -347,10 +328,14 @@ function initBlocks() {
   btnT.className = "block"; btnT.textContent = "T";
   btnT.onclick = () => loadBlock('T');
   container.appendChild(btnT);
+
   const starBtn = document.createElement("button");
-  starBtn.className = "star-block"; starBtn.id = "starBlockBtn"; starBtn.innerHTML = "★";
+  starBtn.className = "star-block";
+  starBtn.id = "starBlockBtn";
+  starBtn.innerHTML = "★";
   starBtn.onclick = () => toggleStar();
   container.appendChild(starBtn);
+
   loadBlock(0);
 }
 
@@ -381,10 +366,12 @@ function update(fromNextAction = false) {
   }
   const item = currentBlockData[pos];
   document.getElementById("starBlockBtn").classList.toggle("active", starredIds.includes(item.realIdx));
+  
   const w = document.getElementById("word");
   const ans = document.getElementById("answer");
   ans.style.display = "none";
-  
+  progressBar.value = 0; // Reiniciar barra visualmente
+
   if (mode === "EN") {
     w.innerHTML = `<span id="main-en-text" style="display:${fromNextAction ? 'none' : 'inline'};">${item.en}</span>`; 
     w.innerHTML += `<div id="speechFeedback"></div>`;
@@ -405,7 +392,9 @@ function toggleStar(forcedIdx = null) {
   if (starredIds.includes(idx)) starredIds = starredIds.filter(id => id !== idx);
   else starredIds.push(idx);
   localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
-  if (!forcedIdx) document.getElementById("starBlockBtn").classList.toggle("active", starredIds.includes(idx));
+  if (!forcedIdx) {
+    document.getElementById("starBlockBtn").classList.toggle("active", starredIds.includes(idx));
+  }
 }
 
 function playAudio(speed, forcedIdx = null) {
@@ -463,14 +452,19 @@ function setMode(m) {
 function toggleList(type) {
   const l = document.getElementById("list");
   if (l.style.display === "block" && l.dataset.type === type) { l.style.display = "none"; return; }
-  l.dataset.type = type; renderList(type); l.style.display = "block";
+  l.dataset.type = type;
+  renderList(type);
+  l.style.display = "block";
 }
 
-function toggleBlur(el) { el.classList.toggle('revealed'); }
+function toggleBlur(el) {
+    el.classList.toggle('revealed');
+}
 
 function renderList(type) {
   const l = document.getElementById("list");
   l.innerHTML = type === 'stars' ? "<b>Favorites (★):</b><br><br>" : "<b>Llista del bloc:</b><br><br>";
+  
   let listToRender = [];
   if (type === 'stars') {
     listToRender = data.map((item, index) => ({...item, realIdx: index+1})).filter(i => starredIds.includes(i.realIdx));
@@ -479,17 +473,17 @@ function renderList(type) {
     let end = currentBlockID === 'T' ? data.length : Math.min(start + 10, data.length);
     listToRender = data.slice(start, end).map((item, index) => ({...item, realIdx: start + index + 1}));
   }
+
   if (listToRender.length === 0) { l.innerHTML += "<i>Buit.</i>"; return; }
+
   listToRender.forEach((item) => {
     const isStarred = starredIds.includes(item.realIdx);
     const itemDiv = document.createElement("div");
     itemDiv.className = "list-item";
-    const listRecBtnId = `recBtnList_${item.realIdx}`;
     itemDiv.innerHTML = `
       <div class="list-btns-col">
         <button class="star-list ${isStarred ? 'active' : ''}" onclick="toggleStar(${item.realIdx}); this.classList.toggle('active')">★</button>
         <button class="mini-btn btn-audio-list" onclick="playAudio(1.0, ${item.realIdx})">🔊</button>
-        <button id="${listRecBtnId}" class="mini-btn btn-rec-list" onclick="toggleRecording('${listRecBtnId}')">🎙️</button>
       </div>
       <div class="list-content">
         <div class="list-texts">

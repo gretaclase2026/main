@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+ s<!DOCTYPE html>
 <html lang="ca">
 <head>
 <meta charset="UTF-8">
@@ -27,11 +27,11 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .audio-btn.slow{background:#fef08a;font-size:28px}
 .audio-btn.pause{background:#fee2e2;font-size:28px}
 
-.audio-btn.rec{background:#dbeafe;font-size:28px} 
-.audio-btn.rec.active, .audio-btn.rec.listening {background:#3b82f6 !important;color:white !important;animation:pulse 1.5s infinite}
+.audio-btn.rec{background:#fbcfe8;font-size:28px} 
+.audio-btn.rec.active {background:#f87171 !important;color:white !important;animation:pulse 1.5s infinite}
 
-.audio-btn.mic{background:#fbcfe8;font-size:28px} 
-.audio-btn.mic.active{background:#f87171 !important; color:white !important; animation:pulse 1.5s infinite}
+.audio-btn.stt{background:#dbeafe;font-size:28px} 
+.audio-btn.stt.listening {background:#3b82f6 !important;color:white !important;animation:pulse 1.5s infinite}
 
 @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.1);} 100% {transform: scale(1);} }
 
@@ -47,9 +47,10 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 .txt-es{color:#2563eb} 
 #answer{font-size:18px;font-weight:bold;margin-top:-10px;margin-bottom:20px;text-align:center;min-height:30px;color:#666}
 
-#speechFeedback { font-size: 18px; margin-top: 10px; font-weight: bold; min-height: 24px; }
-.feedback-correct { color: #16a34a; }
-.feedback-error { color: #dc2626; }
+#speechFeedback { font-size: 18px; margin-top: 10px; font-weight: bold; min-height: 28px; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
+.word-correct { color: #16a34a; }
+.word-error { color: #dc2626; text-decoration: line-through; }
+.word-missing { color: #94a3b8; font-style: italic; }
 
 .actions{display:flex;gap:12px}
 .btn{flex:1;padding:18px;border-radius:18px;border:none;font-weight:bold;font-size:18px;cursor:pointer}
@@ -67,7 +68,6 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 .list-texts { flex-grow: 1; display: flex; flex-direction: column; line-height: 1.3; }
 .mini-btn { border: none; border-radius: 8px; width: 36px; height: 36px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
 .btn-audio-list { background: #dcfce7; }
-
 .btn-rec-list { background: #fbcfe8; font-size: 18px; }
 .btn-rec-list.active { background: #f87171; color: white; animation: pulse 1.5s infinite; }
 
@@ -105,8 +105,8 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
       <button class="audio-btn slow" onclick="playAudio(0.75)">🐢</button>
       <button class="audio-btn" onclick="playAudio(1.0)">🔊</button>
       <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
-      <button id="recBtn" class="audio-btn rec" onclick="toggleMic()">🎤</button>
-      <button id="micBtn" class="audio-btn mic" onclick="toggleRecording('micBtn')">🎤</button>
+      <button id="recBtn" class="audio-btn rec" onclick="toggleRecording('recBtn')">🎤</button>
+      <button id="sttBtn" class="audio-btn stt" onclick="toggleMic()">🎤</button>
     </div>
 
     <div class="progress-wrapper">
@@ -195,6 +195,7 @@ let audioChunks = [];
 let isRecording = false;
 let currentRecordingBtn = null;
 
+// Grabación simple para el micro rosa
 async function toggleRecording(btnId = "recBtn") {
   const btn = document.getElementById(btnId);
   if (isRecording && currentRecordingBtn === btnId) {
@@ -234,6 +235,7 @@ function stopRecordingProcess(btn) {
     if (btn) btn.classList.remove("active");
 }
 
+// Sistema de reconocimiento avanzado (Micro Azul)
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition;
 let isListening = false;
@@ -242,28 +244,68 @@ if (SpeechRecognition) {
     recognition = new SpeechRecognition();
     recognition.lang = 'en-US';
     recognition.interimResults = false;
+    recognition.continuous = true;
+
     recognition.onstart = () => {
         isListening = true;
-        document.getElementById("recBtn").classList.add("listening");
-        const fb = document.getElementById("speechFeedback");
-        if(fb) fb.innerHTML = "...";
+        document.getElementById("sttBtn").classList.add("listening");
+        document.getElementById("speechFeedback").innerHTML = "";
     };
     recognition.onend = () => {
         isListening = false;
-        document.getElementById("recBtn").classList.remove("listening");
+        document.getElementById("sttBtn").classList.remove("listening");
     };
     recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript.toLowerCase().replace(/[.,?!]/g, "").trim();
-        const original = currentBlockData[pos].en.toLowerCase().replace(/[.,?!]/g, "").trim();
-        const fb = document.getElementById("speechFeedback");
-        if (fb) {
-          if (transcript === original) {
-            fb.innerHTML = `<span class="feedback-correct">${event.results[0][0].transcript} ✅</span>`;
-          } else {
-            fb.innerHTML = `<span class="feedback-error">${event.results[0][0].transcript}</span>`;
-          }
+        let fullTranscript = "";
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+            fullTranscript += event.results[i][0].transcript + " ";
         }
+        compareSentences(currentBlockData[pos].en, fullTranscript.trim());
     };
+}
+
+function normalizeText(text) {
+    if (!text) return "";
+    // Elimina signos pero mantiene apóstrofes internos
+    return text.toLowerCase().replace(/[.,?!"]/g, "").trim();
+}
+
+function compareSentences(original, spoken) {
+    const feedbackDiv = document.getElementById("speechFeedback");
+    if(!feedbackDiv) return;
+
+    const normOriginalWords = normalizeText(original).split(/\s+/);
+    const normSpokenWords = normalizeText(spoken).split(/\s+/);
+    const origWordsRaw = original.split(/\s+/);
+    
+    let resultHTML = "";
+    let sIdx = 0;
+
+    normOriginalWords.forEach((normWord, index) => {
+        const originalWordRaw = origWordsRaw[index];
+        let matched = false;
+
+        if (sIdx < normSpokenWords.length && normSpokenWords[sIdx] === normWord) {
+            resultHTML += `<span class="word-correct">${originalWordRaw}</span> `;
+            sIdx++;
+            matched = true;
+        } else {
+            // Busca la palabra en las siguientes 5 del dictado por si hubo un error previo
+            for (let j = sIdx + 1; j < sIdx + 5 && j < normSpokenWords.length; j++) {
+                if (normSpokenWords[j] === normWord) {
+                    for (let k = sIdx; k < j; k++) {
+                        resultHTML += `<span class="word-error">${normSpokenWords[k]}</span> `;
+                    }
+                    resultHTML += `<span class="word-correct">${originalWordRaw}</span> `;
+                    sIdx = j + 1;
+                    matched = true;
+                    break;
+                }
+            }
+        }
+        if (!matched) resultHTML += `<span class="word-missing">${originalWordRaw}</span> `;
+    });
+    feedbackDiv.innerHTML = resultHTML;
 }
 
 function toggleMic() {
@@ -335,7 +377,6 @@ function update(fromNextAction = false) {
   progressBar.value = 0;
   
   if (mode === "EN") {
-    // Al pasar a la siguiente frase (fromNextAction), el texto en inglés nace oculto (display:none)
     w.innerHTML = `<span class="txt-main-word" style="color:#333; display:${fromNextAction ? 'none' : 'inline'};">${item.en}</span>`; 
     w.innerHTML += `<div id="speechFeedback"></div>`;
     aElement.innerHTML = `<span class="txt-es">${item.es}</span>`;
