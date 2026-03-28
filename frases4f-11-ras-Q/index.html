@@ -29,8 +29,20 @@ main{display:flex;justify-content:center;padding:24px}
 .audio-btn.stt{background:#dbeafe; font-size: 22px;}
 
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-.listening { animation: pulse 1.5s infinite; background: #ef4444 !important; color: white !important; }
-.recording { background: #ef4444 !important; color: white !important; }
+
+/* Estilo para el micrófono azul (STT) cuando está activo */
+.listening { 
+    animation: pulse 1.5s infinite; 
+    background: #90caf9 !important; 
+    color: #0f172a !important; 
+}
+
+/* Estilo para los micrófonos rosas (Grabación) cuando están activos */
+.recording { 
+    animation: pulse 1.5s infinite; 
+    background: #f48fb1 !important; 
+    color: white !important; 
+}
 
 #speechFeedback { 
     font-size: 18px; 
@@ -178,7 +190,7 @@ const items = [
     {audio:"f055.mp3",en:"The curtains in the living room are very difficult to move because the rail is a bit rusty, so I think I should put some oil on it to make it slide better.",es:"Las cortinas del salón son muy difíciles de mover porque el riel está un poco oxidado, así que creo que debería ponerle un poco de aceite para que deslice mejor."},
     {audio:"f056.mp3",en:"This old house has a beautiful wooden beam across the ceiling of the kitchen, which gives the whole room a very cozy and traditional feeling.",es:"Esta casa antigua tiene una hermosa viga de madera que cruza el techo de la cocina, lo que le da a toda la estancia un ambiente muy acogedor y tradicional."},
     {audio:"f057.mp3",en:"We decided to change the flooring in the hallway because the old wood was starting to make too much noise every time someone walked on it at night.",es:"Decidimos cambiar el suelo del pasillo porque la madera vieja empezaba a hacer demasiado ruido cada vez que alguien caminaba sobre ella por la noche."},
-    {audio:"f058.mp3",en:"I was using the grater to prepare some cheese for the pizza, but I had to be very careful because the edges are very sharp and I didn't want to cut my fingers.",es:"Estaba usando el rallador para preparar algo de queso para la pizza, pero tuve que tener mucho cuidado porque los bordes están muy afilados y no quería cortarme los dedos."},
+    {audio:"f058.mp3",en:"I was using the grater to prepare some cheese for the pizza, but I had to be very careful because the edges are very sharp and I didn't want to cut my fingers.",es:"Estaba usando el rallador para preparar algo de queso para la pizza, pero tuver que tener mucho cuidado porque los bordes están muy afilados y no quería cortarme los dedos."},
     {audio:"f059.mp3",en:"It is much faster to use a peeler than a knife when you have to prepare a lot of potatoes for a big family dinner, and it is also much safer.",es:"Es mucho más rápido usar un pelador que un cuchillo cuando tienes que preparar muchas patatas para una cena familiar grande, y además es mucho más seguro."},
     {audio:"f060.mp3",en:"Please use the metal tongs to take the meat out of the pan so you don't burn yourself with the hot oil while you are cooking.",es:"Por favor, usa las pinzas metálicas para sacar la carne de la sartén y no quemarte con el aceite caliente mientras cocinas."},
     {audio:"f061.mp3",en:"I couldn't find the rolling pin to flatten the dough for the cookies, so I had to use a clean glass bottle instead to finish the recipe.",es:"No pude encontrar el rodillo para aplanar la masa de las galletas, así que tuve que usar una botella de vidrio limpia para terminar la receta."},
@@ -199,7 +211,6 @@ const items = [
     {audio:"f076.mp3",en:"The jacket I ordered online was too small for me, so I sent it back to the store and now I am waiting for them to give me a full refund.",es:"La chaqueta que pedí por internet me quedaba pequeña, así que la devolví a la tienda y ahora estoy esperando a que me hagan un reembolso completo."}
 ];
 
-// MAPA DE NORMALIZACIÓN MEJORADO
 const normalizationMap = {
     "dont": "do not", "doesn't": "does not", "doesnt": "does not", "didnt": "did not", "didn't": "did not",
     "isnt": "is not", "isn't": "is not", "arent": "are not", "aren't": "are not",
@@ -225,7 +236,8 @@ let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockI
 const audioObj = new Audio();
 const progressBar = document.getElementById("progressBar");
 
-function getFolderName() { return "frases-76-hogar"; }
+function getFolderName() { return "frases4f-11-ras-Q"; }
+
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
 let mediaRecorder, audioChunks = [], isRecording = false;
 
@@ -251,13 +263,9 @@ if (SpeechRecognition) {
 
 function normalizeText(text) {
     if (!text) return "";
-    // Limpieza agresiva: minúsculas y fuera signos raros excepto el espacio
     let clean = text.toLowerCase().replace(/[.,?!"]/g, "").trim();
     let words = clean.split(/\s+/);
-    
-    // Convertimos cada palabra usando el mapa de normalización
     return words.map(word => {
-        // Quitamos el apóstrofo solo para buscar en el mapa si no lo encuentra con él
         let key = word.replace("'", ""); 
         return normalizationMap[word] || normalizationMap[key] || word;
     }).join(" ");
@@ -265,28 +273,19 @@ function normalizeText(text) {
 
 function compareSentences(original, spoken) {
     const feedbackDiv = document.getElementById("speechFeedback");
-    
-    // Normalizamos y separamos por palabras para comparar "limpio"
     const normOriginalWords = normalizeText(original).split(/\s+/);
     const normSpokenWords = normalizeText(spoken).split(/\s+/);
-    
     const origWordsRaw = original.split(/\s+/);
-    
     let resultHTML = "";
     let sIdx = 0;
-
-    // Recorremos la frase original palabra por palabra
     normOriginalWords.forEach((normWord, index) => {
         const originalWordRaw = origWordsRaw[index];
         let matched = false;
-
-        // Comprobamos si la palabra normalizada coincide con lo que dijo el usuario
         if (sIdx < normSpokenWords.length && normSpokenWords[sIdx] === normWord) {
             resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
             sIdx++;
             matched = true;
         } else {
-            // Margen de error: buscamos un poco más adelante por si se saltó algo
             for (let j = sIdx + 1; j < sIdx + 5 && j < normSpokenWords.length; j++) {
                 if (normSpokenWords[j] === normWord) {
                     for (let k = sIdx; k < j; k++) {
@@ -329,13 +328,11 @@ async function toggleRecord(targetBtnId) {
             mediaRecorder.start();
             isRecording = true;
             btn.classList.add("recording");
-            if(targetBtnId === "recBtn") btn.textContent = "⏹";
         } catch (err) { alert("Error al accedir al micròfon."); }
     } else {
         mediaRecorder.stop(); 
         isRecording = false;
         btn.classList.remove("recording");
-        if(targetBtnId === "recBtn") btn.textContent = "🎤";
     }
 }
 

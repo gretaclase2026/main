@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Repàs Personalitzat - Unitat 5</title>
+<title>Repàs Personalitzat - 83 Frases</title>
 <style>
 body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
 header{padding:8px 4px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center;align-items:center;gap:4px}
@@ -14,7 +14,7 @@ header{padding:8px 4px;background:#fff;border-bottom:1px solid #e5e7eb;display:f
 main{display:flex;justify-content:center;padding:24px}
 .card{position:relative;width:100%;max-width:560px;background:#ffffff;border-radius:28px;padding:32px;box-shadow:0 10px 24px rgba(0,0,0,0.06);text-align:center}
 .counter{position:absolute;top:18px;left:22px;font-weight:800;color:#2563eb}
-.check-box-manual { position: absolute; top: 18px; right: 22px; width: 24px; height: 24px; background: #fff; border: 1.5px solid #22c55e; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 14px; color: transparent; transition: 0.2s; }
+.check-box-manual { position: absolute; top: 18px; right: 22px; width: 24px; height: 24px; background: #fff; border: 1.5px solid #22c55e; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 14px; }
 .check-box-manual.marked { background: #22c55e !important; color: white !important; }
 .lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
 .blocks{display:flex;flex-wrap:nowrap;gap:6px;justify-content:flex-start;margin:15px 0 20px;overflow-x:auto;padding:5px 0 5px 10px}
@@ -69,14 +69,14 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 
 <header>
  <div class="mode-btns"><button class="mode-en" onclick="setMode('EN')">Anglès → Castellà</button></div>
- <div class="unit-number">5</div>
+ <div class="unit-number">83</div>
  <div class="mode-btns"><button class="mode-es" onclick="setMode('ES')">Castellà → Anglès</button></div>
 </header>
 
 <main>
 <div class="card">
  <div class="counter" id="counter">0 / 0</div>
- <div class="check-box-manual" id="mainCheck" onclick="markAsDone()"></div>
+ <div class="check-box-manual" id="mainCheck" onclick="markAsDone(this)"></div>
 
  <div id="langLabel" class="lang" style="margin-top: 10px;">ANGLÈS</div>
  <div id="blockContainer" class="blocks"></div>
@@ -214,7 +214,7 @@ let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockI
 const audioObj = new Audio();
 const progressBar = document.getElementById("progressBar");
 
-function getFolderName() { return "repàs-unitat-5"; }
+function getFolderName() { return "repàs-83-nou"; }
 
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
 let mediaRecorder, audioChunks = [], isRecording = false;
@@ -328,13 +328,6 @@ function initBlocks() {
   }
   if (savedBlock === "all") loadAll();
   else loadBlock((savedBlock !== null) ? parseInt(savedBlock) : 0);
-  
-  // Sincronizar el check al cargar
-  const mc = document.getElementById("mainCheck");
-  if (localStorage.getItem(getFolderName() + "_isDone") === "true") {
-      mc.innerHTML = "✓";
-      mc.classList.add('marked');
-  }
 }
 
 function loadBlock(b) {
@@ -460,16 +453,14 @@ function renderList(type) {
   });
 }
 
-function markAsDone() {
+function markAsDone(el) {
+    localStorage.setItem(getFolderName(), new Date().toISOString());
+    el.innerHTML = "✓"; el.classList.add('marked');
+}
+
+if (localStorage.getItem(getFolderName())) { 
     const mc = document.getElementById("mainCheck");
-    const isMarked = mc.classList.toggle('marked');
-    if (isMarked) {
-        mc.innerHTML = "✓";
-        localStorage.setItem(getFolderName() + "_isDone", "true");
-    } else {
-        mc.innerHTML = "";
-        localStorage.setItem(getFolderName() + "_isDone", "false");
-    }
+    if(mc) { mc.innerHTML = "✓"; mc.classList.add('marked'); }
 }
 
 initBlocks();
