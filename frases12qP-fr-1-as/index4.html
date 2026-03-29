@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fast English - Estudi de Frases</title>
+<title>Fast English - Unit 12</title>
 <style>
 body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .card{max-width:720px;margin:20px auto;background:#fff;border-radius:24px;padding:24px;box-shadow:0 8px 18px rgba(0,0,0,.15);position:relative}
 
-.modes{display:flex;gap:10px;margin-bottom:10px;width:100%}
+.modes{display:flex;gap:10px;margin-bottom:10px;width:100%;align-items:center}
+.unit-number{font-weight:bold;font-size:22px;color:#2563eb;padding:0 10px;min-width:30px;text-align:center}
 .mode{flex:1;text-align:center;padding:14px;border-radius:24px;font-weight:bold;cursor:pointer;border:2px solid transparent}
 .mode.en{background:#d6e6f5}
 .mode.es{background:#f4d6e6}
@@ -30,23 +31,29 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 
 .rec-btn{font-size:30px;background:#dbeafe;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.3s}
 .rec-btn.recording{background:#2563eb; color:white; animation: pulse-blue 1.5s infinite; transform: scale(1.1);}
-.mic-btn{font-size:30px;background:#fee2e2;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.3s}
-.mic-btn.listening{background:#ef4444; color:white; animation: pulse-red 1.5s infinite; transform: scale(1.1);}
 
-@keyframes pulse-red { 0% {box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);} 70% {box-shadow: 0 0 0 15px rgba(239, 68, 68, 0);} 100% {box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);} }
+/* Micrófono Azul (STT) */
+.stt-btn{font-size:30px;background:#dbeafe;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.3s}
+.stt-btn.listening{background:#2563eb !important; color:white; animation: pulse-blue 1.5s infinite; transform: scale(1.1);}
+
+.mic-btn{font-size:30px;background:#fee2e2;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.3s}
+
 @keyframes pulse-blue { 0% {box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7);} 70% {box-shadow: 0 0 0 15px rgba(37, 99, 235, 0);} 100% {box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);} }
 
 .progress-wrapper { width: 100%; max-width: 300px; margin: 10px 0; }
 input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 5px; accent-color: #2563eb; }
 
-.counter-side{position:absolute;right:10px;top:-25px;font-weight:bold;color:#2563eb;font-size:22px}
+.counter-side{position:absolute;right:10px;top:-35px;font-weight:bold;color:#2563eb;font-size:22px}
 
 #word{font-size:22px;font-weight:800;margin:20px 0;line-height:1.4;min-height:120px;text-align:center;display:flex;align-items:center;justify-content:center;padding:0 10px}
 .txt-es{color:#2563eb} 
 #answer{font-size:20px;font-weight:bold;margin-top:-10px;margin-bottom:20px;text-align:center;min-height:30px;color:#666}
 
-#speech-feedback { font-style: italic; color: #ef4444; font-size: 19px; margin-bottom: 10px; min-height: 24px; text-align: center; transition: 0.2s;}
-.speech-success { color: #22c55e !important; font-weight: bold; font-style: normal !important; }
+/* Estilos de Feedback del Habla */
+#speech-feedback { font-size: 19px; margin-bottom: 10px; min-height: 24px; text-align: center; transition: 0.2s; line-height: 1.5;}
+.word-correct { color: #16a34a; font-weight: bold; margin: 0 2px; } 
+.word-error { color: #dc2626; text-decoration: line-through; margin: 0 2px; }
+.word-missing { color: #94a3b8; font-style: italic; margin: 0 2px; }
 
 .actions{display:flex;gap:12px}
 .btn{flex:1;padding:18px;border-radius:18px;border:none;font-weight:bold;font-size:18px;cursor:pointer}
@@ -62,7 +69,7 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 .list-item { padding: 15px 0; border-bottom: 1px solid #eee; display: flex; align-items: center; justify-content: flex-start; gap: 15px; }
 .list-btns-col { display: flex; flex-direction: column; gap: 8px; align-items: center; min-width: 45px; }
 .list-content { flex: 1; }
-.mini-btn { border: none; border-radius: 10px; width: 38px; height: 38px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+.mini-btn { border: none; border-radius: 10px; width: 45px; height: 45px; cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; }
 .btn-audio-list { background: #dcfce7; }
 .star-list { background: none; border: none; font-size: 24px; color: #cbd5e1; cursor: pointer; padding: 0; }
 .star-list.active { color: #f59e0b !important; }
@@ -77,7 +84,6 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
     cursor: pointer; z-index: 10; transition: all 0.2s; font-size: 14px;
 }
 .check-box-manual.marked { background: #22c55e !important; color: white; }
-.focus{color:#334155; text-decoration: underline;}
 </style>
 </head>
 <body>
@@ -85,6 +91,7 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 <div class="card">
   <div class="modes">
     <div id="modeEN" class="mode en active" onclick="setMode('EN')">ANG → CAT</div>
+    <div class="unit-number">12</div>
     <div id="modeES" class="mode es" onclick="setMode('ES')">CAT → ANG</div>
   </div>
 
@@ -99,8 +106,8 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
       <button class="audio-btn slow" onclick="playAudio(0.75)">🐢</button>
       <button class="audio-btn" onclick="playAudio(1.0)">🔊</button>
       <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
-      <button class="rec-btn" id="recBtn" onclick="toggleRecord()" title="Gravar-se">🎙️</button>
-      <button class="mic-btn" id="micBtn" onclick="startDictation()" title="Dictat">🎤</button>
+      <button class="rec-btn" id="recBtn" onclick="toggleRecord()">🎙️</button>
+      <button class="stt-btn" id="sttBtn" onclick="toggleSTT()">🎤</button>
     </div>
 
     <div class="progress-wrapper">
@@ -129,70 +136,180 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 
 <script>
 const data = [
-  {audio:"f001.mp3",en:"This morning I <span class='focus'>woke up</span> a bit late because I went to bed very late last night.",es:"Aquest matí <span class='focus'>m’he despertat</span> una mica tard perquè ahir a la nit vaig anar a dormir molt tard."},
-  {audio:"f002.mp3",en:"When I <span class='focus'>arrive home</span> after work, I usually sit on the sofa for a few minutes.",es:"Quan <span class='focus'>arribo a casa</span> després de la feina, normalment m’assec al sofà uns minuts."},
-  {audio:"f003.mp3",en:"Sometimes I <span class='focus'>buy too much food</span> because I think I will need it.",es:"A vegades <span class='focus'>compro massa menjar</span> perquè penso que el necessitaré."},
-  {audio:"f004.mp3",en:"When it rains, I prefer to <span class='focus'>stay at home</span> and watch a movie.",es:"Quan plou, prefereixo <span class='focus'>quedar-me a casa</span> i mirar una pel·lícula."},
-  {audio:"f005.mp3",en:"Yesterday I went to the <span class='focus'>local market</span> because I wanted fresh fruit.",es:"Ahir vaig anar al <span class='focus'>mercat del barri</span> perquè volia fruita fresca."},
-  {audio:"f006.mp3",en:"I like to <span class='focus'>look around</span> before deciding if I need something.",es:"M’agrada <span class='focus'>mirar una mica tot</span> abans de decidir si necessito alguna cosa."},
-  {audio:"f007.mp3",en:"Sometimes I <span class='focus'>stop by</span> a small café because they make very good coffee.",es:"A vegades <span class='focus'>passo per</span> una cafeteria petita perquè fan un cafè molt bo."},
-  {audio:"f008.mp3",en:"On weekends I like to <span class='focus'>walk without rushing</span> through the park.",es:"Els caps de setmana m’agrada <span class='focus'>caminar sense pressa</span> pel parc."},
-  {audio:"f009.mp3",en:"When I have a <span class='focus'>free afternoon</span>, I try to read a book.",es:"Quan tinc una <span class='focus'>tarda lliure</span>, intento llegir un llibre."},
-  {audio:"f010.mp3",en:"After work I still try to <span class='focus'>do some exercise</span>.",es:"Després de la feina encara intento <span class='focus'>fer una mica d’exercici</span>."},
-  {audio:"f011.mp3",en:"When I meet friends, we <span class='focus'>spend a lot of time talking</span>.",es:"Quan quedo amb amics, <span class='focus'>passem molta estona parlant</span>."},
-  {audio:"f012.mp3",en:"Sometimes it is difficult to <span class='focus'>start a conversation</span> with someone new.",es:"A vegades és difícil <span class='focus'>començar una conversa</span> amb algú nou."},
-  {audio:"f013.mp3",en:"This morning I <span class='focus'>left home in a hurry</span> because I was late.",es:"Aquest matí <span class='focus'>he sortit de casa amb pressa</span> perquè arribava tard."},
-  {audio:"f014.mp3",en:"Without a list, I <span class='focus'>end up buying</span> things I don't need.",es:"Sense una llista, <span class='focus'>acabo comprant</span> coses que no necessito."},
-  {audio:"f015.mp3",en:"Sometimes I start a series and I <span class='focus'>get hooked</span> very quickly.",es:"A vegades començo una sèrie i <span class='focus'>m’hi enganxo</span> molt ràpid."},
-  {audio:"f016.mp3",en:"I <span class='focus'>read the recipe</span> carefully before I start cooking.",es:"<span class='focus'>Llegeixo la recepta</span> amb calma abans de començar a cuinar."},
-  {audio:"f017.mp3",en:"On Sundays I like to <span class='focus'>wake up without an alarm</span>.",es:"Els diumenges m’agrada <span class='focus'>llevar-me sense alarma</span>."},
-  {audio:"f018.mp3",en:"When I forget a word, I <span class='focus'>explain the idea</span> in another way.",es:"Quan oblido una paraula, <span class='focus'>explico la idea</span> d’una altra manera."},
-  {audio:"f019.mp3",en:"I <span class='focus'>start many things at once</span> and then I have to finish one.",es:"<span class='focus'>Començo moltes coses alhora</span> i després n'he d'acabar una."},
-  {audio:"f020.mp3",en:"I like to <span class='focus'>walk without looking at the map</span>.",es:"M’agrada <span class='focus'>caminar sense mirar el mapa</span>."},
-  {audio:"f021.mp3",en:"Before leaving I always <span class='focus'>check the door</span> is closed.",es:"Abans de sortir siempre <span class='focus'>miro que la porta</span> estigui tancada."},
-  {audio:"f022.mp3",en:"When I buy clothes, I first <span class='focus'>check the price</span>.",es:"Quan compro roba, primer <span class='focus'>miro el preu</span>."},
-  {audio:"f023.mp3",en:"If I have a lot of work, I <span class='focus'>take short breaks</span>.",es:"Si tinc molta feina, <span class='focus'>faig pauses curtes</span>."},
-  {audio:"f024.mp3",en:"I start <span class='focus'>tidying a room</span> and find old things.",es:"Començo a <span class='focus'>ordenar una habitació</span> i trobo coses antigues."},
-  {audio:"f025.mp3",en:"When I cook pasta, I make <span class='focus'>a little extra</span> for tomorrow.",es:"Quan cuino pasta, en faig <span class='focus'>una mica més</span> per a demà."},
-  {audio:"f026.mp3",en:"In summer, I <span class='focus'>go for a walk in the evening</span>.",es:"A l’estiu, <span class='focus'>surto a caminar al vespre</span>."},
-  {audio:"f027.mp3",en:"I <span class='focus'>open the fridge</span> even if there is nothing new.",es:"<span class='focus'>Obro la nevera</span> encara que no hi hagi res de nou."},
-  {audio:"f028.mp3",en:"When I meet someone new, I <span class='focus'>arrive a few minutes early</span>.",es:"Quan quedo amb algú nou, <span class='focus'>arribo uns minuts abans</span>."}
+  {audio:"f001.mp3",en:"This morning I woke up a bit late because I went to bed very late last night.",es:"Aquest matí m’he despertat una mica tard perquè ahir a la nit vaig anar a dormir molt tard."},
+  {audio:"f002.mp3",en:"When I arrive home after work, I usually sit on the sofa for a few minutes.",es:"Quan arribo a casa després de la feina, normalment m’assec al sofà uns minuts."},
+  {audio:"f003.mp3",en:"Sometimes I buy too much food because I think I will need it.",es:"A vegades compro massa menjar perquè penso que el necessitaré."},
+  {audio:"f004.mp3",en:"When it rains, I prefer to stay at home and watch a movie.",es:"Quan plou, prefereixo quedar-me a casa i mirar una pel·lícula."},
+  {audio:"f005.mp3",en:"Yesterday I went to the local market because I wanted fresh fruit.",es:"Ahir vaig anar al mercat del barri perquè volia fruita fresca."},
+  {audio:"f006.mp3",en:"I like to look around before deciding if I need something.",es:"M’agrada mirar una mica tot abans de decidir si necessito alguna cosa."},
+  {audio:"f007.mp3",en:"Sometimes I stop by a small café because they make very good coffee.",es:"A vegades passo per una cafeteria petita perquè fan un cafè molt bo."},
+  {audio:"f008.mp3",en:"On weekends I like to walk without rushing through the park.",es:"Els caps de setmana m’agrada caminar sense pressa pel parc."},
+  {audio:"f009.mp3",en:"When I have a free afternoon, I try to read a book.",es:"Quan tinc una tarda lliure, intento llegir un llibre."},
+  {audio:"f010.mp3",en:"After work I still try to do some exercise.",es:"Després de la feina encara intento fer una mica d’exercici."},
+  {audio:"f011.mp3",en:"When I meet friends, we spend a lot of time talking.",es:"Quan quedo amb amics, passem molta estona parlant."},
+  {audio:"f012.mp3",en:"Sometimes it is difficult to start a conversation with someone new.",es:"A vegades és difícil començar una conversa amb algú nou."},
+  {audio:"f013.mp3",en:"This morning I left home in a hurry because I was late.",es:"Aquest matí he sortit de casa amb pressa perquè arribava tard."},
+  {audio:"f014.mp3",en:"Without a list, I end up buying things I don't need.",es:"Sense una llista, acabo comprant coses que no necessito."},
+  {audio:"f015.mp3",en:"Sometimes I start a series and I get hooked very quickly.",es:"A vegades començo una sèrie i m’hi enganxo molt ràpid."},
+  {audio:"f016.mp3",en:"I read the recipe carefully before I start cooking.",es:"Llegeixo la recepta amb calma abans de començar a cuinar."},
+  {audio:"f017.mp3",en:"On Sundays I like to wake up without an alarm.",es:"Els diumenges m’agrada llevar-me sense alarma."},
+  {audio:"f018.mp3",en:"When I forget a word, I explain the idea in another way.",es:"Quan oblido una paraula, explico la idea d’una altra manera."},
+  {audio:"f019.mp3",en:"I start many things at once and then I have to finish one.",es:"Començo moltes coses alhora i després n'he d'acabar una."},
+  {audio:"f020.mp3",en:"I like to walk without looking at the map.",es:"M’agrada caminar sense mirar el mapa."},
+  {audio:"f021.mp3",en:"Before leaving I always check the door is closed.",es:"Abans de sortir siempre miro que la porta estigui tancada."},
+  {audio:"f022.mp3",en:"When I buy clothes, I first check the price.",es:"Quan compro roba, primer miro el preu."},
+  {audio:"f023.mp3",en:"If I have a lot of work, I take short breaks.",es:"Si tinc molta feina, faig pauses curtes."},
+  {audio:"f024.mp3",en:"I start tidying a room and find old things.",es:"Començo a ordenar una habitació i trobo coses antigues."},
+  {audio:"f025.mp3",en:"When I cook pasta, I make a little extra for tomorrow.",es:"Quan cuino pasta, en faig una mica més per a demà."},
+  {audio:"f026.mp3",en:"In summer, I go for a walk in the evening.",es:"A l’estiu, surto a caminar al vespre."},
+  {audio:"f027.mp3",en:"I open the fridge even if there is nothing new.",es:"Obro la nevera encara que no hi hagi res de nou."},
+  {audio:"f028.mp3",en:"When I meet someone new, I arrive a few minutes early.",es:"Quan quedo amb algú nou, arribo uns minuts abans."}
 ];
 
 let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0;
 const a = document.getElementById("audio");
 const progressBar = document.getElementById("progressBar");
 
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-const recognition = SpeechRecognition ? new SpeechRecognition() : null;
-if (recognition) { recognition.lang = 'en-US'; recognition.interimResults = false; }
+/* ==========================================================================
+   NUEVA LÓGICA DE NORMALIZACIÓN Y STT
+   ========================================================================== */
 
-function startDictation() {
-    if (!recognition || currentBlockData.length === 0) return;
-    const btn = document.getElementById("micBtn");
-    const feedback = document.getElementById("speech-feedback");
-    btn.classList.add("listening");
-    feedback.textContent = "Escoltant...";
-    feedback.classList.remove("speech-success");
-    recognition.start();
+const normalizationMap = {
+    "dont": "do not", "doesn't": "does not", "doesnt": "does not",
+    "didnt": "did not", "didn't": "did not",
+    "isnt": "is not", "isn't": "is not",
+    "arent": "are not", "aren't": "are not",
+    "wasnt": "was not", "wasn't": "was not",
+    "werent": "were not", "weren't": "were not",
+    "havent": "have not", "haven't": "have not",
+    "hasnt": "has not", "hasn't": "has not",
+    "hadnt": "had not", "hadn't": "had not",
+    "wont": "will not", "won't": "will not",
+    "wouldnt": "would not", "wouldn't": "would not",
+    "cant": "can not", "can't": "can not",
+    "couldnt": "could not", "couldn't": "could not",
+    "shouldnt": "should not", "shouldn't": "should not",
+    "im": "i am", "i'm": "i am",
+    "youre": "you are", "you're": "you are",
+    "hes": "he is", "he's": "he is",
+    "shes": "she is", "she's": "she is",
+    "its": "it is", "it's": "it is",
+    "were": "we are", "we're": "we are",
+    "theyre": "they are", "they're": "they are",
+    "ive": "i have", "i've": "i have",
+    "youve": "you have", "you've": "you have",
+    "weve": "we have", "we've": "we have",
+    "theyve": "they have", "they've": "they have",
+    "ill": "i will", "i'll": "i will",
+    "youll": "you will", "you'll": "you will",
+    "hell": "he will", "he'll": "he will",
+    "shell": "she will", "she'll": "she will",
+    "well": "we will", "we'll": "we will",
+    "theyll": "they will", "they'll": "they will",
+    "id": "i would", "i'd": "i would",
+    "youd": "you would", "you'd": "you would",
+    "hed": "he would", "he'd": "he would",
+    "shed": "she would", "she'd": "she would",
+    "wed": "we would", "we'd": "we would",
+    "theyd": "they would", "they'd": "they would"
+};
 
-    recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,"").trim();
-        const original = currentBlockData[pos].en.replace(/<[^>]*>/g, '').toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,"").trim();
-        if (transcript === original) {
-            feedback.innerHTML = `"${event.results[0][0].transcript}" 🎉`;
-            feedback.classList.add("speech-success");
-            setTimeout(() => { feedback.textContent = ""; know(); }, 1200);
-        } else {
-            feedback.textContent = `"${event.results[0][0].transcript}"`;
-        }
-    };
-    recognition.onend = () => btn.classList.remove("listening");
+function normalizeText(text) {
+    if (!text) return "";
+    let clean = text.toLowerCase().replace(/[.,?!"]/g, "").trim();
+    let words = clean.split(/\s+/);
+    return words.map(word => {
+        let key = word.replace(/['’‘`]/g, ""); 
+        return normalizationMap[word] || normalizationMap[key] || word;
+    }).join(" ");
 }
 
-let mediaRecorder;
-let audioChunks = [];
-let isRecording = false;
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition, isListening = false;
+
+if (SpeechRecognition) {
+    recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    recognition.continuous = false;
+
+    recognition.onstart = () => { 
+        isListening = true; 
+        document.getElementById("sttBtn").classList.add("listening"); 
+    };
+
+    recognition.onend = () => { 
+        isListening = false; 
+        document.getElementById("sttBtn").classList.remove("listening"); 
+    };
+
+    recognition.onresult = (event) => {
+        let fullTranscript = "";
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+            fullTranscript += event.results[i][0].transcript + " ";
+        }
+        compareSentences(currentBlockData[pos].en, fullTranscript.trim());
+    };
+}
+
+function toggleSTT() {
+    if (!recognition || currentBlockData.length === 0) return;
+    if (isListening) {
+        recognition.stop();
+    } else {
+        document.getElementById("speech-feedback").innerHTML = "Escoltant...";
+        recognition.start();
+    }
+}
+
+function compareSentences(original, spoken) {
+    const feedbackDiv = document.getElementById("speech-feedback");
+    const normOriginalWords = normalizeText(original).split(/\s+/);
+    const normSpokenWords = normalizeText(spoken).split(/\s+/);
+    const origWordsRaw = original.split(/\s+/);
+    let resultHTML = "";
+    let sIdx = 0;
+    let correctCount = 0;
+
+    normOriginalWords.forEach((normWord, index) => {
+        const originalWordRaw = origWordsRaw[index];
+        let matched = false;
+
+        if (sIdx < normSpokenWords.length && normSpokenWords[sIdx] === normWord) {
+            resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
+            sIdx++;
+            matched = true;
+            correctCount++;
+        } else {
+            for (let j = sIdx + 1; j < sIdx + 5 && j < normSpokenWords.length; j++) {
+                if (normSpokenWords[j] === normWord) {
+                    for (let k = sIdx; k < j; k++) {
+                        resultHTML += `<span class="word-error">${normSpokenWords[k]}</span>`;
+                    }
+                    resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
+                    sIdx = j + 1;
+                    matched = true;
+                    correctCount++;
+                    break;
+                }
+            }
+        }
+        if (!matched) resultHTML += `<span class="word-missing">${originalWordRaw}</span>`;
+    });
+
+    feedbackDiv.innerHTML = resultHTML;
+
+    // Si el acierto es alto (más del 80%), marcar como conocida automáticamente tras un breve delay
+    if (correctCount / normOriginalWords.length >= 0.8) {
+        setTimeout(() => { know(); }, 1500);
+    }
+}
+
+/* ==========================================================================
+   RESTO DE FUNCIONES ORIGINALES
+   ========================================================================== */
+
+let mediaRecorder, audioChunks = [], isRecording = false;
 
 async function toggleRecord() {
     const btn = document.getElementById("recBtn");
@@ -205,23 +322,19 @@ async function toggleRecord() {
             mediaRecorder.onstop = () => {
                 const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
                 const audioUrl = URL.createObjectURL(audioBlob);
-                const userAudio = new Audio(audioUrl);
-                userAudio.play();
+                new Audio(audioUrl).play();
             };
             mediaRecorder.start();
             isRecording = true;
-            btn.classList.add("recording");
-            btn.textContent = "⏹";
+            btn.classList.add("recording"); btn.textContent = "⏹";
         } catch (err) { alert("Error al accedir al micròfon."); }
     } else {
-        mediaRecorder.stop();
-        isRecording = false;
-        btn.classList.remove("recording");
-        btn.textContent = "🎙️";
+        mediaRecorder.stop(); isRecording = false;
+        btn.classList.remove("recording"); btn.textContent = "🎙️";
     }
 }
 
-function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "fast_english_copia"; }
+function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "fast_english"; }
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
 
 a.ontimeupdate = () => { if (a.duration) progressBar.value = (a.currentTime / a.duration) * 100; };
@@ -244,9 +357,7 @@ function initBlocks() {
   container.appendChild(btnT);
 
   const starMain = document.createElement("button");
-  starMain.id = "starMain";
-  starMain.className = "star-main";
-  starMain.innerHTML = "★";
+  starMain.id = "starMain"; starMain.className = "star-main"; starMain.innerHTML = "★";
   starMain.onclick = () => toggleStar();
   container.appendChild(starMain);
 
@@ -289,7 +400,7 @@ function update(fromNextAction = false) {
   feedback.textContent = "";
 
   if (mode === "EN") {
-    w.innerHTML = ``; 
+    w.innerHTML = ""; 
     ans.innerHTML = `<span class="txt-es">${item.es}</span>`;
     if (fromNextAction) playAudio(1.0);
   } else {
@@ -307,10 +418,7 @@ function toggleStar(forcedIdx = null) {
   if (starredIds.includes(idx)) starredIds = starredIds.filter(id => id !== idx);
   else starredIds.push(idx);
   localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
-  
-  if (forcedIdx === null) {
-      document.getElementById("starMain").classList.toggle("active", starredIds.includes(idx));
-  }
+  if (forcedIdx === null) document.getElementById("starMain").classList.toggle("active", starredIds.includes(idx));
 }
 
 function playAudio(speed, forcedAudio = null) {

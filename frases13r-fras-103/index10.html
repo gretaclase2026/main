@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ca">
 <head>
 <meta charset="UTF-8">
@@ -29,13 +29,19 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .audio-btn.slow{background:#fef08a;font-size:28px}
 .audio-btn.pause{background:#fee2e2;font-size:28px}
 
-.rec-btn{font-size:30px;background:#fce4ec;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.3s;color:inherit;}
-.rec-btn.recording{background:#f06292 !important; color:white; animation: pulse-pink 1.5s infinite; transform: scale(1.1);}
+/* --- CANVI DE COLORS AQUÍ --- */
 
+/* Abans blau, ara ROSA */
+.rec-btn{font-size:30px;background:#fee2e2;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.3s}
+.rec-btn.recording{background:#ef4444; color:white; animation: pulse-red 1.5s infinite; transform: scale(1.1);}
+
+/* Abans rosa, ara BLAU */
 .mic-btn{font-size:30px;background:#dbeafe;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.3s}
 .mic-btn.listening{background:#2563eb; color:white; animation: pulse-blue 1.5s infinite; transform: scale(1.1);}
 
-@keyframes pulse-pink { 0% {box-shadow: 0 0 0 0 rgba(240, 98, 146, 0.7);} 70% {box-shadow: 0 0 0 15px rgba(240, 98, 146, 0);} 100% {box-shadow: 0 0 0 0 rgba(240, 98, 146, 0);} }
+/* --------------------------- */
+
+@keyframes pulse-red { 0% {box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);} 70% {box-shadow: 0 0 0 15px rgba(239, 68, 68, 0);} 100% {box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);} }
 @keyframes pulse-blue { 0% {box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7);} 70% {box-shadow: 0 0 0 15px rgba(37, 99, 235, 0);} 100% {box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);} }
 
 .progress-wrapper { width: 100%; max-width: 300px; margin: 10px 0; }
@@ -47,10 +53,8 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 .txt-es{color:#2563eb} 
 #answer{font-size:18px;font-weight:bold;margin-top:-10px;margin-bottom:20px;text-align:center;min-height:30px;color:#666}
 
-#speech-feedback { font-size: 19px; margin-bottom: 10px; min-height: 24px; text-align: center; transition: 0.2s; line-height: 1.5;}
-.word-correct { color: #16a34a; font-weight: bold; } 
-.word-error { color: #dc2626; text-decoration: line-through; margin: 0 2px; }
-.word-missing { color: #94a3b8; font-style: italic; margin: 0 2px; }
+#speech-feedback { font-style: italic; color: #ef4444; font-size: 19px; margin-bottom: 10px; min-height: 24px; text-align: center; transition: 0.2s;}
+.speech-success { color: #22c55e !important; font-weight: bold; font-style: normal !important; }
 
 .actions{display:flex;gap:12px}
 .btn{flex:1;padding:18px;border-radius:18px;border:none;font-weight:bold;font-size:18px;cursor:pointer}
@@ -68,9 +72,6 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 .list-content { flex: 1; }
 .mini-btn { border: none; border-radius: 10px; width: 38px; height: 38px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
 .btn-audio-list { background: #dcfce7; }
-.btn-rec-list { background: #fce4ec; font-size: 16px; }
-.btn-rec-list.recording { background: #f06292 !important; color: white; animation: pulse-pink 1.5s infinite; }
-
 .star-list { background: none; border: none; font-size: 24px; color: #cbd5e1; cursor: pointer; padding: 0; }
 .star-list.active { color: #f59e0b !important; }
 
@@ -106,8 +107,8 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
       <button class="audio-btn slow" onclick="playAudio(0.75)">🐢</button>
       <button class="audio-btn" onclick="playAudio(1.0)">🔊</button>
       <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
-      <button class="rec-btn" id="recBtn" onclick="toggleRecord(this)" title="Gravar-se">🎙️</button>
-      <button class="mic-btn" id="micBtn" onclick="toggleDictation()" title="Dictat">🎤</button>
+      <button class="rec-btn" id="recBtn" onclick="toggleRecord()" title="Gravar-se">🎙️</button>
+      <button class="mic-btn" id="micBtn" onclick="startDictation()" title="Dictat">🎤</button>
     </div>
     
     <div class="progress-wrapper">
@@ -135,6 +136,7 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 <audio id="audio"></audio>
 
 <script>
+// --- DATA ---
 const data = [
     {audio:"f001.mp3",en:"When I hang clothes on the balcony I always use many clothespins because if it starts to get windy the clothes can easily fall from the line.",es:"Quan estenc la roba al balcó sempre utilitzo moltes pinces perquè si comença a fer vent la roba pot caure fàcilment del fil."},
     {audio:"f002.mp3",en:"When I arrive home after work I usually hang my jacket on a hanger so it doesn't get wrinkled and it is easier to find the next day.",es:"Quan arribo a casa després de treballar normalment penjo la jaqueta en un penjador perquè no s’arrugui i sigui més fàcil trobar-la l’endemà."},
@@ -146,7 +148,7 @@ const data = [
     {audio:"f008.mp3",en:"When it is very cold I prefer to wear several layers of clothes because then I can remove one if I get too warm later.",es:"Quan fa molt fred prefereixo portar diverses capes de roba perquè així em puc treure alguna peça si després tinc calor."},
     {audio:"f009.mp3",en:"After walking for a while in the park we found a quiet spot under a tree where we could sit and talk.",es:"Després de caminar una estona pel parc vam trobar un lloc tranquil sota un arbre on vam poder seure i parlar."},
     {audio:"f010.mp3",en:"When I looked at the wall more carefully I saw a small mark that I had not noticed before.",es:"Quan vaig mirar la paret amb més atenció vaig veure una petita marca que abans no havia notat."},
-    {audio:"f011.mp3",en:"The jeans I bought yesterday are so tight that they are actually hurting my thighs.",es:"Els texans que vaig comprar ahir són tan ajustats que de fet m’estan fent mal a les cuixes."},
+    {audio:"f011.mp3",en:"Els texans que vaig comprar ahir són tan ajustats que de fet m’estan fent mal a les cuixes.",en:"The jeans I bought yesterday are so tight that they are actually hurting my thighs.",es:"Els texans que vaig comprar ahir són tan ajustats que de fet m’estan fent mal a les cuixes."},
     {audio:"f012.mp3",en:"I have a very tight muscle in my left thigh after running that marathon last weekend.",es:"Tinc un múscul molt tens a la cuixa esquerra després de córrer aquella marató el cap de setmana passat."},
     {audio:"f013.mp3",en:"Since these leggings are too tight I can barely feel my thighs when I sit down.",es:"Com que aquests leggings són massa ajustats gairebé no puc sentir les cuixes quan m’assec."},
     {audio:"f014.mp3",en:"The sea is much rougher today than it was yesterday so we should probably stay on the shore.",es:"El mar està molt més picat avui que ahir així que probablement hauríem de quedar-nos a la riba."},
@@ -177,7 +179,7 @@ const data = [
     {audio:"f039.mp3",en:"When I looked at the garage floor I saw a small puddle of water that must have come in under the door.",es:"Quan vaig mirar cap al terra del garatge vaig veure un bassal petit d’aigua que devia haver entrat per sota de la porta."},
     {audio:"f040.mp3",en:"When I closed all the shutters in the evening the house became much quieter and more peaceful.",es:"Quan vaig tancar totes les persianes al vespre la casa va quedar molt més tranquil·la i silenciosa."},
     {audio:"f041.mp3",en:"One Saturday morning I went out to the balcony to hang the clothes and I used several clothespins because it was starting to get a little windy. When I went back inside the house I hung my jacket on a hanger next to the door and I realized that one of the hinges was making a small noise every time I opened the door.",es:"Un dissabte al matí vaig sortir al balcó per estendre la roba i vaig utilitzar diverses pinces perquè començava a fer una mica de vent. Quan vaig tornar a dins de casa vaig penjar la jaqueta en un penjador al costat de la porta i em vaig adonar que una de les frontisses feia un petit soroll cada vegada que obria la porta."},
-    {audio:"f042.mp3",en:"When I walked to the shop I saw that there was a puddle in front of the entrance because it had rained during the night. I walked to the park and found a quiet spot under a tree where I could sit for a while.",es:"Quan vaig anar a la botiga vaig veure que hi havia un bassal davant de l’entrada perquè havia pogut durant la nit. Vaig caminar fins al parc i vaig trobar un lloc tranquil sota un arbre on vaig poder seure una estona."},
+    {audio:"f042.mp3",en:"When I walked to the shop I saw that there was a puddle in front of the entrance because it had rained during the night. I walked to the park and found a quiet spot under a tree where I could sit for a while.",es:"Quan vaig anar a la botiga vaig veure que hi havia un bassal davant de l’entrada perquè havia plogut durant la nit. Vaig caminar fins al parc i vaig trobar un lloc tranquil sota un arbre on vaig poder seure una estona."},
     {audio:"f043.mp3",en:"One day I tried to connect a new lamp but the cord was short to reach the socket. I had to move the table a little until everything finally worked correctly.",es:"Un dia vaig intentar connectar una làmpada nova però el cable era massa curt per arribar a l’endoll. Vaig haver de moure la taula una mica fins que finalment tot va funcionar correctament."},
     {audio:"f044.mp3",en:"When we arrived at the park we walked for a while until we found a quiet spot under a tree. We sat there and talked for almost an hour because the weather was very nice.",es:"Quan vam arribar al parc vam caminar una estona fins que vam trobar un lloc tranquil sota un arbre. Ens vam asseure allà i vam parlar durant gairebé una hora perquè feia molt bon temps."},
     {audio:"f045.mp3",en:"Before leaving the house I closed the garage door with a padlock because I wanted to make sure everything stayed properly locked while we were away.",es:"Abans de marxar de casa vaig tancar la porta del garatge amb un cadenat perquè volia assegurar-me que tot quedava ben tancat mentre no hi érem."}
@@ -187,146 +189,39 @@ let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockI
 const a = document.getElementById("audio");
 const progressBar = document.getElementById("progressBar");
 
-const normalizationMap = {
-    "dont": "do not", "doesn't": "does not", "doesnt": "does not",
-    "didnt": "did not", "didn't": "did not",
-    "isnt": "is not", "isn't": "is not",
-    "arent": "are not", "aren't": "are not",
-    "wasnt": "was not", "wasn't": "was not",
-    "werent": "were not", "weren't": "were not",
-    "havent": "have not", "haven't": "have not",
-    "hasnt": "has not", "hasn't": "has not",
-    "hadnt": "had not", "hadn't": "had not",
-    "wont": "will not", "won't": "will not",
-    "wouldnt": "would not", "wouldn't": "would not",
-    "cant": "can not", "can't": "can not",
-    "couldnt": "could not", "couldn't": "could not",
-    "shouldnt": "should not", "shouldn't": "should not",
-    "im": "i am", "i'm": "i am",
-    "youre": "you are", "you're": "you are",
-    "hes": "he is", "he's": "he is",
-    "shes": "she is", "she's": "she is",
-    "its": "it is", "it's": "it is",
-    "were": "we are", "we're": "we are",
-    "theyre": "they are", "they're": "they are",
-    "ive": "i have", "i've": "i have",
-    "youve": "you have", "you've": "you have",
-    "weve": "we have", "we've": "we have",
-    "theyve": "they have", "they've": "they have",
-    "ill": "i will", "i'll": "i will",
-    "youll": "you will", "you'll": "you will",
-    "hell": "he will", "he'll": "he will",
-    "shell": "she will", "shell": "she will",
-    "well": "we will", "we'll": "we will",
-    "theyll": "they will", "they'll": "they will",
-    "id": "i would", "i'd": "i would",
-    "youd": "you would", "you'd": "you would",
-    "hed": "he would", "he'd": "he would",
-    "shed": "she would", "she'd": "she would",
-    "wed": "we would", "we'd": "we would",
-    "theyd": "they would", "they'd": "they would"
-};
-
-function normalizeText(text) {
-    if (!text) return "";
-    let clean = text.toLowerCase().replace(/[.,?!"]/g, "").trim();
-    let words = clean.split(/\s+/);
-    return words.map(word => {
-        let key = word.replace(/['’‘`]/g, ""); 
-        return normalizationMap[word] || normalizationMap[key] || word;
-    }).join(" ");
-}
-
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-let recognition = null;
-if (SpeechRecognition) {
-    recognition = new SpeechRecognition();
-    recognition.lang = 'en-US';
-    recognition.interimResults = false;
-    recognition.continuous = true;
+const recognition = SpeechRecognition ? new SpeechRecognition() : null;
+if (recognition) { recognition.lang = 'en-US'; recognition.interimResults = false; }
 
-    recognition.onstart = () => {
-        document.getElementById("micBtn").classList.add("listening");
-        document.getElementById("speech-feedback").textContent = "Escoltant...";
-    };
-
-    recognition.onend = () => {
-        document.getElementById("micBtn").classList.remove("listening");
-    };
-
-    recognition.onresult = (event) => {
-        let fullTranscript = "";
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-            fullTranscript += event.results[i][0].transcript + " ";
-        }
-        compareSentences(currentBlockData[pos].en, fullTranscript.trim());
-    };
-}
-
-function toggleDictation() {
+function startDictation() {
     if (!recognition || currentBlockData.length === 0) return;
-    if (document.getElementById("micBtn").classList.contains("listening")) {
-        recognition.stop();
-    } else {
-        recognition.start();
-    }
-}
-
-function compareSentences(original, spoken) {
-    const feedbackDiv = document.getElementById("speech-feedback");
-    const normOriginalWords = normalizeText(original).split(/\s+/);
-    const normSpokenWords = normalizeText(spoken).split(/\s+/);
-    const origWordsRaw = original.split(/\s+/);
-    
-    let resultHTML = "";
-    let sIdx = 0;
-    let correctCount = 0;
-
-    normOriginalWords.forEach((normWord, index) => {
-        const originalWordRaw = origWordsRaw[index];
-        let matched = false;
-
-        if (sIdx < normSpokenWords.length && normSpokenWords[sIdx] === normWord) {
-            resultHTML += `<span class="word-correct">${originalWordRaw}</span> `;
-            sIdx++;
-            matched = true;
-            correctCount++;
+    const btn = document.getElementById("micBtn");
+    const feedback = document.getElementById("speech-feedback");
+    btn.classList.add("listening");
+    feedback.textContent = "Escoltant...";
+    feedback.classList.remove("speech-success");
+    recognition.start();
+    recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,"").trim();
+        const original = currentBlockData[pos].en.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,"").trim();
+        if (transcript === original) {
+            feedback.innerHTML = `"${event.results[0][0].transcript}" 🎉`;
+            feedback.classList.add("speech-success");
+            setTimeout(() => { feedback.textContent = ""; know(); }, 1200);
         } else {
-            for (let j = sIdx + 1; j < sIdx + 5 && j < normSpokenWords.length; j++) {
-                if (normSpokenWords[j] === normWord) {
-                    for (let k = sIdx; k < j; k++) {
-                        resultHTML += `<span class="word-error">${normSpokenWords[k]}</span> `;
-                    }
-                    resultHTML += `<span class="word-correct">${originalWordRaw}</span> `;
-                    sIdx = j + 1;
-                    matched = true;
-                    correctCount++;
-                    break;
-                }
-            }
+            feedback.textContent = `"${event.results[0][0].transcript}"`;
         }
-        if (!matched) resultHTML += `<span class="word-missing">${originalWordRaw}</span> `;
-    });
-
-    feedbackDiv.innerHTML = resultHTML.trim();
-
-    if (correctCount >= normOriginalWords.length) {
-        setTimeout(() => { 
-            feedbackDiv.textContent = ""; 
-            know(); 
-            if (recognition) recognition.stop();
-        }, 1500);
-    }
+    };
+    recognition.onend = () => btn.classList.remove("listening");
 }
 
 let mediaRecorder;
 let audioChunks = [];
-let activeRecBtn = null;
+let isRecording = false;
 
-async function toggleRecord(btn) {
-    if (activeRecBtn && activeRecBtn !== btn) return; 
-
-    if (!activeRecBtn) {
+async function toggleRecord() {
+    const btn = document.getElementById("recBtn");
+    if (!isRecording) {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             mediaRecorder = new MediaRecorder(stream);
@@ -339,13 +234,15 @@ async function toggleRecord(btn) {
                 userAudio.play();
             };
             mediaRecorder.start();
-            activeRecBtn = btn;
+            isRecording = true;
             btn.classList.add("recording");
+            btn.textContent = "⏹";
         } catch (err) { alert("Error al accedir al micròfon."); }
     } else {
         mediaRecorder.stop();
+        isRecording = false;
         btn.classList.remove("recording");
-        activeRecBtn = null;
+        btn.textContent = "🎙️";
     }
 }
 
@@ -522,7 +419,6 @@ function renderList(type) {
       <div class="list-btns-col">
         <button class="star-list ${isStarred ? 'active' : ''}" onclick="toggleStar(${item.realIdx}); renderList('${type}')">★</button>
         <button class="mini-btn btn-audio-list" onclick="playAudio(1.0, '${item.audio}')">🔊</button>
-        <button class="mini-btn btn-rec-list" onclick="toggleRecord(this)">🎙️</button>
       </div>
       <div class="list-content">
         <div class="list-texts">
@@ -551,4 +447,4 @@ card.appendChild(box);
 initBlocks();
 </script>
 </body>
-</html> 
+</html>

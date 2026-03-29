@@ -29,16 +29,16 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .audio-btn.slow{background:#fef08a;font-size:28px}
 .audio-btn.pause{background:#fee2e2;font-size:28px}
 
-/* Micro Rosa Principal y de Lista */
-.rec-btn{font-size:30px;background:#fbcfe8;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.3s}
-.rec-btn.recording { background: #f06292 !important; color: white; animation: pulse-pink 1.5s infinite; transform: scale(1.1); }
+.rec-btn{font-size:30px;background:#dbeafe;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.3s}
+/* Micro Rosa */
+.rec-btn.pink { background: #fbcfe8; }
+.rec-btn.recording{background:#2563eb !important; color:white; animation: pulse-blue 1.5s infinite; transform: scale(1.1);}
 
 /* Micrófono Azul (STT) */
 .stt-btn{font-size:30px;background:#dbeafe;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.3s}
 .stt-btn.listening{background:#2563eb !important; color:white; animation: pulse-blue 1.5s infinite; transform: scale(1.1);}
 
 @keyframes pulse-blue { 0% {box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7);} 70% {box-shadow: 0 0 0 15px rgba(37, 99, 235, 0);} 100% {box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);} }
-@keyframes pulse-pink { 0% {box-shadow: 0 0 0 0 rgba(240, 98, 146, 0.7);} 70% {box-shadow: 0 0 0 15px rgba(240, 98, 146, 0);} 100% {box-shadow: 0 0 0 0 rgba(240, 98, 146, 0);} }
 
 .progress-wrapper { width: 100%; max-width: 300px; margin: 10px 0; }
 input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 5px; accent-color: #2563eb; }
@@ -49,6 +49,7 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 .txt-es{color:#2563eb} 
 #answer{font-size:20px;font-weight:bold;margin-top:-10px;margin-bottom:20px;text-align:center;min-height:30px;color:#666}
 
+/* Estilos de Feedback del Habla */
 #speech-feedback { font-size: 19px; margin-bottom: 10px; min-height: 24px; text-align: center; transition: 0.2s; line-height: 1.5;}
 .word-correct { color: #16a34a; font-weight: bold; margin: 0 2px; } 
 .word-error { color: #dc2626; text-decoration: line-through; margin: 0 2px; }
@@ -70,10 +71,9 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 .list-content { flex: 1; }
 .mini-btn { border: none; border-radius: 10px; width: 45px; height: 45px; cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; }
 .btn-audio-list { background: #dcfce7; }
-
 /* Micro Rosa en Lista */
 .list-rec-btn { background: #fbcfe8; border: none; border-radius: 10px; width: 45px; height: 45px; cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; transition: 0.3s;}
-.list-rec-btn.recording { background: #f06292 !important; color: white; animation: pulse-pink 1.5s infinite; }
+.list-rec-btn.recording { background: #2563eb !important; color: white; animation: pulse-blue 1.5s infinite; }
 
 .star-list { background: none; border: none; font-size: 24px; color: #cbd5e1; cursor: pointer; padding: 0; }
 .star-list.active { color: #f59e0b !important; }
@@ -110,7 +110,7 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
       <button class="audio-btn slow" onclick="playAudio(0.75)">🐢</button>
       <button class="audio-btn" onclick="playAudio(1.0)">🔊</button>
       <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
-      <button class="rec-btn" id="recBtn" onclick="toggleRecord(false)">🎙️</button>
+      <button class="rec-btn pink" id="recBtn" onclick="toggleRecord(false)">🎙️</button>
       <button class="stt-btn" id="sttBtn" onclick="toggleSTT()">🎤</button>
     </div>
 
@@ -174,9 +174,58 @@ let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockI
 const a = document.getElementById("audio");
 const progressBar = document.getElementById("progressBar");
 
+/* ==========================================================================
+   LÓGICA DE NORMALIZACIÓN Y STT
+   ========================================================================== */
+
+const normalizationMap = {
+    "dont": "do not", "doesn't": "does not", "doesnt": "does not",
+    "didnt": "did not", "didn't": "did not",
+    "isnt": "is not", "isn't": "is not",
+    "arent": "are not", "aren't": "are not",
+    "wasnt": "was not", "wasn't": "was not",
+    "werent": "were not", "weren't": "were not",
+    "havent": "have not", "haven't": "have not",
+    "hasnt": "has not", "hasn't": "has not",
+    "hadnt": "had not", "hadn't": "had not",
+    "wont": "will not", "won't": "will not",
+    "wouldnt": "would not", "wouldn't": "would not",
+    "cant": "can not", "can't": "can not",
+    "couldnt": "could not", "couldn't": "could not",
+    "shouldnt": "should not", "shouldn't": "should not",
+    "im": "i am", "i'm": "i am",
+    "youre": "you are", "you're": "you are",
+    "hes": "he is", "he's": "he is",
+    "shes": "she is", "she's": "she is",
+    "its": "it is", "it's": "it is",
+    "were": "we are", "we're": "we are",
+    "theyre": "they are", "they're": "they are",
+    "ive": "i have", "i've": "i have",
+    "youve": "you have", "you've": "you have",
+    "weve": "we have", "we've": "we have",
+    "theyve": "they have", "they've": "they have",
+    "ill": "i will", "i'll": "i will",
+    "youll": "you will", "you'll": "you will",
+    "hell": "he will", "he'll": "he will",
+    "shell": "she will", "she'll": "she will",
+    "well": "we will", "we'll": "we will",
+    "theyll": "they will", "they'll": "they will",
+    "id": "i would", "i'd": "i would",
+    "youd": "you would", "you'd": "you would",
+    "hed": "he would", "he'd": "he would",
+    "shed": "she would", "she'd": "she would",
+    "wed": "we would", "we'd": "we would",
+    "theyd": "they would", "they'd": "they would"
+};
+
 function normalizeText(text) {
     if (!text) return "";
-    return text.toLowerCase().replace(/[.,?!"]/g, "").trim();
+    let clean = text.toLowerCase().replace(/[.,?!"]/g, "").trim();
+    let words = clean.split(/\s+/);
+    return words.map(word => {
+        let key = word.replace(/['’‘`]/g, ""); 
+        return normalizationMap[word] || normalizationMap[key] || word;
+    }).join(" ");
 }
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -185,29 +234,90 @@ let recognition, isListening = false;
 if (SpeechRecognition) {
     recognition = new SpeechRecognition();
     recognition.lang = 'en-US';
-    recognition.onstart = () => { isListening = true; document.getElementById("sttBtn").classList.add("listening"); };
-    recognition.onend = () => { isListening = false; document.getElementById("sttBtn").classList.remove("listening"); };
+    recognition.interimResults = false;
+    recognition.continuous = false;
+
+    recognition.onstart = () => { 
+        isListening = true; 
+        document.getElementById("sttBtn").classList.add("listening"); 
+    };
+
+    recognition.onend = () => { 
+        isListening = false; 
+        document.getElementById("sttBtn").classList.remove("listening"); 
+    };
+
     recognition.onresult = (event) => {
-        let fullTranscript = event.results[0][0].transcript;
-        compareSentences(currentBlockData[pos].en, fullTranscript);
+        let fullTranscript = "";
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+            fullTranscript += event.results[i][0].transcript + " ";
+        }
+        compareSentences(currentBlockData[pos].en, fullTranscript.trim());
     };
 }
 
 function toggleSTT() {
     if (!recognition || currentBlockData.length === 0) return;
-    if (isListening) recognition.stop(); else recognition.start();
+    if (isListening) {
+        recognition.stop();
+    } else {
+        document.getElementById("speech-feedback").innerHTML = "Escoltant...";
+        recognition.start();
+    }
 }
 
 function compareSentences(original, spoken) {
     const feedbackDiv = document.getElementById("speech-feedback");
-    feedbackDiv.innerHTML = `<span class="word-correct">${spoken}</span>`;
-    if (normalizeText(original) === normalizeText(spoken)) setTimeout(know, 1000);
+    const normOriginalWords = normalizeText(original).split(/\s+/);
+    const normSpokenWords = normalizeText(spoken).split(/\s+/);
+    const origWordsRaw = original.split(/\s+/);
+    let resultHTML = "";
+    let sIdx = 0;
+    let correctCount = 0;
+
+    normOriginalWords.forEach((normWord, index) => {
+        const originalWordRaw = origWordsRaw[index];
+        let matched = false;
+
+        if (sIdx < normSpokenWords.length && normSpokenWords[sIdx] === normWord) {
+            resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
+            sIdx++;
+            matched = true;
+            correctCount++;
+        } else {
+            for (let j = sIdx + 1; j < sIdx + 5 && j < normSpokenWords.length; j++) {
+                if (normSpokenWords[j] === normWord) {
+                    for (let k = sIdx; k < j; k++) {
+                        resultHTML += `<span class="word-error">${normSpokenWords[k]}</span>`;
+                    }
+                    resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
+                    sIdx = j + 1;
+                    matched = true;
+                    correctCount++;
+                    break;
+                }
+            }
+        }
+        if (!matched) resultHTML += `<span class="word-missing">${originalWordRaw}</span>`;
+    });
+
+    feedbackDiv.innerHTML = resultHTML;
+
+    // Si el acierto es alto (más del 80%), marcar como conocida automáticamente tras un breve delay
+    if (correctCount / normOriginalWords.length >= 0.8) {
+        setTimeout(() => { know(); }, 1500);
+    }
 }
 
-let mediaRecorder, audioChunks = [], isRecording = false, currentActiveBtn = null;
+/* ==========================================================================
+   RESTO DE FUNCIONES (GRABACIÓN YUI)
+   ========================================================================== */
+
+let mediaRecorder, audioChunks = [], isRecording = false, currentListRecBtn = null;
 
 async function toggleRecord(isList = false, btnElement = null) {
     let btn = isList ? btnElement : document.getElementById("recBtn");
+    
     if (!isRecording) {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -221,16 +331,26 @@ async function toggleRecord(isList = false, btnElement = null) {
             };
             mediaRecorder.start();
             isRecording = true;
-            btn.classList.add("recording");
-            currentActiveBtn = btn;
+            btn.classList.add("recording"); 
+            btn.innerHTML = "⏹"; // Cambiar icono a stop
+            if (isList) currentListRecBtn = btn;
         } catch (err) { alert("Error al accedir al micròfon."); }
     } else {
-        mediaRecorder.stop();
+        // Detener la grabación (ya sea del botón principal o de la lista)
+        mediaRecorder.stop(); 
         isRecording = false;
-        if (currentActiveBtn) {
-            currentActiveBtn.classList.remove("recording");
-            currentActiveBtn = null;
+        
+        // Resetear visualmente el botón que estaba grabando
+        if (currentListRecBtn) {
+            currentListRecBtn.classList.remove("recording");
+            currentListRecBtn.innerHTML = "🎙️";
+            currentListRecBtn = null;
         }
+        
+        // Resetear siempre el botón principal por seguridad
+        const mainBtn = document.getElementById("recBtn");
+        mainBtn.classList.remove("recording");
+        mainBtn.innerHTML = "🎙️";
     }
 }
 
@@ -255,10 +375,12 @@ function initBlocks() {
   btnT.className = "block"; btnT.textContent = "T";
   btnT.onclick = () => loadBlock('T');
   container.appendChild(btnT);
+
   const starMain = document.createElement("button");
   starMain.id = "starMain"; starMain.className = "star-main"; starMain.innerHTML = "★";
   starMain.onclick = () => toggleStar();
   container.appendChild(starMain);
+
   loadBlock((savedBlock !== null) ? (savedBlock === 'T' ? 'T' : parseInt(savedBlock)) : 0);
 }
 
@@ -266,9 +388,11 @@ function loadBlock(b) {
   currentBlockID = b;
   localStorage.setItem(getFolderName() + "_currentBlock", b);
   let temp = [];
-  if (b === 'T') { temp = data.map((item, i) => ({...item, realIdx: i})); } 
-  else {
-    let start = b * 10, end = Math.min(start + 10, data.length);
+  if (b === 'T') {
+    temp = data.map((item, i) => ({...item, realIdx: i}));
+  } else {
+    let start = b * 10;
+    let end = Math.min(start + 10, data.length);
     for (let i = start; i < end; i++) temp.push({...data[i], realIdx: i});
   }
   currentBlockData = temp.sort(() => Math.random() - 0.5);
@@ -288,8 +412,12 @@ function update(fromNextAction = false) {
   }
   const item = currentBlockData[pos];
   document.getElementById("starMain").classList.toggle("active", starredIds.includes(item.realIdx));
-  const w = document.getElementById("word"), ans = document.getElementById("answer"), feedback = document.getElementById("speech-feedback");
-  progressBar.value = 0; ans.style.display = "none"; feedback.textContent = "";
+  const w = document.getElementById("word");
+  const ans = document.getElementById("answer");
+  const feedback = document.getElementById("speech-feedback");
+  progressBar.value = 0;
+  ans.style.display = "none";
+  feedback.textContent = "";
 
   if (mode === "EN") {
     w.innerHTML = ""; 
@@ -299,6 +427,7 @@ function update(fromNextAction = false) {
     w.innerHTML = `<div class="txt-es">${item.es}</div>`;
     ans.innerHTML = `<span>${item.en}</span>`;
   }
+  
   document.getElementById("pos").textContent = learnedCount;
   document.getElementById("total").textContent = currentBlockData.length + learnedCount;
 }
@@ -316,14 +445,17 @@ function playAudio(speed, forcedAudio = null) {
   const audioFile = forcedAudio || (currentBlockData.length > 0 ? currentBlockData[pos].audio : null);
   if (!audioFile) return;
   if (!a.src.includes(audioFile)) { a.src = audioFile; progressBar.value = 0; }
-  a.playbackRate = speed; a.play().catch(() => {});
+  a.playbackRate = speed;
+  a.play().catch(() => {});
 }
 
 function pauseAudio() { a.pause(); }
 
 function reveal() {
   if (currentBlockData.length > 0) {
-    const item = currentBlockData[pos], ans = document.getElementById("answer"), w = document.getElementById("word");
+    const item = currentBlockData[pos];
+    const ans = document.getElementById("answer");
+    const w = document.getElementById("word");
     if (ans.style.display === "none") {
         if (mode === "EN") w.innerHTML = `<span>${item.en}</span>`;
         ans.style.display = "block";
@@ -358,19 +490,24 @@ function setMode(m) {
 function toggleList(type) {
   const l = document.getElementById("list");
   if (l.style.display === "block" && l.dataset.type === type) { l.style.display = "none"; return; }
-  l.dataset.type = type; renderList(type); l.style.display = "block";
+  l.dataset.type = type;
+  renderList(type);
+  l.style.display = "block";
 }
 
 function renderList(type) {
   const l = document.getElementById("list");
   l.innerHTML = type === 'stars' ? "<b>Favorites (★):</b><br><br>" : "<b>Llista del bloc:</b><br><br>";
+  
   let listToRender = [];
-  if (type === 'stars') { listToRender = data.map((item, index) => ({...item, realIdx: index})).filter(i => starredIds.includes(i.realIdx)); } 
-  else {
+  if (type === 'stars') {
+    listToRender = data.map((item, index) => ({...item, realIdx: index})).filter(i => starredIds.includes(i.realIdx));
+  } else {
     let start = currentBlockID === 'T' ? 0 : currentBlockID * 10;
     let end = currentBlockID === 'T' ? data.length : Math.min(start + 10, data.length);
     listToRender = data.slice(start, end).map((item, index) => ({...item, realIdx: start + index}));
   }
+
   if (listToRender.length === 0) { l.innerHTML += "<i>Buit.</i>"; return; }
 
   listToRender.forEach((item) => {
@@ -399,6 +536,7 @@ function markAsDone(element) {
 }
 
 initBlocks();
+
 const card = document.querySelector(".card");
 const box = document.createElement("div");
 box.className = "check-box-manual";

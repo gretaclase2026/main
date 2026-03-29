@@ -1,9 +1,9 @@
  <!DOCTYPE html>
-<html lang="es">
+<html lang="ca">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Estudio FRASES · Collocations Informales (60)</title>
+<title>Estudi FRASES · Collocations Informals (60)</title>
 <style>
 body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .card{max-width:720px;margin:20px auto;background:#fff;border-radius:24px;padding:24px;box-shadow:0 8px 18px rgba(0,0,0,.15);position:relative}
@@ -118,14 +118,14 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
   <div id="answer"></div>
 
   <div class="actions">
-    <button class="btn btn-reveal" onclick="reveal()">ver</button>
-    <button class="btn btn-know" onclick="know()">ya la sé</button>
-    <button class="btn btn-next" onclick="next()">siguiente</button>
+    <button class="btn btn-reveal" onclick="reveal()">veure</button>
+    <button class="btn btn-know" onclick="know()">ja la se</button>
+    <button class="btn btn-next" onclick="next()">següent</button>
   </div>
   
   <div class="list-toggle-btns">
-    <button class="btn-list-main" onclick="toggleList('all')">lista del bloque</button>
-    <button class="btn-list-main btn-stars-main" onclick="toggleList('stars')">favoritos (★)</button>
+    <button class="btn-list-main" onclick="toggleList('all')">llista del bloc</button>
+    <button class="btn-list-main btn-stars-main" onclick="toggleList('stars')">favorites (★)</button>
   </div>
   <div id="list"></div>
 </div>
@@ -174,7 +174,7 @@ const data = [
   {audio:"f114.mp3", en:"It was so funny I could hardly keep a straight face.", es:"Fue tan divertido que apenas pude aguantar la risa."},
   {audio:"f115.mp3", en:"Keep me posted on any new developments.", es:"Manténme informado de cualquier novedad."},
   {audio:"f116.mp3", en:"You’re doing great, keep it up!", es:"Lo estás haciendo genial, ¡sigue así!"},
-  {audio:"f117.mp3", en:"Could you give me a hand with these boxes?", es:"¿Podrías echarme una mano con estas cajas?"},
+  {audio:"f117.mp3", en:"Could you give me a hand with these boxes?", es:"¿Could you give me a hand with these boxes?"},
   {audio:"f118.mp3", en:"I've never tried surfing before, but I'll give it a shot.", es:"Nunca he probado el surf, pero lo intentaré."},
   {audio:"f119.mp3", en:"Do you need me to give you a lift to the station?", es:"¿Necesitas que te lleve a la estación?"},
   {audio:"f120.mp3", en:"Give him a break, he's had a really long day.", es:"Dale un respiro, ha tenido un día muy largo."},
@@ -200,7 +200,7 @@ let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockI
 const a = document.getElementById("audio");
 const progressBar = document.getElementById("progressBar");
 
-// --- GRABACIÓN (Micro Rosa) ---
+// --- LÒGICA GRABACIÓ (MICRO ROSA) ---
 let mediaRecorder;
 let audioChunks = [];
 let isRecording = false;
@@ -246,7 +246,7 @@ function stopRecordingProcess(btn) {
     if (btn) btn.classList.remove("recording");
 }
 
-// --- DICTADO (Micro Azul) ---
+// --- LÒGICA MICRO BLAU (DICTAT) ---
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition;
 let isListening = false;
@@ -260,7 +260,7 @@ if (SpeechRecognition) {
     recognition.onstart = () => {
         isListening = true;
         document.getElementById("micBtn").classList.add("listening");
-        document.getElementById("speech-feedback").innerHTML = "Escuchando...";
+        document.getElementById("speech-feedback").innerHTML = "Escoltant...";
     };
     recognition.onend = () => {
         isListening = false;
@@ -329,8 +329,8 @@ function toggleMic() {
     else recognition.start();
 }
 
-// --- LÓGICA PRINCIPAL ---
-function getFolderName() { return "collocations_60"; }
+// --- LÒGICA GENERAL ---
+function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "collocations_60"; }
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
 
 a.ontimeupdate = () => { if (a.duration) progressBar.value = (a.currentTime / a.duration) * 100; };
@@ -384,7 +384,7 @@ function loadBlock(b) {
 
 function update(fromNextAction = false) {
   if (currentBlockData.length === 0) {
-    document.getElementById("word").innerHTML = "¡Bloque Completado! 🎉";
+    document.getElementById("word").innerHTML = "Bloc Completat! 🎉";
     document.getElementById("answer").innerHTML = "";
     return;
   }
@@ -476,7 +476,7 @@ function toggleBlur(element) { element.classList.toggle('revealed'); }
 
 function renderList(type) {
   const l = document.getElementById("list");
-  l.innerHTML = type === 'stars' ? "<b>Favoritos (★):</b><br><br>" : "<b>Lista del bloque:</b><br><br>";
+  l.innerHTML = type === 'stars' ? "<b>Favorites (★):</b><br><br>" : "<b>Llista del bloc:</b><br><br>";
   let listToRender = [];
   if (type === 'stars') {
     listToRender = data.map((item, index) => ({...item, realIdx: index})).filter(i => starredIds.includes(i.realIdx));
@@ -486,8 +486,8 @@ function renderList(type) {
     listToRender = data.slice(start, end).map((item, index) => ({...item, realIdx: start + index}));
   }
 
-  if (listToRender.length === 0) { l.innerHTML += "<i>Vacío.</i>"; return; }
-  listToRender.forEach((item) => {
+  if (listToRender.length === 0) { l.innerHTML += "<i>Buit.</i>"; return; }
+  listToRender.forEach((item, index) => {
     const isStarred = starredIds.includes(item.realIdx);
     const itemDiv = document.createElement("div");
     itemDiv.className = "list-item";
