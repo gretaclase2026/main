@@ -15,7 +15,7 @@ header{padding:8px 4px;background:#fff;border-bottom:1px solid #e5e7eb;display:f
 main{display:flex;justify-content:center;padding:24px}
 .card{position:relative;width:100%;max-width:560px;background:#ffffff;border-radius:28px;padding:32px;box-shadow:0 10px 24px rgba(0,0,0,0.06);text-align:center}
 .counter{position:absolute;top:18px;left:22px;font-weight:800;color:#2563eb}
-.check-box-manual { position: absolute; top: 18px; right: 22px; width: 24px; height: 24px; background: #fff; border: 1.5px solid #22c55e; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 14px; color: transparent; transition: 0.2s; }
+.check-box-manual { position: absolute; top: 18px; right: 22px; width: 24px; height: 24px; background: #fff; border: 1.5px solid #22c55e; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 14px; }
 .check-box-manual.marked { background: #22c55e !important; color: white !important; }
 .lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
 
@@ -31,6 +31,7 @@ main{display:flex;justify-content:center;padding:24px}
 .audio-btn.rec{background:#fbcfe8; color: #9d174d;}
 .audio-btn.stt{background:#dbeafe; font-size: 22px;}
 
+/* Animaciones y estados */
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 .recording-icon { display: inline-block; animation: pulse 1s infinite; color: #db2777 !important; }
 .listening { animation: pulse 1.5s infinite; background: #3b82f6 !important; color: white !important; }
@@ -41,6 +42,7 @@ main{display:flex;justify-content:center;padding:24px}
 .progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
 input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
 
+/* Estilos para el feedback de voz */
 #speechFeedback { font-size: 18px; margin: 15px 0; font-weight: bold; min-height: 28px; line-height: 1.5; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
 .word-correct { color: #16a34a; }
 .word-error { color: #dc2626; text-decoration: line-through; }
@@ -149,10 +151,7 @@ let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockI
 const audioObj = new Audio();
 const progressBar = document.getElementById("progressBar");
 
-function getFolderName() { 
-    return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "unit_6"; 
-}
-
+// Lógica de Reconocimiento de Voz (STT)
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition;
 let isListening = false;
@@ -227,7 +226,9 @@ function toggleMic() {
     else recognition.start();
 }
 
+function getFolderName() { return "vocab-neural-b1-vibrant"; }
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
+
 let mediaRecorder, audioChunks = [], isRecording = false;
 
 async function toggleRecord(targetBtnId) {
@@ -420,24 +421,17 @@ function renderList(type) {
 }
 
 function markAsDone(el) {
-    const key = getFolderName();
-    if (!el.classList.contains('marked')) {
-        localStorage.setItem(key, new Date().toISOString());
-        el.innerHTML = "✓"; el.classList.add('marked');
-        alert("Lliçó marcada ✅");
-    } else {
-        localStorage.removeItem(key);
-        el.innerHTML = ""; el.classList.remove('marked');
-    }
+    localStorage.setItem(getFolderName(), new Date().toISOString());
+    el.innerHTML = "✓"; el.classList.add('marked');
+    alert("Lliçó completada ✅");
 }
 
-window.addEventListener('load', () => {
+if (localStorage.getItem(getFolderName())) { 
     const mc = document.getElementById("mainCheck");
-    if (localStorage.getItem(getFolderName())) {
-        mc.innerHTML = "✓"; mc.classList.add('marked');
-    }
-    initBlocks();
-});
+    if(mc) { mc.innerHTML = "✓"; mc.classList.add('marked'); }
+}
+
+initBlocks();
 </script>
 </body>
 </html>

@@ -25,11 +25,7 @@ main{display:flex;justify-content:center;padding:24px}
 .audio-btn{width:52px;height:52px;border-radius:50%;border:none;background:#dbeafe;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
 .audio-btn.slow{background:#fef08a;}
 .audio-btn.pause{background:#fee2e2;} 
-.audio-btn.rec{background:#fca5a5; color: white;}
-.audio-btn.stt{background:#dbeafe;}
-#speechFeedback { font-size: 18px; margin: 15px 0; font-weight: bold; min-height: 28px; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px;}
-.word-correct { color: #16a34a; }
-.word-error { color: #dc2626; text-decoration: line-through; }
+.audio-btn.rec{background:#fca5a5;}
 .progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
 input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
 .hidden{display:none}
@@ -76,12 +72,10 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
   <button class="audio-btn" onclick="playCurrent(1.0)">🔊</button>
   <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
   <button class="audio-btn rec" id="mainRec" onclick="toggleRecord('mainRec')">🎤</button>
-  <button class="audio-btn stt" id="sttBtn" onclick="toggleMic()">🎤</button>
  </div>
  
  <div class="progress-wrapper"><input type="range" id="progressBar" value="0" min="0" max="100" step="0.1"></div>
  <div id="es" class="es hidden"></div>
- <div id="speechFeedback"></div>
  <div id="en" class="en hidden"></div>
  <div class="buttons">
   <button class="action reveal" onclick="reveal()">Veure</button>
@@ -156,7 +150,7 @@ const items = [
   {audio:"f055.mp3", en:"I don't think it'll rain today, but I'll take an umbrella just in case.", es:"No crec que plogui avui, però agafaré un paraigua per si de cas."},
   {audio:"f056.mp3", en:"He told me he'd be here at eight, but he's already twenty minutes late.", es:"Em va dir que seria aquí a les vuit, però ja arriba vint minuts tard."},
   {audio:"f057.mp3", en:"I've never been so embarrassed in my life.", es:"Mai he estat tan avergonyit en la meva vida."},
-  {audio:"f058.mp3", en:"She's been studying English since she was a child.", es:"Porta estudiant anglès des que era petita."},
+  {audio:"f058.mp3", en:"She's been estudiando English since she was a child.", es:"Porta estudiant anglès des que era petita."},
   {audio:"f059.mp3", en:"We're thinking of moving to another country to find better jobs.", es:"Estem pensant en traslladar-nos a un altre país per trobar millors feines."},
   {audio:"f060.mp3", en:"He promised to help me with my homework, but he didn't show up.", es:"Va prometre ajudar-me amb els deures, però no va aparèixer."},
   {audio:"f061.mp3", en:"The concert was so loud that my ears were ringing for hours.", es:"El concert va ser tan fort que els meus oïdes van estar xiulant durant hores."},
@@ -188,7 +182,6 @@ let currentIdx = 0, currentMode = 'EN', currentBlockID = 0;
 let audio = new Audio();
 let mediaRecorder;
 let audioChunks = [];
-let recognition;
 let starredIds = JSON.parse(localStorage.getItem('stars_unit5') || '[]');
 
 function getFolderName() { 
@@ -223,7 +216,6 @@ function updateCard(){
     document.getElementById('es').className = (currentMode==='ES') ? 'es' : 'es hidden';
     document.getElementById('en').className = (currentMode==='EN') ? 'en' : 'en hidden';
     document.getElementById('starBtn').style.color = starredIds.includes(i.audio) ? '#f59e0b' : '#cbd5e1';
-    document.getElementById('speechFeedback').innerHTML = '';
 }
 
 function getVisibleItems(){
@@ -293,36 +285,6 @@ async function toggleRecord(btnId) {
         mediaRecorder.stop();
         btn.style.background = btnId.includes('main') ? "#fca5a5" : "#fca5a5";
     }
-}
-
-function toggleMic() {
-    if (!('webkitSpeechRecognition' in window)) { alert("Navegador no compatible"); return; }
-    if (recognition && recognition.active) { recognition.stop(); return; }
-    
-    recognition = new webkitSpeechRecognition();
-    recognition.lang = 'en-US';
-    recognition.interimResults = false;
-    
-    recognition.onstart = () => { document.getElementById('sttBtn').style.background = '#60a5fa'; };
-    recognition.onend = () => { document.getElementById('sttBtn').style.background = '#dbeafe'; };
-    
-    recognition.onresult = (event) => {
-        const result = event.results[0][0].transcript.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,"");
-        const target = getVisibleItems()[currentIdx].en.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,"");
-        compareSpeech(result, target);
-    };
-    recognition.start();
-}
-
-function compareSpeech(said, target) {
-    const saidWords = said.split(' ');
-    const targetWords = target.split(' ');
-    let html = '';
-    targetWords.forEach((word, i) => {
-        const isCorrect = saidWords.includes(word);
-        html += `<span class="${isCorrect ? 'word-correct' : 'word-error'}">${word}</span> `;
-    });
-    document.getElementById('speechFeedback').innerHTML = html;
 }
 
 function renderBlocks(){

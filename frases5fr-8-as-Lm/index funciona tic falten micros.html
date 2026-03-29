@@ -25,11 +25,6 @@ main{display:flex;justify-content:center;padding:24px}
 .audio-btn{width:52px;height:52px;border-radius:50%;border:none;background:#dbeafe;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
 .audio-btn.slow{background:#fef08a;}
 .audio-btn.pause{background:#fee2e2;} 
-.audio-btn.rec{background:#fca5a5; color: white;}
-.audio-btn.stt{background:#dbeafe;}
-#speechFeedback { font-size: 18px; margin: 15px 0; font-weight: bold; min-height: 28px; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px;}
-.word-correct { color: #16a34a; }
-.word-error { color: #dc2626; text-decoration: line-through; }
 .progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
 input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
 .hidden{display:none}
@@ -43,13 +38,7 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 .list-controls { display: flex; gap: 10px; margin-top: 16px; }
 .list-btn{ flex:1; background:#e9d5ff; border:none; border-radius:16px; padding:14px; font-weight:800; cursor:pointer; font-size:13px }
 .list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
-.list-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid #eee; }
-.list-controls-side { display: flex; flex-direction: column; gap: 8px; }
-.mini-btn { width: 34px; height: 34px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; }
-.btn-audio { background: #dbeafe; }
-.btn-rec-mini { background: #fca5a5; }
-.star-btn-list { background: none; border: none; font-size: 20px; cursor: pointer; color: #cbd5e1; }
-.star-btn-list.active { color: #f59e0b; }
+.list-item { display: flex; align-items: flex-start; gap: 15px; padding: 15px 0; border-bottom: 1px solid #eee; }
 .blur { filter: blur(5px); transition: filter 0.2s; cursor: pointer; user-select: none; }
 .blur.revealed { filter: blur(0); }
 </style>
@@ -71,17 +60,14 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
  <div id="blockContainer" class="blocks"></div>
 
  <div class="audio-container">
-  <button id="starBtn" onclick="toggleStarMain()" style="background:none; border:none; font-size:32px; cursor:pointer; color:#cbd5e1;">★</button>
+  <button id="starBtn" onclick="toggleStar()" style="background:none; border:none; font-size:32px; cursor:pointer; color:#cbd5e1;">★</button>
   <button class="audio-btn slow" onclick="playCurrent(0.75)">🐢</button>
   <button class="audio-btn" onclick="playCurrent(1.0)">🔊</button>
   <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
-  <button class="audio-btn rec" id="mainRec" onclick="toggleRecord('mainRec')">🎤</button>
-  <button class="audio-btn stt" id="sttBtn" onclick="toggleMic()">🎤</button>
  </div>
  
  <div class="progress-wrapper"><input type="range" id="progressBar" value="0" min="0" max="100" step="0.1"></div>
  <div id="es" class="es hidden"></div>
- <div id="speechFeedback"></div>
  <div id="en" class="en hidden"></div>
  <div class="buttons">
   <button class="action reveal" onclick="reveal()">Veure</button>
@@ -156,7 +142,7 @@ const items = [
   {audio:"f055.mp3", en:"I don't think it'll rain today, but I'll take an umbrella just in case.", es:"No crec que plogui avui, però agafaré un paraigua per si de cas."},
   {audio:"f056.mp3", en:"He told me he'd be here at eight, but he's already twenty minutes late.", es:"Em va dir que seria aquí a les vuit, però ja arriba vint minuts tard."},
   {audio:"f057.mp3", en:"I've never been so embarrassed in my life.", es:"Mai he estat tan avergonyit en la meva vida."},
-  {audio:"f058.mp3", en:"She's been studying English since she was a child.", es:"Porta estudiant anglès des que era petita."},
+  {audio:"f058.mp3", en:"She's been estudiando English since she was a child.", es:"Porta estudiant anglès des que era petita."},
   {audio:"f059.mp3", en:"We're thinking of moving to another country to find better jobs.", es:"Estem pensant en traslladar-nos a un altre país per trobar millors feines."},
   {audio:"f060.mp3", en:"He promised to help me with my homework, but he didn't show up.", es:"Va prometre ajudar-me amb els deures, però no va aparèixer."},
   {audio:"f061.mp3", en:"The concert was so loud that my ears were ringing for hours.", es:"El concert va ser tan fort que els meus oïdes van estar xiulant durant hores."},
@@ -186,10 +172,6 @@ const items = [
 
 let currentIdx = 0, currentMode = 'EN', currentBlockID = 0;
 let audio = new Audio();
-let mediaRecorder;
-let audioChunks = [];
-let recognition;
-let starredIds = JSON.parse(localStorage.getItem('stars_unit5') || '[]');
 
 function getFolderName() { 
     return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "unit_5"; 
@@ -197,13 +179,16 @@ function getFolderName() {
 
 function markAsDone(el) {
     const key = getFolderName();
-    if (!el.classList.contains('marked')) {
+    const mc = document.getElementById("mainCheck");
+    if (!mc.classList.contains('marked')) {
         localStorage.setItem(key, new Date().toISOString());
-        el.innerHTML = "✓"; el.classList.add('marked');
+        mc.innerHTML = "✓"; 
+        mc.classList.add('marked');
         alert("Lliçó marcada ✅");
     } else {
         localStorage.removeItem(key);
-        el.innerHTML = ""; el.classList.remove('marked');
+        mc.innerHTML = "";
+        mc.classList.remove('marked');
     }
 }
 
@@ -222,24 +207,12 @@ function updateCard(){
     document.getElementById('en').innerText = i.en;
     document.getElementById('es').className = (currentMode==='ES') ? 'es' : 'es hidden';
     document.getElementById('en').className = (currentMode==='EN') ? 'en' : 'en hidden';
-    document.getElementById('starBtn').style.color = starredIds.includes(i.audio) ? '#f59e0b' : '#cbd5e1';
-    document.getElementById('speechFeedback').innerHTML = '';
+    document.getElementById('endMsg').classList.add('hidden');
 }
 
 function getVisibleItems(){
-    return (currentBlockID === -1) ? items : items.slice(currentBlockID * 10, (currentBlockID + 1) * 10);
-}
-
-function toggleStarMain(){
-    const id = getVisibleItems()[currentIdx].audio;
-    toggleStar(id);
-    updateCard();
-}
-
-function toggleStar(id){
-    if(starredIds.includes(id)) starredIds = starredIds.filter(x => x !== id);
-    else starredIds.push(id);
-    localStorage.setItem('stars_unit5', JSON.stringify(starredIds));
+    if(currentBlockID === -1) return items;
+    return items.slice(currentBlockID * 10, (currentBlockID + 1) * 10);
 }
 
 function reveal(){
@@ -261,11 +234,7 @@ function know(){ nextOne(); }
 
 function playCurrent(rate=1.0){
     const i = getVisibleItems()[currentIdx];
-    playAudio(i.audio, rate);
-}
-
-function playAudio(src, rate=1.0){
-    audio.src = src;
+    audio.src = i.audio;
     audio.playbackRate = rate;
     audio.play();
     audio.ontimeupdate = () => {
@@ -275,63 +244,13 @@ function playAudio(src, rate=1.0){
 
 function pauseAudio(){ audio.pause(); }
 
-async function toggleRecord(btnId) {
-    const btn = document.getElementById(btnId);
-    if (!mediaRecorder || mediaRecorder.state === "inactive") {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        mediaRecorder = new MediaRecorder(stream);
-        audioChunks = [];
-        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-        mediaRecorder.onstop = () => {
-            const blob = new Blob(audioChunks, { type: 'audio/wav' });
-            const url = URL.createObjectURL(blob);
-            new Audio(url).play();
-        };
-        mediaRecorder.start();
-        btn.style.background = "#ef4444";
-    } else {
-        mediaRecorder.stop();
-        btn.style.background = btnId.includes('main') ? "#fca5a5" : "#fca5a5";
-    }
-}
-
-function toggleMic() {
-    if (!('webkitSpeechRecognition' in window)) { alert("Navegador no compatible"); return; }
-    if (recognition && recognition.active) { recognition.stop(); return; }
-    
-    recognition = new webkitSpeechRecognition();
-    recognition.lang = 'en-US';
-    recognition.interimResults = false;
-    
-    recognition.onstart = () => { document.getElementById('sttBtn').style.background = '#60a5fa'; };
-    recognition.onend = () => { document.getElementById('sttBtn').style.background = '#dbeafe'; };
-    
-    recognition.onresult = (event) => {
-        const result = event.results[0][0].transcript.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,"");
-        const target = getVisibleItems()[currentIdx].en.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,"");
-        compareSpeech(result, target);
-    };
-    recognition.start();
-}
-
-function compareSpeech(said, target) {
-    const saidWords = said.split(' ');
-    const targetWords = target.split(' ');
-    let html = '';
-    targetWords.forEach((word, i) => {
-        const isCorrect = saidWords.includes(word);
-        html += `<span class="${isCorrect ? 'word-correct' : 'word-error'}">${word}</span> `;
-    });
-    document.getElementById('speechFeedback').innerHTML = html;
-}
-
 function renderBlocks(){
     const container = document.getElementById('blockContainer');
     container.innerHTML = '';
     const numBlocks = Math.ceil(items.length / 10);
     const allBtn = document.createElement('button');
     allBtn.className = 'block all-btn' + (currentBlockID === -1 ? ' active' : '');
-    allBtn.innerText = 'T';
+    allBtn.innerText = 'Tots';
     allBtn.onclick = () => { currentBlockID = -1; currentIdx = 0; renderBlocks(); updateCard(); };
     container.appendChild(allBtn);
     for(let i=0; i<numBlocks; i++){
@@ -347,36 +266,22 @@ function toggleList(type){
     const box = document.getElementById('listBox');
     if(!box.classList.contains('hidden')) { box.classList.add('hidden'); return; }
     box.classList.remove('hidden');
-    box.innerHTML = `<h3 style="margin:10px 0">${type==='stars'?'Repàs ★':'Tota la llista'}</h3>`;
-    const list = type === 'stars' ? items.filter(i => starredIds.includes(i.audio)) : items;
-    list.forEach((i, index) => {
-        const isStarred = starredIds.includes(i.audio);
-        const itemDiv = document.createElement("div");
-        itemDiv.className = "list-item";
-        itemDiv.innerHTML = `
-            <div class="list-controls-side">
-                <button class="star-btn-list ${isStarred?'active':''}" onclick="toggleStar('${i.audio}'); toggleListRefresh('${type}')">★</button>
-                <button class="mini-btn btn-audio" onclick="playAudio('${i.audio}')">🔊</button>
-                <button class="mini-btn btn-rec-mini" id="rec-list-${index}" onclick="toggleRecord('rec-list-${index}')">🎤</button>
-            </div>
+    box.innerHTML = `<h3 style="margin-top:0">Llista</h3>`;
+    items.forEach(i => {
+        box.innerHTML += `<div class="list-item">
             <div style="flex:1">
                 <div style="color:#2563eb; font-weight:700">${i.es}</div>
                 <div class="blur" onclick="this.classList.toggle('revealed')">${i.en}</div>
-            </div>`;
-        box.appendChild(itemDiv);
+            </div>
+        </div>`;
     });
-}
-
-function toggleListRefresh(type) {
-    document.getElementById('listBox').classList.add('hidden');
-    toggleList(type);
-    updateCard();
 }
 
 window.addEventListener('load', () => {
     const mc = document.getElementById("mainCheck");
     if (localStorage.getItem(getFolderName())) {
-        mc.innerHTML = "✓"; mc.classList.add('marked');
+        mc.innerHTML = "✓";
+        mc.classList.add('marked');
     }
     renderBlocks();
     updateCard();

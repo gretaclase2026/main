@@ -30,13 +30,9 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .audio-btn.slow{background:#fef08a; font-size: 28px;}
 .audio-btn.pause{background:#fee2e2; font-size: 28px;}
 
-/* --- ESTILOS DE MICRÓFONOS SEGÚN INDEX ADJUNTO --- */
-
-/* Micro de Grabación (🎙️) - ROSA */
 .audio-btn.rec { background: #fbcfe8; font-size: 28px; }
 .audio-btn.rec.active { background: #f87171 !important; color: white !important; animation: pulse 1.5s infinite; }
 
-/* Micro de Dictado/STT (🎤) - AZUL */
 .audio-btn.stt { background: #dbeafe; font-size: 28px; }
 .audio-btn.stt.listening { background: #3b82f6 !important; color: white !important; animation: pulse 1.5s infinite; }
 
@@ -80,17 +76,19 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 .blur.revealed { filter: blur(0); }
 
 .check-box-manual {
-    position: absolute; top: 85px; right: 22px; width: 24px; height: 24px;
-    background: #fff !important; border: 1.5px solid #22c55e !important;
+    position: absolute; top: 18px; right: 22px; width: 24px; height: 24px;
+    background: #fff; border: 1.5px solid #22c55e;
     border-radius: 6px; display: flex; align-items: center; justify-content: center;
     cursor: pointer; z-index: 10; font-size: 14px;
+    color: transparent; transition: 0.2s;
 }
-.check-box-manual.marked { background: #22c55e !important; color: white; }
+.check-box-manual.marked { background: #22c55e !important; color: white !important; }
 </style>
 </head>
 <body>
 
 <div class="card">
+  <div class="check-box-manual" id="mainCheck" onclick="markAsDone(this)"></div>
   <div class="modes">
     <div id="modeEN" class="mode en active" onclick="setMode('EN')">ENG → ESP</div>
     <div class="unit-number">10</div>
@@ -208,17 +206,16 @@ let audioChunks = [];
 let isRecording = false;
 let currentRecordingBtn = null;
 
-// LÓGICA DE PROGRESO AUDIO
+function getFolderName() { 
+    return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "social_c1_u10"; 
+}
+
 a.ontimeupdate = () => { if (a.duration) progressBar.value = (a.currentTime / a.duration) * 100; };
 progressBar.oninput = () => { if (a.duration) a.currentTime = (progressBar.value / 100) * a.duration; };
 
-// GRABACIÓN SIMPLE (🎙️ - ROSA/ROJO)
 async function toggleRecording(btnId = "recBtn") {
   const btn = document.getElementById(btnId);
-  if (isRecording && currentRecordingBtn === btnId) {
-      stopRecordingProcess(btn);
-      return;
-  }
+  if (isRecording && currentRecordingBtn === btnId) { stopRecordingProcess(btn); return; }
   if (isRecording && currentRecordingBtn !== btnId) {
       const oldBtn = document.getElementById(currentRecordingBtn);
       stopRecordingProcess(oldBtn);
@@ -237,10 +234,7 @@ async function toggleRecording(btnId = "recBtn") {
     isRecording = true;
     currentRecordingBtn = btnId;
     btn.classList.add("active");
-  } catch (err) { 
-    isRecording = false;
-    currentRecordingBtn = null;
-  }
+  } catch (err) { isRecording = false; currentRecordingBtn = null; }
 }
 
 function stopRecordingProcess(btn) {
@@ -250,7 +244,6 @@ function stopRecordingProcess(btn) {
     if (btn) btn.classList.remove("active");
 }
 
-// RECONOCIMIENTO (🎤 - AZUL/AZUL OSCURO)
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition;
 let isListening = false;
@@ -260,16 +253,12 @@ if (SpeechRecognition) {
     recognition.lang = 'en-US';
     recognition.interimResults = false;
     recognition.continuous = true;
-
     recognition.onstart = () => {
         isListening = true;
         document.getElementById("sttBtn").classList.add("listening");
         document.getElementById("speechFeedback").innerHTML = "";
     };
-    recognition.onend = () => {
-        isListening = false;
-        document.getElementById("sttBtn").classList.remove("listening");
-    };
+    recognition.onend = () => { isListening = false; document.getElementById("sttBtn").classList.remove("listening"); };
     recognition.onresult = (event) => {
         let fullTranscript = "";
         for (let i = event.resultIndex; i < event.results.length; i++) {
@@ -279,49 +268,35 @@ if (SpeechRecognition) {
     };
 }
 
-function normalizeText(text) {
-    if (!text) return "";
-    return text.toLowerCase().replace(/[.,?!"]/g, "").trim();
-}
+function normalizeText(text) { if (!text) return ""; return text.toLowerCase().replace(/[.,?!"]/g, "").trim(); }
 
 function compareSentences(original, spoken) {
     const feedbackDiv = document.getElementById("speechFeedback");
     if(!feedbackDiv) return;
-
     const normOriginalWords = normalizeText(original).split(/\s+/);
     const normSpokenWords = normalizeText(spoken).split(/\s+/);
     const origWordsRaw = original.split(/\s+/);
-    
     let resultHTML = "";
     let sIdx = 0;
-
     normOriginalWords.forEach((normWord, index) => {
         const originalWordRaw = origWordsRaw[index];
         let matched = false;
-
         if (sIdx < normSpokenWords.length && normSpokenWords[sIdx] === normWord) {
             resultHTML += `<span class="word-correct">${originalWordRaw}</span> `;
-            sIdx++;
-            matched = true;
+            sIdx++; matched = true;
         } else {
             for (let j = sIdx + 1; j < sIdx + 5 && j < normSpokenWords.length; j++) {
                 if (normSpokenWords[j] === normWord) {
-                    for (let k = sIdx; k < j; k++) {
-                        resultHTML += `<span class="word-error">${normSpokenWords[k]}</span> `;
-                    }
+                    for (let k = sIdx; k < j; k++) { resultHTML += `<span class="word-error">${normSpokenWords[k]}</span> `; }
                     resultHTML += `<span class="word-correct">${originalWordRaw}</span> `;
-                    sIdx = j + 1;
-                    matched = true;
-                    break;
+                    sIdx = j + 1; matched = true; break;
                 }
             }
         }
         if (!matched) resultHTML += `<span class="word-missing">${originalWordRaw}</span> `;
     });
     feedbackDiv.innerHTML = resultHTML;
-    if (!resultHTML.includes('word-missing') && !resultHTML.includes('word-error')) {
-        setTimeout(know, 1000);
-    }
+    if (!resultHTML.includes('word-missing') && !resultHTML.includes('word-error')) { setTimeout(know, 1000); }
 }
 
 function toggleMic() {
@@ -330,7 +305,6 @@ function toggleMic() {
     else recognition.start();
 }
 
-function getFolderName() { return "social_c1_u10"; }
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
 
 function initBlocks() {
@@ -357,9 +331,8 @@ function initBlocks() {
 function loadBlock(b) {
   currentBlockID = b;
   let temp = [];
-  if (b === 'T') {
-    temp = data.map((item, i) => ({...item, realIdx: i+1}));
-  } else {
+  if (b === 'T') { temp = data.map((item, i) => ({...item, realIdx: i+1})); } 
+  else {
     let start = b * 10;
     let end = Math.min(start + 10, data.length);
     for (let i = start; i < end; i++) temp.push({...data[i], realIdx: i+1});
@@ -384,17 +357,14 @@ function update(fromNextAction = false) {
   const w = document.getElementById("word");
   const ans = document.getElementById("answer");
   ans.style.display = "none";
-  
   if (mode === "EN") {
-    w.innerHTML = `<span id="main-en-text" style="display:${fromNextAction ? 'none' : 'inline'};">${item.en}</span>`; 
-    w.innerHTML += `<div id="speechFeedback"></div>`;
+    w.innerHTML = `<span id="main-en-text" style="display:${fromNextAction ? 'none' : 'inline'};">${item.en}</span><div id="speechFeedback"></div>`;
     ans.innerHTML = `<span class="txt-es">${item.es}</span>`;
     if (fromNextAction) playAudio(1.0);
   } else {
     w.innerHTML = `<div style='font-size:22px;' class="txt-es">${item.es}</div><div id="speechFeedback"></div>`;
     ans.innerHTML = `<span style="font-size:24px;">${item.en}</span>`;
   }
-  
   document.getElementById("pos").textContent = learnedCount;
   document.getElementById("total").textContent = currentBlockData.length + learnedCount;
 }
@@ -420,22 +390,13 @@ function pauseAudio() { a.pause(); }
 
 function reveal() {
   if (currentBlockData.length > 0) {
-    const item = currentBlockData[pos];
     const ans = document.getElementById("answer");
-    const w = document.getElementById("word");
-    if (ans.style.display === "none") {
-        if (mode === "EN") {
-            const mainTxt = document.getElementById("main-en-text");
-            if(mainTxt) mainTxt.style.display = "inline";
-        }
-        ans.style.display = "block";
-    } else {
-        if (mode === "EN") {
-            const mainTxt = document.getElementById("main-en-text");
-            if(mainTxt) mainTxt.style.display = "none";
-        }
-        ans.style.display = "none";
+    const isHidden = ans.style.display === "none";
+    if (mode === "EN") {
+        const mainTxt = document.getElementById("main-en-text");
+        if(mainTxt) mainTxt.style.display = isHidden ? 'inline' : 'none';
     }
+    ans.style.display = isHidden ? "block" : "none";
   }
 }
 
@@ -502,18 +463,24 @@ function renderList(type) {
   });
 }
 
-function markAsDone(element) {
-    localStorage.setItem(getFolderName(), new Date().toISOString());
-    element.innerHTML = "✓"; element.classList.add('marked');
+function markAsDone(el) {
+    const key = getFolderName();
+    if (!el.classList.contains('marked')) {
+        localStorage.setItem(key, new Date().toISOString());
+        el.innerHTML = "✓"; el.classList.add('marked');
+    } else {
+        localStorage.removeItem(key);
+        el.innerHTML = ""; el.classList.remove('marked');
+    }
 }
 
-initBlocks();
-const card = document.querySelector(".card");
-const box = document.createElement("div");
-box.className = "check-box-manual";
-if (localStorage.getItem(getFolderName())) { box.innerHTML = "✓"; box.classList.add('marked'); }
-box.onclick = function() { markAsDone(this); };
-card.appendChild(box);
+window.addEventListener('load', () => {
+    const mc = document.getElementById("mainCheck");
+    if (localStorage.getItem(getFolderName())) {
+        mc.innerHTML = "✓"; mc.classList.add('marked');
+    }
+    initBlocks();
+});
 </script>
 </body>
 </html>
