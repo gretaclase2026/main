@@ -25,7 +25,11 @@ main{display:flex;justify-content:center;padding:24px}
 .audio-btn{width:52px;height:52px;border-radius:50%;border:none;background:#dbeafe;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
 .audio-btn.slow{background:#fef08a;}
 .audio-btn.pause{background:#fee2e2;} 
-.audio-btn.rec{background:#fca5a5;}
+.audio-btn.rec{background:#fca5a5; color: white;}
+.audio-btn.stt{background:#dbeafe;}
+#speechFeedback { font-size: 18px; margin: 15px 0; font-weight: bold; min-height: 28px; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px;}
+.word-correct { color: #16a34a; }
+.word-error { color: #dc2626; text-decoration: line-through; }
 .progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
 input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
 .hidden{display:none}
@@ -72,10 +76,12 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
   <button class="audio-btn" onclick="playCurrent(1.0)">🔊</button>
   <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
   <button class="audio-btn rec" id="mainRec" onclick="toggleRecord('mainRec')">🎤</button>
+  <button class="audio-btn stt" id="sttBtn" onclick="toggleMic()">🎤</button>
  </div>
  
  <div class="progress-wrapper"><input type="range" id="progressBar" value="0" min="0" max="100" step="0.1"></div>
  <div id="es" class="es hidden"></div>
+ <div id="speechFeedback"></div>
  <div id="en" class="en hidden"></div>
  <div class="buttons">
   <button class="action reveal" onclick="reveal()">Veure</button>
@@ -150,7 +156,7 @@ const items = [
   {audio:"f055.mp3", en:"I don't think it'll rain today, but I'll take an umbrella just in case.", es:"No crec que plogui avui, però agafaré un paraigua per si de cas."},
   {audio:"f056.mp3", en:"He told me he'd be here at eight, but he's already twenty minutes late.", es:"Em va dir que seria aquí a les vuit, però ja arriba vint minuts tard."},
   {audio:"f057.mp3", en:"I've never been so embarrassed in my life.", es:"Mai he estat tan avergonyit en la meva vida."},
-  {audio:"f058.mp3", en:"She's been estudiando English since she was a child.", es:"Porta estudiant anglès des que era petita."},
+  {audio:"f058.mp3", en:"She's been studying English since she was a child.", es:"Porta estudiant anglès des que era petita."},
   {audio:"f059.mp3", en:"We're thinking of moving to another country to find better jobs.", es:"Estem pensant en traslladar-nos a un altre país per trobar millors feines."},
   {audio:"f060.mp3", en:"He promised to help me with my homework, but he didn't show up.", es:"Va prometre ajudar-me amb els deures, però no va aparèixer."},
   {audio:"f061.mp3", en:"The concert was so loud that my ears were ringing for hours.", es:"El concert va ser tan fort que els meus oïdes van estar xiulant durant hores."},
@@ -162,7 +168,7 @@ const items = [
   {audio:"f067.mp3", en:"We were so lucky to find a parking spot right in front of the restaurant.", es:"Vam tenir molta sort de trobar un lloc per aparcar just davant del restaurant."},
   {audio:"f068.mp3", en:"I'll never forget the first time I saw the ocean.", es:"Mai oblidaré la primera vegada que vaig veure l'oceà."},
   {audio:"f069.mp3", en:"She's always complaining about her job, but she doesn't do anything to change it.", es:"Sempre es queixa de la seva feina, però no fa res per canviar-la."},
-  {audio:"f070.mp3", en:"It's important to drink enough water every day.", es:"És important beure prou aigua cada dia."},
+  {audio:"f070.mp3", en:"It's important to drink enough water every day.", es:"Esporant beure prou aigua cada dia."},
   {audio:"f071.mp3", en:"I'm looking forward to the weekend so I can relax.", es:"Estic esperant amb ganes el cap de setmana per poder relaxar-me."},
   {audio:"f072.mp3", en:"He's been living in that house for more than fifty years.", es:"Fa més de cinquanta anys que viu en aquella casa."},
   {audio:"f073.mp3", en:"I'm sorry, I forgot to call you back yesterday.", es:"Em sap greu, em vaig oblidar de tornar-te la trucada ahir."},
@@ -182,6 +188,7 @@ let currentIdx = 0, currentMode = 'EN', currentBlockID = 0;
 let audio = new Audio();
 let mediaRecorder;
 let audioChunks = [];
+let recognition;
 let starredIds = JSON.parse(localStorage.getItem('stars_unit5') || '[]');
 
 function getFolderName() { 
@@ -212,10 +219,11 @@ function updateCard(){
     if(!i) return;
     document.getElementById('counter').innerText = `${currentIdx+1} / ${vItems.length}`;
     document.getElementById('es').innerText = i.es;
-    document.getElementById('en').innerText = i.en;
+    document.getElementById('en').innerHTML = `<strong>${i.en}</strong>`;
     document.getElementById('es').className = (currentMode==='ES') ? 'es' : 'es hidden';
     document.getElementById('en').className = (currentMode==='EN') ? 'en' : 'en hidden';
     document.getElementById('starBtn').style.color = starredIds.includes(i.audio) ? '#f59e0b' : '#cbd5e1';
+    document.getElementById('speechFeedback').innerHTML = '';
 }
 
 function getVisibleItems(){
@@ -287,6 +295,36 @@ async function toggleRecord(btnId) {
     }
 }
 
+function toggleMic() {
+    if (!('webkitSpeechRecognition' in window)) { alert("Navegador no compatible"); return; }
+    if (recognition && recognition.active) { recognition.stop(); return; }
+    
+    recognition = new webkitSpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    
+    recognition.onstart = () => { document.getElementById('sttBtn').style.background = '#60a5fa'; };
+    recognition.onend = () => { document.getElementById('sttBtn').style.background = '#dbeafe'; };
+    
+    recognition.onresult = (event) => {
+        const result = event.results[0][0].transcript.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,"");
+        const target = getVisibleItems()[currentIdx].en.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,"");
+        compareSpeech(result, target);
+    };
+    recognition.start();
+}
+
+function compareSpeech(said, target) {
+    const saidWords = said.split(' ');
+    const targetWords = target.split(' ');
+    let html = '';
+    targetWords.forEach((word, i) => {
+        const isCorrect = saidWords.includes(word);
+        html += `<span class="${isCorrect ? 'word-correct' : 'word-error'}">${word}</span> `;
+    });
+    document.getElementById('speechFeedback').innerHTML = html;
+}
+
 function renderBlocks(){
     const container = document.getElementById('blockContainer');
     container.innerHTML = '';
@@ -309,7 +347,7 @@ function toggleList(type){
     const box = document.getElementById('listBox');
     if(!box.classList.contains('hidden')) { box.classList.add('hidden'); return; }
     box.classList.remove('hidden');
-    box.innerHTML = `<h3 style="margin:10px 0">${type==='stars'?'Repàs ★':'Tota la llista'}</h3>`;
+    box.innerHTML = ``;
     const list = type === 'stars' ? items.filter(i => starredIds.includes(i.audio)) : items;
     list.forEach((i, index) => {
         const isStarred = starredIds.includes(i.audio);
@@ -323,7 +361,7 @@ function toggleList(type){
             </div>
             <div style="flex:1">
                 <div style="color:#2563eb; font-weight:700">${i.es}</div>
-                <div class="blur" onclick="this.classList.toggle('revealed')">${i.en}</div>
+                <div class="blur" onclick="this.classList.toggle('revealed')"><strong>${i.en}</strong></div>
             </div>`;
         box.appendChild(itemDiv);
     });

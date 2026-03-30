@@ -30,50 +30,55 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
     font-size: 18px;
 }
 
-.blocks{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0;justify-content:center}
-.block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#f1f5f9;cursor:pointer;box-shadow:0 2px 4px rgba(0,0,0,0.1);transition: 0.2s;}
+.blocks{display:flex;flex-wrap:nowrap;gap:8px;margin:15px 0;justify-content:flex-start;overflow-x:auto;padding:5px 0}
+.block{flex: 0 0 auto;width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#f1f5f9;cursor:pointer;box-shadow:0 2px 4px rgba(0,0,0,0.1);transition: 0.2s;}
 .block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1);box-shadow:0 4px 10px rgba(37,99,235,0.3)}
 
 .lang-label{text-align:center;font-weight:bold;color:#888;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px}
 
-.audio-section{display:flex;align-items:center;justify-content:center;position:relative;margin:30px 0;gap:15px}
+.audio-section{display:flex;align-items:center;justify-content:center;position:relative;margin:30px 0;gap:10px;flex-wrap:nowrap}
 
 .round-btn {
-    width: 80px; height: 80px;
+    width: 60px; height: 60px; /* Tamaño fijo para evitar formas ovaladas */
+    flex: 0 0 60px; 
     border: none;
     border-radius: 50%;
     cursor: pointer;
     display: flex; align-items: center; justify-content: center;
     transition: transform 0.1s, background 0.2s, box-shadow 0.2s;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 0;
 }
 .round-btn:active{transform:scale(0.95)}
 
-#btnNormal { background: #dcfce7; font-size: 35px; color: #166534; }
-#btnSlow { background: #fef08a; font-size: 35px; color: #854d0e; }
-#micBtn { background: #d6e6f5; font-size: 30px; color: #1e40af; } 
-#recBtn { background: #fbcfe8; font-size: 30px; color: #9d174d; }
+#btnNormal { background: #dcfce7; font-size: 28px; color: #166534; }
+#btnSlow { background: #fef08a; font-size: 28px; color: #854d0e; }
+#btnPause { background: #fee2e2; font-size: 24px; color: #b91c1c; }
+#micBtn { background: #d6e6f5; font-size: 26px; color: #1e40af; } 
+#recBtn { background: #fbcfe8; font-size: 26px; color: #9d174d; }
 
-/* Estilos de grabación unificados */
-.recording { background: #ef4444 !important; color: white !important; animation: pulse 1.5s infinite !important; }
+.recording-active { background: #ef4444 !important; color: white !important; animation: pulse 1.5s infinite; }
+.listening { animation: pulse 1.5s infinite; background: #3b82f6 !important; color: white !important; }
 
 @keyframes pulse { 0% {box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);} 70% {box-shadow: 0 0 0 15px rgba(239, 68, 68, 0);} 100% {box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);} }
 
-.star-main { background: none; border: none; font-size: 35px; cursor: pointer; color: #cbd5e1; transition: 0.2s; margin-right: 10px;}
+.star-main { background: none; border: none; font-size: 35px; cursor: pointer; color: #cbd5e1; transition: 0.2s; margin-right: 5px;}
 .star-main.active { color: #f59e0b !important; }
 
 .word{text-align:center;font-size:28px;font-weight:bold;margin:20px 0;min-height:35px}
 .answer{text-align:center;font-size:22px;color:#2563eb;margin-top:10px;display:none;font-weight:bold}
 .pron{color:#9333ea;font-size:16px;margin-top:5px;font-style:italic}
 
-#speech-feedback { font-style: italic; color: #ef4444; font-size: 19px; margin: -10px 0 15px 0; min-height: 24px; text-align: center; transition: 0.2s;}
-.speech-success { color: #22c55e !important; font-weight: bold; font-style: normal !important; }
+#speech-feedback { font-size: 19px; margin: 15px 0; font-weight: bold; min-height: 24px; text-align: center; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
+.word-correct { color: #16a34a; }
+.word-error { color: #dc2626; text-decoration: line-through; }
+.word-missing { color: #94a3b8; font-style: italic; }
 
 .actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:25px}
 .btn{height:60px; border-radius:20px; border:none; font-weight:bold; cursor:pointer; font-size:16px; outline:none; -webkit-tap-highlight-color:transparent; transition: background 0.2s;}
 .btn-reveal{background:#d6e6f5}
 .btn-know{background:#dcfce7; color: #166534;}
-.btn-next{background:#f8d7da}
+.btn-next{background:#fbcfe8}
 
 .list-toggle-btns { display: flex; gap: 10px; margin-top: 20px; }
 .btn-list-main { flex: 1; padding: 16px; border-radius: 20px; border: none; background: #e9d5ff; font-weight: bold; cursor: pointer; font-size: 16px; }
@@ -93,9 +98,6 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .blur { filter: blur(5px); transition: filter 0.2s; cursor: pointer; user-select: none; }
 .blur.revealed { filter: blur(0); }
 
-.vibrate{animation:vibrate 0.3s linear}
-@keyframes vibrate{0%{transform:rotate(0)}25%{transform:rotate(5deg)}50%{transform:rotate(0)}75%{transform:rotate(-5deg)}100%{transform:rotate(0)}}
-
 .check-box-manual {
     position: absolute; top: 85px; right: 22px; width: 24px; height: 24px;
     background: #fff; border: 1.5px solid #22c55e; border-radius: 6px; 
@@ -106,7 +108,7 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 </head>
 <body>
 <div class="card">
-  <div class="counter" id="counterDisplay">0 / 10</div>
+  <div class="counter" id="counterDisplay">0 / 50</div>
   
   <div class="modes-container">
     <div id="mEN" class="mode en active" onclick="setMode('EN')">ENG → CAT</div>
@@ -120,7 +122,8 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
     <button class="star-main" id="starMain" onclick="toggleStar()">★</button>
     <button class="round-btn" id="btnNormal" onclick="playAudio(1.0)">🔊</button>
     <button class="round-btn" id="btnSlow" onclick="playAudio(0.75)">🐢</button>
-    <button class="round-btn" id="micBtn" onclick="startDictation()">🎤</button>
+    <button class="round-btn" id="btnPause" onclick="pauseAudio()">⏸</button>
+    <button class="round-btn" id="micBtn" onclick="toggleMic()">🎤</button>
     <button class="round-btn" id="recBtn" onclick="toggleRecording('recBtn')">🎤</button>
   </div>
   
@@ -195,23 +198,33 @@ const data = [
   {en:"I am going to try", ca:"Ho intentaré", fast:"Gonna"}
 ];
 
+const contractions = {
+    "i'm": "i am", "you're": "you are", "he's": "he is", "she's": "she is", "it's": "it is",
+    "i've": "i have", "you've": "you have", "we've": "we have", "they've": "they have",
+    "i'd": "i would", "you'd": "you would", "he'd": "he would", "she'd": "she would",
+    "don't": "do not", "doesn't": "does not", "didn't": "did not", "can't": "cannot",
+    "won't": "will not", "isnt": "is not", "arent": "are not"
+};
+const expanded = {};
+for (let k in contractions) expanded[contractions[k]] = k;
+
 let mode="EN", currentBlockID='T', currentBlockData=[], pos=0, learnedCount=0, totalInBlock=50;
-let mediaRecorder;
-let audioChunks = [];
-let isRecording = false;
-let currentRecordingBtn = null;
+let mediaRecorder, audioChunks = [], isRecording = false;
+const audioObj = document.getElementById("audio");
+
+/* --- GESTIÓN DE MICRÓFONOS --- */
+function stopAllMics() {
+    if (recognition && isListening) { recognition.stop(); isListening = false; }
+    if (mediaRecorder && mediaRecorder.state !== "inactive") { mediaRecorder.stop(); isRecording = false; }
+    document.querySelectorAll('.recording-active, .listening').forEach(b => {
+        b.classList.remove('recording-active', 'listening');
+    });
+}
 
 async function toggleRecording(btnId) {
   const btn = document.getElementById(btnId);
-  if (isRecording && currentRecordingBtn === btnId) {
-      stopRecordingProcess(btn);
-      return;
-  }
-  if (isRecording && currentRecordingBtn !== btnId) {
-      const oldBtn = document.getElementById(currentRecordingBtn);
-      stopRecordingProcess(oldBtn);
-      await new Promise(r => setTimeout(r, 100));
-  }
+  if (isRecording) { stopAllMics(); return; }
+  stopAllMics();
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     mediaRecorder = new MediaRecorder(stream);
@@ -219,64 +232,64 @@ async function toggleRecording(btnId) {
     mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
     mediaRecorder.onstop = () => {
       const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' });
-      const audioUrl = URL.createObjectURL(audioBlob);
-      const playRec = new Audio(audioUrl);
-      playRec.play();
+      new Audio(URL.createObjectURL(audioBlob)).play();
     };
     mediaRecorder.start();
     isRecording = true;
-    currentRecordingBtn = btnId;
-    btn.classList.add("recording"); // Efecto visual tipo index8
-  } catch (err) { 
-    isRecording = false;
-    currentRecordingBtn = null;
-  }
+    btn.classList.add("recording-active");
+  } catch (err) { alert("Micro no disponible"); }
 }
 
-function stopRecordingProcess(btn) {
-    if (mediaRecorder && mediaRecorder.state !== "inactive") mediaRecorder.stop();
-    isRecording = false;
-    currentRecordingBtn = null;
-    if (btn) btn.classList.remove("recording");
-}
-
+/* --- RECONOCIMIENTO DE VOZ (MICRO AZUL) --- */
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-const recognition = SpeechRecognition ? new SpeechRecognition() : null;
-if (recognition) { recognition.lang = 'en-US'; recognition.interimResults = false; }
-
-function startDictation() {
-    if (!recognition || currentBlockData.length === 0) return;
-    const targetIdx = currentBlockData[pos].realIdx;
-    const btn = document.getElementById("micBtn");
-    const feedback = document.getElementById("speech-feedback");
-    
-    const w = document.getElementById("word");
-    if (mode === "EN" && w.innerText === "") {
-        w.innerText = currentBlockData[pos].en;
-    }
-    
-    btn.classList.add("listening");
-    if (feedback) { feedback.textContent = "Escoltant..."; feedback.classList.remove("speech-success"); }
-    recognition.start();
-    recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,"").trim();
-        const original = data[targetIdx].en.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,"").trim();
-        if (transcript === original) {
-            if (feedback) { feedback.innerHTML = `"${event.results[0][0].transcript}" 🎉`; feedback.classList.add("speech-success"); }
-            setTimeout(() => { if(feedback) feedback.textContent = ""; know(); }, 1200);
-        } else { if (feedback) feedback.textContent = `"${event.results[0][0].transcript}"`; }
-    };
-    recognition.onerror = () => { if(feedback) feedback.textContent = "Error."; };
-    recognition.onend = () => {
-        btn.classList.remove("listening");
-        if (mode === "EN" && document.getElementById("answer").style.display === "none") {
-             setTimeout(() => {
-                 if (document.getElementById("answer").style.display === "none") w.innerText = "";
-             }, 1000);
-        }
+let recognition, isListening = false;
+if (SpeechRecognition) {
+    recognition = new SpeechRecognition();
+    recognition.lang = 'en-US'; recognition.interimResults = false;
+    recognition.onstart = () => { isListening = true; document.getElementById("micBtn").classList.add("listening"); };
+    recognition.onend = () => { isListening = false; document.getElementById("micBtn").classList.remove("listening"); };
+    recognition.onresult = (e) => {
+        const transcript = e.results[0][0].transcript.toLowerCase();
+        compareSentences(currentBlockData[pos].en, transcript);
     };
 }
 
+function toggleMic() {
+    if (!recognition) return;
+    if (isListening) { recognition.stop(); } 
+    else { 
+        stopAllMics(); 
+        document.getElementById("speech-feedback").innerHTML = ""; // Borra antes de escribir
+        recognition.start(); 
+    }
+}
+
+function normalize(w) { return w ? w.toLowerCase().replace(/[.,?!"]/g, "").trim() : ""; }
+
+function compareSentences(original, spoken) {
+    const feedback = document.getElementById("speech-feedback");
+    const origWords = original.split(/\s+/);
+    const spokenWords = spoken.split(/\s+/);
+    let resultHTML = ""; let sIdx = 0;
+
+    for (let i = 0; i < origWords.length; i++) {
+        let matched = false; const oNorm = normalize(origWords[i]);
+        if (sIdx < spokenWords.length) {
+            const sNorm = normalize(spokenWords[sIdx]);
+            if (oNorm === sNorm || contractions[oNorm] === sNorm || expanded[oNorm] === sNorm) {
+                resultHTML += `<span class="word-correct">${spokenWords[sIdx]}</span> `;
+                sIdx++; matched = true;
+            }
+        }
+        if (!matched) resultHTML += `<span class="word-missing">${origWords[i]}</span> `;
+    }
+    feedback.innerHTML = resultHTML;
+    if (normalize(original) === normalize(spoken)) {
+        setTimeout(() => { feedback.innerHTML = ""; know(); }, 1200);
+    }
+}
+
+/* --- LÓGICA DE BLOQUES Y NAVEGACIÓN --- */
 function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "fast_8"; }
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
 
@@ -295,12 +308,12 @@ function initBlocks(){
   }
   const blockToLoad = (savedBlock !== null) ? (savedBlock === 'T' ? 'T' : parseInt(savedBlock)) : 'T';
   setBlock(blockToLoad);
-  const card = document.querySelector(".card");
-  const box = document.createElement("div");
-  box.className = "check-box-manual";
-  if (localStorage.getItem(getFolderName())) { box.innerHTML = "✓"; box.classList.add('marked'); }
-  box.onclick = function() { markAsDone(this); };
-  card.appendChild(box);
+  
+  if (localStorage.getItem(getFolderName())) {
+      const box = document.createElement("div");
+      box.className = "check-box-manual marked"; box.innerHTML = "✓";
+      document.querySelector(".card").appendChild(box);
+  }
 }
 
 function setBlock(id){
@@ -315,8 +328,8 @@ function setBlock(id){
     totalInBlock=10;
   }
   pos=0;
-  document.querySelectorAll(".block").forEach(b=>{
-    const isThis = (id==='T' && b.innerText==='T') || (b.innerText == (id+1));
+  document.querySelectorAll(".block").forEach((b, idx)=>{
+    const isThis = (id==='T' && b.innerText==='T') || (id !== 'T' && b.innerText == (id+1));
     b.classList.toggle("active", isThis);
   });
   update(true);
@@ -328,7 +341,7 @@ function update(newWord){
   const a=document.getElementById("answer");
   const feedback = document.getElementById("speech-feedback");
   a.style.display="none";
-  if(feedback) feedback.textContent = "";
+  feedback.innerHTML = "";
   if(currentBlockData.length===0){w.innerText="Bloc completat!"; return;}
   const item=currentBlockData[pos];
   
@@ -336,51 +349,40 @@ function update(newWord){
   
   if(mode==="EN"){
     lb.innerText="ANGLÈS RÀPID"; 
-    w.innerText="";
+    w.innerText=item.en;
     if(newWord) playAudio(1.0);
   }else{
     lb.innerText="CATALÀ";
     w.innerHTML=`<span style="color:#2563eb;">${item.ca}</span>`;
   }
-  document.getElementById("counterDisplay").innerText=`${learnedCount} / ${totalInBlock}`;
-}
-
-function toggleStar(forcedIdx = null) {
-  const idx = forcedIdx !== null ? forcedIdx : (currentBlockData.length > 0 ? currentBlockData[pos].realIdx : null);
-  if (idx === null) return;
-  if (starredIds.includes(idx)) { starredIds = starredIds.filter(id => id !== idx); } 
-  else { starredIds.push(idx); }
-  localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
-  if (forcedIdx === null) { document.getElementById("starMain").classList.toggle("active", starredIds.includes(idx)); }
+  document.getElementById("counterDisplay").innerText=`${learnedCount} / ${currentBlockData.length + learnedCount}`;
 }
 
 function playAudio(speed, forcedIdx = null) {
-  let finalIdx;
-  if (forcedIdx !== null) finalIdx = forcedIdx;
-  else { if (currentBlockData.length === 0) return; finalIdx = currentBlockData[pos].realIdx; }
+  let finalIdx = forcedIdx !== null ? forcedIdx : (currentBlockData.length > 0 ? currentBlockData[pos].realIdx : null);
+  if (finalIdx === null) return;
   const num = (finalIdx + 1).toString().padStart(3, "0");
-  const a = document.getElementById("audio");
-  a.src = "f" + num + ".mp3";
-  a.playbackRate = speed;
-  if(forcedIdx === null) {
-    const btn = speed === 1.0 ? document.getElementById('btnNormal') : document.getElementById('btnSlow');
-    if(btn) { btn.classList.remove('vibrate'); void btn.offsetWidth; btn.classList.add('vibrate'); }
-  }
-  a.play().catch(() => {});
+  audioObj.src = "f" + num + ".mp3";
+  audioObj.playbackRate = speed;
+  audioObj.play().catch(() => {});
 }
+
+function pauseAudio() { audioObj.pause(); }
 
 function toggleReveal(){
   if(currentBlockData.length>0){
-    const item=currentBlockData[pos];
     const a=document.getElementById("answer");
-    const w=document.getElementById("word");
+    const item=currentBlockData[pos];
     if(a.style.display === "none") {
         if(mode === "EN") {
-            w.innerText = item.en;
             a.innerHTML = `<div class="pron">Sona com: ${item.fast}</div><span style="color:#2563eb;">${item.ca}</span>`;
-        } else { a.innerHTML = `<div>${item.en}</div><div class="pron">Sona com: ${item.fast}</div>`; }
+        } else { 
+            a.innerHTML = `<div>${item.en}</div><div class="pron">Sona com: ${item.fast}</div>`; 
+        }
         a.style.display = "block";
-    } else { if(mode === "EN") w.innerText = ""; a.style.display = "none"; }
+    } else { 
+        a.style.display = "none"; 
+    }
   }
 }
 
@@ -405,6 +407,15 @@ function setMode(m){
   update(true);
 }
 
+function toggleStar(forcedIdx = null) {
+  const idx = forcedIdx !== null ? forcedIdx : (currentBlockData.length > 0 ? currentBlockData[pos].realIdx : null);
+  if (idx === null) return;
+  if (starredIds.includes(idx)) { starredIds = starredIds.filter(id => id !== idx); } 
+  else { starredIds.push(idx); }
+  localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
+  if (forcedIdx === null) update();
+}
+
 function toggleList(type){
   const l=document.getElementById("list");
   if(l.style.display==="block" && l.dataset.type === type){l.style.display="none"; return;}
@@ -415,14 +426,11 @@ function toggleList(type){
 
 function renderList(type) {
   const l = document.getElementById("list");
-  l.innerHTML = type === 'stars' ? "<b>Favorits (★):</b><br><br>" : "<b>Llista del bloc:</b><br><br>";
-  let listToRender = [];
-  if (type === 'stars') listToRender = data.map((item, index) => ({...item, realIdx: index})).filter(i => starredIds.includes(i.realIdx));
-  else {
-    if (currentBlockID === 'T') listToRender = data.map((item, index) => ({...item, realIdx: index}));
-    else { let start = currentBlockID * 10; listToRender = data.slice(start, start + 10).map((item, index) => ({...item, realIdx: start + index})); }
-  }
-  if (listToRender.length === 0) { l.innerHTML += "<i>Buit.</i>"; return; }
+  l.innerHTML = "";
+  let listToRender = (type === 'stars') ? data.map((it, idx) => ({...it, realIdx: idx})).filter(i => starredIds.includes(i.realIdx)) : 
+                    (currentBlockID === 'T' ? data.map((it, idx) => ({...it, realIdx: idx})) : data.slice(currentBlockID * 10, currentBlockID * 10 + 10).map((it, idx) => ({...it, realIdx: currentBlockID * 10 + idx})));
+
+  if (listToRender.length === 0) { l.innerHTML = "<i>Buit.</i>"; return; }
 
   listToRender.forEach((item) => {
     const isStarred = starredIds.includes(item.realIdx);
@@ -437,16 +445,11 @@ function renderList(type) {
       </div>
       <div class="list-content">
         <div style="color:#2563eb; font-weight:bold; font-size:14px;">${item.ca}</div>
-        <div id="list-rev-${item.realIdx}" class="blur" style="font-weight:bold; font-size:16px;" onclick="this.classList.toggle('revealed')">${item.en} (${item.fast})</div>
+        <div class="blur" style="font-weight:bold; font-size:16px;" onclick="this.classList.toggle('revealed')">${item.en} (${item.fast})</div>
       </div>
     `;
     l.appendChild(itemDiv);
   });
-}
-
-function markAsDone(element) {
-    localStorage.setItem(getFolderName(), new Date().toISOString());
-    element.innerHTML = "✓"; element.classList.add('marked'); alert("Lliçó marcada ✅");
 }
 
 initBlocks();

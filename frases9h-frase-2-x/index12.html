@@ -28,16 +28,8 @@ main{display:flex;justify-content:center;padding:24px}
 .audio-btn.slow{background:#fef08a;}
 .audio-btn.pause{background:#fee2e2;} 
 .audio-btn.rec{background:#fbcfe8; color: #9d174d;}
-.audio-btn.stt{background:#dbeafe;}
 .audio-btn.rec.active {background:#f87171; color:white; animation:pulse 1.5s infinite}
-.listening { animation: pulse 1.5s infinite !important; background: #3b82f6 !important; color: white !important; }
-
 @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.05);} 100% {transform: scale(1);} }
-
-#speechFeedback { font-size: 18px; margin: 15px 0; font-weight: bold; min-height: 28px; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
-.word-correct { color: #16a34a; }
-.word-error { color: #dc2626; text-decoration: line-through; }
-.word-missing { color: #94a3b8; font-style: italic; }
 
 .es{font-size:19px;color:#2563eb;margin-top:14px;font-weight:600}
 .en{font-size:19px;color:#0f172a;margin-top:14px;font-weight:700}
@@ -49,6 +41,7 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 .know{background:#dcfce7}
 .next{background:#fbcfe8}
 
+/* ESTILOS DE LA LISTA (COPIADOS DEL INDEX) */
 #listSection { margin-top: 25px; display: none; text-align: left; background: #f8fafc; border-radius: 20px; padding: 15px; border: 1px solid #e2e8f0; }
 .list-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid #e2e8f0; }
 .list-controls-row { display: flex; flex-direction: column; gap: 6px; }
@@ -86,11 +79,9 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
   <button class="audio-btn" onclick="playAudio(1.0)">🔊</button>
   <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
   <button class="audio-btn rec" id="recBtn" onclick="toggleRecord('recBtn')">🎤</button>
-  <button class="audio-btn stt" id="sttBtn" onclick="toggleMic()">🎤</button>
  </div>
  
  <div id="es" class="es"></div>
- <div id="speechFeedback"></div>
  <div id="en" class="en"></div>
 
  <div class="buttons">
@@ -142,7 +133,7 @@ const data = [
   {en: "Watch your step while you're going down the stairs because the light bulb on the second floor has burnt out and it's completely dark.", es: "Ten cuidado por dónde pisas mientras bajas las escaleras porque la bombilla del segundo piso se ha fundido y está completamente a oscuras"},
   {en: "I should have taken a map with me, because even though I've been to this forest before, all the paths look exactly the same when it's foggy.", es: "Debería haber llevado un mapa conmigo, porque aunque he estado en este bosque antes, todos los caminos parecen exactamente iguales cuando hay niebla"},
   {en: "You don't need to bring any snacks to the meeting, as the company will provide a full lunch and plenty of drinks for everyone attending.", es: "No hace falta que traigas nada de picar a la reunión, ya que la empresa proporcionará un almuerzo completo y muchas bebidas para todos los asistentes"},
-  {en: "Make sure you lock the back door before you go to bed, because the lock has been a bit split lately and it doesn't always close properly.", es: "Asegúrate de cerrar la puerta trasera antes de irte a la cama, porque la cerradura ha estado un poco rígida últimamente y no siempre cierra bien"},
+  {en: "Make sure you lock the back door before you go to bed, because the lock has been a bit stiff lately and it doesn't always close properly.", es: "Asegúrate de cerrar la puerta trasera antes de irte a la cama, porque la cerradura ha estado un poco rígida últimamente y no siempre cierra bien"},
   {en: "I'd rather wait for the sales to buy that new laptop, since the current price is way too high and I'm sure it will be much cheaper next month.", es: "Preferiría esperar a las rebajas para comprar ese portátil nuevo, ya que el precio actual es demasiado alto y estoy seguro de que será mucho más barato el mes que viene"},
   {en: "Be careful not to spill your coffee on the keyboard, as liquid damage is usually not covered by the warranty and it's very expensive to fix.", es: "Ten cuidado de no derramar el café sobre el teclado, ya que los daños por líquidos no suelen estar cubiertos por la garantía y repararlo es muy caro"},
   {en: "You should put on some sunscreen even if it looks cloudy, because the UV rays can still burn your skin when you're outside for a long time.", es: "Deberías ponerte protector solar aunque parezca que está nublado, porque los rayos UV aún pueden quemarte la piel cuando estás fuera mucho tiempo"},
@@ -162,106 +153,18 @@ const data = [
   {en: "Make sure you save your work every few minutes, because the power has been going out lately and you don't want to lose all your progress.", es: "Asegúrate de guardar tu trabajo cada pocos minutos, porque la luz se ha estado yendo últimamente y no querrás perder todo tu progreso"}
 ];
 
-let currentBlockData = [], pos = 0, mode = "EN", mediaRecorder, audioChunks = [], isRecording = false;
+let currentBlockData = [], pos = 0, mode = "EN", mediaRecorder, audioChunks = [];
 let starredIds = JSON.parse(localStorage.getItem('starred_b1_v2') || '[]');
 
-/* --- LÓGICA DE RECONOCIMIENTO DE VOZ (MICRO AZUL) --- */
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-let recognition, isListening = false;
-
-const contractions = {
-    "i'd": "i would", "you'd": "you would", "he'd": "he would", "she'd": "she would", 
-    "it'd": "it would", "we'd": "we would", "they'd": "they would", "i'm": "i am"
-};
-const expanded = {};
-for (let k in contractions) expanded[contractions[k]] = k;
-
-function normalize(w) { return w ? w.toLowerCase().replace(/[.,?!"]/g, "").trim() : ""; }
-
-if (SpeechRecognition) {
-    recognition = new SpeechRecognition();
-    recognition.lang = 'en-US'; recognition.interimResults = false; recognition.continuous = true;
-    recognition.onstart = () => { isListening = true; document.getElementById("sttBtn").classList.add("listening"); };
-    recognition.onend = () => { isListening = false; document.getElementById("sttBtn").classList.remove("listening"); };
-    recognition.onresult = (e) => {
-        let transcript = "";
-        for (let i = e.resultIndex; i < e.results.length; i++) transcript += e.results[i][0].transcript + " ";
-        compareSentences(currentBlockData[pos].en, transcript.trim());
-    };
-}
-
-function compareSentences(originalText, spokenText) {
-    const feedbackDiv = document.getElementById("speechFeedback");
-    const origWords = originalText.split(/\s+/);
-    const spokenWords = spokenText.split(/\s+/);
-    let resultHTML = ""; let sIdx = 0; 
-    for (let i = 0; i < origWords.length; i++) {
-        let matched = false; const oNorm = normalize(origWords[i]);
-        if (sIdx < spokenWords.length) {
-            const sNorm = normalize(spokenWords[sIdx]);
-            if (oNorm === sNorm || contractions[oNorm] === sNorm || expanded[oNorm] === sNorm) {
-                resultHTML += `<span class="word-correct">${spokenWords[sIdx]}</span> `;
-                sIdx++; matched = true;
-            }
-        }
-        if (!matched) {
-            let foundAhead = false;
-            for (let look = sIdx; look < sIdx + 3 && look < spokenWords.length; look++) {
-                if (normalize(spokenWords[look]) === oNorm) {
-                    for (let skip = sIdx; skip < look; skip++) resultHTML += `<span class="word-error">${spokenWords[skip]}</span> `;
-                    resultHTML += `<span class="word-correct">${spokenWords[look]}</span> `;
-                    sIdx = look + 1; foundAhead = true; matched = true; break;
-                }
-            }
-            if (!foundAhead) resultHTML += `<span class="word-missing">${origWords[i]}</span> `;
-        }
-    }
-    while (sIdx < spokenWords.length) { resultHTML += `<span class="word-error">${spokenWords[sIdx]}</span> `; sIdx++; }
-    feedbackDiv.innerHTML = resultHTML;
-}
-
-async function toggleMic() {
-    if (!recognition) return;
-    if (isListening) { recognition.stop(); } 
-    else { 
-        if (isRecording) stopRecordingManual(); 
-        document.getElementById("speechFeedback").innerHTML = "";
-        recognition.start(); 
-    }
-}
-
-/* --- GRABADORA MANUAL (MICRO ROSA) --- */
-async function toggleRecord(btnId) {
-  const btn = document.getElementById(btnId);
-  if (isRecording) { stopRecordingManual(); return; }
-  if (isListening) recognition.stop();
-  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-  mediaRecorder = new MediaRecorder(stream);
-  audioChunks = [];
-  mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-  mediaRecorder.onstop = () => {
-    const blob = new Blob(audioChunks, { type: 'audio/wav' });
-    new Audio(URL.createObjectURL(blob)).play();
-  };
-  mediaRecorder.start(); 
-  isRecording = true;
-  btn.classList.add("active");
-}
-
-function stopRecordingManual() {
-    if (mediaRecorder && mediaRecorder.state !== "inactive") mediaRecorder.stop();
-    isRecording = false;
-    document.getElementById("recBtn").classList.remove("active");
-}
-
-/* --- LÓGICA BASE --- */
 function initBlocks() {
   const container = document.getElementById("blockContainer");
   const numBlocks = Math.ceil(data.length / 10);
   container.innerHTML = "";
+  
   const allBtn = document.createElement("button");
   allBtn.className = "block all-btn"; allBtn.textContent = "T";
   allBtn.onclick = () => loadAll(); container.appendChild(allBtn);
+
   for (let i = 0; i < numBlocks; i++) {
     const btn = document.createElement("button");
     btn.className = "block"; btn.textContent = i + 1;
@@ -287,7 +190,6 @@ function update() {
   const item = currentBlockData[pos];
   const esDiv = document.getElementById("es"), enDiv = document.getElementById("en");
   document.getElementById("mainStar").classList.toggle("active", starredIds.includes(item.realIdx));
-  document.getElementById("speechFeedback").innerHTML = "";
   
   esDiv.innerHTML = item.es; enDiv.innerHTML = item.en;
   esDiv.classList.toggle("hidden", mode === "EN");
@@ -314,12 +216,30 @@ function playAudio(speed, text) {
 }
 function pauseAudio() { window.speechSynthesis.cancel(); }
 
+async function toggleRecord(btnId) {
+  const btn = document.getElementById(btnId);
+  if (mediaRecorder && mediaRecorder.state === "recording") {
+    mediaRecorder.stop(); btn.classList.remove("active"); return;
+  }
+  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  mediaRecorder = new MediaRecorder(stream);
+  audioChunks = [];
+  mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+  mediaRecorder.onstop = () => {
+    const blob = new Blob(audioChunks, { type: 'audio/wav' });
+    new Audio(URL.createObjectURL(blob)).play();
+  };
+  mediaRecorder.start(); btn.classList.add("active");
+}
+
 function toggleList(type) {
     const listSec = document.getElementById("listSection");
     if (listSec.style.display === "block") { listSec.style.display = "none"; return; }
     listSec.style.display = "block";
     listSec.innerHTML = "";
+    
     let listItems = (type === 'stars') ? data.map((it, i) => ({...it, realIdx: i})).filter(it => starredIds.includes(it.realIdx)) : currentBlockData;
+    
     listItems.forEach((item, idx) => {
         const isStarred = starredIds.includes(item.realIdx);
         const row = document.createElement("div");
@@ -343,7 +263,7 @@ function toggleList(type) {
 function toggleStarList(id, type) {
     starredIds = starredIds.includes(id) ? starredIds.filter(i => i !== id) : [...starredIds, id];
     localStorage.setItem('starred_b1_v2', JSON.stringify(starredIds));
-    update(); toggleList(type); toggleList(type);
+    update(); toggleList(type); toggleList(type); // Refresca lista
 }
 
 function markAsDone(el) {

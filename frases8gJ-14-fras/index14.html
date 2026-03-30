@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fast English - 14</title>
+<title>Fast English - 8</title>
 <style>
 body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .card{max-width:720px;margin:20px auto;background:#fff;border-radius:24px;padding:24px;box-shadow:0 8px 18px rgba(0,0,0,.15);position:relative}
@@ -54,6 +54,7 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 #micBtn { background: #d6e6f5; font-size: 30px; color: #1e40af; } 
 #recBtn { background: #fbcfe8; font-size: 30px; color: #9d174d; }
 
+/* Estilos de grabación unificados */
 .recording { background: #ef4444 !important; color: white !important; animation: pulse 1.5s infinite !important; }
 
 @keyframes pulse { 0% {box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);} 70% {box-shadow: 0 0 0 15px rgba(239, 68, 68, 0);} 100% {box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);} }
@@ -109,7 +110,7 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
   
   <div class="modes-container">
     <div id="mEN" class="mode en active" onclick="setMode('EN')">ENG → CAT</div>
-    <div class="unit-number">14</div>
+    <div class="unit-number">8</div>
     <div id="mES" class="mode es" onclick="setMode('ES')">CAT → ENG</div>
   </div>
   
@@ -225,7 +226,7 @@ async function toggleRecording(btnId) {
     mediaRecorder.start();
     isRecording = true;
     currentRecordingBtn = btnId;
-    btn.classList.add("recording");
+    btn.classList.add("recording"); // Efecto visual tipo index8
   } catch (err) { 
     isRecording = false;
     currentRecordingBtn = null;
@@ -276,7 +277,7 @@ function startDictation() {
     };
 }
 
-function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "fast_14"; }
+function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "fast_8"; }
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
 
 function initBlocks(){
@@ -436,7 +437,7 @@ function renderList(type) {
       </div>
       <div class="list-content">
         <div style="color:#2563eb; font-weight:bold; font-size:14px;">${item.ca}</div>
-        <div id="list-rev-${item.realIdx}" class="blur" style="font-weight:bold; font-size:16px; margin-top: 4px;" onclick="this.classList.toggle('revealed')">${item.en} (${item.fast})</div>
+        <div id="list-rev-${item.realIdx}" class="blur" style="font-weight:bold; font-size:16px;" onclick="this.classList.toggle('revealed')">${item.en} (${item.fast})</div>
       </div>
     `;
     l.appendChild(itemDiv);

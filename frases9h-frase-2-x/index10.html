@@ -3,110 +3,130 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vocabulari Neural B1 - Unitat 9</title>
+<title>Vocabulari Neural B1 - Pràctica Completa</title>
 <style>
-body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
-header{padding:8px 4px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center;align-items:center;gap:4px}
-.unit-number{font-size:22px;font-weight:800;color:#2563eb;margin:0 8px;min-width:20px;text-align:center}
-.mode-btns button{padding:6px 10px;border:none;border-radius:12px;font-weight:700;cursor:pointer;font-size:11px;white-space:nowrap;line-height:1.2}
-.mode-en{background:#dbeafe}
-.mode-es{background:#fde68a}
+body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
+.card{max-width:720px;margin:20px auto;background:#fff;border-radius:24px;padding:24px;box-shadow:0 8px 18px rgba(0,0,0,.15);position:relative}
 
-main{display:flex;justify-content:center;padding:24px}
-.card{position:relative;width:100%;max-width:560px;background:#ffffff;border-radius:28px;padding:32px;box-shadow:0 10px 24px rgba(0,0,0,0.06);text-align:center}
-.counter{position:absolute;top:18px;left:22px;font-weight:800;color:#2563eb}
-.check-box-manual { position: absolute; top: 18px; right: 22px; width: 24px; height: 24px; background: #fff; border: 1.5px solid #22c55e; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 14px; color: transparent; }
-.check-box-manual.marked { background: #22c55e !important; color: white !important; }
+.modes-container { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.unit-number { font-weight: bold; font-size: 20px; color: #2563eb; padding: 0 5px; }
+.mode{flex:1;text-align:center;padding:14px;border-radius:24px;font-weight:bold;cursor:pointer;border:2px solid transparent}
+.mode.en{background:#d6e6f5}
+.mode.es{background:#f4d6e6}
+.mode.active{border-color:#999;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
 
-.blocks{display:flex;flex-wrap:nowrap;gap:6px;justify-content:flex-start;margin:15px 0 20px;overflow-x:auto;padding:5px 0 5px 10px}
-.block{flex: 0 0 auto;width:32px;height:32px;border-radius:50%;border:none;background:#f1f5f9;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.block.active{background:#2563eb !important;color:#fff !important}
-.block.all-btn { background: #e2e8f0; color: #475569; }
+/* Botón T estilizado como los modos */
+.mode.t-toggle { background: #f1f5f9; flex: 0.3; border: 1px solid #cbd5e1; }
 
-.audio-container { display: flex; justify-content: center; gap: 8px; margin: 10px 0; align-items: center; }
-.audio-btn{width:52px;height:52px;border-radius:50%;border:none;background:#dbeafe;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.audio-btn.slow{background:#fef08a;}
-.audio-btn.pause{background:#fee2e2;} 
-.audio-btn.rec{background:#fbcfe8; color: #9d174d;}
-.audio-btn.stt{background:#dbeafe;}
-.audio-btn.rec.active {background:#f87171; color:white; animation:pulse 1.5s infinite}
-.listening { animation: pulse 1.5s infinite !important; background: #3b82f6 !important; color: white !important; }
+.blocks{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0; align-items: center;}
+.block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#f1f5f9;cursor:pointer;transition:0.2s}
+.block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1);box-shadow:0 4px 10px rgba(37,99,235,0.3)}
 
-@keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.05);} 100% {transform: scale(1);} }
+.main-box-container{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;margin:20px 0}
+.audio-controls{display:flex;align-items:center;gap:12px;margin-bottom:15px}
 
-#speechFeedback { font-size: 18px; margin: 15px 0; font-weight: bold; min-height: 28px; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
+.audio-btn{font-size:35px;background:#dcfce7;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
+.audio-btn.slow{background:#fef08a;font-size:28px}
+.audio-btn.pause{background:#fee2e2;font-size:28px}
+.audio-btn.rec{background:#fbcfe8;font-size:28px} 
+.audio-btn.rec.active {background:#f87171 !important;color:white !important;animation:pulse 1.5s infinite}
+.audio-btn.stt{background:#dbeafe;font-size:28px} 
+.audio-btn.stt.listening {background:#3b82f6 !important;color:white !important;animation:pulse 1.5s infinite}
+
+@keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.1);} 100% {transform: scale(1);} }
+
+.star-main { position: absolute; left: 24px; top: 120px; background: none; border: none; font-size: 35px; cursor: pointer; color: #cbd5e1; transition: 0.2s; z-index: 5; }
+.star-main.active { color: #f59e0b !important; }
+
+.progress-wrapper { width: 100%; max-width: 300px; margin: 10px 0; }
+input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 5px; accent-color: #2563eb; }
+
+.counter-side{position:absolute;right:10px;top:-22px;font-weight:bold;color:#2563eb;font-size:22px}
+
+#word{font-size:22px;font-weight:800;margin:20px 0;line-height:1.4;min-height:120px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 50px}
+.txt-es{color:#2563eb} 
+#answer{font-size:18px;font-weight:bold;margin-top:-10px;margin-bottom:20px;text-align:center;min-height:30px;color:#666}
+
+#speechFeedback { font-size: 18px; margin-top: 10px; font-weight: bold; min-height: 28px; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; display: none; }
 .word-correct { color: #16a34a; }
 .word-error { color: #dc2626; text-decoration: line-through; }
-.word-missing { color: #94a3b8; font-style: italic; }
 
-.es{font-size:19px;color:#2563eb;margin-top:14px;font-weight:600}
-.en{font-size:19px;color:#0f172a;margin-top:14px;font-weight:700}
-.hidden{display:none}
+.actions{display:flex;gap:12px}
+.btn{flex:1;padding:18px;border-radius:18px;border:none;font-weight:bold;font-size:18px;cursor:pointer}
+.btn-know{background:#dcfce7}
+.btn-next{background:#fbcfe8}
 
-.buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:22px}
-button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;cursor:pointer}
-.reveal{background:#e0f2fe}
-.know{background:#dcfce7}
-.next{background:#fbcfe8}
+.list-toggle-btns { display: flex; gap: 10px; margin-top: 20px; }
+.btn-list-main { flex: 1; padding: 12px; border-radius: 12px; border: none; background: #e9d5ff; font-weight: bold; cursor: pointer; }
+.btn-stars-main { background: #fef3c7; color: #92400e; }
 
-#listSection { margin-top: 25px; display: none; text-align: left; background: #f8fafc; border-radius: 20px; padding: 15px; border: 1px solid #e2e8f0; }
-.list-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid #e2e8f0; }
-.list-controls-row { display: flex; flex-direction: column; gap: 6px; }
-.mini-btn { width: 34px; height: 34px; border-radius: 10px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; }
-.btn-audio { background: #dcfce7; }
-.btn-rec-mini { background: #fbcfe8; color: #9d174d; }
-.star-btn-list { background: none; border: none; font-size: 20px; color: #cbd5e1; cursor: pointer; }
-.star-btn-list.active { color: #f59e0b; }
-.list-texts { flex: 1; }
-.list-txt-es { color: #2563eb; font-weight: 700; font-size: 14px; margin-bottom: 2px; }
-.list-txt-en { color: #0f172a; font-weight: 800; font-size: 15px; }
+#list{margin-top:20px;background:#fff;border-radius:15px;display:none;border:1px solid #ddd;padding:10px}
+.list-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid #eee; }
+.list-btns-col { display: flex; flex-direction: column; gap: 8px; align-items: center; }
+.list-texts { flex-grow: 1; display: flex; flex-direction: column; }
+.mini-btn { border: none; border-radius: 8px; width: 36px; height: 36px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
+.btn-audio-list { background: #dcfce7; }
 
-.list-toggle-btns { display: flex; gap: 10px; margin-top: 15px; }
-.list-toggle-btns button { flex: 1; padding: 12px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; font-size: 12px; }
+.star-list { background: none; border: none; font-size: 22px; color: #cbd5e1; cursor: pointer; padding: 0; }
+.star-list.active { color: #f59e0b !important; }
+
+.check-box-manual {
+    position: absolute; top: 10px; right: 10px; width: 24px; height: 24px;
+    background: #fff; border: 1.5px solid #22c55e;
+    border-radius: 6px; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; z-index: 10;
+}
+.check-box-manual.marked { background: #22c55e; color: white; }
 </style>
 </head>
 <body>
 
-<header>
- <div class="mode-btns"><button class="mode-en" onclick="setMode('EN')">ENG → ESP</button></div>
- <div class="unit-number">9</div>
- <div class="mode-btns"><button class="mode-es" onclick="setMode('ES')">ESP → ENG</button></div>
-</header>
-
-<main>
 <div class="card">
- <div class="counter" id="counter">0 / 0</div>
- <div class="check-box-manual" id="mainCheck" onclick="markAsDone(this)"></div>
+  <div class="modes-container">
+    <div id="modeEN" class="mode en active" onclick="setMode('EN')">ENG → ESP</div>
+    <span class="unit-number">9</span>
+    <div id="modeES" class="mode es" onclick="setMode('ES')">ESP → ENG</div>
+    <div class="mode t-toggle" onclick="toggleList('all')">T</div>
+  </div>
 
- <div id="blockContainer" class="blocks"></div>
+  <div class="blocks" id="blocksContainer"></div>
 
- <div class="audio-container">
-  <button id="mainStar" style="background:none; border:none; font-size:32px; cursor:pointer; color:#cbd5e1;" onclick="toggleStarCurrent()">★</button>
-  <button class="audio-btn slow" onclick="playAudio(0.75)">🐢</button>
-  <button class="audio-btn" onclick="playAudio(1.0)">🔊</button>
-  <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
-  <button class="audio-btn rec" id="recBtn" onclick="toggleRecord('recBtn')">🎤</button>
-  <button class="audio-btn stt" id="sttBtn" onclick="toggleMic()">🎤</button>
- </div>
- 
- <div id="es" class="es"></div>
- <div id="speechFeedback"></div>
- <div id="en" class="en"></div>
+  <div class="main-box-container">
+    <div class="counter-side">
+      <span id="pos">0</span> / <span id="total">0</span>
+    </div>
+    
+    <div class="audio-controls">
+      <button class="audio-btn slow" onclick="playAudio(0.75)">🐢</button>
+      <button class="audio-btn" onclick="playAudio(1.0)">🔊</button>
+      <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
+      <button id="recBtn" class="audio-btn rec" onclick="toggleRecording('recBtn')">🎤</button>
+      <button id="sttBtn" class="audio-btn stt" onclick="toggleMic()">🎤</button>
+    </div>
 
- <div class="buttons">
-  <button class="action reveal" onclick="reveal()">Veure</button>
-  <button class="action know" onclick="nextOne()">Ja la sé</button>
-  <button class="action next" onclick="nextOne()">Següent</button>
- </div>
+    <div class="progress-wrapper">
+      <input type="range" id="progressBar" value="0" step="1">
+    </div>
+  </div>
 
- <div class="list-toggle-btns">
-    <button style="background:#e2e8f0;" onclick="toggleList('all')">Llista Bloc</button>
-    <button style="background:#fef3c7; color:#92400e;" onclick="toggleList('stars')">Favorits (★)</button>
- </div>
+  <button id="mainStar" class="star-main" onclick="toggleStarCurrent()">★</button>
+  <div class="check-box-manual" id="manualCheck" onclick="markAsDone(this)"></div>
+  <div id="word"></div>
+  <div id="answer"></div>
+  <div id="speechFeedback"></div>
 
- <div id="listSection"></div>
+  <div class="actions">
+    <button class="btn btn-know" onclick="know()">ja la se</button>
+    <button class="btn btn-next" onclick="next()">següent</button>
+  </div>
+  
+  <div class="list-toggle-btns">
+    <button class="btn-list-main btn-stars-main" onclick="toggleList('stars')">veure favorites (★)</button>
+  </div>
+  <div id="list"></div>
 </div>
-</main>
+
+<audio id="audio"></audio>
 
 <script>
 const data = [
@@ -136,13 +156,13 @@ const data = [
   {en: "Don't overload the dishwasher with too many plates, because the water won't be able to reach everything and you'll have to wash them by hand later.", es: "No sobrecargues el lavavajillas con demasiados platos, porque el agua no podrá llegar a todo y tendrás que lavarlos a mano después"},
   {en: "I always keep a spare set of keys at my neighbor's house in case I accidentally lock myself out while I'm taking out the trash.", es: "Siempre guardo un juego de llaves de repuesto en casa de mi vecino por si accidentalmente me quedo fuera mientras saco la basura"},
   {en: "Make sure you heat up the leftovers until they're steaming hot, as eating cold chicken that's been in the fridge for three days might be dangerous.", es: "Asegúrate de calentar las sobras hasta que estén humeantes, ya que comer pollo frío que ha estado en la nevera tres días podría ser peligroso"},
-  {en: "You'd better wear your waterproof boots if you're going for a walk in the forest, because it rained last night and the ground will be very muddy.", es: "Será mejor que lleves tus botas impermeables si vas a dar un paseo por el bosque, porque llovió anoche y el suelo estará muy embarrado"},
+  {en: "You'd better wear your waterproof boots if you're going for a walk in the forest, because it rained last night and the ground will be very muddy.", es: "Será mejor que llaves tus botas impermeables si vas a dar un paseo por el bosque, porque llovió anoche y el suelo estará muy embarrado"},
   {en: "We should tell the neighbors that we're having a small party on Saturday, so they don't get annoyed if there's a bit of noise until midnight.", es: "Deberíamos decirles a los vecinos que vamos a dar una pequeña fiesta el sábado, para que no se molesten si hay un poco de ruido hasta medianoche"},
   {en: "Don't push yourself too hard during your first workout after the holidays, or you'll end up with sore muscles that will last for a week.", es: "No te esfuerces demasiado en tu primer entrenamiento después de las vacaciones, o acabarás con agujetas que te durarán una semana"},
-  {en: "Watch your step while you're going down the stairs because the light bulb on the second floor has burnt out and it's completely dark.", es: "Ten cuidado por dónde pisas mientras bajas las escaleras porque la bombilla del segundo piso se ha fundido y está completamente a oscuras"},
+  {en: "Watch your step while you're going down the stairs because the light bulb on the second floor has burnt out and it's completely dark.", es: "Ten cuidado por dónde pisas mientras bajas las equivocadas porque la bombilla del segundo piso se ha fundido y está completamente a oscuras"},
   {en: "I should have taken a map with me, because even though I've been to this forest before, all the paths look exactly the same when it's foggy.", es: "Debería haber llevado un mapa conmigo, porque aunque he estado en este bosque antes, todos los caminos parecen exactamente iguales cuando hay niebla"},
   {en: "You don't need to bring any snacks to the meeting, as the company will provide a full lunch and plenty of drinks for everyone attending.", es: "No hace falta que traigas nada de picar a la reunión, ya que la empresa proporcionará un almuerzo completo y muchas bebidas para todos los asistentes"},
-  {en: "Make sure you lock the back door before you go to bed, because the lock has been a bit split lately and it doesn't always close properly.", es: "Asegúrate de cerrar la puerta trasera antes de irte a la cama, porque la cerradura ha estado un poco rígida últimamente y no siempre cierra bien"},
+  {en: "Make sure you lock the back door before you go to bed, because the lock has been a bit stiff lately and it doesn't always close properly.", es: "Asegúrate de cerrar la puerta trasera antes de irte a la cama, porque la cerradura ha estado un poco rígida últimamente y no siempre cierra bien"},
   {en: "I'd rather wait for the sales to buy that new laptop, since the current price is way too high and I'm sure it will be much cheaper next month.", es: "Preferiría esperar a las rebajas para comprar ese portátil nuevo, ya que el precio actual es demasiado alto y estoy seguro de que será mucho más barato el mes que viene"},
   {en: "Be careful not to spill your coffee on the keyboard, as liquid damage is usually not covered by the warranty and it's very expensive to fix.", es: "Ten cuidado de no derramar el café sobre el teclado, ya que los daños por líquidos no suelen estar cubiertos por la garantía y repararlo es muy caro"},
   {en: "You should put on some sunscreen even if it looks cloudy, because the UV rays can still burn your skin when you're outside for a long time.", es: "Deberías ponerte protector solar aunque parezca que está nublado, porque los rayos UV aún pueden quemarte la piel cuando estás fuera mucho tiempo"},
@@ -162,194 +182,208 @@ const data = [
   {en: "Make sure you save your work every few minutes, because the power has been going out lately and you don't want to lose all your progress.", es: "Asegúrate de guardar tu trabajo cada pocos minutos, porque la luz se ha estado yendo últimamente y no querrás perder todo tu progreso"}
 ];
 
-let currentBlockData = [], pos = 0, mode = "EN", mediaRecorder, audioChunks = [], isRecording = false;
+let currentMode = 'EN';
+let currentBlock = 0;
+let currentIdx = 0;
+let items = [];
 let starredIds = JSON.parse(localStorage.getItem('starred_b1_v2') || '[]');
 
-/* --- LÓGICA DE RECONOCIMIENTO DE VOZ (MICRO AZUL) --- */
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-let recognition, isListening = false;
+const wordDiv = document.getElementById("word");
+const answerDiv = document.getElementById("answer");
+const posSpan = document.getElementById("pos");
+const totalSpan = document.getElementById("total");
+const listDiv = document.getElementById("list");
+const progressBar = document.getElementById("progressBar");
 
-const contractions = {
-    "i'd": "i would", "you'd": "you would", "he'd": "he would", "she'd": "she would", 
-    "it'd": "it would", "we'd": "we would", "they'd": "they would", "i'm": "i am"
-};
-const expanded = {};
-for (let k in contractions) expanded[contractions[k]] = k;
-
-function normalize(w) { return w ? w.toLowerCase().replace(/[.,?!"]/g, "").trim() : ""; }
-
-if (SpeechRecognition) {
-    recognition = new SpeechRecognition();
-    recognition.lang = 'en-US'; recognition.interimResults = false; recognition.continuous = true;
-    recognition.onstart = () => { isListening = true; document.getElementById("sttBtn").classList.add("listening"); };
-    recognition.onend = () => { isListening = false; document.getElementById("sttBtn").classList.remove("listening"); };
-    recognition.onresult = (e) => {
-        let transcript = "";
-        for (let i = e.resultIndex; i < e.results.length; i++) transcript += e.results[i][0].transcript + " ";
-        compareSentences(currentBlockData[pos].en, transcript.trim());
-    };
+function initBlocks() {
+  const container = document.getElementById("blocksContainer");
+  container.innerHTML = "";
+  const numBlocks = Math.ceil(data.length / 10);
+  for (let i = 0; i < numBlocks; i++) {
+    const btn = document.createElement("button");
+    btn.className = "block" + (i === 0 ? " active" : "");
+    btn.innerText = i + 1;
+    btn.onclick = () => loadBlock(i);
+    container.appendChild(btn);
+  }
+  loadBlock(0);
 }
 
-function compareSentences(originalText, spokenText) {
-    const feedbackDiv = document.getElementById("speechFeedback");
-    const origWords = originalText.split(/\s+/);
-    const spokenWords = spokenText.split(/\s+/);
-    let resultHTML = ""; let sIdx = 0; 
-    for (let i = 0; i < origWords.length; i++) {
-        let matched = false; const oNorm = normalize(origWords[i]);
-        if (sIdx < spokenWords.length) {
-            const sNorm = normalize(spokenWords[sIdx]);
-            if (oNorm === sNorm || contractions[oNorm] === sNorm || expanded[oNorm] === sNorm) {
-                resultHTML += `<span class="word-correct">${spokenWords[sIdx]}</span> `;
-                sIdx++; matched = true;
-            }
-        }
-        if (!matched) {
-            let foundAhead = false;
-            for (let look = sIdx; look < sIdx + 3 && look < spokenWords.length; look++) {
-                if (normalize(spokenWords[look]) === oNorm) {
-                    for (let skip = sIdx; skip < look; skip++) resultHTML += `<span class="word-error">${spokenWords[skip]}</span> `;
-                    resultHTML += `<span class="word-correct">${spokenWords[look]}</span> `;
-                    sIdx = look + 1; foundAhead = true; matched = true; break;
-                }
-            }
-            if (!foundAhead) resultHTML += `<span class="word-missing">${origWords[i]}</span> `;
-        }
-    }
-    while (sIdx < spokenWords.length) { resultHTML += `<span class="word-error">${spokenWords[sIdx]}</span> `; sIdx++; }
-    feedbackDiv.innerHTML = resultHTML;
+function loadBlock(idx) {
+  currentBlock = idx;
+  document.querySelectorAll(".block").forEach((b, i) => b.classList.toggle("active", i === idx));
+  items = data.slice(idx * 10, (idx + 1) * 10).map((item, i) => ({...item, realIdx: idx * 10 + i}));
+  currentIdx = 0;
+  showCurrent();
+  listDiv.style.display = "none";
 }
 
-async function toggleMic() {
-    if (!recognition) return;
-    if (isListening) { recognition.stop(); } 
-    else { 
-        if (isRecording) stopRecordingManual(); 
-        document.getElementById("speechFeedback").innerHTML = "";
-        recognition.start(); 
-    }
+function setMode(m) {
+  currentMode = m;
+  document.getElementById("modeEN").classList.toggle("active", m === 'EN');
+  document.getElementById("modeES").classList.toggle("active", m === 'ES');
+  showCurrent();
 }
 
-/* --- GRABADORA MANUAL (MICRO ROSA) --- */
-async function toggleRecord(btnId) {
+function showCurrent() {
+  const item = items[currentIdx];
+  const isStarred = starredIds.includes(item.realIdx);
+  document.getElementById("mainStar").classList.toggle("active", isStarred);
+  
+  const check = document.getElementById("manualCheck");
+  check.innerHTML = "";
+  check.classList.remove('marked');
+
+  wordDiv.innerHTML = `<div class="${currentMode === 'EN' ? '' : 'txt-es'}">${currentMode === 'EN' ? item.en : item.es}</div>`;
+  answerDiv.innerHTML = `<div class="${currentMode === 'EN' ? 'txt-es' : ''}">${currentMode === 'EN' ? item.es : item.en}</div>`;
+  
+  posSpan.innerText = currentIdx + 1;
+  totalSpan.innerText = items.length;
+  progressBar.max = items.length - 1;
+  progressBar.value = currentIdx;
+  document.getElementById("speechFeedback").innerHTML = "";
+}
+
+function next() {
+  currentIdx = (currentIdx + 1) % items.length;
+  showCurrent();
+}
+
+function know() { next(); }
+
+function toggleStarCurrent() {
+  const id = items[currentIdx].realIdx;
+  if (starredIds.includes(id)) {
+    starredIds = starredIds.filter(i => i !== id);
+  } else {
+    starredIds.push(id);
+  }
+  localStorage.setItem('starred_b1_v2', JSON.stringify(starredIds));
+  showCurrent();
+}
+
+function toggleStar(id) {
+    if (starredIds.includes(id)) starredIds = starredIds.filter(i => i !== id);
+    else starredIds.push(id);
+    localStorage.setItem('starred_b1_v2', JSON.stringify(starredIds));
+}
+
+// --- AUDIO & STT ---
+let mediaRecorder;
+let audioChunks = [];
+
+async function toggleRecording(btnId) {
   const btn = document.getElementById(btnId);
-  if (isRecording) { stopRecordingManual(); return; }
-  if (isListening) recognition.stop();
+  if (mediaRecorder && mediaRecorder.state === "recording") {
+    mediaRecorder.stop();
+    btn.classList.remove("active");
+    return;
+  }
+  if (recognitionActive) toggleMic();
   const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
   mediaRecorder = new MediaRecorder(stream);
   audioChunks = [];
   mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
   mediaRecorder.onstop = () => {
-    const blob = new Blob(audioChunks, { type: 'audio/wav' });
-    new Audio(URL.createObjectURL(blob)).play();
+    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+    const audioUrl = URL.createObjectURL(audioBlob);
+    new Audio(audioUrl).play();
   };
-  mediaRecorder.start(); 
-  isRecording = true;
+  mediaRecorder.start();
   btn.classList.add("active");
 }
 
-function stopRecordingManual() {
-    if (mediaRecorder && mediaRecorder.state !== "inactive") mediaRecorder.stop();
-    isRecording = false;
-    document.getElementById("recBtn").classList.remove("active");
-}
+let recognition;
+let recognitionActive = false;
 
-/* --- LÓGICA BASE --- */
-function initBlocks() {
-  const container = document.getElementById("blockContainer");
-  const numBlocks = Math.ceil(data.length / 10);
-  container.innerHTML = "";
-  const allBtn = document.createElement("button");
-  allBtn.className = "block all-btn"; allBtn.textContent = "T";
-  allBtn.onclick = () => loadAll(); container.appendChild(allBtn);
-  for (let i = 0; i < numBlocks; i++) {
-    const btn = document.createElement("button");
-    btn.className = "block"; btn.textContent = i + 1;
-    btn.onclick = () => loadBlock(i); container.appendChild(btn);
+function toggleMic() {
+  const btn = document.getElementById("sttBtn");
+  if (recognitionActive) { recognition.stop(); return; }
+  
+  const pinkBtn = document.getElementById("recBtn");
+  if (mediaRecorder && mediaRecorder.state === "recording") {
+    mediaRecorder.stop();
+    pinkBtn.classList.remove("active");
   }
-  loadBlock(0);
+
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SpeechRecognition();
+  recognition.lang = 'en-US';
+  recognition.onstart = () => { recognitionActive = true; btn.classList.add("listening"); };
+  recognition.onresult = (e) => compareText(e.results[0][0].transcript);
+  recognition.onend = () => { recognitionActive = false; btn.classList.remove("listening"); };
+  recognition.start();
 }
 
-function loadBlock(b) {
-  let start = b * 10;
-  currentBlockData = data.slice(start, start + 10).map((item, i) => ({...item, realIdx: start + i}));
-  document.querySelectorAll(".block").forEach((btn, idx) => btn.classList.toggle("active", idx === (b + 1)));
-  pos = 0; update();
-}
-
-function loadAll() {
-  currentBlockData = data.map((item, i) => ({...item, realIdx: i}));
-  document.querySelectorAll(".block").forEach((btn, idx) => btn.classList.toggle("active", idx === 0));
-  pos = 0; update();
-}
-
-function update() {
-  const item = currentBlockData[pos];
-  const esDiv = document.getElementById("es"), enDiv = document.getElementById("en");
-  document.getElementById("mainStar").classList.toggle("active", starredIds.includes(item.realIdx));
-  document.getElementById("speechFeedback").innerHTML = "";
+function compareText(spoken) {
+  const target = items[currentIdx].en;
+  const cleanSpoken = spoken.toLowerCase().replace(/[.\?\!]$/, "").replace(/’/g, "'").trim();
+  const cleanTarget = target.toLowerCase().replace(/[.\?\!]$/, "").replace(/’/g, "'").trim();
   
-  esDiv.innerHTML = item.es; enDiv.innerHTML = item.en;
-  esDiv.classList.toggle("hidden", mode === "EN");
-  enDiv.classList.toggle("hidden", mode === "ES");
+  const feedbackDiv = document.getElementById("speechFeedback");
+  feedbackDiv.style.display = "flex";
+  feedbackDiv.innerHTML = "";
   
-  document.getElementById("counter").textContent = `${pos + 1} / ${currentBlockData.length}`;
+  const targetWords = cleanTarget.split(/\s+/);
+  const spokenWords = cleanSpoken.split(/\s+/);
+  
+  targetWords.forEach((word, i) => {
+    const span = document.createElement("span");
+    const cleanW = word.replace(/[^\w']/g, "");
+    const cleanS = spokenWords[i] ? spokenWords[i].replace(/[^\w']/g, "") : "";
+    if (cleanS === cleanW) {
+      span.className = "word-correct"; span.innerText = word;
+    } else {
+      span.className = "word-error"; span.innerText = cleanS || "___";
+    }
+    feedbackDiv.appendChild(span);
+  });
 }
 
-function setMode(m) { mode = m; update(); }
-function reveal() { document.getElementById("es").classList.remove("hidden"); document.getElementById("en").classList.remove("hidden"); }
-function nextOne() { pos = (pos + 1) % currentBlockData.length; update(); }
-
-function toggleStarCurrent() {
-  const id = currentBlockData[pos].realIdx;
-  starredIds = starredIds.includes(id) ? starredIds.filter(i => i !== id) : [...starredIds, id];
-  localStorage.setItem('starred_b1_v2', JSON.stringify(starredIds));
-  update();
-}
-
-function playAudio(speed, text) {
-  const utterance = new SpeechSynthesisUtterance(text || currentBlockData[pos].en);
+function playAudio(speed) {
+  const utterance = new SpeechSynthesisUtterance(items[currentIdx].en);
   utterance.lang = 'en-US'; utterance.rate = speed;
   window.speechSynthesis.speak(utterance);
 }
 function pauseAudio() { window.speechSynthesis.cancel(); }
 
-function toggleList(type) {
-    const listSec = document.getElementById("listSection");
-    if (listSec.style.display === "block") { listSec.style.display = "none"; return; }
-    listSec.style.display = "block";
-    listSec.innerHTML = "";
-    let listItems = (type === 'stars') ? data.map((it, i) => ({...it, realIdx: i})).filter(it => starredIds.includes(it.realIdx)) : currentBlockData;
-    listItems.forEach((item, idx) => {
-        const isStarred = starredIds.includes(item.realIdx);
-        const row = document.createElement("div");
-        row.className = "list-item";
-        const recId = `rec-list-${idx}`;
-        row.innerHTML = `
-            <div class="list-controls-row">
-                <button class="star-btn-list ${isStarred ? 'active' : ''}" onclick="toggleStarList(${item.realIdx}, '${type}')">★</button>
-                <button class="mini-btn btn-audio" onclick="playAudio(1.0, '${item.en.replace(/'/g, "\\'")}')">🔊</button>
-                <button class="mini-btn btn-rec-mini" id="${recId}" onclick="toggleRecord('${recId}')">🎤</button>
-            </div>
-            <div class="list-texts">
-                <div class="list-txt-es">${item.es}</div>
-                <div class="list-txt-en">${item.en}</div>
-            </div>
-        `;
-        listSec.appendChild(row);
-    });
-}
-
-function toggleStarList(id, type) {
-    starredIds = starredIds.includes(id) ? starredIds.filter(i => i !== id) : [...starredIds, id];
-    localStorage.setItem('starred_b1_v2', JSON.stringify(starredIds));
-    update(); toggleList(type); toggleList(type);
-}
-
 function markAsDone(el) {
-    el.style.color = el.innerHTML === "✓" ? "transparent" : "white";
-    el.innerHTML = el.innerHTML === "✓" ? "" : "✓";
+    el.innerHTML = el.classList.contains('marked') ? "" : "✓";
     el.classList.toggle('marked');
+}
+
+function toggleList(type) {
+  if (listDiv.style.display === "block") {
+      listDiv.style.display = "none";
+  } else {
+      listDiv.style.display = "block";
+      renderList(type);
+  }
+}
+
+function renderList(type) {
+  listDiv.innerHTML = "";
+  let listToRender = (type === 'stars') ? data.map((item, i) => ({...item, realIdx: i})).filter(it => starredIds.includes(it.realIdx)) : items;
+  listToRender.forEach((item, index) => {
+    const isStarred = starredIds.includes(item.realIdx);
+    const itemDiv = document.createElement("div");
+    itemDiv.className = "list-item";
+    itemDiv.innerHTML = `
+      <div class="list-btns-col">
+        <button class="star-list ${isStarred ? 'active' : ''}" onclick="toggleStar(${item.realIdx}); renderList('${type}')">★</button>
+        <button class="mini-btn btn-audio-list" onclick="playAudioList(${item.realIdx})">🔊</button>
+      </div>
+      <div class="list-texts">
+        <div class="txt-es" style="font-weight:bold; font-size:14px;">${item.es}</div>
+        <div style="font-weight:bold; font-size:15px;">${item.en}</div>
+      </div>`;
+    listDiv.appendChild(itemDiv);
+  });
+}
+
+function playAudioList(idx) {
+    const ut = new SpeechSynthesisUtterance(data[idx].en);
+    ut.lang = 'en-US'; window.speechSynthesis.speak(ut);
 }
 
 initBlocks();

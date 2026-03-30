@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Repàs Vocabulari B1 - 21 Frases</title>
+<title>Noves Frases d'Estudi - Unitat 14</title>
 <style>
 body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
 header{padding:8px 4px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center;align-items:center;gap:4px}
@@ -80,8 +80,8 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 
 <header>
  <div class="mode-btns"><button class="mode-en" onclick="setMode('EN')">ENG → CAT</button></div>
- <div class="unit-number">6</div>
- <div class="mode-btns"><button class="mode-es" onclick="setMode('ES')">CAT → ENG</button></div>
+ <div class="unit-number">14</div>
+ <div class="mode-btns"><button class="mode-es" onclick="setMode('CA')">CAT → ENG</button></div>
 </header>
 
 <main>
@@ -123,27 +123,106 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 
 <script>
 const items = [
-  {audio:"f001.mp3", en: "I have a small pebble in my shoe", es: "Tinc una petita pedreta a la sabata"},
-  {audio:"f002.mp3", en: "Tie the package with a piece of string", es: "Lliga el paquet amb un tros de corda"},
-  {audio:"f003.mp3", en: "This dress is made of white lace", es: "Aquest vestit està fet d'encaix blanc"},
-  {audio:"f004.mp3", en: "Put the plant on the window ledge", es: "Posa la planta a la repisa de la finestra"},
-  {audio:"f005.mp3", en: "Button the cuff of your shirt", es: "Abotona el puny de la teva camisa"},
-  {audio:"f006.mp3", en: "The officer put the handcuffs on him", es: "L'oficial li va posar les esposes"},
-  {audio:"f007.mp3", en: "Use the kitchen tongs to turn the meat", es: "Utilitza les pinces de cuina per girar la carn"},
-  {audio:"f008.mp3", en: "She uses tweezers for her eyebrows", es: "Ella fa servir pinces de depilar per a les celles"},
-  {audio:"f009.mp3", en: "The sly fox escaped", es: "La guineu astuta va escapar"},
-  {audio:"f010.mp3", en: "He held her gaze for a moment", es: "Ell va mantenir la mirada per un moment"},
-  {audio:"f011.mp3", en: "I've tidied up every room", es: "He ordenat cada habitació"},
-  {audio:"f012.mp3", en: "Each one is spotless now", es: "Cadascuna està impecable ara"},
-  {audio:"f013.mp3", en: "You ought to go now", es: "Hauries de marxar ara"},
-  {audio:"f014.mp3", en: "I need a hook for my keys", es: "Necesito un ganxo per a les meves claus"},
-  {audio:"f015.mp3", en: "Hook it up to the speaker", es: "Connecta-ho a l'altaveu"},
-  {audio:"f016.mp3", en: "I have a fear of heights", es: "Tinc por a les altures"},
-  {audio:"f017.mp3", en: "The judge was very fair in his decision", es: "El jutge va ser molt just en la seva decisió"},
-  {audio:"f018.mp3", en: "That movie was awesome", es: "Aquella pel·lícula va ser genial"},
-  {audio:"f019.mp3", en: "Flip the pancake", es: "Dona-li la volta a la truita"},
-  {audio:"f020.mp3", en: "The movie has a complex plot", es: "La pel·lícula té una trama completa"},
-  {audio:"f021.mp3", en: "The hearse led the procession", es: "El cotxe fúnebre encapçalava la processó"}
+    {audio:"f001.mp3",en:"If I had more money, I'd buy a new laptop.",es:"Si tingués més diners, compraria un portàtil nou."},
+    {audio:"f002.mp3",en:"If she lived in London, she'd speak English every day.",es:"Si ella visqués a Londres, parlaria anglès cada dia."},
+    {audio:"f003.mp3",en:"We would go to the beach if it weren't so cold.",es:"Aniríem a la platja si no fes tant de fred."},
+    {audio:"f004.mp3",en:"If I were you, I'd accept the job offer.",es:"Si fos tu, acceptaria l'oferta de feina."},
+    {audio:"f005.mp3",en:"They would travel more if they had more holidays.",es:"Viatjarien més si tinguessin més vacances."},
+    {audio:"f006.mp3",en:"If he exercised more, he'd feel much better.",es:"Si ell fes més exercici, se sentiria molt millor."},
+    {audio:"f007.mp3",en:"I'd help you if I had enough time.",es:"T'ajudaria si tingués prou temps."},
+    {audio:"f008.mp3",en:"If we lived in the countryside, we'd have a dog.",es:"Si visquéssim al camp, tindríem un gos."},
+    {audio:"f009.mp3",en:"She would be happier if she didn't work so much.",es:"Ella seria més feliç si no treballés tant."},
+    {audio:"f010.mp3",en:"If I won the lottery, I'd travel around the world.",es:"Si guanyés la loteria, viatjaria per tot el món."},
+    {audio:"f011.mp3",en:"We would save money if we cooked at home.",es:"Estalviaríem diners si cuinéssim a casa."},
+    {audio:"f012.mp3",en:"If you practiced every day, you'd improve quickly.",es:"Si practiquessis cada dia, milloraries ràpid."},
+    {audio:"f013.mp3",en:"I'd call him if I had his phone number.",es:"El trucaria si tingués el seu número de telèfon."},
+    {audio:"f014.mp3",en:"If it rained, we'd stay at home.",es:"Si plogués, ens quedaríem a casa."},
+    {audio:"f015.mp3",en:"He would buy a car if he passed his driving test.",es:"Ell compraria un cotxe si aprovés l'examen de conduir."},
+    {audio:"f016.mp3",en:"If I knew the answer, I'd tell you.",es:"Si sabés la resposta, te la diria."},
+    {audio:"f017.mp3",en:"They would stay at a hotel if they had more budget.",es:"Es quedarien en un hotel si tingués més pressupost."},
+    {audio:"f018.mp3",en:"If she grew her own vegetables, they'd be organic.",es:"Si ella conreés les seves pròpies verdures, serien orgàniques."},
+    {audio:"f019.mp3",en:"I'd go for a run if the weather were better.",es:"Sortiria a córrer si el temps fos millor."},
+    {audio:"f020.mp3",en:"If we had a garden, we'd plant trees.",es:"Si tinguéssim un jardí, plantaríem arbres."},
+    {audio:"f021.mp3",en:"You'd understand if you listened carefully.",es:"Ho entendries si escoltessis amb atenció."},
+    {audio:"f022.mp3",en:"If I found his wallet, I'd return it.",es:"Si trobés la seva cartera, la retornaria."},
+    {audio:"f023.mp3",en:"He would be famous if he played the guitar better.",es:"Ell seria famós si toqués millor la guitarra."},
+    {audio:"f024.mp3",en:"If I didn't have a headache, I'd go to the party.",es:"Si no tingués mal de cap, aniria a la festa."},
+    {audio:"f025.mp3",en:"We would arrive on time if we took a taxi.",es:"Arribaríem a temps si agaféssim un taxi."},
+    {audio:"f026.mp3",en:"If she studied harder, she'd get better grades.",es:"Si ella estudiés més, treuria millors notes."},
+    {audio:"f027.mp3",en:"I'd buy that shirt if it weren't so expensive.",es:"Compraria aquesta camisa si no fos tan cara."},
+    {audio:"f028.mp3",en:"If they moved to Spain, they'd learn Spanish.",es:"Si es mudessin a Espanya, aprendrien espanyol."},
+    {audio:"f029.mp3",en:"He would cook dinner if he arrived home early.",es:"Ell cuinaria el sopar si arribés a casa d'hora."},
+    {audio:"f030.mp3",en:"If I were a chef, I'd open a restaurant.",es:"Si fos cuiner, obriria un restaurant."},
+    {audio:"f031.mp3",en:"We would visit you if we lived closer.",es:"Et visitaríem si visquéssim més a prop."},
+    {audio:"f032.mp3",en:"If you ate less sugar, you'd be healthier.",es:"Si mengessis menys sucre, estaries més sa."},
+    {audio:"f033.mp3",en:"I'd join the gym if I had a partner.",es:"M'apuntaria al gimnàs si tingués un company."},
+    {audio:"f034.mp3",en:"If she had a camera, she'd take many photos.",es:"Si ella tingués una càmera, faria moltes fotos."},
+    {audio:"f035.mp3",en:"They would be surprised if they saw the news.",es:"Es sorprendrien si veiessin les notícies."},
+    {audio:"f036.mp3",en:"If I were hungry, I'd eat a sandwich.",es:"Si tingués gana, em menjaria un sandvitx."},
+    {audio:"f037.mp3",en:"He would help his parents if he earned more money.",es:"Ajudaria els seus pares si guanyés més diners."},
+    {audio:"f038.mp3",en:"If we bought a map, we wouldn't get lost.",es:"Si compréssim un mapa, no ens perdríem."},
+    {audio:"f039.mp3",en:"I'd learn to fly a plane if I weren't afraid.",es:"Aprendria a pilotar un avió si no tingués por."},
+    {audio:"f040.mp3",en:"If she spoke French, she'd work in Paris.",es:"Si parlés francès, treballaria a París."},
+    {audio:"f041.mp3",en:"They would enjoy the film if it were shorter.",es:"Gaudirien de la pel·lícula si fos més curta."},
+    {audio:"f042.mp3",en:"If I lost my keys, I'd call a locksmith.",es:"Si perdés les claus, trucaria a un cerrajer."},
+    {audio:"f043.mp3",en:"We would go hiking if it didn't snow.",es:"Aniríem a fer senderisme si no nevés."},
+    {audio:"f044.mp3",en:"If you asked him, he'd give you a ride.",es:"Si l'hi demanessis, et portaria."},
+    {audio:"f045.mp3",en:"I'd write a book if I had a good story.",es:"Escriuria un llibre si tingués una bona història."},
+    {audio:"f046.mp3",en:"If he were taller, he'd play basketball.",es:"Si fos més alt, jugaria a bàsquet."},
+    {audio:"f047.mp3",en:"We would use the bike if the city had more lanes.",es:"Faríem servir la bici si la ciutat tingués més carrils."},
+    {audio:"f048.mp3",en:"If she needed help, she'd call me.",es:"Si ella necessités ajuda, em trucaria."},
+    {audio:"f049.mp3",en:"I'd sleep more if I didn't have so much work.",es:"Dormiria més si no tingués tanta feina."},
+    {audio:"f050.mp3",en:"If they invited us, we'd go to the wedding.",es:"Si ens convidessin, aniríem al casament."},
+    {audio:"f051.mp3",en:"If I'd studied more, I'd have passed the exam.",es:"Si hagués estudiat més, hauria aprovat l'examen."},
+    {audio:"f052.mp3",en:"We would've arrived earlier if we'd taken the bus.",es:"Hauríem arribat més d'hora si haguéssim agafat l'autobús."},
+    {audio:"f053.mp3",en:"If she'd seen you, she'd have said hello.",es:"Si t'hagués vist, t'hauria saludat."},
+    {audio:"f054.mp3",en:"He would've bought the house if he'd had the money.",es:"Ell hauria comprat la casa si hagués tingut els diners."},
+    {audio:"f055.mp3",en:"If they'd invited me, I'd have gone.",es:"Si m'haguessin convidat, hi hauria anat."},
+    {audio:"f056.mp3",en:"I'd have called you if I'd known you were ill.",es:"T'hauria trucat si hagués sabut que estaves malalt."},
+    {audio:"f057.mp3",en:"If we'd left earlier, we wouldn't have missed the flight.",es:"Si haguéssim sortit abans, no hauríem perdut el vol."},
+    {audio:"f058.mp3",en:"She would've finished the report if she'd had more time.",es:"Ella hauria acabat l'informe si hagués intrat més temps."},
+    {audio:"f059.mp3",en:"If you'd told me, I'd have helped you.",es:"Si m'ho haguessis dit, t'hauria ajut."},
+    {audio:"f060.mp3",en:"They would've won the match if they'd played better.",es:"Haurien guanyat el partit si haguessin jugat millor."},
+    {audio:"f061.mp3",en:"If it hadn't rained, we would've gone to the park.",es:"Si no hagués plogut, hauríem anat al parc."},
+    {audio:"f062.mp3",en:"I'd have bought that coat if it'd been on sale.",es:"Hauria comprat aquell abric si hagués estat de rebaixes."},
+    {audio:"f063.mp3",en:"If he'd driven more slowly, he wouldn't have had the accident.",es:"Si hagués conduït més lent, no hauria tenido l'accident."},
+    {audio:"f064.mp3",en:"We would've visited the museum if it'd been open.",es:"Hauríem visitat el museum si hagués estat obert."},
+    {audio:"f065.mp3",en:"If she'd woken up early, she'd have seen the sunrise.",es:"Si s'hagués despertat d'hora, hauria vist la sortida del sol."},
+    {audio:"f066.mp3",en:"They would've stayed longer if they'd liked the place.",es:"S'haurien quedat més temps si els hagués agradat el lloc."},
+    {audio:"f067.mp3",en:"If I'd found your glasses, I'd have told you.",es:"Si hagués trobat les teves ulleres, t'ho hauria dit."},
+    {audio:"f068.mp3",en:"He would've been angry if he'd known the truth.",es:"Ell s'hauria enfadat si hagués sabut la veritat."},
+    {audio:"f069.mp3",en:"If we'd booked a table, we wouldn't have waited.",es:"Si haguéssim reservat taula, no hauríem esperat."},
+    {audio:"f070.mp3",en:"I'd have brought my umbrella if I'd checked the weather.",es:"Hauria portat el paraigua si hagués mirat el temps."},
+    {audio:"f071.mp3",en:"If they'd asked me, I'd have explained it.",es:"Si m'ho haguessin preguntat, ho hauria explicat."},
+    {audio:"f072.mp3",en:"She would've worn a dress if she'd known it was a formal party.",es:"Ella hauria portat un vestit si hagués sabut que era una festa formal."},
+    {audio:"f073.mp3",en:"If you'd been careful, you wouldn't have broken the vase.",es:"Si haguessis anat amb compte, no hauries trencat el gerro."},
+    {audio:"f074.mp3",en:"We would've sent a gift if we'd remembered the date.",es:"Hauríem enviat un regal si haguéssim recordat la data."},
+    {audio:"f075.mp3",en:"If I'd had a map, I'd have found the hotel easily.",es:"Si hagués tingut un mapa, hauria trobat l'hotel fàcilment."},
+    {audio:"f076.mp3",en:"He would've learned English if he'd lived in London.",es:"Ell hauria après anglès si hagués viscut a Londres."},
+    {audio:"f077.mp3",en:"If he had seen the movie, they'd have liked it.",es:"Si haguessin vist la pel·lícula, els hauria agradat."},
+    {audio:"f078.mp3",en:"I'd have taken a photo if I'd had my phone.",es:"Hauria fet una foto si hagués intrat el telèfon."},
+    {audio:"f079.mp3",en:"If we'd had enough eggs, I'd have made a cake.",es:"Si haguéssim tingut prou ous, hauria fet un pastís."},
+    {audio:"f080.mp3",en:"She would've come if she hadn't been so busy.",es:"Ella hauria vingut si no hagués estat tan ocupada."},
+    {audio:"f081.mp3",en:"If you'd followed the instructions, you'd have finished sooner.",es:"Si haguessis seguit les instruccions, hauries acabat abans."},
+    {audio:"f082.mp3",en:"They would've been late if they hadn't run.",es:"Haurien arribat tard si no haguessin corregut."},
+    {audio:"f083.mp3",en:"If I'd known you were coming, I'd have cooked dinner.",es:"Si hagués sabut que venies, hauria cuinat el sopar."},
+    {audio:"f084.mp3",en:"He would've passed the test if he hadn't been nervous.",es:"Ell hauria aprovat el test si no hagués estat nerviós."},
+    {audio:"f085.mp3",en:"If we'd won the game, we would've celebrated.",es:"Si haguéssim guanyat el partit, ho hauríem celebrat."},
+    {audio:"f086.mp3",en:"I'd have gone to the concert if the tickets hadn't been sold out.",es:"Hauria anat al concert si las entradas no s'haguessin esgotat."},
+    {audio:"f087.mp3",en:"If she'd lost her phone, she'd have been very worried.",es:"Si ella hagués perdut el telèfon, hauria estat molt preocupada."},
+    {audio:"f088.mp3",en:"They would've moved house if they'd found a cheaper one.",es:"S'haurien mudat de casa si n'haguessin trobat una de més barata."},
+    {audio:"f089.mp3",en:"If I'd seen the sign, I'd have stopped the car.",es:"Si hagués vist el senyal, hauria parat el cotxe."},
+    {audio:"f090.mp3",en:"We would've enjoyed the trip if the hotel had been better.",es:"Hauríem gaudit del viatge si l'hotel hagués estat millor."},
+    {audio:"f091.mp3",en:"If he'd had a bike, he'd have cycled to work.",es:"Si ell hagués tingut una bici, hauria anat a la feina en ella."},
+    {audio:"f092.mp3",en:"She would've bought the dress if it'd fit her.",es:"Ella hauria comprat el vestit si li hagués quedat bé."},
+    {audio:"f093.mp3",en:"If they'd listened to the advice, they wouldn't have failed.",es:"Si haguéssim escoltat el consell, no haurien fracassat."},
+    {audio:"f094.mp3",en:"I'd have lent you the money if you'd asked me.",es:"T'hauria deixat els diners si m'ho haguessis demanat."},
+    {audio:"f095.mp3",en:"If we'd known the way, we would've arrived on time.",es:"Si haguéssim sabut el camí, hauríem arribat a temps."},
+    {audio:"f096.mp3",en:"He would've felt better if he'd slept more.",es:"Ell se n'hauria sentit millor si hagués dormit més."},
+    {audio:"f097.mp3",en:"If it'd been sunny, we would've gone for a walk.",es:"Si hagués fet sol, hauríem anat a fer un tomb."},
+    {audio:"f098.mp3",en:"They would've bought the tickets if they'd had a discount.",es:"Haurien comprat les entrades si haguessin tingut un descompte."},
+    {audio:"f099.mp3",en:"If I'd seen him, I'd have given him the news.",es:"Si l'hagués vist, li hauria donat les notícies."},
+    {audio:"f100.mp3",en:"We would've finished the project if we'd worked together.",es:"Hauríem acabat el projecte si haguéssim treballat junts."}
 ];
 
 let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0;
@@ -205,6 +284,7 @@ function compareSentences(originalText, spokenText) {
     feedbackDiv.innerHTML = resultHTML;
 }
 
+/* --- CONTROL DE MICRÓFONOS --- */
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition, isListening = false;
 if (SpeechRecognition) {
@@ -238,15 +318,18 @@ function stopAllMicrophones() {
 
 async function toggleMic() {
     if (!recognition) return;
-    if (isListening) { recognition.stop(); } 
-    else { 
+    if (isListening) { 
+        recognition.stop(); 
+    } else { 
         stopAllMicrophones(); 
+        // Borrar el feedback anterior antes de empezar a escuchar de nuevo
         document.getElementById("speechFeedback").innerHTML = "";
         recognition.start(); 
     }
 }
 
-function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "unit_6"; }
+/* --- GRABADORA (MICRO ROSA) --- */
+function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "index_condicionals"; }
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
 let mediaRecorder, audioChunks = [], isRecording = false;
 
@@ -272,6 +355,7 @@ async function toggleRecord(targetBtnId) {
     } catch (err) { alert("Micròfon no disponible"); }
 }
 
+/* --- LÓGICA GENERAL --- */
 audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
 progressBar.oninput = () => { if (audioObj.duration) audioObj.currentTime = (progressBar.value / 100) * audioObj.duration; };
 
@@ -296,14 +380,14 @@ function loadBlock(b) {
   currentBlockID = b; localStorage.setItem(getFolderName() + "_puntoLibro", b);
   let temp = []; let start = b * 10;
   for (let i = start; i < Math.min(start + 10, items.length); i++) temp.push({...items[i]});
-  currentBlockData = temp; // No aleatorio
+  currentBlockData = temp;
   document.querySelectorAll(".block").forEach((btn, idx) => btn.classList.toggle("active", idx === (b + 1)));
   pos = 0; learnedCount = 0; document.getElementById("endMsg").classList.add("hidden"); update(true);
 }
 
 function loadAll() {
   currentBlockID = -1; localStorage.setItem(getFolderName() + "_puntoLibro", "all");
-  currentBlockData = items.map(i => ({...i})); // No aleatorio
+  currentBlockData = items.map(i => ({...i}));
   document.querySelectorAll(".block").forEach((btn, idx) => btn.classList.toggle("active", idx === 0));
   pos = 0; learnedCount = 0; document.getElementById("endMsg").classList.add("hidden"); update(true);
 }

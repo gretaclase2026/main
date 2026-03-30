@@ -15,7 +15,7 @@ header{padding:8px 4px;background:#fff;border-bottom:1px solid #e5e7eb;display:f
 main{display:flex;justify-content:center;padding:24px}
 .card{position:relative;width:100%;max-width:560px;background:#ffffff;border-radius:28px;padding:32px;box-shadow:0 10px 24px rgba(0,0,0,0.06);text-align:center}
 .counter{position:absolute;top:18px;left:22px;font-weight:800;color:#2563eb}
-.check-box-manual { position: absolute; top: 18px; right: 22px; width: 24px; height: 24px; background: #fff; border: 1.5px solid #22c55e; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 14px; }
+.check-box-manual { position: absolute; top: 18px; right: 22px; width: 24px; height: 24px; background: #fff; border: 1.5px solid #22c55e; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 14px; color: transparent; transition: 0.2s; }
 .check-box-manual.marked { background: #22c55e !important; color: white !important; }
 .lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
 
@@ -29,25 +29,22 @@ main{display:flex;justify-content:center;padding:24px}
 .audio-btn.slow{background:#fef08a;}
 .audio-btn.pause{background:#fee2e2; color: inherit;} 
 .audio-btn.rec{background:#fbcfe8; color: #9d174d;}
+.audio-btn.stt{background:#dbeafe; font-size: 22px;}
 
-/* Nueva animación para el micro */
-.audio-btn.rec.recording, .btn-rec-mini.recording { 
-    animation: pulse-pink 1.2s infinite; 
-    background: #f472b6 !important; 
-    color: white !important; 
-}
-
-@keyframes pulse-pink { 
-    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(244, 114, 182, 0.7); } 
-    50% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(244, 114, 182, 0); } 
-    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(244, 114, 182, 0); } 
-}
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+.recording-icon { display: inline-block; animation: pulse 1s infinite; color: #db2777 !important; }
+.listening { animation: pulse 1.5s infinite; background: #3b82f6 !important; color: white !important; }
 
 .star-btn { background: none; border: none; font-size: 32px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px 0 0; margin-right: 5px; }
 .star-btn.active { color: #f59e0b !important; }
 
 .progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
 input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
+
+#speechFeedback { font-size: 18px; margin: 15px 0; font-weight: bold; min-height: 28px; line-height: 1.5; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
+.word-correct { color: #16a34a; }
+.word-error { color: #dc2626; text-decoration: line-through; }
+.word-missing { color: #94a3b8; font-style: italic; }
 
 .hidden{display:none}
 .es{font-size:19px;color:#2563eb;margin-top:14px;line-height:1.4;font-weight:600}
@@ -64,14 +61,15 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 .review-btn { background: #fef3c7; color: #92400e; }
 
 .list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
-.list-item { display: flex; align-items: flex-start; gap: 15px; padding: 15px 0; border-bottom: 1px solid #eee; }
-.list-controls-side { display: flex; flex-direction: column; gap: 8px; min-width: 44px; align-items: center; }
-.list-texts { flex-grow: 1; display: flex; flex-direction: column; gap: 6px; }
+.list-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #eee; }
+/* NUEVO DISEÑO HORIZONTAL PARA LOS BOTONES DE LA LISTA */
+.list-controls-side { display: flex; flex-direction: row; gap: 6px; align-items: center; min-width: fit-content; }
+.list-texts { flex-grow: 1; display: flex; flex-direction: column; gap: 4px; overflow: hidden; }
 
-.mini-btn { border: none; border-radius: 10px; width: 38px; height: 38px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+.mini-btn { border: none; border-radius: 8px; width: 34px; height: 34px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
 .btn-audio { background: #dbeafe; }
 .btn-rec-mini { background: #fbcfe8; color: #9d174d; }
-.star-btn-list { background: none; border: none; font-size: 26px; cursor: pointer; color: #cbd5e1; padding: 0; line-height: 1; }
+.star-btn-list { background: none; border: none; font-size: 24px; cursor: pointer; color: #cbd5e1; padding: 0; line-height: 1; width: 30px; text-align: center;}
 .star-btn-list.active { color: #f59e0b !important; }
 
 .blur { filter: blur(5px); transition: filter 0.2s; cursor: pointer; user-select: none; }
@@ -100,11 +98,15 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
   <button class="audio-btn" onclick="playCurrent(1.0)">🔊</button>
   <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
   <button class="audio-btn rec" id="recBtn" onclick="toggleRecord('recBtn')">🎤</button>
+  <button class="audio-btn stt" id="sttBtn" onclick="toggleMic()">🎤</button>
  </div>
  
  <div class="progress-wrapper"><input type="range" id="progressBar" value="0" min="0" max="100" step="0.1"></div>
+ 
  <div id="es" class="es hidden"></div>
+ <div id="speechFeedback"></div>
  <div id="en" class="en hidden"></div>
+
  <div class="buttons">
   <button class="action reveal" onclick="reveal()">Veure</button>
   <button class="action know" onclick="know()">Ja la sé</button>
@@ -148,9 +150,85 @@ let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockI
 const audioObj = new Audio();
 const progressBar = document.getElementById("progressBar");
 
-function getFolderName() { return "vocab-neural-b1-vibrant"; }
-let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
+function getFolderName() { 
+    return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "unit_6"; 
+}
 
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition;
+let isListening = false;
+
+if (SpeechRecognition) {
+    recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    recognition.continuous = true;
+
+    recognition.onstart = () => {
+        isListening = true;
+        document.getElementById("sttBtn").classList.add("listening");
+        document.getElementById("speechFeedback").innerHTML = "";
+    };
+    recognition.onend = () => {
+        isListening = false;
+        document.getElementById("sttBtn").classList.remove("listening");
+    };
+    recognition.onresult = (event) => {
+        let fullTranscript = "";
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+            fullTranscript += event.results[i][0].transcript + " ";
+        }
+        compareSentences(currentBlockData[pos].en, fullTranscript.trim());
+    };
+}
+
+function normalizeText(text) {
+    if (!text) return "";
+    return text.toLowerCase().replace(/[.,?!"]/g, "").trim();
+}
+
+function compareSentences(original, spoken) {
+    const feedbackDiv = document.getElementById("speechFeedback");
+    const normOriginalWords = normalizeText(original).split(/\s+/);
+    const normSpokenWords = normalizeText(spoken).split(/\s+/);
+    const origWordsRaw = original.split(/\s+/);
+    
+    let resultHTML = "";
+    let sIdx = 0;
+
+    normOriginalWords.forEach((normWord, index) => {
+        const originalWordRaw = origWordsRaw[index];
+        let matched = false;
+
+        if (sIdx < normSpokenWords.length && normSpokenWords[sIdx] === normWord) {
+            resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
+            sIdx++;
+            matched = true;
+        } else {
+            for (let j = sIdx + 1; j < sIdx + 5 && j < normSpokenWords.length; j++) {
+                if (normSpokenWords[j] === normWord) {
+                    for (let k = sIdx; k < j; k++) {
+                        resultHTML += `<span class="word-error">${normSpokenWords[k]}</span>`;
+                    }
+                    resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
+                    sIdx = j + 1;
+                    matched = true;
+                    break;
+                }
+            }
+        }
+        if (!matched) resultHTML += `<span class="word-missing">${originalWordRaw}</span>`;
+    });
+    feedbackDiv.innerHTML = resultHTML;
+}
+
+function toggleMic() {
+    if (!recognition) { alert("El teu navegador no suporta reconeixement de veu."); return; }
+    if (isListening) recognition.stop();
+    else recognition.start();
+}
+
+let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
 let mediaRecorder, audioChunks = [], isRecording = false;
 
 async function toggleRecord(targetBtnId) {
@@ -168,14 +246,12 @@ async function toggleRecord(targetBtnId) {
             };
             mediaRecorder.start();
             isRecording = true;
-            btn.classList.add("recording");
-            btn.textContent = "⏹";
+            btn.innerHTML = '<span class="recording-icon">🎤</span>';
         } catch (err) { alert("Error al accedir al micròfon."); }
     } else {
         mediaRecorder.stop(); 
         isRecording = false;
-        btn.classList.remove("recording");
-        btn.textContent = "🎤";
+        btn.innerHTML = '🎤';
     }
 }
 
@@ -245,6 +321,7 @@ function update(fromAction = false) {
   const item = currentBlockData[pos];
   document.getElementById("es").classList.add("hidden");
   document.getElementById("en").classList.add("hidden");
+  document.getElementById("speechFeedback").innerHTML = "";
   document.getElementById("starBtn").classList.toggle("active", starredIds.includes(item.audio));
   
   if (mode === "EN") {
@@ -312,7 +389,7 @@ function toggleList(type) {
 
 function renderList(type) {
   const box = document.getElementById("listBox");
-  box.innerHTML = type === 'stars' ? "<h3>Frases destacades (★):</h3>" : "<h3>Tota la llista:</h3>";
+  box.innerHTML = type === 'stars' ? "<h3>Frases destacades (★):</h3>" : "";
   
   let listToRender = [];
   if (type === 'stars') listToRender = items.filter(i => starredIds.includes(i.audio));
@@ -344,17 +421,24 @@ function renderList(type) {
 }
 
 function markAsDone(el) {
-    localStorage.setItem(getFolderName(), new Date().toISOString());
-    el.innerHTML = "✓"; el.classList.add('marked');
-    alert("Lliçó completada ✅");
+    const key = getFolderName();
+    if (!el.classList.contains('marked')) {
+        localStorage.setItem(key, new Date().toISOString());
+        el.innerHTML = "✓"; el.classList.add('marked');
+        alert("Lliçó marcada ✅");
+    } else {
+        localStorage.removeItem(key);
+        el.innerHTML = ""; el.classList.remove('marked');
+    }
 }
 
-if (localStorage.getItem(getFolderName())) { 
+window.addEventListener('load', () => {
     const mc = document.getElementById("mainCheck");
-    if(mc) { mc.innerHTML = "✓"; mc.classList.add('marked'); }
-}
-
-initBlocks();
+    if (localStorage.getItem(getFolderName())) {
+        mc.innerHTML = "✓"; mc.classList.add('marked');
+    }
+    initBlocks();
+});
 </script>
 </body>
 </html>

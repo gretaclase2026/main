@@ -56,8 +56,7 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 .counter-side{position:absolute;right:10px;top:-25px;font-weight:bold;color:#2563eb;font-size:20px}
 
 #word{font-size:20px;margin:20px 0;line-height:1.4;min-height:120px;text-align:center;display:flex;align-items:center;justify-content:center;padding:0 10px}
-.txt-es{color:#2563eb} 
-/* Estilo para el inglés: Fuente oscura y negrita como el index */
+.txt-es{color:#2563eb; font-weight:700;} 
 .txt-en{color:#0f172a; font-weight:700; font-size:20px;}
 
 #answer{font-size:20px;font-weight:bold;margin-top:-10px;margin-bottom:20px;text-align:center;min-height:30px;color:#666}
@@ -89,8 +88,9 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
     background: #fff !important; border: 1.5px solid #22c55e !important;
     border-radius: 6px; display: flex; align-items: center; justify-content: center;
     cursor: pointer; z-index: 10; transition: all 0.2s; font-size: 14px;
+    color: transparent;
 }
-.check-box-manual.marked { background: #22c55e !important; color: white; }
+.check-box-manual.marked { background: #22c55e !important; color: white !important; }
 </style>
 </head>
 <body>
@@ -128,7 +128,7 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
   </div>
   
   <div class="list-toggle-btns">
-    <button class="btn-list-main" onclick="toggleList('all')"></button>
+    <button class="btn-list-main" onclick="toggleList('all')">Llista del bloc</button>
     <button class="btn-list-main" style="background:#fef3c7" onclick="toggleList('stars')">favorites (★)</button>
   </div>
   <div id="list"></div>
@@ -184,7 +184,7 @@ const data = [
   {en: "Never mind, I'll do it myself.", es: "Olvídalo, lo haré yo mismo"},
   {en: "Is there a problem? No, never mind, it's fine.", es: "¿Hay algún problema? No, olvídalo, está bien"},
   {en: "After months of exercise, I’m fit as a fiddle.", es: "Después de meses de ejercicio, estoy sano como una pera"},
-  {en: "My grandfather is 80, but he's fit as a fiddle.", es: "My grandfather is 80, but he's fit as a fiddle."},
+  {en: "My grandfather is 80, but he's fit as a fiddle.", es: "Mi abuelo tiene 80 años, pero está como un roble."},
   {en: "I feel fit as a fiddle after my morning run.", es: "Me siento estupendamente después de mi carrera matutina"},
   {en: "I've been working all day and I'm worn out.", es: "He estado trabajando todo el día y estoy agotado"},
   {en: "The kids are finally asleep, but I'm worn out.", es: "Los niños por fin duermen, pero estoy reventado"},
@@ -209,7 +209,7 @@ const data = [
   {en: "We have so much to talk about, let's catch up today.", es: "Tenemos tanto de qué hablar, pongámonos al día hoy"},
   {en: "I’m really pissed off because they lied to me.", es: "Estoy muy cabreado porque me mintieron"},
   {en: "Don't talk to him right now, he's pissed off.", es: "No hables con él ahora mismo, está cabreado"},
-  {en: "I was pissed off when the flight was cancelled.", es: "Estaba muy molesto cuando se canalizó el vuelo"},
+  {en: "I was pissed off when the flight was cancelled.", es: "Estaba muy molesto cuando se canceló el vuelo"},
   {en: "What a long day, I'm absolutely beat.", es: "Vaya día más largo, estoy para el arrastre"},
   {en: "I can't go to the gym tonight, I'm beat.", es: "No puedo ir al gimnasio esta noche, estoy reventado"},
   {en: "After the hike, we were all beat.", es: "Después de la caminata, todos estábamos agotados"},
@@ -237,6 +237,70 @@ let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockI
 const a = document.getElementById("audio");
 const progressBar = document.getElementById("progressBar");
 
+const contractions = {
+    "i'd": "i would", "you'd": "you would", "he'd": "he would", "she'd": "she would", 
+    "it'd": "it would", "we'd": "we would", "they'd": "they would", "i've": "i have", 
+    "you've": "you have", "we've": "we have", "they've": "they have", "isn't": "is not", 
+    "aren't": "are not", "wasn't": "was not", "weren't": "were not", "don't": "do not", 
+    "doesn't": "does not", "didn't": "did not", "can't": "cannot", "couldn't": "could not", 
+    "won't": "will not", "wouldn't": "would not", "it's": "it is", "she's": "she is", 
+    "he's": "he is", "i'm": "i am", "we're": "we are", "they're": "they are", "you're": "you are"
+};
+const expanded = {};
+for (let k in contractions) expanded[contractions[k]] = k;
+
+function normalizeText(text) {
+    return text ? text.toLowerCase().replace(/[.,?!"]/g, "").trim() : "";
+}
+
+function compareSentences(original, spoken) {
+    const feedbackDiv = document.getElementById("speech-feedback");
+    const origWords = original.split(/\s+/);
+    const spokenWords = spoken.split(/\s+/);
+    let resultHTML = ""; 
+    let sIdx = 0;
+    let correctCount = 0;
+
+    for (let i = 0; i < origWords.length; i++) {
+        let matched = false; 
+        const oNorm = normalizeText(origWords[i]);
+        
+        if (sIdx < spokenWords.length) {
+            const sNorm1 = normalizeText(spokenWords[sIdx]);
+            const sNorm2 = normalizeText(spokenWords[sIdx + 1]);
+            const sTwoWords = sNorm1 + " " + (sNorm2 || "");
+
+            if (contractions[oNorm] === sTwoWords) {
+                resultHTML += `<span class="word-correct">${spokenWords[sIdx]} ${spokenWords[sIdx+1]}</span> `;
+                sIdx += 2; matched = true; correctCount++;
+            } else if (i + 1 < origWords.length && (oNorm + " " + normalizeText(origWords[i+1])) === contractions[sNorm1]) {
+                resultHTML += `<span class="word-correct">${spokenWords[sIdx]}</span> `;
+                sIdx += 1; i++; matched = true; correctCount++;
+            } else if (oNorm === sNorm1 || contractions[oNorm] === sNorm1 || expanded[oNorm] === sNorm1) {
+                resultHTML += `<span class="word-correct">${spokenWords[sIdx]}</span> `;
+                sIdx++; matched = true; correctCount++;
+            }
+        }
+        if (!matched) {
+            let foundAhead = false;
+            for (let look = sIdx; look < sIdx + 3 && look < spokenWords.length; look++) {
+                if (normalizeText(spokenWords[look]) === oNorm) {
+                    for (let skip = sIdx; skip < look; skip++) resultHTML += `<span class="word-error">${spokenWords[skip]}</span> `;
+                    resultHTML += `<span class="word-correct">${spokenWords[look]}</span> `;
+                    sIdx = look + 1; foundAhead = true; matched = true; correctCount++; break;
+                }
+            }
+            if (!foundAhead) resultHTML += `<span class="word-missing">${origWords[i]}</span> `;
+        }
+    }
+    while (sIdx < spokenWords.length) { resultHTML += `<span class="word-error">${spokenWords[sIdx]}</span> `; sIdx++; }
+    feedbackDiv.innerHTML = resultHTML;
+
+    if (correctCount / origWords.length > 0.85) {
+        setTimeout(() => { know(); }, 1500);
+    }
+}
+
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition = null;
 let isListening = false;
@@ -250,7 +314,6 @@ if (SpeechRecognition) {
     recognition.onstart = () => {
         isListening = true;
         document.getElementById("speechBtn").classList.add("listening");
-        document.getElementById("speech-feedback").innerHTML = "";
     };
     recognition.onend = () => {
         isListening = false;
@@ -265,58 +328,23 @@ if (SpeechRecognition) {
     };
 }
 
-function normalizeText(text) {
-    if (!text) return "";
-    return text.toLowerCase().replace(/[.,?!"]/g, "").trim();
-}
-
-function compareSentences(original, spoken) {
-    const feedbackDiv = document.getElementById("speech-feedback");
-    const normOriginalWords = normalizeText(original).split(/\s+/);
-    const normSpokenWords = normalizeText(spoken).split(/\s+/);
-    const origWordsRaw = original.split(/\s+/);
-    
-    let resultHTML = "";
-    let sIdx = 0;
-    let correctCount = 0;
-
-    normOriginalWords.forEach((normWord, index) => {
-        const originalWordRaw = origWordsRaw[index];
-        let matched = false;
-
-        if (sIdx < normSpokenWords.length && normSpokenWords[sIdx] === normWord) {
-            resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
-            sIdx++;
-            matched = true;
-            correctCount++;
-        } else {
-            for (let j = sIdx + 1; j < sIdx + 5 && j < normSpokenWords.length; j++) {
-                if (normSpokenWords[j] === normWord) {
-                    for (let k = sIdx; k < j; k++) {
-                        resultHTML += `<span class="word-error">${normSpokenWords[k]}</span>`;
-                    }
-                    resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
-                    sIdx = j + 1;
-                    matched = true;
-                    correctCount++;
-                    break;
-                }
-            }
-        }
-        if (!matched) resultHTML += `<span class="word-missing">${originalWordRaw}</span>`;
-    });
-    
-    feedbackDiv.innerHTML = resultHTML;
-
-    if (correctCount / normOriginalWords.length > 0.9) {
-        setTimeout(() => { know(); }, 1500);
-    }
+function stopAllMicrophones() {
+    if (isListening && recognition) { recognition.stop(); isListening = false; }
+    if (isRecording && mediaRecorder && mediaRecorder.state !== "inactive") { mediaRecorder.stop(); isRecording = false; }
+    if (window.localStream) { window.localStream.getTracks().forEach(t => t.stop()); window.localStream = null; }
+    document.getElementById("speechBtn").classList.remove("listening");
+    document.querySelectorAll(".active").forEach(b => b.classList.remove("active"));
 }
 
 function toggleDictation() {
-    if (!recognition) { alert("Navegador no compatible."); return; }
-    if (isListening) recognition.stop();
-    else recognition.start();
+    if (!recognition) return;
+    if (isListening) {
+        recognition.stop();
+    } else {
+        stopAllMicrophones();
+        document.getElementById("speech-feedback").innerHTML = "";
+        recognition.start();
+    }
 }
 
 let mediaRecorder;
@@ -326,15 +354,11 @@ let currentRecordingBtnId = null;
 
 async function toggleRecording(btnId = "recBtn") {
   const btn = document.getElementById(btnId);
-  if (isRecording) {
-      if (currentRecordingBtnId === btnId) { stopRecordingProcess(btn); return; } 
-      else {
-          stopRecordingProcess(document.getElementById(currentRecordingBtnId));
-          await new Promise(r => setTimeout(r, 150));
-      }
-  }
+  if (isRecording) { stopAllMicrophones(); return; }
+  stopAllMicrophones();
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    window.localStream = stream;
     mediaRecorder = new MediaRecorder(stream);
     audioChunks = [];
     mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
@@ -347,13 +371,6 @@ async function toggleRecording(btnId = "recBtn") {
     currentRecordingBtnId = btnId;
     btn.classList.add("active");
   } catch (err) { isRecording = false; }
-}
-
-function stopRecordingProcess(btn) {
-    if (mediaRecorder && mediaRecorder.state !== "inactive") mediaRecorder.stop();
-    isRecording = false;
-    currentRecordingBtnId = null;
-    if (btn) btn.classList.remove("active");
 }
 
 function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "unknown"; }
@@ -382,12 +399,12 @@ function loadBlock(b) {
   localStorage.setItem(getFolderName() + "_currentBlock", b);
   let temp = [];
   let start = b * 10, end = Math.min(start + 10, data.length);
+  // ELIMINADO EL SORT ALEATORIO
   for (let i = start; i < end; i++) temp.push({...data[i], realIdx: i+1});
-  currentBlockData = temp.sort(() => Math.random() - 0.5);
+  currentBlockData = temp;
   document.querySelectorAll(".block").forEach((btn, idx) => btn.classList.toggle("active", idx === b));
   pos = 0; learnedCount = 0;
   document.getElementById("list").style.display = "none";
-  if (isRecording) stopRecordingProcess(document.getElementById(currentRecordingBtnId));
   update(true); 
 }
 
@@ -407,14 +424,15 @@ function update(fromNextAction = false) {
   progressBar.value = 0;
 
   if (mode === "EN") {
-    w.innerHTML = ``; 
+    w.innerHTML = `<span class="txt-en">${item.en}</span>`; 
     aElement.innerHTML = `<span class="txt-es">${item.es}</span>`;
     if (fromNextAction) playAudio(1.0);
   } else {
-    w.innerHTML = `<div class="txt-es" style="font-weight:700;">${item.es}</div>`;
+    w.innerHTML = `<div class="txt-es">${item.es}</div>`;
     aElement.innerHTML = `<span class="txt-en">${item.en}</span>`;
   }
   aElement.style.display = "none";
+  // CAMBIO: Mostrar total de la lista original de ese bloque (usualmente 10)
   document.getElementById("pos").textContent = learnedCount;
   document.getElementById("total").textContent = currentBlockData.length + learnedCount;
 }
@@ -438,14 +456,13 @@ function pauseAudio() { a.pause(); }
 
 function toggleReveal() {
   const aElement = document.getElementById("answer");
-  const wElement = document.getElementById("word");
-  const item = currentBlockData[pos];
+  const speechF = document.getElementById("speech-feedback");
+  
   if (aElement.style.display === "none") {
-    if (mode === "EN") wElement.innerHTML = `<span class="txt-en">${item.en}</span>`;
     aElement.style.display = "block";
   } else {
-    if (mode === "EN") wElement.innerHTML = "";
     aElement.style.display = "none";
+    speechF.innerHTML = ""; // Limpiar feedback al esconder
   }
 }
 
@@ -454,14 +471,14 @@ function know() {
   learnedCount++;
   currentBlockData.splice(pos, 1);
   if (pos >= currentBlockData.length) pos = 0;
-  if (isRecording) stopRecordingProcess(document.getElementById(currentRecordingBtnId));
+  stopAllMicrophones();
   update(true);
 }
 
 function next() {
   if (currentBlockData.length === 0) return;
   pos = (pos + 1) % currentBlockData.length;
-  if (isRecording) stopRecordingProcess(document.getElementById(currentRecordingBtnId));
+  stopAllMicrophones();
   update(true);
 }
 
@@ -505,7 +522,7 @@ function renderList(type) {
         <button id="${listRecBtnId}" class="mini-btn-list rec ${isActive}" onclick="toggleRecording('${listRecBtnId}')">🎤</button>
       </div>
       <div style="flex:1;">
-        <div class="txt-es" style="font-weight:bold; font-size:14px;">${item.es}</div>
+        <div class="txt-es" style="font-size:14px;">${item.es}</div>
         <div class="blur" onclick="this.classList.toggle('revealed')">${item.en}</div>
       </div>
     `;
@@ -514,8 +531,13 @@ function renderList(type) {
 }
 
 function markAsDone(element) {
-    localStorage.setItem(getFolderName(), new Date().toISOString());
-    element.innerHTML = "✓"; element.classList.add('marked');
+    if (!element.classList.contains('marked')) {
+        localStorage.setItem(getFolderName(), new Date().toISOString());
+        element.innerHTML = "✓"; element.classList.add('marked');
+    } else {
+        localStorage.removeItem(getFolderName());
+        element.innerHTML = ""; element.classList.remove('marked');
+    }
 }
 
 initBlocks();
