@@ -1,9 +1,9 @@
  <!DOCTYPE html>
-<html lang="ca">
+<html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Estudi FRASES · Collocations Informals (60)</title>
+<title>Estudio FRASES · Collocations Informales (60)</title>
 <style>
 body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .card{max-width:720px;margin:20px auto;background:#fff;border-radius:24px;padding:24px;box-shadow:0 8px 18px rgba(0,0,0,.15);position:relative}
@@ -27,13 +27,11 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .audio-btn.slow{background:#fef08a}
 .audio-btn.pause{background:#fee2e2}
 
-/* Botó de repetir (Ara Rosa) */
 .mic-btn.rec-mode { background: #fee2e2; color: #333; }
-.mic-btn.rec-mode.recording { background: #ef4444; color: white; animation: pulse 1.5s infinite; }
+.mic-btn.rec-mode.recording { background: #ef4444 !important; color: white !important; animation: pulse 1.5s infinite; }
 
-/* Botó d'escriure/dictat (Ara Blau) */
 .mic-btn.dict-mode { background: #d6e6f5; color: #2563eb; }
-.mic-btn.dict-mode.listening{ background: #ef4444; color:white; animation: pulse 1.5s infinite; }
+.mic-btn.dict-mode.listening{ background: #3b82f6 !important; color:white !important; animation: pulse 1.5s infinite; }
 
 @keyframes pulse { 0% {box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);} 70% {box-shadow: 0 0 0 15px rgba(239, 68, 68, 0);} 100% {box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);} }
 
@@ -45,11 +43,14 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 
 .counter-side{position:absolute;right:10px;top:-25px;font-weight:bold;color:#2563eb;font-size:22px}
 
-#word{font-size:24px;font-weight:800;margin:20px 0;line-height:1.4;min-height:120px;text-align:center;display:flex;align-items:center;justify-content:center;padding:0 10px}
+#word{font-size:24px;font-weight:800;margin:20px 0;line-height:1.4;min-height:120px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 10px}
 .txt-es{color:#2563eb} 
 #answer{font-size:20px;font-weight:bold;margin-top:-10px;margin-bottom:20px;text-align:center;min-height:30px;color:#666}
 
-#speech-feedback { font-style: italic; color: #ef4444; font-size: 19px; margin-bottom: 10px; min-height: 24px; text-align: center;}
+#speech-feedback { font-size: 19px; margin-bottom: 10px; min-height: 28px; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; text-align: center;}
+.word-correct { color: #16a34a; }
+.word-error { color: #dc2626; text-decoration: line-through; }
+.word-missing { color: #94a3b8; font-style: italic; }
 
 .actions{display:flex;gap:12px}
 .btn{flex:1;padding:18px;border-radius:18px;border:none;font-weight:bold;font-size:18px;cursor:pointer}
@@ -103,8 +104,8 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
       <button class="audio-btn slow" onclick="playAudio(0.75)">🐢</button>
       <button class="audio-btn" onclick="playAudio(1.0)">🔊</button>
       <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
-      <button class="mic-btn rec-mode" id="recBtn" onclick="toggleRecording()">🎤</button>
-      <button class="mic-btn dict-mode" id="micBtn" onclick="startDictation()">🎤</button>
+      <button class="mic-btn rec-mode" id="recBtn" onclick="toggleRecording('recBtn')">🎤</button>
+      <button class="mic-btn dict-mode" id="micBtn" onclick="toggleMic()">🎤</button>
     </div>
 
     <div class="progress-wrapper">
@@ -117,20 +118,19 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
   <div id="answer"></div>
 
   <div class="actions">
-    <button class="btn btn-reveal" onclick="reveal()">veure</button>
-    <button class="btn btn-know" onclick="know()">ja la se</button>
-    <button class="btn btn-next" onclick="next()">següent</button>
+    <button class="btn btn-reveal" onclick="reveal()">ver</button>
+    <button class="btn btn-know" onclick="know()">ya la sé</button>
+    <button class="btn btn-next" onclick="next()">siguiente</button>
   </div>
   
   <div class="list-toggle-btns">
-    <button class="btn-list-main" onclick="toggleList('all')">llista del bloc</button>
-    <button class="btn-list-main btn-stars-main" onclick="toggleList('stars')">favorites (★)</button>
+    <button class="btn-list-main" onclick="toggleList('all')">lista del bloque</button>
+    <button class="btn-list-main btn-stars-main" onclick="toggleList('stars')">favoritos (★)</button>
   </div>
   <div id="list"></div>
 </div>
 
 <audio id="audio"></audio>
-<audio id="player" style="display:none;"></audio>
 
 <script>
 const data = [
@@ -174,7 +174,7 @@ const data = [
   {audio:"f114.mp3", en:"It was so funny I could hardly keep a straight face.", es:"Fue tan divertido que apenas pude aguantar la risa."},
   {audio:"f115.mp3", en:"Keep me posted on any new developments.", es:"Manténme informado de cualquier novedad."},
   {audio:"f116.mp3", en:"You’re doing great, keep it up!", es:"Lo estás haciendo genial, ¡sigue así!"},
-  {audio:"f117.mp3", en:"Could you give me a hand with these boxes?", es:"¿Could you give me a hand with these boxes?"},
+  {audio:"f117.mp3", en:"Could you give me a hand with these boxes?", es:"¿Podrías echarme una mano con estas cajas?"},
   {audio:"f118.mp3", en:"I've never tried surfing before, but I'll give it a shot.", es:"Nunca he probado el surf, pero lo intentaré."},
   {audio:"f119.mp3", en:"Do you need me to give you a lift to the station?", es:"¿Necesitas que te lleve a la estación?"},
   {audio:"f120.mp3", en:"Give him a break, he's had a really long day.", es:"Dale un respiro, ha tenido un día muy largo."},
@@ -200,69 +200,137 @@ let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockI
 const a = document.getElementById("audio");
 const progressBar = document.getElementById("progressBar");
 
-// --- LÒGICA ESCRIURE (Botó Blau Dreta) ---
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-const recognition = SpeechRecognition ? new SpeechRecognition() : null;
-if (recognition) { recognition.lang = 'en-US'; recognition.interimResults = false; }
-
-function startDictation() {
-    if (!recognition || currentBlockData.length === 0) return;
-    const btn = document.getElementById("micBtn");
-    const feedback = document.getElementById("speech-feedback");
-    btn.classList.add("listening");
-    feedback.textContent = "Escrivint...";
-    recognition.start();
-    recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,"").trim();
-        const original = currentBlockData[pos].en.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,"").trim();
-        if (transcript === original) {
-            feedback.innerHTML = `"${event.results[0][0].transcript}" 🎉`;
-            setTimeout(() => { feedback.textContent = ""; know(); }, 1200);
-        } else {
-            feedback.textContent = `"${event.results[0][0].transcript}"`;
-        }
-    };
-    recognition.onend = () => btn.classList.remove("listening");
-}
-
-// --- LÒGICA ESCOLTA I REPETEIX (Botó Rosa Esquerra) ---
+// --- GRABACIÓN (Micro Rosa) ---
 let mediaRecorder;
 let audioChunks = [];
 let isRecording = false;
-const recBtn = document.getElementById('recBtn');
-const player = document.getElementById('player');
+let currentRecordingBtn = null;
 
-if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-    navigator.mediaDevices.getUserMedia({ audio: true })
-        .then(stream => {
-            mediaRecorder = new MediaRecorder(stream);
-            mediaRecorder.ondataavailable = event => audioChunks.push(event.data);
-            mediaRecorder.onstop = () => {
-                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-                player.src = URL.createObjectURL(audioBlob);
-                audioChunks = [];
-                player.play();
-            };
-        }).catch(err => console.error("Error micro:", err));
-}
-
-function toggleRecording() {
-    if (!mediaRecorder) return;
-    if (!isRecording) {
-        isRecording = true;
-        recBtn.classList.add('recording');
+async function toggleRecording(btnId = "recBtn") {
+    const btn = document.getElementById(btnId);
+    if (isRecording && currentRecordingBtn === btnId) {
+        stopRecordingProcess(btn);
+        return;
+    }
+    if (isRecording && currentRecordingBtn !== btnId) {
+        const oldBtn = document.getElementById(currentRecordingBtn);
+        stopRecordingProcess(oldBtn);
+        await new Promise(r => setTimeout(r, 100));
+    }
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
         audioChunks = [];
-        a.pause(); 
+        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+        mediaRecorder.onstop = () => {
+            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+            const audioUrl = URL.createObjectURL(audioBlob);
+            const playRec = new Audio(audioUrl);
+            playRec.play();
+        };
         mediaRecorder.start();
-    } else {
+        isRecording = true;
+        currentRecordingBtn = btnId;
+        btn.classList.add("recording");
+        if(btnId === "recBtn") a.pause();
+    } catch (err) { 
         isRecording = false;
-        recBtn.classList.remove('recording');
-        mediaRecorder.stop();
+        currentRecordingBtn = null;
     }
 }
 
-// --- LÒGICA GENERAL ---
-function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "collocations_60"; }
+function stopRecordingProcess(btn) {
+    if (mediaRecorder && mediaRecorder.state !== "inactive") mediaRecorder.stop();
+    isRecording = false;
+    currentRecordingBtn = null;
+    if (btn) btn.classList.remove("recording");
+}
+
+// --- DICTADO (Micro Azul) ---
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition;
+let isListening = false;
+
+if (SpeechRecognition) {
+    recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    recognition.continuous = true;
+
+    recognition.onstart = () => {
+        isListening = true;
+        document.getElementById("micBtn").classList.add("listening");
+        document.getElementById("speech-feedback").innerHTML = "Escuchando...";
+    };
+    recognition.onend = () => {
+        isListening = false;
+        document.getElementById("micBtn").classList.remove("listening");
+    };
+    recognition.onresult = (event) => {
+        let fullTranscript = "";
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+            fullTranscript += event.results[i][0].transcript + " ";
+        }
+        compareSentences(currentBlockData[pos].en, fullTranscript.trim());
+    };
+}
+
+function normalizeText(text) {
+    if (!text) return "";
+    return text.toLowerCase().replace(/[.,?!"]/g, "").trim();
+}
+
+function compareSentences(original, spoken) {
+    const feedbackDiv = document.getElementById("speech-feedback");
+    const normOriginalWords = normalizeText(original).split(/\s+/);
+    const normSpokenWords = normalizeText(spoken).split(/\s+/);
+    const origWordsRaw = original.split(/\s+/);
+    
+    let resultHTML = "";
+    let sIdx = 0;
+    let correctCount = 0;
+
+    normOriginalWords.forEach((normWord, index) => {
+        const originalWordRaw = origWordsRaw[index];
+        let matched = false;
+
+        if (sIdx < normSpokenWords.length && normSpokenWords[sIdx] === normWord) {
+            resultHTML += `<span class="word-correct">${originalWordRaw}</span> `;
+            sIdx++;
+            matched = true;
+            correctCount++;
+        } else {
+            for (let j = sIdx + 1; j < sIdx + 5 && j < normSpokenWords.length; j++) {
+                if (normSpokenWords[j] === normWord) {
+                    for (let k = sIdx; k < j; k++) {
+                        resultHTML += `<span class="word-error">${normSpokenWords[k]}</span> `;
+                    }
+                    resultHTML += `<span class="word-correct">${originalWordRaw}</span> `;
+                    sIdx = j + 1;
+                    matched = true;
+                    correctCount++;
+                    break;
+                }
+            }
+        }
+        if (!matched) resultHTML += `<span class="word-missing">${originalWordRaw}</span> `;
+    });
+    
+    feedbackDiv.innerHTML = resultHTML;
+
+    if (correctCount >= normOriginalWords.length * 0.9) {
+        setTimeout(() => { feedbackDiv.textContent = ""; know(); }, 1500);
+    }
+}
+
+function toggleMic() {
+    if (!recognition || currentBlockData.length === 0) return;
+    if (isListening) recognition.stop();
+    else recognition.start();
+}
+
+// --- LÓGICA PRINCIPAL ---
+function getFolderName() { return "collocations_60"; }
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
 
 a.ontimeupdate = () => { if (a.duration) progressBar.value = (a.currentTime / a.duration) * 100; };
@@ -316,7 +384,7 @@ function loadBlock(b) {
 
 function update(fromNextAction = false) {
   if (currentBlockData.length === 0) {
-    document.getElementById("word").innerHTML = "Bloc Completat! 🎉";
+    document.getElementById("word").innerHTML = "¡Bloque Completado! 🎉";
     document.getElementById("answer").innerHTML = "";
     return;
   }
@@ -324,6 +392,7 @@ function update(fromNextAction = false) {
   document.getElementById("starMain").classList.toggle("active", starredIds.includes(item.realIdx));
   const w = document.getElementById("word");
   const ans = document.getElementById("answer");
+  document.getElementById("speech-feedback").innerHTML = "";
   progressBar.value = 0;
   ans.style.display = "none";
 
@@ -346,7 +415,7 @@ function toggleStar(forcedIdx = null) {
   if (starredIds.includes(idx)) starredIds = starredIds.filter(id => id !== idx);
   else starredIds.push(idx);
   localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
-  document.getElementById("starMain").classList.toggle("active", starredIds.includes(currentBlockData[pos]?.realIdx));
+  if (currentBlockData.length > 0) document.getElementById("starMain").classList.toggle("active", starredIds.includes(currentBlockData[pos].realIdx));
 }
 
 function playAudio(speed, forcedAudio = null) {
@@ -403,13 +472,11 @@ function toggleList(type) {
   l.style.display = "block";
 }
 
-function toggleBlur(element) {
-    element.classList.toggle('revealed');
-}
+function toggleBlur(element) { element.classList.toggle('revealed'); }
 
 function renderList(type) {
   const l = document.getElementById("list");
-  l.innerHTML = type === 'stars' ? "<b>Favorites (★):</b><br><br>" : "<b>Llista del bloc:</b><br><br>";
+  l.innerHTML = type === 'stars' ? "<b>Favoritos (★):</b><br><br>" : "<b>Lista del bloque:</b><br><br>";
   let listToRender = [];
   if (type === 'stars') {
     listToRender = data.map((item, index) => ({...item, realIdx: index})).filter(i => starredIds.includes(i.realIdx));
@@ -419,15 +486,17 @@ function renderList(type) {
     listToRender = data.slice(start, end).map((item, index) => ({...item, realIdx: start + index}));
   }
 
-  if (listToRender.length === 0) { l.innerHTML += "<i>Buit.</i>"; return; }
-  listToRender.forEach((item, index) => {
+  if (listToRender.length === 0) { l.innerHTML += "<i>Vacío.</i>"; return; }
+  listToRender.forEach((item) => {
     const isStarred = starredIds.includes(item.realIdx);
     const itemDiv = document.createElement("div");
     itemDiv.className = "list-item";
+    const listRecBtnId = `recBtnList_${item.realIdx}`;
     itemDiv.innerHTML = `
-      <div class="list-actions-side">
+      <div class="list-actions-side" style="flex-direction: column; gap: 5px;">
         <button class="star-list ${isStarred ? 'active' : ''}" onclick="event.stopPropagation(); toggleStar(${item.realIdx}); renderList('${type}')">★</button>
         <button class="mini-btn btn-audio-list" onclick="event.stopPropagation(); playAudio(1.0, '${item.audio}')">🔊</button>
+        <button id="${listRecBtnId}" class="mini-btn mic-btn rec-mode" style="width:35px; height:35px; font-size:16px;" onclick="event.stopPropagation(); toggleRecording('${listRecBtnId}')">🎤</button>
       </div>
       <div class="list-content">
         <div class="list-texts">
@@ -443,7 +512,6 @@ function renderList(type) {
 function markAsDone(element) {
     localStorage.setItem(getFolderName(), new Date().toISOString());
     element.innerHTML = "✓"; element.classList.add('marked');
-    alert("Lliçó marcada ✅");
 }
 
 initBlocks();

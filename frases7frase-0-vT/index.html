@@ -55,8 +55,11 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 
 .counter-side{position:absolute;right:10px;top:-25px;font-weight:bold;color:#2563eb;font-size:20px}
 
-#word{font-size:24px;font-weight:800;margin:20px 0;line-height:1.4;min-height:120px;text-align:center;display:flex;align-items:center;justify-content:center;padding:0 10px}
+#word{font-size:20px;margin:20px 0;line-height:1.4;min-height:120px;text-align:center;display:flex;align-items:center;justify-content:center;padding:0 10px}
 .txt-es{color:#2563eb} 
+/* Estilo para el inglés: Fuente oscura y negrita como el index */
+.txt-en{color:#0f172a; font-weight:700; font-size:20px;}
+
 #answer{font-size:20px;font-weight:bold;margin-top:-10px;margin-bottom:20px;text-align:center;min-height:30px;color:#666}
 
 #speech-feedback { font-size: 19px; margin-bottom: 10px; min-height: 28px; text-align: center; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; transition: 0.2s;}
@@ -77,8 +80,8 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 .list-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #eee; }
 .list-item-controls { display: flex; align-items: center; gap: 8px; }
 .mini-btn-list { border: none; border-radius: 8px; width: 34px; height: 34px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: 0.2s;}
-.mini-btn-list.rec { background: #f8bbd0; color: #9d174d; } /* Color rosa pálido solicitado */
-.blur { filter: blur(5px); transition: filter 0.2s; cursor: pointer; user-select: none; }
+.mini-btn-list.rec { background: #f8bbd0; color: #9d174d; }
+.blur { font-weight: 800; font-size: 15px; color: #0f172a; filter: blur(5px); transition: filter 0.2s; cursor: pointer; user-select: none; }
 .blur.revealed { filter: blur(0); }
 
 .check-box-manual {
@@ -125,7 +128,7 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
   </div>
   
   <div class="list-toggle-btns">
-    <button class="btn-list-main" onclick="toggleList('all')">llista del bloc</button>
+    <button class="btn-list-main" onclick="toggleList('all')"></button>
     <button class="btn-list-main" style="background:#fef3c7" onclick="toggleList('stars')">favorites (★)</button>
   </div>
   <div id="list"></div>
@@ -408,8 +411,8 @@ function update(fromNextAction = false) {
     aElement.innerHTML = `<span class="txt-es">${item.es}</span>`;
     if (fromNextAction) playAudio(1.0);
   } else {
-    w.innerHTML = `<div style='font-size:22px;' class="txt-es">${item.es}</div>`;
-    aElement.innerHTML = `<span style="font-size:24px; color:#333;">${item.en}</span>`;
+    w.innerHTML = `<div class="txt-es" style="font-weight:700;">${item.es}</div>`;
+    aElement.innerHTML = `<span class="txt-en">${item.en}</span>`;
   }
   aElement.style.display = "none";
   document.getElementById("pos").textContent = learnedCount;
@@ -438,7 +441,7 @@ function toggleReveal() {
   const wElement = document.getElementById("word");
   const item = currentBlockData[pos];
   if (aElement.style.display === "none") {
-    if (mode === "EN") wElement.innerHTML = `<span style="color:#333;">${item.en}</span>`;
+    if (mode === "EN") wElement.innerHTML = `<span class="txt-en">${item.en}</span>`;
     aElement.style.display = "block";
   } else {
     if (mode === "EN") wElement.innerHTML = "";
@@ -479,7 +482,7 @@ function toggleList(type) {
 
 function renderList(type) {
   const l = document.getElementById("list");
-  l.innerHTML = `<b>${type === 'stars' ? 'Favorites (★)' : 'Llista del bloc'}:</b><br><br>`;
+  l.innerHTML = `<b>${type === 'stars' ? 'Favorites (★)' : ''}:</b><br><br>`;
   let listToRender = [];
   if (type === 'stars') {
     listToRender = data.map((item, index) => ({...item, realIdx: index+1})).filter(i => starredIds.includes(i.realIdx));
@@ -503,7 +506,7 @@ function renderList(type) {
       </div>
       <div style="flex:1;">
         <div class="txt-es" style="font-weight:bold; font-size:14px;">${item.es}</div>
-        <div class="blur" style="font-size:15px;" onclick="this.classList.toggle('revealed')">${item.en}</div>
+        <div class="blur" onclick="this.classList.toggle('revealed')">${item.en}</div>
       </div>
     `;
     l.appendChild(itemDiv);

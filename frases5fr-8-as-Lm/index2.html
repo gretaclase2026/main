@@ -168,7 +168,7 @@ const items = [
   {audio:"f067.mp3", en:"We were so lucky to find a parking spot right in front of the restaurant.", es:"Vam tenir molta sort de trobar un lloc per aparcar just davant del restaurant."},
   {audio:"f068.mp3", en:"I'll never forget the first time I saw the ocean.", es:"Mai oblidaré la primera vegada que vaig veure l'oceà."},
   {audio:"f069.mp3", en:"She's always complaining about her job, but she doesn't do anything to change it.", es:"Sempre es queixa de la seva feina, però no fa res per canviar-la."},
-  {audio:"f070.mp3", en:"It's important to drink enough water every day.", es:"Esporant beure prou aigua cada dia."},
+  {audio:"f070.mp3", en:"It's important to drink enough water every day.", es:"És important beure prou aigua cada dia."},
   {audio:"f071.mp3", en:"I'm looking forward to the weekend so I can relax.", es:"Estic esperant amb ganes el cap de setmana per poder relaxar-me."},
   {audio:"f072.mp3", en:"He's been living in that house for more than fifty years.", es:"Fa més de cinquanta anys que viu en aquella casa."},
   {audio:"f073.mp3", en:"I'm sorry, I forgot to call you back yesterday.", es:"Em sap greu, em vaig oblidar de tornar-te la trucada ahir."},
@@ -219,7 +219,7 @@ function updateCard(){
     if(!i) return;
     document.getElementById('counter').innerText = `${currentIdx+1} / ${vItems.length}`;
     document.getElementById('es').innerText = i.es;
-    document.getElementById('en').innerHTML = `<strong>${i.en}</strong>`;
+    document.getElementById('en').innerText = i.en;
     document.getElementById('es').className = (currentMode==='ES') ? 'es' : 'es hidden';
     document.getElementById('en').className = (currentMode==='EN') ? 'en' : 'en hidden';
     document.getElementById('starBtn').style.color = starredIds.includes(i.audio) ? '#f59e0b' : '#cbd5e1';
@@ -347,7 +347,7 @@ function toggleList(type){
     const box = document.getElementById('listBox');
     if(!box.classList.contains('hidden')) { box.classList.add('hidden'); return; }
     box.classList.remove('hidden');
-    box.innerHTML = ``;
+    box.innerHTML = `<h3 style="margin:10px 0">${type==='stars'?'Repàs ★':'Tota la llista'}</h3>`;
     const list = type === 'stars' ? items.filter(i => starredIds.includes(i.audio)) : items;
     list.forEach((i, index) => {
         const isStarred = starredIds.includes(i.audio);
@@ -361,7 +361,7 @@ function toggleList(type){
             </div>
             <div style="flex:1">
                 <div style="color:#2563eb; font-weight:700">${i.es}</div>
-                <div class="blur" onclick="this.classList.toggle('revealed')"><strong>${i.en}</strong></div>
+                <div class="blur" onclick="this.classList.toggle('revealed')">${i.en}</div>
             </div>`;
         box.appendChild(itemDiv);
     });

@@ -30,12 +30,14 @@ main{display:flex;justify-content:center;padding:24px}
 
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 
+/* Estilo para el micrófono azul (STT) cuando está activo */
 .listening { 
     animation: pulse 1.5s infinite; 
     background: #90caf9 !important; 
     color: #0f172a !important; 
 }
 
+/* Estilo para los micrófonos rosas (Grabación) cuando están activos */
 .recording { 
     animation: pulse 1.5s infinite; 
     background: #f48fb1 !important; 
@@ -456,8 +458,7 @@ function toggleList(type) {
 
 function renderList(type) {
   const box = document.getElementById("listBox");
-  // CAMBIO AQUÍ: Ahora el título solo se muestra si el tipo es 'stars' (favoritas)
-  box.innerHTML = type === 'stars' ? "<h3>Frases destacades (★):</h3>" : "";
+  box.innerHTML = type === 'stars' ? "<h3>Frases destacades (★):</h3>" : "<h3>Tota la llista:</h3>";
   let listToRender = [];
   if (type === 'stars') listToRender = items.filter(i => starredIds.includes(i.audio));
   else listToRender = (currentBlockID === -1) ? items : items.slice(currentBlockID * 10, (currentBlockID + 1) * 10);

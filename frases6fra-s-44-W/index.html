@@ -61,14 +61,15 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 .review-btn { background: #fef3c7; color: #92400e; }
 
 .list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
-.list-item { display: flex; align-items: flex-start; gap: 15px; padding: 15px 0; border-bottom: 1px solid #eee; }
-.list-controls-side { display: flex; flex-direction: column; gap: 8px; min-width: 44px; align-items: center; }
-.list-texts { flex-grow: 1; display: flex; flex-direction: column; gap: 6px; }
+.list-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #eee; }
+/* NUEVO DISEÑO HORIZONTAL PARA LOS BOTONES DE LA LISTA */
+.list-controls-side { display: flex; flex-direction: row; gap: 6px; align-items: center; min-width: fit-content; }
+.list-texts { flex-grow: 1; display: flex; flex-direction: column; gap: 4px; overflow: hidden; }
 
-.mini-btn { border: none; border-radius: 10px; width: 38px; height: 38px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+.mini-btn { border: none; border-radius: 8px; width: 34px; height: 34px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
 .btn-audio { background: #dbeafe; }
 .btn-rec-mini { background: #fbcfe8; color: #9d174d; }
-.star-btn-list { background: none; border: none; font-size: 26px; cursor: pointer; color: #cbd5e1; padding: 0; line-height: 1; }
+.star-btn-list { background: none; border: none; font-size: 24px; cursor: pointer; color: #cbd5e1; padding: 0; line-height: 1; width: 30px; text-align: center;}
 .star-btn-list.active { color: #f59e0b !important; }
 
 .blur { filter: blur(5px); transition: filter 0.2s; cursor: pointer; user-select: none; }
@@ -388,7 +389,7 @@ function toggleList(type) {
 
 function renderList(type) {
   const box = document.getElementById("listBox");
-  box.innerHTML = type === 'stars' ? "<h3>Frases destacades (★):</h3>" : "<h3>Tota la llista:</h3>";
+  box.innerHTML = type === 'stars' ? "<h3>Frases destacades (★):</h3>" : "";
   
   let listToRender = [];
   if (type === 'stars') listToRender = items.filter(i => starredIds.includes(i.audio));
