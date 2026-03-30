@@ -208,7 +208,7 @@ const items = [
     {audio:"f083.mp3",en:"If I'd known you were coming, I'd have cooked dinner.",es:"Si hagués sabut que venies, hauria cuinat el sopar."},
     {audio:"f084.mp3",en:"He would've passed the test if he hadn't been nervous.",es:"Ell hauria aprovat el test si no hagués estat nerviós."},
     {audio:"f085.mp3",en:"If we'd won the game, we would've celebrated.",es:"Si haguéssim guanyat el partit, ho hauríem celebrat."},
-    {audio:"f086.mp3",en:"I'd have gone to the concert if the tickets hadn't been sold out.",es:"Hauria anat al concert si las entradas no s'haguessin esgotat."},
+    {audio:"f086.mp3",en:"I'd have gone to the concert if the tickets hadn't been sold out.",es:"Hauria anat al concert si les entrades no s'haguessin esgotat."},
     {audio:"f087.mp3",en:"If she'd lost her phone, she'd have been very worried.",es:"Si ella hagués perdut el telèfon, hauria estat molt preocupada."},
     {audio:"f088.mp3",en:"They would've moved house if they'd found a cheaper one.",es:"S'haurien mudat de casa si n'haguessin trobat una de més barata."},
     {audio:"f089.mp3",en:"If I'd seen the sign, I'd have stopped the car.",es:"Si hagués vist el senyal, hauria parat el cotxe."},
@@ -336,30 +336,19 @@ function initBlocks() {
 }
 
 function loadBlock(b) {
-  currentBlockID = b; 
-  localStorage.setItem(getFolderName() + "_puntoLibro", b);
-  let temp = []; 
-  let start = b * 10;
-  for (let i = start; i < Math.min(start + 10, items.length); i++) {
-    temp.push({...items[i]});
-  }
-  currentBlockData = temp; // Elimiada la aleatoriedad
+  currentBlockID = b; localStorage.setItem(getFolderName() + "_puntoLibro", b);
+  let temp = []; let start = b * 10;
+  for (let i = start; i < Math.min(start + 10, items.length); i++) temp.push({...items[i]});
+  currentBlockData = temp.sort(() => Math.random() - 0.5);
   document.querySelectorAll(".block").forEach((btn, idx) => btn.classList.toggle("active", idx === (b + 1)));
-  pos = 0; 
-  learnedCount = 0; 
-  document.getElementById("endMsg").classList.add("hidden"); 
-  update(true);
+  pos = 0; learnedCount = 0; document.getElementById("endMsg").classList.add("hidden"); update(true);
 }
 
 function loadAll() {
-  currentBlockID = -1; 
-  localStorage.setItem(getFolderName() + "_puntoLibro", "all");
-  currentBlockData = items.map(i => ({...i})); // Eliminada la aleatoriedad
+  currentBlockID = -1; localStorage.setItem(getFolderName() + "_puntoLibro", "all");
+  currentBlockData = items.map(i => ({...i})).sort(() => Math.random() - 0.5);
   document.querySelectorAll(".block").forEach((btn, idx) => btn.classList.toggle("active", idx === 0));
-  pos = 0; 
-  learnedCount = 0; 
-  document.getElementById("endMsg").classList.add("hidden"); 
-  update(true);
+  pos = 0; learnedCount = 0; document.getElementById("endMsg").classList.add("hidden"); update(true);
 }
 
 function update(fromAction = false) {
