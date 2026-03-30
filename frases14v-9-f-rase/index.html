@@ -1,4 +1,4 @@
- V<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ca">
 <head>
 <meta charset="UTF-8">
@@ -299,7 +299,6 @@ if (SpeechRecognition) {
     };
 }
 
-// Reset de todos los micrófonos y estados visuales
 function stopAllMicrophones() {
     if (isListening && recognition) { recognition.stop(); isListening = false; }
     if (isRecording && mediaRecorder) { 
@@ -329,14 +328,7 @@ let mediaRecorder, audioChunks = [], isRecording = false;
 
 async function toggleRecord(targetBtnId) {
     const btn = document.getElementById(targetBtnId);
-    
-    // SI YA ESTÁ GRABANDO: PARAR
-    if (isRecording) {
-        stopAllMicrophones(); // Esto limpia todo, para la grabadora y resetea el botón
-        return;
-    }
-
-    // SI NO ESTABA GRABANDO: EMPEZAR
+    if (isRecording) { stopAllMicrophones(); return; }
     stopAllMicrophones(); 
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -423,8 +415,21 @@ function pauseAudio() { audioObj.pause(); }
 function reveal() {
   if (currentBlockData.length === 0) return;
   const item = currentBlockData[pos];
-  document.getElementById("es").innerHTML = item.es; document.getElementById("en").innerHTML = item.en;
-  document.getElementById("es").classList.remove("hidden"); document.getElementById("en").classList.remove("hidden");
+  const esEl = document.getElementById("es");
+  const enEl = document.getElementById("en");
+  const feedbackEl = document.getElementById("speechFeedback");
+
+  if (mode === "EN") {
+    esEl.innerHTML = item.es;
+    esEl.classList.toggle("hidden");
+    // Borramos el feedback si ocultamos
+    if(esEl.classList.contains("hidden")) feedbackEl.innerHTML = "";
+  } else {
+    enEl.innerHTML = item.en;
+    enEl.classList.toggle("hidden");
+    // Borramos el feedback si ocultamos
+    if(enEl.classList.contains("hidden")) feedbackEl.innerHTML = "";
+  }
 }
 
 function know() {

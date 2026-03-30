@@ -32,7 +32,8 @@ main{display:flex;justify-content:center;padding:24px}
 .audio-btn.stt{background:#dbeafe; font-size: 22px;}
 
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-.recording-icon { display: inline-block; animation: pulse 1s infinite; color: #db2777 !important; }
+.recording-active { background: #f06292 !important; color: white !important; }
+.recording-icon { display: inline-block; animation: pulse 1s infinite; }
 .listening { animation: pulse 1.5s infinite; background: #3b82f6 !important; color: white !important; }
 
 .star-btn { background: none; border: none; font-size: 32px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px 0 0; margin-right: 5px; }
@@ -61,14 +62,14 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 .review-btn { background: #fef3c7; color: #92400e; }
 
 .list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
-.list-item { display: flex; align-items: flex-start; gap: 15px; padding: 15px 0; border-bottom: 1px solid #eee; }
-.list-controls-side { display: flex; flex-direction: column; gap: 8px; min-width: 44px; align-items: center; }
-.list-texts { flex-grow: 1; display: flex; flex-direction: column; gap: 8px; }
+.list-item { display: flex; flex-direction: row; gap: 12px; padding: 15px 0; border-bottom: 1px solid #eee; align-items: center; }
+.list-controls-row { display: flex; flex-direction: row; gap: 6px; align-items: center; flex-shrink: 0; }
+.list-texts { display: flex; flex-direction: column; gap: 4px; flex: 1; }
 
-.mini-btn { border: none; border-radius: 10px; width: 38px; height: 38px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+.mini-btn { border: none; border-radius: 10px; width: 34px; height: 34px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
 .btn-audio { background: #dbeafe; }
-.btn-rec-mini { background: #fbcfe8; color: #9d174d; }
-.star-btn-list { background: none; border: none; font-size: 26px; cursor: pointer; color: #cbd5e1; padding: 0; line-height: 1; }
+.btn-rec-mini { background: #fbcfe8; color: #9d174d; transition: 0.2s; }
+.star-btn-list { background: none; border: none; font-size: 24px; cursor: pointer; color: #cbd5e1; padding: 0; line-height: 1; display: flex; align-items: center; }
 .star-btn-list.active { color: #f59e0b !important; }
 
 .blur { filter: blur(5px); transition: filter 0.2s; cursor: pointer; user-select: none; }
@@ -144,7 +145,7 @@ const items = [
     {audio:"f020.mp3",en:"If we had a garden, we'd plant trees.",es:"Si tinguéssim un jardí, plantaríem arbres."},
     {audio:"f021.mp3",en:"You'd understand if you listened carefully.",es:"Ho entendries si escoltessis amb atenció."},
     {audio:"f022.mp3",en:"If I found his wallet, I'd return it.",es:"Si trobés la seva cartera, la retornaria."},
-    {audio:"f023.mp3",en:"He would be famous if he played the guitar better.",es:"Seria famós si toqués millor la guitarra."},
+    {audio:"f023.mp3",en:"He would be famous if he played the guitar better.",es:"Ell seria famós si toqués millor la guitarra."},
     {audio:"f024.mp3",en:"If I didn't have a headache, I'd go to the party.",es:"Si no tingués mal de cap, aniria a la festa."},
     {audio:"f025.mp3",en:"We would arrive on time if we took a taxi.",es:"Arribaríem a temps si agaféssim un taxi."},
     {audio:"f026.mp3",en:"If she studied harder, she'd get better grades.",es:"Si ella estudiés més, treuria millors notes."},
@@ -185,7 +186,7 @@ const items = [
     {audio:"f061.mp3",en:"If it hadn't rained, we would've gone to the park.",es:"Si no hagués plogut, hauríem anat al parc."},
     {audio:"f062.mp3",en:"I'd have bought that coat if it'd been on sale.",es:"Hauria comprat aquell abric si hagués estat de rebaixes."},
     {audio:"f063.mp3",en:"If he'd driven more slowly, he wouldn't have had the accident.",es:"Si hagués conduït més lent, no hauria tenido l'accident."},
-    {audio:"f064.mp3",en:"We would've visited the museum if it'd been open.",es:"Hauríem visitat el museu si hagués estat obert."},
+    {audio:"f064.mp3",en:"We would've visited the museum if it'd been open.",es:"Hauríem visitat el museum si hagués estat obert."},
     {audio:"f065.mp3",en:"If she'd woken up early, she'd have seen the sunrise.",es:"Si s'hagués despertat d'hora, hauria vist la sortida del sol."},
     {audio:"f066.mp3",en:"They would've stayed longer if they'd liked the place.",es:"S'haurien quedat més temps si els hagués agradat el lloc."},
     {audio:"f067.mp3",en:"If I'd found your glasses, I'd have told you.",es:"Si hagués trobat les teves ulleres, t'ho hauria dit."},
@@ -199,7 +200,7 @@ const items = [
     {audio:"f075.mp3",en:"If I'd had a map, I'd have found the hotel easily.",es:"Si hagués tingut un mapa, hauria trobat l'hotel fàcilment."},
     {audio:"f076.mp3",en:"He would've learned English if he'd lived in London.",es:"Ell hauria après anglès si hagués viscut a Londres."},
     {audio:"f077.mp3",en:"If he had seen the movie, they'd have liked it.",es:"Si haguessin vist la pel·lícula, els hauria agradat."},
-    {audio:"f078.mp3",en:"I'd have taken a photo if I'd had my phone.",es:"Hauria fet una foto si hagués tingut el telèfon."},
+    {audio:"f078.mp3",en:"I'd have taken a photo if I'd had my phone.",es:"Hauria fet una foto si hagués intrat el telèfon."},
     {audio:"f079.mp3",en:"If we'd had enough eggs, I'd have made a cake.",es:"Si haguéssim tingut prou ous, hauria fet un pastís."},
     {audio:"f080.mp3",en:"She would've come if she hadn't been so busy.",es:"Ella hauria vingut si no hagués estat tan ocupada."},
     {audio:"f081.mp3",en:"If you'd followed the instructions, you'd have finished sooner.",es:"Si haguessis seguit les instruccions, hauries acabat abans."},
@@ -207,7 +208,7 @@ const items = [
     {audio:"f083.mp3",en:"If I'd known you were coming, I'd have cooked dinner.",es:"Si hagués sabut que venies, hauria cuinat el sopar."},
     {audio:"f084.mp3",en:"He would've passed the test if he hadn't been nervous.",es:"Ell hauria aprovat el test si no hagués estat nerviós."},
     {audio:"f085.mp3",en:"If we'd won the game, we would've celebrated.",es:"Si haguéssim guanyat el partit, ho hauríem celebrat."},
-    {audio:"f086.mp3",en:"I'd have gone to the concert if the tickets hadn't been sold out.",es:"Hauria anat al concert si les entrades no s'haguessin esgotat."},
+    {audio:"f086.mp3",en:"I'd have gone to the concert if the tickets hadn't been sold out.",es:"Hauria anat al concert si las entradas no s'haguessin esgotat."},
     {audio:"f087.mp3",en:"If she'd lost her phone, she'd have been very worried.",es:"Si ella hagués perdut el telèfon, hauria estat molt preocupada."},
     {audio:"f088.mp3",en:"They would've moved house if they'd found a cheaper one.",es:"S'haurien mudat de casa si n'haguessin trobat una de més barata."},
     {audio:"f089.mp3",en:"If I'd seen the sign, I'd have stopped the car.",es:"Si hagués vist el senyal, hauria parat el cotxe."},
@@ -228,18 +229,67 @@ let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockI
 const audioObj = new Audio();
 const progressBar = document.getElementById("progressBar");
 
-function getFolderName() { 
-    return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "index_condicionals"; 
+const contractions = {
+    "i'd": "i would", "you'd": "you would", "he'd": "he would", "she'd": "she would", 
+    "it'd": "it would", "we'd": "we would", "they'd": "they would",
+    "i've": "i have", "you've": "you have", "we've": "we have", "they've": "they have",
+    "isn't": "is not", "aren't": "are not", "wasn't": "was not", "weren't": "were not",
+    "don't": "do not", "doesn't": "does not", "didn't": "did not",
+    "can't": "cannot", "couldn't": "could not", "won't": "will not", "wouldn't": "would not",
+    "it's": "it is", "she's": "she is", "he's": "he is", "there's": "there is",
+    "i'm": "i am", "we're": "we are", "they're": "they are", "you're": "you are",
+    "hadn't": "had not", "wouldn't've": "would not have", "i'll": "i will"
+};
+
+const expanded = {};
+for (let k in contractions) expanded[contractions[k]] = k;
+
+function normalize(w) { return w ? w.toLowerCase().replace(/[.,?!"]/g, "").trim() : ""; }
+
+function compareSentences(originalText, spokenText) {
+    const feedbackDiv = document.getElementById("speechFeedback");
+    const origWords = originalText.split(/\s+/);
+    const spokenWords = spokenText.split(/\s+/);
+    let resultHTML = ""; let sIdx = 0; 
+    for (let i = 0; i < origWords.length; i++) {
+        let matched = false; const oNorm = normalize(origWords[i]);
+        if (sIdx < spokenWords.length) {
+            const sNorm1 = normalize(spokenWords[sIdx]);
+            const sNorm2 = normalize(spokenWords[sIdx + 1]);
+            const sTwoWords = sNorm1 + " " + (sNorm2 || "");
+            if (contractions[oNorm] === sTwoWords) {
+                resultHTML += `<span class="word-correct">${spokenWords[sIdx]} ${spokenWords[sIdx+1]}</span> `;
+                sIdx += 2; matched = true;
+            } else if (i + 1 < origWords.length && (oNorm + " " + normalize(origWords[i+1])) === contractions[sNorm1]) {
+                resultHTML += `<span class="word-correct">${spokenWords[sIdx]}</span> `;
+                sIdx += 1; i++; matched = true;
+            } else if (oNorm === sNorm1 || contractions[oNorm] === sNorm1 || expanded[oNorm] === sNorm1) {
+                resultHTML += `<span class="word-correct">${spokenWords[sIdx]}</span> `;
+                sIdx++; matched = true;
+            }
+        }
+        if (!matched) {
+            let foundAhead = false;
+            for (let look = sIdx; look < sIdx + 3 && look < spokenWords.length; look++) {
+                if (normalize(spokenWords[look]) === oNorm) {
+                    for (let skip = sIdx; skip < look; skip++) resultHTML += `<span class="word-error">${spokenWords[skip]}</span> `;
+                    resultHTML += `<span class="word-correct">${spokenWords[look]}</span> `;
+                    sIdx = look + 1; foundAhead = true; matched = true; break;
+                }
+            }
+            if (!foundAhead) resultHTML += `<span class="word-missing">${origWords[i]}</span> `;
+        }
+    }
+    while (sIdx < spokenWords.length) { resultHTML += `<span class="word-error">${spokenWords[sIdx]}</span> `; sIdx++; }
+    feedbackDiv.innerHTML = resultHTML;
 }
 
-/* STT */
+/* --- CONTROL DE MICRÓFONOS --- */
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition, isListening = false;
 if (SpeechRecognition) {
     recognition = new SpeechRecognition();
-    recognition.lang = 'en-US';
-    recognition.interimResults = false;
-    recognition.continuous = true;
+    recognition.lang = 'en-US'; recognition.interimResults = false; recognition.continuous = true;
     recognition.onstart = () => { isListening = true; document.getElementById("sttBtn").classList.add("listening"); };
     recognition.onend = () => { isListening = false; document.getElementById("sttBtn").classList.remove("listening"); };
     recognition.onresult = (e) => {
@@ -249,86 +299,79 @@ if (SpeechRecognition) {
     };
 }
 
-function normalizeText(text) {
-    if (!text) return "";
-    return text.toLowerCase().replace(/[.,?!"]/g, "").trim();
-}
-
-function compareSentences(original, spoken) {
-    const feedbackDiv = document.getElementById("speechFeedback");
-    const normOriginalWords = normalizeText(original).split(/\s+/);
-    const normSpokenWords = normalizeText(spoken).split(/\s+/);
-    const origWordsRaw = original.split(/\s+/);
-    let resultHTML = "", sIdx = 0;
-
-    normOriginalWords.forEach((normWord, index) => {
-        const originalWordRaw = origWordsRaw[index];
-        let matched = false;
-        if (sIdx < normSpokenWords.length && normSpokenWords[sIdx] === normWord) {
-            resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
-            sIdx++; matched = true;
-        } else {
-            for (let j = sIdx + 1; j < sIdx + 5 && j < normSpokenWords.length; j++) {
-                if (normSpokenWords[j] === normWord) {
-                    for (let k = sIdx; k < j; k++) resultHTML += `<span class="word-error">${normSpokenWords[k]}</span>`;
-                    resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
-                    sIdx = j + 1; matched = true; break;
-                }
-            }
-        }
-        if (!matched) resultHTML += `<span class="word-missing">${originalWordRaw}</span>`;
+// Reset de todos los micrófonos y estados visuales
+function stopAllMicrophones() {
+    if (isListening && recognition) { recognition.stop(); isListening = false; }
+    if (isRecording && mediaRecorder) { 
+        if (mediaRecorder.state !== 'inactive') mediaRecorder.stop(); 
+        isRecording = false; 
+    }
+    if (window.localStream) {
+        window.localStream.getTracks().forEach(track => track.stop());
+        window.localStream = null;
+    }
+    document.getElementById("sttBtn").classList.remove("listening");
+    document.querySelectorAll(".recording-active").forEach(b => {
+        b.classList.remove("recording-active");
+        b.innerHTML = '🎤';
     });
-    feedbackDiv.innerHTML = resultHTML;
 }
 
-function toggleMic() {
+async function toggleMic() {
     if (!recognition) return;
-    isListening ? recognition.stop() : recognition.start();
+    if (isListening) { recognition.stop(); } else { stopAllMicrophones(); recognition.start(); }
 }
 
-/* RECORDER */
+/* --- GRABADORA (MICRO ROSA) --- */
+function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "index_condicionals"; }
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
 let mediaRecorder, audioChunks = [], isRecording = false;
 
 async function toggleRecord(targetBtnId) {
     const btn = document.getElementById(targetBtnId);
-    if (!isRecording) {
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            mediaRecorder = new MediaRecorder(stream); audioChunks = [];
-            mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-            mediaRecorder.onstop = () => {
+    
+    // SI YA ESTÁ GRABANDO: PARAR
+    if (isRecording) {
+        stopAllMicrophones(); // Esto limpia todo, para la grabadora y resetea el botón
+        return;
+    }
+
+    // SI NO ESTABA GRABANDO: EMPEZAR
+    stopAllMicrophones(); 
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        window.localStream = stream;
+        mediaRecorder = new MediaRecorder(stream); audioChunks = [];
+        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+        mediaRecorder.onstop = () => {
+            if (audioChunks.length > 0) {
                 const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
                 new Audio(URL.createObjectURL(audioBlob)).play();
-            };
-            mediaRecorder.start(); isRecording = true;
-            btn.innerHTML = '<span class="recording-icon">🎤</span>';
-        } catch (err) { alert("Micròfon no disponible"); }
-    } else {
-        mediaRecorder.stop(); isRecording = false; btn.innerHTML = '🎤';
-    }
+            }
+        };
+        mediaRecorder.start(); 
+        isRecording = true;
+        btn.classList.add("recording-active");
+        btn.innerHTML = '<span class="recording-icon">🎤</span>';
+    } catch (err) { alert("Micròfon no disponible"); }
 }
 
+/* --- LÓGICA GENERAL --- */
 audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
 progressBar.oninput = () => { if (audioObj.duration) audioObj.currentTime = (progressBar.value / 100) * audioObj.duration; };
 
-/* BLOCKS */
 function initBlocks() {
   const container = document.getElementById("blockContainer");
   const numBlocks = Math.ceil(items.length / 10);
   const savedBlock = localStorage.getItem(getFolderName() + "_puntoLibro");
   container.innerHTML = "";
-  
   const allBtn = document.createElement("button");
   allBtn.className = "block all-btn"; allBtn.textContent = "T";
-  allBtn.onclick = () => loadAll();
-  container.appendChild(allBtn);
-
+  allBtn.onclick = () => loadAll(); container.appendChild(allBtn);
   for (let i = 0; i < numBlocks; i++) {
     const btn = document.createElement("button");
     btn.className = "block"; btn.textContent = i + 1;
-    btn.onclick = () => loadBlock(i);
-    container.appendChild(btn);
+    btn.onclick = () => loadBlock(i); container.appendChild(btn);
   }
   if (savedBlock === "all") loadAll();
   else loadBlock((savedBlock !== null) ? parseInt(savedBlock) : 0);
@@ -338,14 +381,14 @@ function loadBlock(b) {
   currentBlockID = b; localStorage.setItem(getFolderName() + "_puntoLibro", b);
   let temp = []; let start = b * 10;
   for (let i = start; i < Math.min(start + 10, items.length); i++) temp.push({...items[i]});
-  currentBlockData = temp.sort(() => Math.random() - 0.5);
+  currentBlockData = temp;
   document.querySelectorAll(".block").forEach((btn, idx) => btn.classList.toggle("active", idx === (b + 1)));
   pos = 0; learnedCount = 0; document.getElementById("endMsg").classList.add("hidden"); update(true);
 }
 
 function loadAll() {
   currentBlockID = -1; localStorage.setItem(getFolderName() + "_puntoLibro", "all");
-  currentBlockData = items.map(i => ({...i})).sort(() => Math.random() - 0.5);
+  currentBlockData = items.map(i => ({...i}));
   document.querySelectorAll(".block").forEach((btn, idx) => btn.classList.toggle("active", idx === 0));
   pos = 0; learnedCount = 0; document.getElementById("endMsg").classList.add("hidden"); update(true);
 }
@@ -357,22 +400,18 @@ function update(fromAction = false) {
     document.getElementById("endMsg").classList.remove("hidden");
     return;
   }
-  progressBar.value = 0;
-  const item = currentBlockData[pos];
+  progressBar.value = 0; const item = currentBlockData[pos];
   document.getElementById("es").classList.add("hidden");
   document.getElementById("en").classList.add("hidden");
   document.getElementById("speechFeedback").innerHTML = "";
   document.getElementById("starBtn").classList.toggle("active", starredIds.includes(item.audio));
-  
   if (mode === "EN") {
     document.getElementById("langLabel").textContent = "ANGLÈS";
-    document.getElementById("en").innerHTML = item.en;
-    document.getElementById("en").classList.remove("hidden");
+    document.getElementById("en").innerHTML = item.en; document.getElementById("en").classList.remove("hidden");
     if (fromAction) playAudio(item.audio, 1.0);
   } else {
     document.getElementById("langLabel").textContent = "CATALÀ";
-    document.getElementById("es").innerHTML = item.es;
-    document.getElementById("es").classList.remove("hidden");
+    document.getElementById("es").innerHTML = item.es; document.getElementById("es").classList.remove("hidden");
   }
   document.getElementById("counter").textContent = `${learnedCount} / ${currentBlockData.length + learnedCount}`;
 }
@@ -384,23 +423,19 @@ function pauseAudio() { audioObj.pause(); }
 function reveal() {
   if (currentBlockData.length === 0) return;
   const item = currentBlockData[pos];
-  document.getElementById("es").innerHTML = item.es;
-  document.getElementById("en").innerHTML = item.en;
-  document.getElementById("es").classList.remove("hidden");
-  document.getElementById("en").classList.remove("hidden");
+  document.getElementById("es").innerHTML = item.es; document.getElementById("en").innerHTML = item.en;
+  document.getElementById("es").classList.remove("hidden"); document.getElementById("en").classList.remove("hidden");
 }
 
 function know() {
   if (currentBlockData.length === 0) return;
   learnedCount++; currentBlockData.splice(pos, 1);
-  if (pos >= currentBlockData.length) pos = 0;
-  update(true);
+  if (pos >= currentBlockData.length) pos = 0; update(true);
 }
 
 function nextOne() {
   if (currentBlockData.length === 0) return;
-  pos = (pos + 1) % currentBlockData.length;
-  update(true);
+  pos = (pos + 1) % currentBlockData.length; update(true);
 }
 
 function setMode(m) { mode = m; update(true); }
@@ -420,20 +455,16 @@ function toggleList(type) {
 }
 
 function renderList(type) {
-  const box = document.getElementById("listBox");
-  box.innerHTML = type === 'stars' ? "<h3>Favorits (★):</h3>" : "<h3>Llista del bloc:</h3>";
+  const box = document.getElementById("listBox"); box.innerHTML = "";
   let listToRender = (type === 'stars') ? items.filter(i => starredIds.includes(i.audio)) : 
                     (currentBlockID === -1 ? items : items.slice(currentBlockID * 10, (currentBlockID + 1) * 10));
-
   if (listToRender.length === 0) { box.innerHTML += "<p style='padding:10px;'>Buit.</p>"; return; }
-
   listToRender.forEach((i, index) => {
     const isStarred = starredIds.includes(i.audio);
-    const itemDiv = document.createElement("div");
-    itemDiv.className = "list-item";
+    const itemDiv = document.createElement("div"); itemDiv.className = "list-item";
     const recId = `rec-list-${index}`;
     itemDiv.innerHTML = `
-      <div class="list-controls-side">
+      <div class="list-controls-row">
         <button class="star-btn-list ${isStarred ? 'active' : ''}" onclick="toggleStar('${i.audio}'); renderList('${type}')">★</button>
         <button class="mini-btn btn-audio" onclick="playAudio('${i.audio}', 1.0)">🔊</button>
         <button class="mini-btn btn-rec-mini" id="${recId}" onclick="toggleRecord('${recId}')">🎤</button>
