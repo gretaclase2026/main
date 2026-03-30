@@ -318,7 +318,14 @@ function stopAllMicrophones() {
 
 async function toggleMic() {
     if (!recognition) return;
-    if (isListening) { recognition.stop(); } else { stopAllMicrophones(); recognition.start(); }
+    if (isListening) { 
+        recognition.stop(); 
+    } else { 
+        stopAllMicrophones(); 
+        // Borrar el feedback anterior antes de empezar a escuchar de nuevo
+        document.getElementById("speechFeedback").innerHTML = "";
+        recognition.start(); 
+    }
 }
 
 /* --- GRABADORA (MICRO ROSA) --- */
@@ -422,12 +429,10 @@ function reveal() {
   if (mode === "EN") {
     esEl.innerHTML = item.es;
     esEl.classList.toggle("hidden");
-    // Borramos el feedback si ocultamos
     if(esEl.classList.contains("hidden")) feedbackEl.innerHTML = "";
   } else {
     enEl.innerHTML = item.en;
     enEl.classList.toggle("hidden");
-    // Borramos el feedback si ocultamos
     if(enEl.classList.contains("hidden")) feedbackEl.innerHTML = "";
   }
 }
