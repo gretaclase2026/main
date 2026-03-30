@@ -32,8 +32,7 @@ main{display:flex;justify-content:center;padding:24px}
 .audio-btn.stt{background:#dbeafe; font-size: 22px;}
 
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-.recording-active { background: #f06292 !important; color: white !important; }
-.recording-icon { display: inline-block; animation: pulse 1s infinite; }
+.recording-icon { display: inline-block; animation: pulse 1s infinite; color: #db2777 !important; }
 .listening { animation: pulse 1.5s infinite; background: #3b82f6 !important; color: white !important; }
 
 .star-btn { background: none; border: none; font-size: 32px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px 0 0; margin-right: 5px; }
@@ -62,14 +61,14 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 .review-btn { background: #fef3c7; color: #92400e; }
 
 .list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
-.list-item { display: flex; flex-direction: row; gap: 12px; padding: 15px 0; border-bottom: 1px solid #eee; align-items: center; }
-.list-controls-row { display: flex; flex-direction: row; gap: 6px; align-items: center; flex-shrink: 0; }
-.list-texts { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+.list-item { display: flex; flex-direction: column; gap: 10px; padding: 15px 0; border-bottom: 1px solid #eee; }
+.list-controls-row { display: flex; flex-direction: row; gap: 12px; align-items: center; }
+.list-texts { display: flex; flex-direction: column; gap: 8px; width: 100%; }
 
-.mini-btn { border: none; border-radius: 10px; width: 34px; height: 34px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
+.mini-btn { border: none; border-radius: 10px; width: 38px; height: 38px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
 .btn-audio { background: #dbeafe; }
-.btn-rec-mini { background: #fbcfe8; color: #9d174d; transition: 0.2s; }
-.star-btn-list { background: none; border: none; font-size: 24px; cursor: pointer; color: #cbd5e1; padding: 0; line-height: 1; display: flex; align-items: center; }
+.btn-rec-mini { background: #fbcfe8; color: #9d174d; }
+.star-btn-list { background: none; border: none; font-size: 26px; cursor: pointer; color: #cbd5e1; padding: 0; line-height: 1; }
 .star-btn-list.active { color: #f59e0b !important; }
 
 .blur { filter: blur(5px); transition: filter 0.2s; cursor: pointer; user-select: none; }
@@ -200,7 +199,7 @@ const items = [
     {audio:"f075.mp3",en:"If I'd had a map, I'd have found the hotel easily.",es:"Si hagués tingut un mapa, hauria trobat l'hotel fàcilment."},
     {audio:"f076.mp3",en:"He would've learned English if he'd lived in London.",es:"Ell hauria après anglès si hagués viscut a Londres."},
     {audio:"f077.mp3",en:"If he had seen the movie, they'd have liked it.",es:"Si haguessin vist la pel·lícula, els hauria agradat."},
-    {audio:"f078.mp3",en:"I'd have taken a photo if I'd had my phone.",es:"Hauria fet una foto si hagués intrat el telèfon."},
+    {audio:"f078.mp3",en:"I'd have taken a photo if I'd had my phone.",es:"Hauria fet una foto si hagués tingut el telèfon."},
     {audio:"f079.mp3",en:"If we'd had enough eggs, I'd have made a cake.",es:"Si haguéssim tingut prou ous, hauria fet un pastís."},
     {audio:"f080.mp3",en:"She would've come if she hadn't been so busy.",es:"Ella hauria vingut si no hagués estat tan ocupada."},
     {audio:"f081.mp3",en:"If you'd followed the instructions, you'd have finished sooner.",es:"Si haguessis seguit les instruccions, hauries acabat abans."},
@@ -228,6 +227,10 @@ const items = [
 let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0;
 const audioObj = new Audio();
 const progressBar = document.getElementById("progressBar");
+
+function getFolderName() { 
+    return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "index_condicionals"; 
+}
 
 /* STT */
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -284,7 +287,6 @@ function toggleMic() {
 }
 
 /* RECORDER */
-function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "index_condicionals"; }
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
 let mediaRecorder, audioChunks = [], isRecording = false;
 
@@ -300,13 +302,10 @@ async function toggleRecord(targetBtnId) {
                 new Audio(URL.createObjectURL(audioBlob)).play();
             };
             mediaRecorder.start(); isRecording = true;
-            btn.classList.add("recording-active");
             btn.innerHTML = '<span class="recording-icon">🎤</span>';
         } catch (err) { alert("Micròfon no disponible"); }
     } else {
-        mediaRecorder.stop(); isRecording = false; 
-        btn.classList.remove("recording-active");
-        btn.innerHTML = '🎤';
+        mediaRecorder.stop(); isRecording = false; btn.innerHTML = '🎤';
     }
 }
 

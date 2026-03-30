@@ -59,7 +59,6 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 .txt-es{color:#2563eb} 
 #answer{font-size:20px;font-weight:bold;margin-top:-10px;margin-bottom:20px;text-align:center;min-height:30px;color:#666}
 
-/* Estilos de feedback mejorados */
 #speech-feedback { font-size: 19px; margin-bottom: 10px; min-height: 28px; text-align: center; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; transition: 0.2s;}
 .word-correct { color: #22c55e; font-weight: bold; }
 .word-error { color: #ef4444; text-decoration: line-through; }
@@ -75,8 +74,10 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 .btn-list-main { flex: 1; padding: 12px; border-radius: 12px; border: none; background: #e9d5ff; font-weight: bold; cursor: pointer; }
 #list{margin-top:20px;background:#fff;border-radius:15px;display:none;border:1px solid #ddd;padding:10px}
 
-.list-item { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #eee; }
-.mini-btn-list { border: none; border-radius: 8px; width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: 0.2s;}
+.list-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #eee; }
+.list-item-controls { display: flex; align-items: center; gap: 8px; }
+.mini-btn-list { border: none; border-radius: 8px; width: 34px; height: 34px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: 0.2s;}
+.mini-btn-list.rec { background: #f8bbd0; color: #9d174d; } /* Color rosa pálido solicitado */
 .blur { filter: blur(5px); transition: filter 0.2s; cursor: pointer; user-select: none; }
 .blur.revealed { filter: blur(0); }
 
@@ -133,7 +134,6 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 <audio id="audio"></audio>
 
 <script>
-// (Aquí se mantienen los mismos datos del array 'data' proporcionado)
 const data = [
   {en: "We can go now or later, it's up to you.", es: "Podemos ir ahora o más tarde; depende de ti"},
   {en: "The final decision is up to you.", es: "La decisión final depende de ti"},
@@ -234,7 +234,6 @@ let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockI
 const a = document.getElementById("audio");
 const progressBar = document.getElementById("progressBar");
 
-// --- RECONOCIMIENTO MEJORADO ---
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition = null;
 let isListening = false;
@@ -265,7 +264,6 @@ if (SpeechRecognition) {
 
 function normalizeText(text) {
     if (!text) return "";
-    // Mantiene apóstrofes pero quita otros signos
     return text.toLowerCase().replace(/[.,?!"]/g, "").trim();
 }
 
@@ -289,7 +287,6 @@ function compareSentences(original, spoken) {
             matched = true;
             correctCount++;
         } else {
-            // Intento de búsqueda en proximidad (para saltar errores)
             for (let j = sIdx + 1; j < sIdx + 5 && j < normSpokenWords.length; j++) {
                 if (normSpokenWords[j] === normWord) {
                     for (let k = sIdx; k < j; k++) {
@@ -308,7 +305,6 @@ function compareSentences(original, spoken) {
     
     feedbackDiv.innerHTML = resultHTML;
 
-    // Si el acierto es superior al 90%, pasamos automáticamente
     if (correctCount / normOriginalWords.length > 0.9) {
         setTimeout(() => { know(); }, 1500);
     }
@@ -320,7 +316,6 @@ function toggleDictation() {
     else recognition.start();
 }
 
-// --- RESTO DE FUNCIONALIDAD ORIGINAL ---
 let mediaRecorder;
 let audioChunks = [];
 let isRecording = false;
@@ -501,12 +496,12 @@ function renderList(type) {
     const isActive = (isRecording && currentRecordingBtnId === listRecBtnId) ? "active" : "";
 
     itemDiv.innerHTML = `
-      <div style="display:flex; flex-direction:column; gap:5px;">
-        <button class="star-main ${isStarred ? 'active' : ''}" style="font-size:22px" onclick="toggleStar(${item.realIdx}); renderList('${type}')">★</button>
+      <div class="list-item-controls">
+        <button class="star-main ${isStarred ? 'active' : ''}" style="font-size:22px; width:30px;" onclick="toggleStar(${item.realIdx}); renderList('${type}')">★</button>
         <button class="mini-btn-list" style="background:#dcfce7" onclick="playAudio(1.0, ${item.realIdx})">🔊</button>
         <button id="${listRecBtnId}" class="mini-btn-list rec ${isActive}" onclick="toggleRecording('${listRecBtnId}')">🎤</button>
       </div>
-      <div style="flex:1; margin-left:10px;">
+      <div style="flex:1;">
         <div class="txt-es" style="font-weight:bold; font-size:14px;">${item.es}</div>
         <div class="blur" style="font-size:15px;" onclick="this.classList.toggle('revealed')">${item.en}</div>
       </div>
