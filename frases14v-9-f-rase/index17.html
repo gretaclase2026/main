@@ -239,59 +239,93 @@ const contractions = {
     "can't": "cannot", "couldn't": "could not", "won't": "will not", "wouldn't": "would not",
     "it's": "it is", "she's": "she is", "he's": "he is", "there's": "there is",
     "i'm": "i am", "we're": "we are", "they're": "they are", "you're": "you are",
-    "hadn't": "had not", "wouldn't've": "would not have", "i'll": "i will"
+    "weren't": "were not", "hadn't": "had not", "wouldn't've": "would not have", "i'll": "i will"
 };
 
+// Mapa inverso para detectar "i would" -> "i'd"
 const expanded = {};
 for (let k in contractions) expanded[contractions[k]] = k;
 
 function normalize(w) { return w ? w.toLowerCase().replace(/[.,?!"]/g, "").trim() : ""; }
 
-/* --- FUNCIÓN DE COMPARACIÓN --- */
+/* --- FUNCIÓN DE COMPARACIÓN MEJORADA (MANEJA FRASES) --- */
 function compareSentences(originalText, spokenText) {
     const feedbackDiv = document.getElementById("speechFeedback");
     const origWords = originalText.split(/\s+/);
     const spokenWords = spokenText.split(/\s+/);
-    let resultHTML = ""; let sIdx = 0; 
+    
+    let resultHTML = "";
+    let sIdx = 0; // Índice de lo que el usuario ha dicho
+
     for (let i = 0; i < origWords.length; i++) {
-        let matched = false; const oNorm = normalize(origWords[i]);
+        let matched = false;
+        const oNorm = normalize(origWords[i]);
+
         if (sIdx < spokenWords.length) {
             const sNorm1 = normalize(spokenWords[sIdx]);
             const sNorm2 = normalize(spokenWords[sIdx + 1]);
             const sTwoWords = sNorm1 + " " + (sNorm2 || "");
+
+            // CASO A: Texto es "i'd" y usuario dice "i would" (1 a 2)
             if (contractions[oNorm] === sTwoWords) {
                 resultHTML += `<span class="word-correct">${spokenWords[sIdx]} ${spokenWords[sIdx+1]}</span> `;
-                sIdx += 2; matched = true;
-            } else if (i + 1 < origWords.length && (oNorm + " " + normalize(origWords[i+1])) === contractions[sNorm1]) {
+                sIdx += 2;
+                matched = true;
+            }
+            // CASO B: Texto es "i would" y usuario dice "i'd" (2 a 1)
+            else if (i + 1 < origWords.length && (oNorm + " " + normalize(origWords[i+1])) === contractions[sNorm1]) {
                 resultHTML += `<span class="word-correct">${spokenWords[sIdx]}</span> `;
-                sIdx += 1; i++; matched = true;
-            } else if (oNorm === sNorm1 || contractions[oNorm] === sNorm1 || expanded[oNorm] === sNorm1) {
+                sIdx += 1;
+                i++; // Saltamos la segunda palabra del texto original
+                matched = true;
+            }
+            // CASO C: Coincidencia normal o contracción directa (1 a 1)
+            else if (oNorm === sNorm1 || contractions[oNorm] === sNorm1 || expanded[oNorm] === sNorm1) {
                 resultHTML += `<span class="word-correct">${spokenWords[sIdx]}</span> `;
-                sIdx++; matched = true;
+                sIdx++;
+                matched = true;
             }
         }
+
+        // Si no se encontró coincidencia, buscar adelante un poco por si hubo un error puntual
         if (!matched) {
             let foundAhead = false;
             for (let look = sIdx; look < sIdx + 3 && look < spokenWords.length; look++) {
                 if (normalize(spokenWords[look]) === oNorm) {
-                    for (let skip = sIdx; skip < look; skip++) resultHTML += `<span class="word-error">${spokenWords[skip]}</span> `;
+                    // Marcar como error lo que se saltó
+                    for (let skip = sIdx; skip < look; skip++) {
+                        resultHTML += `<span class="word-error">${spokenWords[skip]}</span> `;
+                    }
                     resultHTML += `<span class="word-correct">${spokenWords[look]}</span> `;
-                    sIdx = look + 1; foundAhead = true; matched = true; break;
+                    sIdx = look + 1;
+                    foundAhead = true;
+                    matched = true;
+                    break;
                 }
             }
-            if (!foundAhead) resultHTML += `<span class="word-missing">${origWords[i]}</span> `;
+            if (!foundAhead) {
+                resultHTML += `<span class="word-missing">${origWords[i]}</span> `;
+            }
         }
     }
-    while (sIdx < spokenWords.length) { resultHTML += `<span class="word-error">${spokenWords[sIdx]}</span> `; sIdx++; }
+
+    // Palabras extra dichas por el usuario
+    while (sIdx < spokenWords.length) {
+        resultHTML += `<span class="word-error">${spokenWords[sIdx]}</span> `;
+        sIdx++;
+    }
+
     feedbackDiv.innerHTML = resultHTML;
 }
 
-/* --- CONTROL DE MICRÓFONOS (SOLUCIÓN AL CONFLICTO) --- */
+/* --- RECONOCIMIENTO DE VOZ --- */
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition, isListening = false;
 if (SpeechRecognition) {
     recognition = new SpeechRecognition();
-    recognition.lang = 'en-US'; recognition.interimResults = false; recognition.continuous = true;
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    recognition.continuous = true;
     recognition.onstart = () => { isListening = true; document.getElementById("sttBtn").classList.add("listening"); };
     recognition.onend = () => { isListening = false; document.getElementById("sttBtn").classList.remove("listening"); };
     recognition.onresult = (e) => {
@@ -301,108 +335,88 @@ if (SpeechRecognition) {
     };
 }
 
-// Función maestra para liberar el micrófono antes de cambiar de herramienta
-async function stopAllMicrophones() {
-    // Parar reconocimiento (azul)
-    if (isListening && recognition) { recognition.stop(); isListening = false; }
-    
-    // Parar grabadora (rosa)
-    if (isRecording && mediaRecorder) { 
-        mediaRecorder.stop(); 
-        isRecording = false; 
-    }
-    
-    // Liberar flujos de hardware
-    if (window.localStream) {
-        window.localStream.getTracks().forEach(track => track.stop());
-        window.localStream = null;
-    }
-
-    // Reset visual
-    document.getElementById("sttBtn").classList.remove("listening");
-    document.querySelectorAll(".recording-active").forEach(b => {
-        b.classList.remove("recording-active");
-        b.innerHTML = '🎤';
-    });
-}
-
-async function toggleMic() {
+function toggleMic() {
     if (!recognition) return;
-    if (isListening) { 
-        recognition.stop(); 
-    } else {
-        await stopAllMicrophones(); // Cerramos todo lo anterior primero
-        recognition.start();
-    }
+    isListening ? recognition.stop() : recognition.start();
 }
 
-/* --- GRABADORA (MICRO ROSA) --- */
+/* --- GRABADORA --- */
 function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "index_condicionals"; }
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
 let mediaRecorder, audioChunks = [], isRecording = false;
 
 async function toggleRecord(targetBtnId) {
     const btn = document.getElementById(targetBtnId);
-    if (isRecording) {
-        mediaRecorder.stop();
-    } else {
-        await stopAllMicrophones(); // Cerramos todo lo anterior primero
+    if (!isRecording) {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            window.localStream = stream; // Guardamos referencia para liberarlo después
             mediaRecorder = new MediaRecorder(stream); audioChunks = [];
             mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
             mediaRecorder.onstop = () => {
                 const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
                 new Audio(URL.createObjectURL(audioBlob)).play();
-                // Liberamos el micro tras grabar
-                if (window.localStream) {
-                    window.localStream.getTracks().forEach(t => t.stop());
-                    window.localStream = null;
-                }
             };
             mediaRecorder.start(); isRecording = true;
             btn.classList.add("recording-active");
             btn.innerHTML = '<span class="recording-icon">🎤</span>';
         } catch (err) { alert("Micròfon no disponible"); }
+    } else {
+        mediaRecorder.stop(); isRecording = false; 
+        btn.classList.remove("recording-active");
+        btn.innerHTML = '🎤';
     }
 }
 
-/* --- GESTIÓN DE INTERFAZ Y LÓGICA --- */
 audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
 progressBar.oninput = () => { if (audioObj.duration) audioObj.currentTime = (progressBar.value / 100) * audioObj.duration; };
 
+/* --- GESTIÓN DE BLOQUES --- */
 function initBlocks() {
   const container = document.getElementById("blockContainer");
   const numBlocks = Math.ceil(items.length / 10);
   const savedBlock = localStorage.getItem(getFolderName() + "_puntoLibro");
   container.innerHTML = "";
+  
   const allBtn = document.createElement("button");
   allBtn.className = "block all-btn"; allBtn.textContent = "T";
-  allBtn.onclick = () => loadAll(); container.appendChild(allBtn);
+  allBtn.onclick = () => loadAll();
+  container.appendChild(allBtn);
+
   for (let i = 0; i < numBlocks; i++) {
     const btn = document.createElement("button");
     btn.className = "block"; btn.textContent = i + 1;
-    btn.onclick = () => loadBlock(i); container.appendChild(btn);
+    btn.onclick = () => loadBlock(i);
+    container.appendChild(btn);
   }
   if (savedBlock === "all") loadAll();
   else loadBlock((savedBlock !== null) ? parseInt(savedBlock) : 0);
 }
 
 function loadBlock(b) {
-  currentBlockID = b; localStorage.setItem(getFolderName() + "_puntoLibro", b);
-  let temp = []; let start = b * 10;
-  for (let i = start; i < Math.min(start + 10, items.length); i++) temp.push({...items[i]});
+  currentBlockID = b; 
+  localStorage.setItem(getFolderName() + "_puntoLibro", b);
+  let temp = []; 
+  let start = b * 10;
+  for (let i = start; i < Math.min(start + 10, items.length); i++) {
+    temp.push({...items[i]});
+  }
   currentBlockData = temp;
   document.querySelectorAll(".block").forEach((btn, idx) => btn.classList.toggle("active", idx === (b + 1)));
-  pos = 0; learnedCount = 0; document.getElementById("endMsg").classList.add("hidden"); update(true);
+  pos = 0; 
+  learnedCount = 0; 
+  document.getElementById("endMsg").classList.add("hidden"); 
+  update(true);
 }
 
 function loadAll() {
-  currentBlockID = -1; localStorage.setItem(getFolderName() + "_puntoLibro", "all");
+  currentBlockID = -1; 
+  localStorage.setItem(getFolderName() + "_puntoLibro", "all");
   currentBlockData = items.map(i => ({...i}));
   document.querySelectorAll(".block").forEach((btn, idx) => btn.classList.toggle("active", idx === 0));
-  pos = 0; learnedCount = 0; document.getElementById("endMsg").classList.add("hidden"); update(true);
+  pos = 0; 
+  learnedCount = 0; 
+  document.getElementById("endMsg").classList.add("hidden"); 
+  update(true);
 }
 
 function update(fromAction = false) {
@@ -412,18 +426,22 @@ function update(fromAction = false) {
     document.getElementById("endMsg").classList.remove("hidden");
     return;
   }
-  progressBar.value = 0; const item = currentBlockData[pos];
+  progressBar.value = 0;
+  const item = currentBlockData[pos];
   document.getElementById("es").classList.add("hidden");
   document.getElementById("en").classList.add("hidden");
   document.getElementById("speechFeedback").innerHTML = "";
   document.getElementById("starBtn").classList.toggle("active", starredIds.includes(item.audio));
+  
   if (mode === "EN") {
     document.getElementById("langLabel").textContent = "ANGLÈS";
-    document.getElementById("en").innerHTML = item.en; document.getElementById("en").classList.remove("hidden");
+    document.getElementById("en").innerHTML = item.en;
+    document.getElementById("en").classList.remove("hidden");
     if (fromAction) playAudio(item.audio, 1.0);
   } else {
     document.getElementById("langLabel").textContent = "CATALÀ";
-    document.getElementById("es").innerHTML = item.es; document.getElementById("es").classList.remove("hidden");
+    document.getElementById("es").innerHTML = item.es;
+    document.getElementById("es").classList.remove("hidden");
   }
   document.getElementById("counter").textContent = `${learnedCount} / ${currentBlockData.length + learnedCount}`;
 }
@@ -435,19 +453,23 @@ function pauseAudio() { audioObj.pause(); }
 function reveal() {
   if (currentBlockData.length === 0) return;
   const item = currentBlockData[pos];
-  document.getElementById("es").innerHTML = item.es; document.getElementById("en").innerHTML = item.en;
-  document.getElementById("es").classList.remove("hidden"); document.getElementById("en").classList.remove("hidden");
+  document.getElementById("es").innerHTML = item.es;
+  document.getElementById("en").innerHTML = item.en;
+  document.getElementById("es").classList.remove("hidden");
+  document.getElementById("en").classList.remove("hidden");
 }
 
 function know() {
   if (currentBlockData.length === 0) return;
   learnedCount++; currentBlockData.splice(pos, 1);
-  if (pos >= currentBlockData.length) pos = 0; update(true);
+  if (pos >= currentBlockData.length) pos = 0;
+  update(true);
 }
 
 function nextOne() {
   if (currentBlockData.length === 0) return;
-  pos = (pos + 1) % currentBlockData.length; update(true);
+  pos = (pos + 1) % currentBlockData.length;
+  update(true);
 }
 
 function setMode(m) { mode = m; update(true); }
@@ -467,13 +489,17 @@ function toggleList(type) {
 }
 
 function renderList(type) {
-  const box = document.getElementById("listBox"); box.innerHTML = "";
+  const box = document.getElementById("listBox");
+  box.innerHTML = "";
   let listToRender = (type === 'stars') ? items.filter(i => starredIds.includes(i.audio)) : 
                     (currentBlockID === -1 ? items : items.slice(currentBlockID * 10, (currentBlockID + 1) * 10));
+
   if (listToRender.length === 0) { box.innerHTML += "<p style='padding:10px;'>Buit.</p>"; return; }
+
   listToRender.forEach((i, index) => {
     const isStarred = starredIds.includes(i.audio);
-    const itemDiv = document.createElement("div"); itemDiv.className = "list-item";
+    const itemDiv = document.createElement("div");
+    itemDiv.className = "list-item";
     const recId = `rec-list-${index}`;
     itemDiv.innerHTML = `
       <div class="list-controls-row">
