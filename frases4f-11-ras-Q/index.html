@@ -69,7 +69,7 @@ input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius:
 button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;cursor:pointer}
 .reveal{background:#e0f2fe}
 .know{background:#dcfce7}
-.next{background:#fbcfe8}
+.next{background:#fbcfe pink}
 .list-controls { display: flex; gap: 10px; margin-top: 16px; }
 .list-btn{ flex:1; background:#e9d5ff; border:none; border-radius:16px; padding:14px; font-weight:800; cursor:pointer; font-size:13px }
 .review-btn { background: #fef3c7; color: #92400e; }
@@ -261,7 +261,9 @@ if (SpeechRecognition) {
 
 function normalizeText(text) {
     if (!text) return "";
-    let clean = text.toLowerCase().replace(/[.,?!"]/g, "").trim();
+    // Reemplazar apóstrofes curvos por rectos
+    let clean = text.toLowerCase().replace(/[’‘]/g, "'");
+    clean = clean.replace(/[.,?!"]/g, "").trim();
     let words = clean.split(/\s+/);
     return words.map(word => {
         let key = word.replace("'", ""); 
@@ -306,6 +308,11 @@ function toggleMic() {
     if (isListening) {
         recognition.stop();
     } else {
+        if (isRecording) { // Parar micro rosa si està actiu
+            mediaRecorder.stop();
+            isRecording = false;
+            document.querySelectorAll('.recording').forEach(b => b.classList.remove('recording'));
+        }
         document.getElementById("speechFeedback").innerHTML = "";
         recognition.start();
     }
@@ -315,6 +322,7 @@ async function toggleRecord(targetBtnId) {
     const btn = document.getElementById(targetBtnId);
     if (!isRecording) {
         try {
+            if (isListening) recognition.stop(); // Parar micro blau si està actiu
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             mediaRecorder = new MediaRecorder(stream);
             audioChunks = [];
@@ -322,6 +330,8 @@ async function toggleRecord(targetBtnId) {
             mediaRecorder.onstop = () => {
                 const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
                 new Audio(URL.createObjectURL(audioBlob)).play();
+                // Neteja de pistes per alliberar el micro per a l'STT
+                stream.getTracks().forEach(track => track.stop());
             };
             mediaRecorder.start();
             isRecording = true;
@@ -365,7 +375,7 @@ function loadBlock(b) {
   let start = b * 10;
   let end = Math.min(start + 10, items.length);
   for (let i = start; i < end; i++) temp.push({...items[i]});
-  currentBlockData = temp.sort(() => Math.random() - 0.5);
+  currentBlockData = temp; // Eliminat el sort aleatori
   document.querySelectorAll(".block").forEach((btn, idx) => { btn.classList.toggle("active", idx === (b + 1)); });
   pos = 0; learnedCount = 0;
   document.getElementById("endMsg").classList.add("hidden");
@@ -375,7 +385,7 @@ function loadBlock(b) {
 function loadAll() {
   currentBlockID = -1;
   localStorage.setItem(getFolderName() + "_puntoLibro", "all");
-  currentBlockData = items.map(i => ({...i})).sort(() => Math.random() - 0.5);
+  currentBlockData = items.map(i => ({...i})); // Eliminat el sort aleatori
   document.querySelectorAll(".block").forEach((btn, idx) => { btn.classList.toggle("active", idx === 0); });
   pos = 0; learnedCount = 0;
   document.getElementById("endMsg").classList.add("hidden");
@@ -416,10 +426,18 @@ function pauseAudio() { audioObj.pause(); }
 function reveal() {
   if (currentBlockData.length === 0) return;
   const item = currentBlockData[pos];
-  document.getElementById("es").innerHTML = item.es;
-  document.getElementById("en").innerHTML = item.en;
-  document.getElementById("es").classList.remove("hidden");
-  document.getElementById("en").classList.remove("hidden");
+  const esEl = document.getElementById("es");
+  const enEl = document.getElementById("en");
+  
+  if (mode === "EN") {
+    // Si ja és visible el castellà, l'amaguem
+    esEl.classList.toggle("hidden");
+    esEl.innerHTML = item.es;
+  } else {
+    // Si ja és visible l'anglès, l'amaguem
+    enEl.classList.toggle("hidden");
+    enEl.innerHTML = item.en;
+  }
 }
 
 function know() {
@@ -456,7 +474,6 @@ function toggleList(type) {
 
 function renderList(type) {
   const box = document.getElementById("listBox");
-  // CAMBIO AQUÍ: Ahora el título solo se muestra si el tipo es 'stars' (favoritas)
   box.innerHTML = type === 'stars' ? "<h3>Frases destacades (★):</h3>" : "";
   let listToRender = [];
   if (type === 'stars') listToRender = items.filter(i => starredIds.includes(i.audio));
