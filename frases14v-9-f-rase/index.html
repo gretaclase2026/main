@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+ V<!DOCTYPE html>
 <html lang="ca">
 <head>
 <meta charset="UTF-8">
@@ -229,7 +229,6 @@ let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockI
 const audioObj = new Audio();
 const progressBar = document.getElementById("progressBar");
 
-/* --- DICCIONARIO DE EQUIVALENCIAS --- */
 const contractions = {
     "i'd": "i would", "you'd": "you would", "he'd": "he would", "she'd": "she would", 
     "it'd": "it would", "we'd": "we would", "they'd": "they would",
@@ -247,7 +246,6 @@ for (let k in contractions) expanded[contractions[k]] = k;
 
 function normalize(w) { return w ? w.toLowerCase().replace(/[.,?!"]/g, "").trim() : ""; }
 
-/* --- FUNCIÓN DE COMPARACIÓN --- */
 function compareSentences(originalText, spokenText) {
     const feedbackDiv = document.getElementById("speechFeedback");
     const origWords = originalText.split(/\s+/);
@@ -286,7 +284,7 @@ function compareSentences(originalText, spokenText) {
     feedbackDiv.innerHTML = resultHTML;
 }
 
-/* --- CONTROL DE MICRÓFONOS (SOLUCIÓN AL CONFLICTO) --- */
+/* --- CONTROL DE MICRÓFONOS --- */
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition, isListening = false;
 if (SpeechRecognition) {
@@ -301,24 +299,17 @@ if (SpeechRecognition) {
     };
 }
 
-// Función maestra para liberar el micrófono antes de cambiar de herramienta
-async function stopAllMicrophones() {
-    // Parar reconocimiento (azul)
+// Reset de todos los micrófonos y estados visuales
+function stopAllMicrophones() {
     if (isListening && recognition) { recognition.stop(); isListening = false; }
-    
-    // Parar grabadora (rosa)
     if (isRecording && mediaRecorder) { 
-        mediaRecorder.stop(); 
+        if (mediaRecorder.state !== 'inactive') mediaRecorder.stop(); 
         isRecording = false; 
     }
-    
-    // Liberar flujos de hardware
     if (window.localStream) {
         window.localStream.getTracks().forEach(track => track.stop());
         window.localStream = null;
     }
-
-    // Reset visual
     document.getElementById("sttBtn").classList.remove("listening");
     document.querySelectorAll(".recording-active").forEach(b => {
         b.classList.remove("recording-active");
@@ -328,12 +319,7 @@ async function stopAllMicrophones() {
 
 async function toggleMic() {
     if (!recognition) return;
-    if (isListening) { 
-        recognition.stop(); 
-    } else {
-        await stopAllMicrophones(); // Cerramos todo lo anterior primero
-        recognition.start();
-    }
+    if (isListening) { recognition.stop(); } else { stopAllMicrophones(); recognition.start(); }
 }
 
 /* --- GRABADORA (MICRO ROSA) --- */
@@ -343,32 +329,34 @@ let mediaRecorder, audioChunks = [], isRecording = false;
 
 async function toggleRecord(targetBtnId) {
     const btn = document.getElementById(targetBtnId);
+    
+    // SI YA ESTÁ GRABANDO: PARAR
     if (isRecording) {
-        mediaRecorder.stop();
-    } else {
-        await stopAllMicrophones(); // Cerramos todo lo anterior primero
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            window.localStream = stream; // Guardamos referencia para liberarlo después
-            mediaRecorder = new MediaRecorder(stream); audioChunks = [];
-            mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-            mediaRecorder.onstop = () => {
+        stopAllMicrophones(); // Esto limpia todo, para la grabadora y resetea el botón
+        return;
+    }
+
+    // SI NO ESTABA GRABANDO: EMPEZAR
+    stopAllMicrophones(); 
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        window.localStream = stream;
+        mediaRecorder = new MediaRecorder(stream); audioChunks = [];
+        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+        mediaRecorder.onstop = () => {
+            if (audioChunks.length > 0) {
                 const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
                 new Audio(URL.createObjectURL(audioBlob)).play();
-                // Liberamos el micro tras grabar
-                if (window.localStream) {
-                    window.localStream.getTracks().forEach(t => t.stop());
-                    window.localStream = null;
-                }
-            };
-            mediaRecorder.start(); isRecording = true;
-            btn.classList.add("recording-active");
-            btn.innerHTML = '<span class="recording-icon">🎤</span>';
-        } catch (err) { alert("Micròfon no disponible"); }
-    }
+            }
+        };
+        mediaRecorder.start(); 
+        isRecording = true;
+        btn.classList.add("recording-active");
+        btn.innerHTML = '<span class="recording-icon">🎤</span>';
+    } catch (err) { alert("Micròfon no disponible"); }
 }
 
-/* --- GESTIÓN DE INTERFAZ Y LÓGICA --- */
+/* --- LÓGICA GENERAL --- */
 audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
 progressBar.oninput = () => { if (audioObj.duration) audioObj.currentTime = (progressBar.value / 100) * audioObj.duration; };
 
