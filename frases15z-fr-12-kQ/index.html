@@ -1,0 +1,604 @@
+ <!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estudi de Viatge - 200 Frases</title>
+<style>
+body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
+header{padding:8px 4px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center;align-items:center;gap:4px}
+.unit-number{font-size:22px;font-weight:800;color:#2563eb;margin:0 8px;min-width:20px;text-align:center}
+.mode-btns button{padding:6px 10px;border:none;border-radius:12px;font-weight:700;cursor:pointer;font-size:11px;white-space:nowrap;line-height:1.2}
+.mode-en{background:#dbeafe}
+.mode-es{background:#fde68a}
+
+main{display:flex;justify-content:center;padding:24px}
+.card{position:relative;width:100%;max-width:560px;background:#ffffff;border-radius:28px;padding:32px;box-shadow:0 10px 24px rgba(0,0,0,0.06);text-align:center}
+.counter{position:absolute;top:18px;left:22px;font-weight:800;color:#2563eb}
+.check-box-manual { position: absolute; top: 18px; right: 22px; width: 24px; height: 24px; background: #fff; border: 1.5px solid #22c55e; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 14px; color: transparent; transition: 0.2s; }
+.check-box-manual.marked { background: #22c55e !important; color: white !important; }
+.lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
+
+.blocks{display:flex;flex-wrap:nowrap;gap:6px;justify-content:flex-start;margin:15px 0 20px;overflow-x:auto;padding:5px 0 5px 10px}
+.block{flex: 0 0 auto;width:32px;height:32px;border-radius:50%;border:none;background:#f1f5f9;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.2s}
+.block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1)}
+.block.all-btn { background: #e2e8f0; color: #475569; }
+
+.audio-container { display: flex; justify-content: center; gap: 8px; margin: 10px 0; align-items: center; flex-wrap: nowrap; }
+.audio-btn{width:52px;height:52px;border-radius:50%;border:none;background:#dbeafe;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
+.audio-btn.slow{background:#fef08a;}
+.audio-btn.pause{background:#fee2e2; color: inherit;} 
+.audio-btn.rec{background:#fbcfe8; color: #9d174d;}
+.audio-btn.stt{background:#dbeafe; font-size: 22px;}
+
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+.recording-active { background: #f06292 !important; color: white !important; }
+.recording-icon { display: inline-block; animation: pulse 1s infinite; }
+.listening { animation: pulse 1.5s infinite; background: #3b82f6 !important; color: white !important; }
+
+.star-btn { background: none; border: none; font-size: 32px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px 0 0; margin-right: 5px; }
+.star-btn.active { color: #f59e0b !important; }
+
+.progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
+input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
+
+#speechFeedback { font-size: 18px; margin: 15px 0; font-weight: bold; min-height: 28px; line-height: 1.5; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
+.word-correct { color: #16a34a; }
+.word-error { color: #dc2626; text-decoration: line-through; }
+.word-missing { color: #94a3b8; font-style: italic; }
+
+.hidden{display:none}
+.es{font-size:19px;color:#2563eb;margin-top:14px;line-height:1.4;font-weight:600}
+.en{font-size:19px;color:#0f172a;margin-top:14px;font-weight:700;line-height:1.4}
+
+.buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:22px}
+button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;cursor:pointer}
+.reveal{background:#e0f2fe}
+.know{background:#dcfce7}
+.next{background:#fbcfe8}
+
+.list-controls { display: flex; gap: 10px; margin-top: 16px; }
+.list-btn{ flex:1; background:#e9d5ff; border:none; border-radius:16px; padding:14px; font-weight:800; cursor:pointer; font-size:13px }
+.review-btn { background: #fef3c7; color: #92400e; }
+
+.list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
+.list-item { display: flex; flex-direction: row; gap: 12px; padding: 15px 0; border-bottom: 1px solid #eee; align-items: center; }
+.list-controls-row { display: flex; flex-direction: row; gap: 6px; align-items: center; flex-shrink: 0; }
+.list-texts { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+
+.mini-btn { border: none; border-radius: 10px; width: 34px; height: 34px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
+.btn-audio { background: #dbeafe; }
+.btn-rec-mini { background: #fbcfe8; color: #9d174d; transition: 0.2s; }
+.star-btn-list { background: none; border: none; font-size: 24px; cursor: pointer; color: #cbd5e1; padding: 0; line-height: 1; display: flex; align-items: center; }
+.star-btn-list.active { color: #f59e0b !important; }
+
+.blur { filter: blur(5px); transition: filter 0.2s; cursor: pointer; user-select: none; }
+.blur.revealed { filter: blur(0); }
+</style>
+</head>
+<body>
+
+<header>
+ <div class="mode-btns"><button class="mode-en" onclick="setMode('EN')">ENG → ESP</button></div>
+ <div class="unit-number">✈️</div>
+ <div class="mode-btns"><button class="mode-es" onclick="setMode('CA')">ESP → ENG</button></div>
+</header>
+
+<main>
+<div class="card">
+ <div class="counter" id="counter">0 / 0</div>
+ <div class="check-box-manual" id="mainCheck" onclick="markAsDone(this)"></div>
+
+ <div id="langLabel" class="lang" style="margin-top: 10px;">ANGLÈS</div>
+ <div id="blockContainer" class="blocks"></div>
+
+ <div class="audio-container">
+  <button class="star-btn" id="starBtn" onclick="toggleStar()">★</button>
+  <button class="audio-btn slow" onclick="playCurrent(0.75)">🐢</button>
+  <button class="audio-btn" onclick="playCurrent(1.0)">🔊</button>
+  <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
+  <button class="audio-btn rec" id="recBtn" onclick="toggleRecord('recBtn')">🎤</button>
+  <button class="audio-btn stt" id="sttBtn" onclick="toggleMic()">🎤</button>
+ </div>
+ 
+ <div class="progress-wrapper"><input type="range" id="progressBar" value="0" min="0" max="100" step="0.1"></div>
+ 
+ <div id="es" class="es hidden"></div>
+ <div id="speechFeedback"></div>
+ <div id="en" class="en hidden"></div>
+
+ <div class="buttons">
+  <button class="action reveal" onclick="reveal()">Veure</button>
+  <button class="action know" onclick="know()">Ja la sé</button>
+  <button class="action next" onclick="nextOne()">Següent</button>
+ </div>
+ <div class="list-controls">
+    <button class="list-btn" onclick="toggleList('all')">Llista del bloc</button>
+    <button class="list-btn review-btn" onclick="toggleList('stars')">Favorits (★)</button>
+ </div>
+ <div id="endMsg" class="hidden" style="margin-top:16px; font-weight:800; color:#16a34a;">✔ Bloc completat! 🎉</div>
+</div>
+</main>
+<div id="listBox" class="list-box hidden"></div>
+
+<script>
+const items = [
+    // BLOQUE 1: AEROPUERTO
+    {audio:"f001.mp3",en:"I'd like to check in for my flight.",es:"Me gustaría facturar para mi vuelo."},
+    {audio:"f002.mp3",en:"Here's my passport and booking reference.",es:"Aquí tienes mi pasaporte y referencia de reserva."},
+    {audio:"f003.mp3",en:"Is the flight on time?",es:"¿El vuelo sale a tiempo?"},
+    {audio:"f004.mp3",en:"Where's the check-in desk for British Airways?",es:"¿Dónde está el mostrador de facturación de British Airways?"},
+    {audio:"f005.mp3",en:"I've only got one bag to check.",es:"Solo tengo una maleta para facturar."},
+    {audio:"f006.mp3",en:"Can I take this as carry-on luggage?",es:"¿Puedo llevar esto como equipaje de mano?"},
+    {audio:"f007.mp3",en:"I'd prefer a window seat, please.",es:"Preferiría un asiento de ventanilla, por favor."},
+    {audio:"f008.mp3",en:"Is there an aisle seat available?",es:"¿Hay algún asiento de pasillo disponible?"},
+    {audio:"f009.mp3",en:"My suitcase is over the weight limit.",es:"Mi maleta supera el límite de peso."},
+    {audio:"f010.mp3",en:"How much is the excess baggage fee?",es:"¿A cuánto asciende la tasa por exceso de equipaje?"},
+    {audio:"f011.mp3",en:"What time's the plane boarding?",es:"¿A qué hora embarca el avión?"},
+    {audio:"f012.mp3",en:"Which gate does the flight depart from?",es:"¿De qué puerta sale el vuelo?"},
+    {audio:"f013.mp3",en:"I need to change my seat.",es:"Necesito cambiar mi asiento."},
+    {audio:"f014.mp3",en:"Is this the queue for security?",es:"¿Es esta la cola para seguridad?"},
+    {audio:"f015.mp3",en:"Put your electronics in the tray, please.",es:"Pon tus aparatos electrónicos en la bandeja, por favor."},
+    {audio:"f016.mp3",en:"I've forgotten to take off my belt.",es:"He olvidado quitarme el cinturón."},
+    {audio:"f017.mp3",en:"Where's the duty-free shop?",es:"¿Dónde está la tienda libre de impuestos?"},
+    {audio:"f018.mp3",en:"The flight's been delayed by two hours.",es:"El vuelo se ha retrasado dos horas."},
+    {audio:"f019.mp3",en:"My flight's been cancelled.",es:"Mi vuelo ha sido cancelado."},
+    {audio:"f020.mp3",en:"I've missed my connection.",es:"He perdido mi conexión."},
+    {audio:"f021.mp3",en:"Where's the nearest lounge?",es:"¿Dónde está la sala VIP más cercana?"},
+    {audio:"f022.mp3",en:"Can I have a blanket and a pillow?",es:"¿Puedo pedir una manta y una almohada?"},
+    {audio:"f023.mp3",en:"I'll have the chicken meal, please.",es:"Tomaré la opción de pollo, por favor."},
+    {audio:"f024.mp3",en:"Could you help me with my bag?",es:"¿Podría ayudarme con mi maleta?"},
+    {audio:"f025.mp3",en:"Please fasten your seatbelt.",es:"Por favor, abróchate el cinturón."},
+    {audio:"f026.mp3",en:"How long's the flight to London?",es:"¿Cuánto dura el vuelo a Londres?"},
+    {audio:"f027.mp3",en:"We're landing in ten minutes.",es:"Aterrizamos en diez minutos."},
+    {audio:"f028.mp3",en:"Where can I find a trolley?",es:"¿Dónde puedo encontrar un carrito?"},
+    {audio:"f029.mp3",en:"Follow the signs for baggage reclaim.",es:"Sigue las señales de recogida de equipajes."},
+    {audio:"f030.mp3",en:"My luggage hasn't arrived.",es:"Mi equipaje no ha llegado."},
+    {audio:"f031.mp3",en:"I've lost my boarding pass.",es:"He perdido mi tarjeta de embarque."},
+    {audio:"f032.mp3",en:"Is there a shuttle bus to the city?",es:"¿Hay un autobús de enlace a la ciudad?"},
+    {audio:"f033.mp3",en:"Where's the taxi rank?",es:"¿Dónde está la parada de taxis?"},
+    {audio:"f034.mp3",en:"I'm here for a holiday.",es:"Estoy aquí de vacaciones."},
+    {audio:"f035.mp3",en:"I'll stay for one week.",es:"Me quedaré una semana."},
+    {audio:"f036.mp3",en:"Can I see your visa, please?",es:"¿Puedo ver su visado, por favor?"},
+    {audio:"f037.mp3",en:"I've nothing to declare.",es:"No tengo nada que declarar."},
+    {audio:"f038.mp3",en:"Is this your first time in the UK?",es:"¿Es tu primera vez en el Reino Unido?"},
+    {audio:"f039.mp3",en:"Where's the exit?",es:"¿Dónde está la salida?"},
+    {audio:"f040.mp3",en:"The plane's taking off now.",es:"El avión está despegando ahora."},
+    {audio:"f041.mp3",en:"I'm feeling a bit airsick.",es:"Me siento un poco mareado (en el avión)."},
+    {audio:"f042.mp3",en:"Keep your seat upright, please.",es:"Mantenga su asiento en posición vertical, por favor."},
+    {audio:"f043.mp3",en:"Switch your phone to flight mode.",es:"Pon tu teléfono en modo avión."},
+    {audio:"f044.mp3",en:"Is there Wi-Fi on the plane?",es:"¿Hay Wi-Fi en el avión?"},
+    {audio:"f045.mp3",en:"I'd like to buy a bottle of water.",es:"Me gustaría comprar una botella de agua."},
+    {audio:"f046.mp3",en:"Which way's terminal two?",es:"¿Por dónde se va a la terminal dos?"},
+    {audio:"f047.mp3",en:"The gate's closing soon.",es:"La puerta cierra pronto."},
+    {audio:"f048.mp3",en:"Can you point me to the toilets?",es:"¿Puedes indicarme dónde están los baños?"},
+    {audio:"f049.mp3",en:"I'm travelling alone.",es:"Viajo solo/a."},
+    {audio:"f050.mp3",en:"Have a safe flight!",es:"¡Ten un buen viaje!"},
+
+    // BLOQUE 2: HOTEL
+    {audio:"f051.mp3",en:"I have a reservation under the name García.",es:"Tengo una reserva a nombre de García."},
+    {audio:"f052.mp3",en:"I’d like to check in, please.",es:"Me gustaría registrarme, por favor."},
+    {audio:"f053.mp3",en:"Do you have any rooms available for tonight?",es:"¿Tiene habitaciones disponibles para esta noche?"},
+    {audio:"f054.mp3",en:"Is breakfast included in the price?",es:"¿El desayuno está incluido en el precio?"},
+    {audio:"f055.mp3",en:"What time is breakfast served?",es:"¿A qué hora se sirve el desayuno?"},
+    {audio:"f056.mp3",en:"Can I have a room with a view of the city?",es:"¿Puedo tener una habitación con vistas a la ciudad?"},
+    {audio:"f057.mp3",en:"I’d like a double room for three nights.",es:"Quisiera una habitación doble por tres noches."},
+    {audio:"f058.mp3",en:"Is there a lift in the hotel?",es:"¿Hay ascensor en el hotel?"},
+    {audio:"f059.mp3",en:"Can I see the room first?",es:"¿Puedo ver la habitación primero?"},
+    {audio:"f060.mp3",en:"What is the Wi-Fi password?",es:"¿Cuál es la contraseña del Wi-Fi?"},
+    {audio:"f061.mp3",en:"The air conditioning is not working.",es:"El aire acondicionado no funciona."},
+    {audio:"f062.mp3",en:"There are no towels in my room.",es:"No hay toallas en mi habitación."},
+    {audio:"f063.mp3",en:"Could you wake me up at 7 AM?",es:"¿Podría despertarme a las 7 AM?"},
+    {audio:"f064.mp3",en:"Is there a safe in the room?",es:"¿Hay una caja fuerte en la habitación?"},
+    {audio:"f065.mp3",en:"Where is the swimming pool?",es:"¿Dónde está la piscina?"},
+    {audio:"f066.mp3",en:"I’ve lost my key card.",es:"He perdido mi tarjeta llave."},
+    {audio:"f067.mp3",en:"Can I have an extra pillow, please?",es:"¿Puedo pedir una almohada extra, por favor?"},
+    {audio:"f068.mp3",en:"Is it possible to have a late check-out?",es:"¿Es posible dejar la habitación tarde?"},
+    {audio:"f069.mp3",en:"Can you call a taxi for me?",es:"¿Puede pedirme un taxi?"},
+    {audio:"f070.mp3",en:"Where is the gym located?",es:"¿Dónde está el gimnasio?"},
+    {audio:"f071.mp3",en:"The room is too noisy.",es:"La habitación es demasiado ruidosa."},
+    {audio:"f072.mp3",en:"Is there a mini-bar in the room?",es:"¿Hay un mini-bar en la habitación?"},
+    {audio:"f073.mp3",en:"Can I leave my luggage here?",es:"¿Puedo dejar mi equipaje aquí?"},
+    {audio:"f074.mp3",en:"Is there a restaurant in the hotel?",es:"¿Hay un restaurante en el hotel?"},
+    {audio:"f075.mp3",en:"How do I get to the city centre from here?",es:"¿Cómo voy al centro de la ciudad desde aquí?"},
+    {audio:"f076.mp3",en:"I’d like to settle my bill now.",es:"Me gustaría pagar la cuenta ahora."},
+    {audio:"f077.mp3",en:"Can I pay by credit card?",es:"¿Puedo pagar con tarjeta de crédito?"},
+    {audio:"f078.mp3",en:"There is no hot water in the shower.",es:"No hay agua caliente en la ducha."},
+    {audio:"f079.mp3",en:"Could you bring some water to my room?",es:"¿Podría traer algo de agua a mi habitación?"},
+    {audio:"f080.mp3",en:"What time is check-out?",es:"¿A qué hora hay que dejar la habitación?"},
+    {audio:"f081.mp3",en:"Is the tap water safe to drink?",es:"¿Es seguro beber el agua del grifo?"},
+    {audio:"f082.mp3",en:"I’m staying for five nights.",es:"Me quedo por cinco noches."},
+    {audio:"f083.mp3",en:"Can you recommend a good local restaurant?",es:"¿Puede recomendarme un buen restaurante local?"},
+    {audio:"f084.mp3",en:"Do you have room service?",es:"¿Tienen servicio de habitaciones?"},
+    {audio:"f085.mp3",en:"The light in the bathroom is broken.",es:"La luz del baño está rota."},
+    {audio:"f086.mp3",en:"Is there a laundry service?",es:"¿Hay servicio de lavandería?"},
+    {audio:"f087.mp3",en:"Where can I park my car?",es:"¿Dónde puedo aparcar mi coche?"},
+    {audio:"f088.mp3",en:"Is the parking free for guests?",es:"¿El aparcamiento es gratis para huéspedes?"},
+    {audio:"f089.mp3",en:"I need an iron and an ironing board.",es:"Necesito una plancha y una tabla de planchar."},
+    {audio:"f090.mp3",en:"Could you change the sheets, please?",es:"¿Podría cambiar las sábanas, por favor?"},
+    {audio:"f091.mp3",en:"There is a mistake on my bill.",es:"Hay un error en mi cuenta."},
+    {audio:"f092.mp3",en:"What floor is my room on?",es:"¿En qué planta está mi habitación?"},
+    {audio:"f093.mp3",en:"I’d like to book a tour.",es:"Me gustaría reservar un tour."},
+    {audio:"f094.mp3",en:"Is there a hair dryer in the room?",es:"¿Hay secador de pelo en la habitación?"},
+    {audio:"f095.mp3",en:"Can I have a quiet room?",es:"¿Puedo tener una habitación tranquila?"},
+    {audio:"f096.mp3",en:"I’ll be back late tonight.",es:"Volveré tarde esta noche."},
+    {audio:"f097.mp3",en:"How do I use the coffee machine?",es:"¿Cómo uso la cafetera?"},
+    {audio:"f098.mp3",en:"The Wi-Fi signal is very weak.",es:"La señal del Wi-Fi es muy débil."},
+    {audio:"f099.mp3",en:"Can I have a receipt, please?",es:"¿Puedo tener un recibo, por favor?"},
+    {audio:"f100.mp3",en:"Thank you for your help.",es:"Gracias por su ayuda."},
+
+    // BLOQUE 3: DIRECCIONES Y TRANSPORTE
+    {audio:"f101.mp3",en:"Excuse me, can you help me?",es:"Disculpe, ¿puede ayudarme?"},
+    {audio:"f102.mp3",en:"Where is the nearest bus stop?",es:"¿Dónde está la parada de autobús más cercana?"},
+    {audio:"f103.mp3",en:"How do I get to the train station?",es:"¿Cómo se va a la estación de tren?"},
+    {audio:"f104.mp3",en:"Is it far from here?",es:"¿Está lejos de aquí?"},
+    {audio:"f105.mp3",en:"Can I walk there?",es:"¿Puedo ir andando hasta allí?"},
+    {audio:"f106.mp3",en:"Go straight on this street.",es:"Siga recto por esta calle."},
+    {audio:"f107.mp3",en:"Turn left at the next corner.",es:"Gire a la izquierda en la próxima esquina."},
+    {audio:"f108.mp3",en:"Turn right at the traffic lights.",es:"Gire a la derecha en el semáforo."},
+    {audio:"f109.mp3",en:"It is on the opposite side of the road.",es:"Está en el lado opuesto de la carretera."},
+    {audio:"f110.mp3",en:"Where can I buy a ticket?",es:"¿Dónde está el mostrador de facturación de British Airways?"},
+    {audio:"f111.mp3",en:"A single ticket to the city centre, please.",es:"Un billete de ida al centro, por favor."},
+    {audio:"f112.mp3",en:"I would like a return ticket.",es:"Me gustaría un billete de ida y vuelta."},
+    {audio:"f113.mp3",en:"Which bus goes to the museum?",es:"¿Qué autobús va al museo?"},
+    {audio:"f114.mp3",en:"Does this train stop at the airport?",es:"¿Este tren para en el aeropuerto?"},
+    {audio:"f115.mp3",en:"What is the next stop?",es:"¿Cuál es la próxima parada?"},
+    {audio:"f116.mp3",en:"You need to get off at the park.",es:"Tiene que bajarse en el parque."},
+    {audio:"f117.mp3",en:"Is there a map of the underground?",es:"¿Hay un mapa del metro?"},
+    {audio:"f118.mp3",en:"Where is the tourist information office?",es:"¿Dónde está la oficina de información turística?"},
+    {audio:"f119.mp3",en:"I am lost, can you show me on the map?",es:"Estoy perdido, ¿puede enseñármelo en el mapa?"},
+    {audio:"f120.mp3",en:"How much is the fare?",es:"¿Cuánto cuesta el pasaje?"},
+    {audio:"f121.mp3",en:"At what time does the last bus leave?",es:"¿A qué hora sale el último autobús?"},
+    {audio:"f122.mp3",en:"Is there a pharmacy nearby?",es:"¿Hay una farmacia cerca?"},
+    {audio:"f123.mp3",en:"It is next to the supermarket.",es:"Está al lado del supermercado."},
+    {audio:"f124.mp3",en:"It is behind the church.",es:"Está detrás de la iglesia."},
+    {audio:"f125.mp3",en:"Keep going for two blocks.",es:"Continúe durante dos manzanas."},
+    {audio:"f126.mp3",en:"Where is the main square?",es:"¿Dónde está la plaza principal?"},
+    {audio:"f127.mp3",en:"I am looking for this address.",es:"Estoy buscando esta dirección."},
+    {audio:"f128.mp3",en:"Is this the right way to the beach?",es:"¿Es este el camino correcto hacia la playa?"},
+    {audio:"f129.mp3",en:"You are going in the wrong direction.",es:"Va en la dirección equivocada."},
+    {audio:"f130.mp3",en:"Take the second exit at the roundabout.",es:"Tome la segunda salida en la rotonda."},
+    {audio:"f131.mp3",en:"How long does it take to get there?",es:"¿Cuánto se tarda en llegar allí?"},
+    {audio:"f132.mp3",en:"It takes about ten minutes.",es:"Se tarda unos diez minutos."},
+    {audio:"f133.mp3",en:"Where can I rent a car?",es:"¿Dónde puedo alquilar un coche?"},
+    {audio:"f134.mp3",en:"Is there a petrol station near here?",es:"¿Hay una gasolinera cerca de aquí?"},
+    {audio:"f135.mp3",en:"Where can I park my bike?",es:"¿Dónde puedo aparcar mi bicicleta?"},
+    {audio:"f136.mp3",en:"The entrance is over there.",es:"La entrada está por allí."},
+    {audio:"f137.mp3",en:"The exit is on the left.",es:"La salida está a la izquierda."},
+    {audio:"f138.mp3",en:"Is there a public toilet around here?",es:"¿Hay un baño público por aquí?"},
+    {audio:"f139.mp3",en:"Cross the bridge and turn left.",es:"Cruce el puente y gire a la izquierda."},
+    {audio:"f140.mp3",en:"It is a five-minute walk.",es:"Está a cinco minutos a pie."},
+    {audio:"f141.mp3",en:"Follow the signs to the city centre.",es:"Siga las señales hacia el centro de la ciudad."},
+    {audio:"f142.mp3",en:"What platform does the train leave from?",es:"¿De qué andén sale el tren?"},
+    {audio:"f143.mp3",en:"The train is on platform four.",es:"El tren está en el andén cuatro."},
+    {audio:"f144.mp3",en:"Do I need to change trains?",es:"¿Tengo que transbordar?"},
+    {audio:"f145.mp3",en:"Is this seat free?",es:"¿Está libre este asiento?"},
+    {audio:"f146.mp3",en:"Can you tell me when to get off?",es:"¿Puede avisarme cuando tenga que bajarme?"},
+    {audio:"f147.mp3",en:"I want to go to the cathedral.",es:"Quiero ir a la catedral."},
+    {audio:"f148.mp3",en:"It is across from the bank.",es:"Está enfrente del banco."},
+    {audio:"f149.mp3",en:"The post office is between the bakery and the bank.",es:"La oficina de correos está entre la panadería y el banco."},
+    {audio:"f150.mp3",en:"Thank you, have a nice day!",es:"¡Gracias, tenga un buen día!"},
+
+    // BLOQUE 4: RESTAURANTES, COMPRAS Y EMERGENCIAS
+    {audio:"f151.mp3",en:"I'd like to book a table for two at eight o'clock.",es:"Me gustaría reservar una mesa para dos a las ocho."},
+    {audio:"f152.mp3",en:"A table for four, please.",es:"Una mesa para cuatro, por favor."},
+    {audio:"f153.mp3",en:"Can we see the menu, please?",es:"¿Podemos ver el menú, por favor?"},
+    {audio:"f154.mp3",en:"Do you have a menu in Spanish?",es:"¿Tienen un menú en español?"},
+    {audio:"f155.mp3",en:"What do you recommend?",es:"¿Qué nos recomienda?"},
+    {audio:"f156.mp3",en:"I'm allergic to peanuts.",es:"Soy alérgico a los cacahuetes."},
+    {audio:"f157.mp3",en:"Is there a vegetarian option?",es:"¿Hay alguna opción vegetariana?"},
+    {audio:"f158.mp3",en:"I'll have the steak, please.",es:"Tomaré el filete, por favor."},
+    {audio:"f159.mp3",en:"Can I have a glass of tap water?",es:"¿Me pone un vaso de agua del grifo?"},
+    {audio:"f160.mp3",en:"Still or sparkling water?",es:"¿Agua sin gas o con gas?"},
+    {audio:"f161.mp3",en:"Is it very spicy?",es:"¿Pica mucho?"},
+    {audio:"f162.mp3",en:"Could we have some more bread, please?",es:"¿Nos trae un poco más de pan, por favor?"},
+    {audio:"f163.mp3",en:"This isn't what I ordered.",es:"Esto no es lo que he pedido."},
+    {audio:"f164.mp3",en:"It was delicious, thank you.",es:"Estaba delicioso, gracias."},
+    {audio:"f165.mp3",en:"Can we have the bill, please?",es:"¿Nos trae la cuenta, por favor?"},
+    {audio:"f166.mp3",en:"Is service included?",es:"¿El servicio está incluido?"},
+    {audio:"f167.mp3",en:"Where's the nearest shopping centre?",es:"¿Dónde está el centro comercial más cercano?"},
+    {audio:"f168.mp3",en:"What time do you open/close?",es:"¿A qué hora abren/cierran?"},
+    {audio:"f169.mp3",en:"I'm just looking, thank you.",es:"Solo estoy mirando, gracias."},
+    {audio:"f170.mp3",en:"How much does this cost?",es:"¿Cuánto cuesta esto?"},
+    {audio:"f171.mp3",en:"Do you have this in a smaller size?",es:"¿Tiene esto en una talla más pequeña?"},
+    {audio:"f172.mp3",en:"Where are the changing rooms?",es:"¿Dónde están los probadores?"},
+    {audio:"f173.mp3",en:"I'll take it.",es:"Me lo llevo."},
+    {audio:"f174.mp3",en:"Can I pay by cash?",es:"¿Puedo pagar en efectivo?"},
+    {audio:"f175.mp3",en:"Keep the change.",es:"Quédese con el cambio."},
+    {audio:"f176.mp3",en:"I'd like to return this, please.",es:"Me gustaría devolver esto, por favor."},
+    {audio:"f177.mp3",en:"Can I have a bag, please?",es:"¿Me da una bolsa, por favor?"},
+    {audio:"f178.mp3",en:"Is there a discount on this?",es:"¿Tiene algún descuento esto?"},
+    {audio:"f179.mp3",en:"I'm looking for a gift for a friend.",es:"Estoy buscando un regalo para un amigo."},
+    {audio:"f180.mp3",en:"Can you wrap it as a gift?",es:"¿Puede envolverlo para regalo?"},
+    {audio:"f181.mp3",en:"Where can I find an ATM?",es:"¿Dónde puedo encontrar un cajero automático?"},
+    {audio:"f182.mp3",en:"I need to exchange some money.",es:"Necesito cambiar algo de dinero."},
+    {audio:"f183.mp3",en:"Help!",es:"¡Ayuda!"},
+    {audio:"f184.mp3",en:"I've lost my wallet.",es:"He perdido mi cartera."},
+    {audio:"f185.mp3",en:"Someone stole my phone.",es:"Alguien me ha robado el teléfono."},
+    {audio:"f186.mp3",en:"I need a doctor.",es:"Necesito un médico."},
+    {audio:"f187.mp3",en:"Where's the nearest hospital?",es:"¿Dónde está el hospital más cercano?"},
+    {audio:"f188.mp3",en:"It's an emergency.",es:"Es una emergencia."},
+    {audio:"f189.mp3",en:"I don't feel well.",es:"No me encuentro bien."},
+    {audio:"f190.mp3",en:"Call an ambulance!",es:"¡Llamad a una ambulancia!"},
+    {audio:"f191.mp3",en:"I've lost my passport.",es:"He perdido mi pasaporte."},
+    {audio:"f192.mp3",en:"Where's the embassy?",es:"¿Dónde está la embajada?"},
+    {audio:"f193.mp3",en:"My car has broken down.",es:"Mi coche se ha averiado."},
+    {audio:"f194.mp3",en:"I have a flat tyre.",es:"Tengo un pinchazo."},
+    {audio:"f195.mp3",en:"Can I use your phone?",es:"¿Puedo usar su teléfono?"},
+    {audio:"f196.mp3",en:"There's been an accident.",es:"Ha habido un accidente."},
+    {audio:"f197.mp3",en:"I need to go to the police station.",es:"Necesito ir a la comisaría de policía."},
+    {audio:"f198.mp3",en:"I'm lost, can you help me find my hotel?",es:"Estoy perdido, ¿me ayuda a encontrar mi hotel?"},
+    {audio:"f199.mp3",en:"Everything is okay now.",es:"Todo está bien ahora."},
+    {audio:"f200.mp3",en:"Thank you for everything.",es:"Gracias por todo."}
+];
+
+let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0;
+const audioObj = new Audio();
+const progressBar = document.getElementById("progressBar");
+
+const contractions = {
+    "i'd": "i would", "you'd": "you would", "he'd": "he would", "she'd": "she would", 
+    "it'd": "it would", "we'd": "we would", "they'd": "they would",
+    "i've": "i have", "you've": "you have", "we've": "we have", "they've": "they have",
+    "isn't": "is not", "aren't": "are not", "wasn't": "was not", "weren't": "were not",
+    "don't": "do not", "doesn't": "does not", "didn't": "did not",
+    "can't": "cannot", "couldn't": "could not", "won't": "will not", "wouldn't": "would not",
+    "it's": "it is", "she's": "she is", "he's": "he is", "there's": "there is",
+    "i'm": "i am", "we're": "we are", "they're": "they are", "you're": "you are",
+    "hadn't": "had not", "wouldn't've": "would not have", "i'll": "i will"
+};
+
+const expanded = {};
+for (let k in contractions) expanded[contractions[k]] = k;
+
+function normalize(w) { return w ? w.toLowerCase().replace(/[.,?!"]/g, "").trim() : ""; }
+
+function compareSentences(originalText, spokenText) {
+    const feedbackDiv = document.getElementById("speechFeedback");
+    const origWords = originalText.split(/\s+/);
+    const spokenWords = spokenText.split(/\s+/);
+    let resultHTML = ""; let sIdx = 0; 
+    for (let i = 0; i < origWords.length; i++) {
+        let matched = false; const oNorm = normalize(origWords[i]);
+        if (sIdx < spokenWords.length) {
+            const sNorm1 = normalize(spokenWords[sIdx]);
+            const sNorm2 = normalize(spokenWords[sIdx + 1]);
+            const sTwoWords = sNorm1 + " " + (sNorm2 || "");
+            if (contractions[oNorm] === sTwoWords) {
+                resultHTML += `<span class="word-correct">${spokenWords[sIdx]} ${spokenWords[sIdx+1]}</span> `;
+                sIdx += 2; matched = true;
+            } else if (i + 1 < origWords.length && (oNorm + " " + normalize(origWords[i+1])) === contractions[sNorm1]) {
+                resultHTML += `<span class="word-correct">${spokenWords[sIdx]}</span> `;
+                sIdx += 1; i++; matched = true;
+            } else if (oNorm === sNorm1 || contractions[oNorm] === sNorm1 || expanded[oNorm] === sNorm1) {
+                resultHTML += `<span class="word-correct">${spokenWords[sIdx]}</span> `;
+                sIdx++; matched = true;
+            }
+        }
+        if (!matched) {
+            let foundAhead = false;
+            for (let look = sIdx; look < sIdx + 3 && look < spokenWords.length; look++) {
+                if (normalize(spokenWords[look]) === oNorm) {
+                    for (let skip = sIdx; skip < look; skip++) resultHTML += `<span class="word-error">${spokenWords[skip]}</span> `;
+                    resultHTML += `<span class="word-correct">${spokenWords[look]}</span> `;
+                    sIdx = look + 1; foundAhead = true; matched = true; break;
+                }
+            }
+            if (!foundAhead) resultHTML += `<span class="word-missing">${origWords[i]}</span> `;
+        }
+    }
+    while (sIdx < spokenWords.length) { resultHTML += `<span class="word-error">${spokenWords[sIdx]}</span> `; sIdx++; }
+    feedbackDiv.innerHTML = resultHTML;
+}
+
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition, isListening = false;
+if (SpeechRecognition) {
+    recognition = new SpeechRecognition();
+    recognition.lang = 'en-US'; recognition.interimResults = false; recognition.continuous = true;
+    recognition.onstart = () => { isListening = true; document.getElementById("sttBtn").classList.add("listening"); };
+    recognition.onend = () => { isListening = false; document.getElementById("sttBtn").classList.remove("listening"); };
+    recognition.onresult = (e) => {
+        let transcript = "";
+        for (let i = e.resultIndex; i < e.results.length; i++) transcript += e.results[i][0].transcript + " ";
+        compareSentences(currentBlockData[pos].en, transcript.trim());
+    };
+}
+
+function stopAllMicrophones() {
+    if (isListening && recognition) { recognition.stop(); isListening = false; }
+    if (isRecording && mediaRecorder) { 
+        if (mediaRecorder.state !== 'inactive') mediaRecorder.stop(); 
+        isRecording = false; 
+    }
+    if (window.localStream) {
+        window.localStream.getTracks().forEach(track => track.stop());
+        window.localStream = null;
+    }
+    document.getElementById("sttBtn").classList.remove("listening");
+    document.querySelectorAll(".recording-active").forEach(b => {
+        b.classList.remove("recording-active");
+        b.innerHTML = '🎤';
+    });
+}
+
+async function toggleMic() {
+    if (!recognition) return;
+    if (isListening) { 
+        recognition.stop(); 
+    } else { 
+        stopAllMicrophones(); 
+        document.getElementById("speechFeedback").innerHTML = "";
+        recognition.start(); 
+    }
+}
+
+function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-1)[0] || "viaje_ingles"; }
+let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
+let mediaRecorder, audioChunks = [], isRecording = false;
+
+async function toggleRecord(targetBtnId) {
+    const btn = document.getElementById(targetBtnId);
+    if (isRecording) { stopAllMicrophones(); return; }
+    stopAllMicrophones(); 
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        window.localStream = stream;
+        mediaRecorder = new MediaRecorder(stream); audioChunks = [];
+        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+        mediaRecorder.onstop = () => {
+            if (audioChunks.length > 0) {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                new Audio(URL.createObjectURL(audioBlob)).play();
+            }
+        };
+        mediaRecorder.start(); 
+        isRecording = true;
+        btn.classList.add("recording-active");
+        btn.innerHTML = '<span class="recording-icon">🎤</span>';
+    } catch (err) { alert("Micròfon no disponible"); }
+}
+
+audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
+progressBar.oninput = () => { if (audioObj.duration) audioObj.currentTime = (progressBar.value / 100) * audioObj.duration; };
+
+function initBlocks() {
+  const container = document.getElementById("blockContainer");
+  const numBlocks = Math.ceil(items.length / 10);
+  const savedBlock = localStorage.getItem(getFolderName() + "_puntoLibro");
+  container.innerHTML = "";
+  const allBtn = document.createElement("button");
+  allBtn.className = "block all-btn"; allBtn.textContent = "T";
+  allBtn.onclick = () => loadAll(); container.appendChild(allBtn);
+  for (let i = 0; i < numBlocks; i++) {
+    const btn = document.createElement("button");
+    btn.className = "block"; btn.textContent = i + 1;
+    btn.onclick = () => loadBlock(i); container.appendChild(btn);
+  }
+  if (savedBlock === "all") loadAll();
+  else loadBlock((savedBlock !== null) ? parseInt(savedBlock) : 0);
+}
+
+function loadBlock(b) {
+  currentBlockID = b; localStorage.setItem(getFolderName() + "_puntoLibro", b);
+  let temp = []; let start = b * 10;
+  for (let i = start; i < Math.min(start + 10, items.length); i++) temp.push({...items[i]});
+  currentBlockData = temp;
+  document.querySelectorAll(".block").forEach((btn, idx) => btn.classList.toggle("active", idx === (b + 1)));
+  pos = 0; learnedCount = 0; document.getElementById("endMsg").classList.add("hidden"); update(true);
+}
+
+function loadAll() {
+  currentBlockID = -1; localStorage.setItem(getFolderName() + "_puntoLibro", "all");
+  currentBlockData = items.map(i => ({...i}));
+  document.querySelectorAll(".block").forEach((btn, idx) => btn.classList.toggle("active", idx === 0));
+  pos = 0; learnedCount = 0; document.getElementById("endMsg").classList.add("hidden"); update(true);
+}
+
+function update(fromAction = false) {
+  if (currentBlockData.length === 0) {
+    document.getElementById("en").classList.add("hidden");
+    document.getElementById("es").classList.add("hidden");
+    document.getElementById("endMsg").classList.remove("hidden");
+    return;
+  }
+  progressBar.value = 0; const item = currentBlockData[pos];
+  document.getElementById("es").classList.add("hidden");
+  document.getElementById("en").classList.add("hidden");
+  document.getElementById("speechFeedback").innerHTML = "";
+  document.getElementById("starBtn").classList.toggle("active", starredIds.includes(item.audio));
+  if (mode === "EN") {
+    document.getElementById("langLabel").textContent = "ANGLÈS";
+    document.getElementById("en").innerHTML = item.en; document.getElementById("en").classList.remove("hidden");
+    if (fromAction) playAudio(item.audio, 1.0);
+  } else {
+    document.getElementById("langLabel").textContent = "CASTELLÀ";
+    document.getElementById("es").innerHTML = item.es; document.getElementById("es").classList.remove("hidden");
+  }
+  document.getElementById("counter").textContent = `${learnedCount} / ${currentBlockData.length + learnedCount}`;
+}
+
+function playAudio(src, speed) { audioObj.src = src; audioObj.playbackRate = speed; audioObj.play().catch(()=>{}); }
+function playCurrent(speed) { if (currentBlockData.length > 0) playAudio(currentBlockData[pos].audio, speed); }
+function pauseAudio() { audioObj.pause(); }
+
+function reveal() {
+  if (currentBlockData.length === 0) return;
+  const item = currentBlockData[pos];
+  const esEl = document.getElementById("es");
+  const enEl = document.getElementById("en");
+  if (mode === "EN") { esEl.innerHTML = item.es; esEl.classList.toggle("hidden"); } 
+  else { enEl.innerHTML = item.en; enEl.classList.toggle("hidden"); }
+}
+
+function know() {
+  if (currentBlockData.length === 0) return;
+  learnedCount++; currentBlockData.splice(pos, 1);
+  if (pos >= currentBlockData.length) pos = 0; update(true);
+}
+
+function nextOne() {
+  if (currentBlockData.length === 0) return;
+  pos = (pos + 1) % currentBlockData.length; update(true);
+}
+
+function setMode(m) { mode = m; update(true); }
+
+function toggleStar(forcedId = null) {
+  const audio = forcedId || currentBlockData[pos].audio;
+  if (starredIds.includes(audio)) starredIds = starredIds.filter(id => id !== audio);
+  else starredIds.push(audio);
+  localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
+  update();
+}
+
+function toggleList(type) {
+  const box = document.getElementById("listBox");
+  if (!box.classList.contains("hidden") && box.dataset.activeType === type) { box.classList.add("hidden"); return; }
+  box.dataset.activeType = type; renderList(type); box.classList.remove("hidden");
+}
+
+function renderList(type) {
+  const box = document.getElementById("listBox"); box.innerHTML = "";
+  let listToRender = (type === 'stars') ? items.filter(i => starredIds.includes(i.audio)) : 
+                    (currentBlockID === -1 ? items : items.slice(currentBlockID * 10, (currentBlockID + 1) * 10));
+  if (listToRender.length === 0) { box.innerHTML += "<p style='padding:10px;'>Buit.</p>"; return; }
+  listToRender.forEach((i, index) => {
+    const isStarred = starredIds.includes(i.audio);
+    const itemDiv = document.createElement("div"); itemDiv.className = "list-item";
+    const recId = `rec-list-${index}`;
+    itemDiv.innerHTML = `
+      <div class="list-controls-row">
+        <button class="star-btn-list ${isStarred ? 'active' : ''}" onclick="toggleStar('${i.audio}'); renderList('${type}')">★</button>
+        <button class="mini-btn btn-audio" onclick="playAudio('${i.audio}', 1.0)">🔊</button>
+        <button class="mini-btn btn-rec-mini" id="${recId}" onclick="toggleRecord('${recId}')">🎤</button>
+      </div>
+      <div class="list-texts">
+        <div style="color:#2563eb; font-weight:700;">${i.es}</div>
+        <div class="blur" style="font-weight:800;" onclick="this.classList.toggle('revealed')">${i.en}</div>
+      </div>
+    `;
+    box.appendChild(itemDiv);
+  });
+}
+
+function markAsDone(el) {
+    if (!el.classList.contains('marked')) {
+        localStorage.setItem(getFolderName(), new Date().toISOString());
+        el.innerHTML = "✓"; el.classList.add('marked');
+    } else {
+        localStorage.removeItem(getFolderName());
+        el.innerHTML = ""; el.classList.remove('marked');
+    }
+}
+
+window.addEventListener('load', () => {
+    if (localStorage.getItem(getFolderName())) {
+        const mc = document.getElementById("mainCheck");
+        mc.innerHTML = "✓"; mc.classList.add('marked');
+    }
+    initBlocks();
+});
+</script>
+</body>
+</html>
