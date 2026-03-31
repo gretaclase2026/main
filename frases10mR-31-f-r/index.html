@@ -61,8 +61,9 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 .btn-stars-main { background: #fef3c7; color: #92400e; }
 
 #list{margin-top:20px;background:#fff;border-radius:15px;display:none;border:1px solid #ddd;padding:15px}
-.list-item { display: flex; align-items: flex-start; gap: 12px; padding: 15px 0; border-bottom: 1px solid #eee; }
-.list-btns-col { display: flex; flex-direction: column; gap: 8px; align-items: center; }
+.list-item { display: flex; align-items: center; justify-content: flex-start; gap: 12px; padding: 15px 0; border-bottom: 1px solid #eee; }
+/* BOTONES EN HORIZONTAL */
+.list-btns-col { display: flex; flex-direction: row; gap: 8px; align-items: center; }
 .list-content { flex: 1; }
 .list-texts { line-height: 1.4; }
 .mini-btn { border: none; border-radius: 8px; width: 36px; height: 36px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
@@ -70,7 +71,7 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 .btn-rec-list { background: #fbcfe8; font-size: 18px; }
 .btn-rec-list.active { background: #f87171; color: white; animation: pulse 1.5s infinite; }
 
-.star-list { background: none; border: none; font-size: 22px; color: #cbd5e1; cursor: pointer; padding: 0; }
+.star-list { background: none; border: none; font-size: 22px; color: #cbd5e1; cursor: pointer; padding: 0; width: 30px; }
 .star-list.active { color: #f59e0b !important; }
 .blur { filter: blur(5px); transition: filter 0.3s; cursor: pointer; display: inline-block; }
 .blur.revealed { filter: blur(0); }
@@ -206,6 +207,23 @@ let audioChunks = [];
 let isRecording = false;
 let currentRecordingBtn = null;
 
+const contractions = {
+    "i'd": "i would", "you'd": "you would", "he'd": "he would", "she'd": "she would", 
+    "it'd": "it would", "we'd": "we would", "they'd": "they would",
+    "i've": "i have", "you've": "you have", "we've": "we have", "they've": "they have",
+    "isn't": "is not", "aren't": "are not", "wasn't": "was not", "weren't": "were not",
+    "don't": "do not", "doesn't": "does not", "didn't": "did not",
+    "can't": "cannot", "couldn't": "could not", "won't": "will not", "wouldn't": "would not",
+    "it's": "it is", "she's": "she is", "he's": "he is", "there's": "there is",
+    "i'm": "i am", "we're": "we are", "they're": "they are", "you're": "you are",
+    "hadn't": "had not", "wouldn't've": "would not have", "i'll": "i will"
+};
+
+const expanded = {};
+for (let k in contractions) expanded[contractions[k]] = k;
+
+function normalize(w) { return w ? w.toLowerCase().replace(/[.,?!"]/g, "").trim() : ""; }
+
 function getFolderName() { 
     return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "social_c1_u10"; 
 }
@@ -213,16 +231,29 @@ function getFolderName() {
 a.ontimeupdate = () => { if (a.duration) progressBar.value = (a.currentTime / a.duration) * 100; };
 progressBar.oninput = () => { if (a.duration) a.currentTime = (progressBar.value / 100) * a.duration; };
 
+function stopAllMicrophones() {
+    if (isListening && recognition) { recognition.stop(); isListening = false; }
+    if (isRecording && mediaRecorder) { 
+        if (mediaRecorder.state !== 'inactive') mediaRecorder.stop(); 
+        isRecording = false; 
+    }
+    if (window.localStream) {
+        window.localStream.getTracks().forEach(track => track.stop());
+        window.localStream = null;
+    }
+    document.getElementById("sttBtn").classList.remove("listening");
+    const oldRec = document.getElementById(currentRecordingBtn);
+    if(oldRec) oldRec.classList.remove("active");
+    currentRecordingBtn = null;
+}
+
 async function toggleRecording(btnId = "recBtn") {
   const btn = document.getElementById(btnId);
-  if (isRecording && currentRecordingBtn === btnId) { stopRecordingProcess(btn); return; }
-  if (isRecording && currentRecordingBtn !== btnId) {
-      const oldBtn = document.getElementById(currentRecordingBtn);
-      stopRecordingProcess(oldBtn);
-      await new Promise(r => setTimeout(r, 100));
-  }
+  if (isRecording && currentRecordingBtn === btnId) { stopAllMicrophones(); return; }
+  stopAllMicrophones();
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    window.localStream = stream;
     mediaRecorder = new MediaRecorder(stream);
     audioChunks = [];
     mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
@@ -235,13 +266,6 @@ async function toggleRecording(btnId = "recBtn") {
     currentRecordingBtn = btnId;
     btn.classList.add("active");
   } catch (err) { isRecording = false; currentRecordingBtn = null; }
-}
-
-function stopRecordingProcess(btn) {
-    if (mediaRecorder && mediaRecorder.state !== "inactive") mediaRecorder.stop();
-    isRecording = false;
-    currentRecordingBtn = null;
-    if (btn) btn.classList.remove("active");
 }
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -268,33 +292,41 @@ if (SpeechRecognition) {
     };
 }
 
-function normalizeText(text) { if (!text) return ""; return text.toLowerCase().replace(/[.,?!"]/g, "").trim(); }
-
-function compareSentences(original, spoken) {
+function compareSentences(originalText, spokenText) {
     const feedbackDiv = document.getElementById("speechFeedback");
-    if(!feedbackDiv) return;
-    const normOriginalWords = normalizeText(original).split(/\s+/);
-    const normSpokenWords = normalizeText(spoken).split(/\s+/);
-    const origWordsRaw = original.split(/\s+/);
-    let resultHTML = "";
-    let sIdx = 0;
-    normOriginalWords.forEach((normWord, index) => {
-        const originalWordRaw = origWordsRaw[index];
-        let matched = false;
-        if (sIdx < normSpokenWords.length && normSpokenWords[sIdx] === normWord) {
-            resultHTML += `<span class="word-correct">${originalWordRaw}</span> `;
-            sIdx++; matched = true;
-        } else {
-            for (let j = sIdx + 1; j < sIdx + 5 && j < normSpokenWords.length; j++) {
-                if (normSpokenWords[j] === normWord) {
-                    for (let k = sIdx; k < j; k++) { resultHTML += `<span class="word-error">${normSpokenWords[k]}</span> `; }
-                    resultHTML += `<span class="word-correct">${originalWordRaw}</span> `;
-                    sIdx = j + 1; matched = true; break;
-                }
+    const origWords = originalText.split(/\s+/);
+    const spokenWords = spokenText.split(/\s+/);
+    let resultHTML = ""; let sIdx = 0; 
+    for (let i = 0; i < origWords.length; i++) {
+        let matched = false; const oNorm = normalize(origWords[i]);
+        if (sIdx < spokenWords.length) {
+            const sNorm1 = normalize(spokenWords[sIdx]);
+            const sNorm2 = normalize(spokenWords[sIdx + 1]);
+            const sTwoWords = sNorm1 + " " + (sNorm2 || "");
+            if (contractions[oNorm] === sTwoWords) {
+                resultHTML += `<span class="word-correct">${spokenWords[sIdx]} ${spokenWords[sIdx+1]}</span> `;
+                sIdx += 2; matched = true;
+            } else if (i + 1 < origWords.length && (oNorm + " " + normalize(origWords[i+1])) === contractions[sNorm1]) {
+                resultHTML += `<span class="word-correct">${spokenWords[sIdx]}</span> `;
+                sIdx += 1; i++; matched = true;
+            } else if (oNorm === sNorm1 || contractions[oNorm] === sNorm1 || expanded[oNorm] === sNorm1) {
+                resultHTML += `<span class="word-correct">${spokenWords[sIdx]}</span> `;
+                sIdx++; matched = true;
             }
         }
-        if (!matched) resultHTML += `<span class="word-missing">${originalWordRaw}</span> `;
-    });
+        if (!matched) {
+            let foundAhead = false;
+            for (let look = sIdx; look < sIdx + 3 && look < spokenWords.length; look++) {
+                if (normalize(spokenWords[look]) === oNorm) {
+                    for (let skip = sIdx; skip < look; skip++) resultHTML += `<span class="word-error">${spokenWords[skip]}</span> `;
+                    resultHTML += `<span class="word-correct">${spokenWords[look]}</span> `;
+                    sIdx = look + 1; foundAhead = true; matched = true; break;
+                }
+            }
+            if (!foundAhead) resultHTML += `<span class="word-missing">${origWords[i]}</span> `;
+        }
+    }
+    while (sIdx < spokenWords.length) { resultHTML += `<span class="word-error">${spokenWords[sIdx]}</span> `; sIdx++; }
     feedbackDiv.innerHTML = resultHTML;
     if (!resultHTML.includes('word-missing') && !resultHTML.includes('word-error')) { setTimeout(know, 1000); }
 }
@@ -302,7 +334,11 @@ function compareSentences(original, spoken) {
 function toggleMic() {
     if (!recognition) return;
     if (isListening) recognition.stop();
-    else recognition.start();
+    else {
+        stopAllMicrophones();
+        document.getElementById("speechFeedback").innerHTML = "";
+        recognition.start();
+    }
 }
 
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
@@ -331,13 +367,15 @@ function initBlocks() {
 function loadBlock(b) {
   currentBlockID = b;
   let temp = [];
-  if (b === 'T') { temp = data.map((item, i) => ({...item, realIdx: i+1})); } 
+  if (b === 'T') { 
+    temp = data.map((item, i) => ({...item, realIdx: i+1})); 
+  } 
   else {
     let start = b * 10;
     let end = Math.min(start + 10, data.length);
     for (let i = start; i < end; i++) temp.push({...data[i], realIdx: i+1});
   }
-  currentBlockData = temp.sort(() => Math.random() - 0.5);
+  currentBlockData = temp;
   document.querySelectorAll(".block").forEach((btn) => {
     btn.classList.toggle("active", (b === 'T' && btn.textContent === 'T') || (parseInt(btn.textContent)-1 === b));
   });

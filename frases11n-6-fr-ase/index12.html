@@ -1,9 +1,9 @@
  <!DOCTYPE html>
-<html lang="ca">
+<html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Estudi FRASES · Collocations Informals (60)</title>
+<title>Estudio FRASES · Collocations Informales (60)</title>
 <style>
 body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .card{max-width:720px;margin:20px auto;background:#fff;border-radius:24px;padding:24px;box-shadow:0 8px 18px rgba(0,0,0,.15);position:relative}
@@ -64,12 +64,12 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 
 #list{margin-top:20px;background:#fff;border-radius:15px;display:none;border:1px solid #ddd;padding:15px}
 .list-item { display: flex; align-items: center; padding: 15px 0; border-bottom: 1px solid #eee; }
-.list-content { flex: 1; order: 2; } 
-.list-actions-side { display: flex; align-items: center; gap: 8px; order: 1; margin-right: 12px; } 
+.list-content { flex: 1; order: 2; overflow: hidden; } 
+.list-actions-side { display: flex; align-items: center; gap: 8px; order: 1; margin-right: 12px; flex-shrink: 0; } 
 
 .mini-btn { border: none; border-radius: 8px; width: 35px; height: 35px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
 .btn-audio-list { background: #dcfce7; }
-.star-list { background: none; border: none; font-size: 22px; color: #cbd5e1; cursor: pointer; padding: 0; }
+.star-list { background: none; border: none; font-size: 24px; color: #cbd5e1; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; width: 30px; height: 35px; }
 .star-list.active { color: #f59e0b !important; }
 
 .blur { filter: blur(5px); transition: filter 0.2s; cursor: pointer; user-select: none; }
@@ -77,11 +77,11 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 
 .check-box-manual {
     position: absolute; top: 110px; right: 22px; width: 24px; height: 24px;
-    background: #fff !important; border: 1.5px solid #22c55e !important;
+    background: #fff; border: 1.5px solid #22c55e;
     border-radius: 6px; display: flex; align-items: center; justify-content: center;
     cursor: pointer; z-index: 10; transition: all 0.2s; font-size: 14px;
 }
-.check-box-manual.marked { background: #22c55e !important; color: white; }
+.check-box-manual.marked { background: #22c55e !important; color: white !important; }
 </style>
 </head>
 <body>
@@ -118,14 +118,14 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
   <div id="answer"></div>
 
   <div class="actions">
-    <button class="btn btn-reveal" onclick="reveal()">veure</button>
-    <button class="btn btn-know" onclick="know()">ja la se</button>
-    <button class="btn btn-next" onclick="next()">següent</button>
+    <button class="btn btn-reveal" onclick="reveal()">ver</button>
+    <button class="btn btn-know" onclick="know()">ya la sé</button>
+    <button class="btn btn-next" onclick="next()">siguiente</button>
   </div>
   
   <div class="list-toggle-btns">
-    <button class="btn-list-main" onclick="toggleList('all')">llista del bloc</button>
-    <button class="btn-list-main btn-stars-main" onclick="toggleList('stars')">favorites (★)</button>
+    <button class="btn-list-main" onclick="toggleList('all')">lista del bloque</button>
+    <button class="btn-list-main btn-stars-main" onclick="toggleList('stars')">favoritos (★)</button>
   </div>
   <div id="list"></div>
 </div>
@@ -174,7 +174,7 @@ const data = [
   {audio:"f114.mp3", en:"It was so funny I could hardly keep a straight face.", es:"Fue tan divertido que apenas pude aguantar la risa."},
   {audio:"f115.mp3", en:"Keep me posted on any new developments.", es:"Manténme informado de cualquier novedad."},
   {audio:"f116.mp3", en:"You’re doing great, keep it up!", es:"Lo estás haciendo genial, ¡sigue así!"},
-  {audio:"f117.mp3", en:"Could you give me a hand with these boxes?", es:"¿Could you give me a hand with these boxes?"},
+  {audio:"f117.mp3", en:"Could you give me a hand with these boxes?", es:"¿Podrías echarme una mano con estas cajas?"},
   {audio:"f118.mp3", en:"I've never tried surfing before, but I'll give it a shot.", es:"Nunca he probado el surf, pero lo intentaré."},
   {audio:"f119.mp3", en:"Do you need me to give you a lift to the station?", es:"¿Necesitas que te lleve a la estación?"},
   {audio:"f120.mp3", en:"Give him a break, he's had a really long day.", es:"Dale un respiro, ha tenido un día muy largo."},
@@ -200,7 +200,7 @@ let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockI
 const a = document.getElementById("audio");
 const progressBar = document.getElementById("progressBar");
 
-// --- LÒGICA GRABACIÓ (MICRO ROSA) ---
+// --- GRABACIÓN ---
 let mediaRecorder;
 let audioChunks = [];
 let isRecording = false;
@@ -246,7 +246,7 @@ function stopRecordingProcess(btn) {
     if (btn) btn.classList.remove("recording");
 }
 
-// --- LÒGICA MICRO BLAU (DICTAT) ---
+// --- DICTADO ---
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition;
 let isListening = false;
@@ -260,7 +260,7 @@ if (SpeechRecognition) {
     recognition.onstart = () => {
         isListening = true;
         document.getElementById("micBtn").classList.add("listening");
-        document.getElementById("speech-feedback").innerHTML = "Escoltant...";
+        document.getElementById("speech-feedback").innerHTML = "Escuchando...";
     };
     recognition.onend = () => {
         isListening = false;
@@ -329,7 +329,7 @@ function toggleMic() {
     else recognition.start();
 }
 
-// --- LÒGICA GENERAL ---
+// --- LÓGICA PRINCIPAL ---
 function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "collocations_60"; }
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
 
@@ -384,7 +384,7 @@ function loadBlock(b) {
 
 function update(fromNextAction = false) {
   if (currentBlockData.length === 0) {
-    document.getElementById("word").innerHTML = "Bloc Completat! 🎉";
+    document.getElementById("word").innerHTML = "¡Bloque Completado! 🎉";
     document.getElementById("answer").innerHTML = "";
     return;
   }
@@ -476,7 +476,7 @@ function toggleBlur(element) { element.classList.toggle('revealed'); }
 
 function renderList(type) {
   const l = document.getElementById("list");
-  l.innerHTML = type === 'stars' ? "<b>Favorites (★):</b><br><br>" : "<b>Llista del bloc:</b><br><br>";
+  l.innerHTML = type === 'stars' ? "<b>Favoritos (★):</b><br><br>" : "<b>Lista del bloque:</b><br><br>";
   let listToRender = [];
   if (type === 'stars') {
     listToRender = data.map((item, index) => ({...item, realIdx: index})).filter(i => starredIds.includes(i.realIdx));
@@ -486,14 +486,14 @@ function renderList(type) {
     listToRender = data.slice(start, end).map((item, index) => ({...item, realIdx: start + index}));
   }
 
-  if (listToRender.length === 0) { l.innerHTML += "<i>Buit.</i>"; return; }
-  listToRender.forEach((item, index) => {
+  if (listToRender.length === 0) { l.innerHTML += "<i>Vacío.</i>"; return; }
+  listToRender.forEach((item) => {
     const isStarred = starredIds.includes(item.realIdx);
     const itemDiv = document.createElement("div");
     itemDiv.className = "list-item";
     const listRecBtnId = `recBtnList_${item.realIdx}`;
     itemDiv.innerHTML = `
-      <div class="list-actions-side" style="flex-direction: column; gap: 5px;">
+      <div class="list-actions-side">
         <button class="star-list ${isStarred ? 'active' : ''}" onclick="event.stopPropagation(); toggleStar(${item.realIdx}); renderList('${type}')">★</button>
         <button class="mini-btn btn-audio-list" onclick="event.stopPropagation(); playAudio(1.0, '${item.audio}')">🔊</button>
         <button id="${listRecBtnId}" class="mini-btn mic-btn rec-mode" style="width:35px; height:35px; font-size:16px;" onclick="event.stopPropagation(); toggleRecording('${listRecBtnId}')">🎤</button>
@@ -510,8 +510,11 @@ function renderList(type) {
 }
 
 function markAsDone(element) {
-    localStorage.setItem(getFolderName(), new Date().toISOString());
-    element.innerHTML = "✓"; element.classList.add('marked');
+    const folderName = getFolderName();
+    localStorage.setItem(folderName, new Date().toISOString());
+    element.innerHTML = "✓"; 
+    element.classList.add('marked');
+    alert("Lliçó marcada ✅");
 }
 
 initBlocks();
@@ -519,7 +522,13 @@ initBlocks();
 const card = document.querySelector(".card");
 const box = document.createElement("div");
 box.className = "check-box-manual";
-if (localStorage.getItem(getFolderName())) { box.innerHTML = "✓"; box.classList.add('marked'); }
+box.id = "mainCheck";
+
+if (localStorage.getItem(getFolderName())) { 
+    box.innerHTML = "✓"; 
+    box.classList.add('marked'); 
+}
+
 box.onclick = function() { markAsDone(this); };
 card.appendChild(box);
 </script>

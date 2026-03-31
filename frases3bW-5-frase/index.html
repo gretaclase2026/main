@@ -129,6 +129,21 @@ let mediaRecorder; let audioChunks = []; let isRecording = false;
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition; let isListening = false;
 
+// 1. MEJORA: Diccionario de contracciones y expansiones (del index.html)
+const contractions = {
+    "i'd": "i would", "you'd": "you would", "he'd": "he would", "she'd": "she would", 
+    "it'd": "it would", "we'd": "we would", "they'd": "they would",
+    "i've": "i have", "you've": "you have", "we've": "we have", "they've": "they have",
+    "isn't": "is not", "aren't": "are not", "wasn't": "was not", "weren't": "were not",
+    "don't": "do not", "doesn't": "does not", "didn't": "did not",
+    "can't": "cannot", "couldn't": "could not", "won't": "will not", "wouldn't": "would not",
+    "it's": "it is", "she's": "she is", "he's": "he is", "there's": "there is",
+    "i'm": "i am", "we're": "we are", "they're": "they are", "you're": "you are",
+    "hadn't": "had not", "wouldn't've": "would not have", "i'll": "i will"
+};
+const expanded = {};
+for (let k in contractions) expanded[contractions[k]] = k;
+
 if (SpeechRecognition) {
     recognition = new SpeechRecognition(); recognition.lang = 'en-US'; recognition.interimResults = false; recognition.continuous = true;
     recognition.onstart = () => { isListening = true; document.getElementById("sttBtn").classList.add("listening"); };
@@ -142,33 +157,68 @@ if (SpeechRecognition) {
 
 function normalizeText(text) { return text ? text.toLowerCase().replace(/[.,?!"]/g, "").trim() : ""; }
 
-function compareSentences(original, spoken) {
+// 1. MEJORA: Comparación inteligente con contracciones (del index.html)
+function compareSentences(originalText, spokenText) {
     const feedbackDiv = document.getElementById("speechFeedback");
-    const normOriginalWords = normalizeText(original).split(/\s+/);
-    const normSpokenWords = normalizeText(spoken).split(/\s+/);
-    const origWordsRaw = original.split(/\s+/);
-    let resultHTML = ""; let sIdx = 0;
-    normOriginalWords.forEach((normWord, index) => {
-        const originalWordRaw = origWordsRaw[index]; let matched = false;
-        if (sIdx < normSpokenWords.length && normSpokenWords[sIdx] === normWord) { resultHTML += `<span class="word-correct">${originalWordRaw} </span>`; sIdx++; matched = true; }
-        else {
-            for (let j = sIdx + 1; j < sIdx + 5 && j < normSpokenWords.length; j++) {
-                if (normSpokenWords[j] === normWord) {
-                    for (let k = sIdx; k < j; k++) { resultHTML += `<span class="word-error">${normSpokenWords[k]} </span>`; }
-                    resultHTML += `<span class="word-correct">${originalWordRaw} </span>`; sIdx = j + 1; matched = true; break;
-                }
+    const origWords = originalText.split(/\s+/);
+    const spokenWords = spokenText.split(/\s+/);
+    let resultHTML = ""; let sIdx = 0; 
+    for (let i = 0; i < origWords.length; i++) {
+        let matched = false; const oNorm = normalizeText(origWords[i]);
+        if (sIdx < spokenWords.length) {
+            const sNorm1 = normalizeText(spokenWords[sIdx]);
+            const sNorm2 = normalizeText(spokenWords[sIdx + 1]);
+            const sTwoWords = sNorm1 + " " + (sNorm2 || "");
+            if (contractions[oNorm] === sTwoWords) {
+                resultHTML += `<span class="word-correct">${spokenWords[sIdx]} ${spokenWords[sIdx+1]}</span> `;
+                sIdx += 2; matched = true;
+            } else if (i + 1 < origWords.length && (oNorm + " " + normalizeText(origWords[i+1])) === contractions[sNorm1]) {
+                resultHTML += `<span class="word-correct">${spokenWords[sIdx]}</span> `;
+                sIdx += 1; i++; matched = true;
+            } else if (oNorm === sNorm1 || contractions[oNorm] === sNorm1 || expanded[oNorm] === sNorm1) {
+                resultHTML += `<span class="word-correct">${spokenWords[sIdx]}</span> `;
+                sIdx++; matched = true;
             }
         }
-        if (!matched) resultHTML += `<span class="word-missing">${originalWordRaw} </span>`;
-    });
+        if (!matched) {
+            let foundAhead = false;
+            for (let look = sIdx; look < sIdx + 3 && look < spokenWords.length; look++) {
+                if (normalizeText(spokenWords[look]) === oNorm) {
+                    for (let skip = sIdx; skip < look; skip++) resultHTML += `<span class="word-error">${spokenWords[skip]}</span> `;
+                    resultHTML += `<span class="word-correct">${spokenWords[look]}</span> `;
+                    sIdx = look + 1; foundAhead = true; matched = true; break;
+                }
+            }
+            if (!foundAhead) resultHTML += `<span class="word-missing">${origWords[i]}</span> `;
+        }
+    }
+    while (sIdx < spokenWords.length) { resultHTML += `<span class="word-error">${spokenWords[sIdx]}</span> `; sIdx++; }
     feedbackDiv.innerHTML = resultHTML;
 }
 
-function toggleMic() { 
+// 2. MEJORA: Detener todos los micrófonos (del index.html)
+function stopAllMicrophones() {
+    if (isListening && recognition) { recognition.stop(); isListening = false; }
+    if (isRecording && mediaRecorder) { 
+        if (mediaRecorder.state !== 'inactive') mediaRecorder.stop(); 
+        isRecording = false; 
+    }
+    if (window.localStream) {
+        window.localStream.getTracks().forEach(track => track.stop());
+        window.localStream = null;
+    }
+    document.getElementById("sttBtn").classList.remove("listening");
+    document.querySelectorAll(".recording").forEach(b => {
+        b.classList.remove("recording");
+    });
+}
+
+async function toggleMic() { 
     if (!recognition) { alert("Navegador no compatible"); return; } 
     if (isListening) {
         recognition.stop();
     } else {
+        stopAllMicrophones(); // Limpiar antes de empezar
         document.getElementById("speechFeedback").innerHTML = ""; 
         recognition.start(); 
     }
@@ -176,15 +226,16 @@ function toggleMic() {
 
 async function toggleRecord(targetBtnId) {
     const btn = document.getElementById(targetBtnId);
-    if (!isRecording) {
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            mediaRecorder = new MediaRecorder(stream); audioChunks = [];
-            mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-            mediaRecorder.onstop = () => { const audioUrl = URL.createObjectURL(new Blob(audioChunks, { type: 'audio/wav' })); new Audio(audioUrl).play(); };
-            mediaRecorder.start(); isRecording = true; btn.classList.add("recording");
-        } catch (err) { alert("Error micro"); }
-    } else { mediaRecorder.stop(); isRecording = false; btn.classList.remove("recording"); }
+    if (isRecording) { stopAllMicrophones(); return; }
+    stopAllMicrophones(); // Limpiar antes de empezar
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        window.localStream = stream;
+        mediaRecorder = new MediaRecorder(stream); audioChunks = [];
+        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+        mediaRecorder.onstop = () => { if (audioChunks.length > 0) { const audioUrl = URL.createObjectURL(new Blob(audioChunks, { type: 'audio/wav' })); new Audio(audioUrl).play(); } };
+        mediaRecorder.start(); isRecording = true; btn.classList.add("recording");
+    } catch (err) { alert("Error micro"); }
 }
 
 audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
@@ -218,11 +269,21 @@ function load(){
 function toggleStarCurrent() { if(!current) return; const active = document.getElementById("starMain").classList.toggle('active'); localStorage.setItem('star_' + current.id, active); }
 function toggleStudyStars() { studyStarsOnly = !studyStarsOnly; known = 0; currentIndex = 0; remaining = [...items]; load(); }
 
+// 3. MEJORA: Botón ver con función toggle (del index.html)
 function reveal(){
  if(!current)return;
- const esDiv = document.getElementById("es"), enDiv = document.getElementById("en"), keyDiv = document.getElementById("key");
+ const esDiv = document.getElementById("es"), enDiv = document.getElementById("en"), keyDiv = document.getElementById("key"), fbDiv = document.getElementById("speechFeedback");
+ 
  esDiv.textContent = current.es; enDiv.textContent = current.en; keyDiv.textContent = "Palabra clave: " + current.key;
- esDiv.classList.remove("hidden"); enDiv.classList.remove("hidden"); keyDiv.classList.remove("hidden");
+ 
+ if (mode === "EN") {
+    esDiv.classList.toggle("hidden");
+    if(esDiv.classList.contains("hidden")) fbDiv.innerHTML = "";
+ } else {
+    enDiv.classList.toggle("hidden");
+    keyDiv.classList.toggle("hidden");
+    if(enDiv.classList.contains("hidden")) fbDiv.innerHTML = "";
+ }
 }
 
 function know(){ if(!current)return; remaining=remaining.filter(i=>i.id!==current.id); known++; load(); }
@@ -252,14 +313,10 @@ function toggleList(){
 
 function toggleStar(id, btn) { const active = btn.classList.toggle('active'); localStorage.setItem('star_' + id, active); if(current && current.id === id) document.getElementById("starMain").classList.toggle('active', active); }
 
-// FUNCIÓN CORREGIDA PARA GUARDAR EL PROGRESO
 function markAsDone(el) { 
-    // Guardamos la fecha actual vinculada a la carpeta de la Unidad 3 de Frases
     const folderName = "frases3bW-5-frase"; 
     const today = new Date().toISOString();
     localStorage.setItem(folderName, today);
-    
-    // Cambiamos el estilo del botón
     el.innerHTML = "✓"; 
     el.classList.add('marked'); 
     alert("Lección marcada ✅"); 

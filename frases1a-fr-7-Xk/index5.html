@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Greta App - Unitat 2</title>
+<title>Greta App - Unitat 1</title>
 <style>
 body{margin:0;font-family:sans-serif;background:#f9fafb;color:#0f172a}
 header{padding:12px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center;align-items:center}
@@ -27,10 +27,12 @@ main{display:flex;justify-content:center;padding:24px}
 .audio-btn.rec{background:#fca5a5; color: white;}
 .audio-btn.stt{background:#dbeafe; font-size: 22px;}
 
-@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-.recording, .listening { animation: pulse 1.5s infinite; background: #ef4444 !important; color: white !important; }
+/* Animación y color lila/violáceo actualizado */
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+.recording, .listening { animation: pulse 1.5s infinite; background: #f4acb7 !important; color: white !important; }
 
-.mini-icon-btn.recording { background: #ff00ff !important; color: white !important; }
+/* Micro de la llista con el nuevo tono lila */
+.mini-icon-btn.recording { background: #f06292 !important; color: white !important; }
 
 .audio-btn.stt.listening { background: #3b82f6 !important; }
 
@@ -38,7 +40,7 @@ main{display:flex;justify-content:center;padding:24px}
 input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
 
 .hidden{display:none}
-.key-label{font-size:16px;font-weight:900;color:#9333ea;margin:10px 0}
+.key-label{font-size:16px;font-weight:900;color:#f06292;margin:10px 0}
 .ca{font-size:20px;color:#2563eb;margin-top:14px;line-height:1.4}
 .en{font-size:20px;color:#0f172a;margin-top:14px;font-weight:700;line-height:1.4}
 
@@ -80,16 +82,16 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 <body>
 <header>
  <div class="mode-btns">
-  <button class="mode-en" onclick="setMode('EN')">ANGLÈS → CATALÀ</button>
+  <button class="mode-en" onclick="setMode('EN')">Anglès → Català</button>
  </div>
- <div class="unit-number">2</div>
+ <div class="unit-number">1</div>
  <div class="mode-btns">
-  <button class="mode-ca" onclick="setMode('CA')">CATALÀ → ANGLÈS</button>
+  <button class="mode-ca" onclick="setMode('CA')">Català → Anglés</button>
  </div>
 </header>
 <main>
 <div class="card">
- <div class="counter" id="counter">0 / 26</div>
+ <div class="counter" id="counter">0 / 10</div>
  <div class="check-box-manual" id="mainCheck" onclick="markAsDone(this)"></div>
  <button class="star-main" id="starMain" onclick="toggleStarCurrent()">★</button>
 
@@ -128,32 +130,16 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 
 <script>
 const items = [
-    {"id":"001","key":"put off / furthermore","audio":"f001.mp3","ca":"No vull posposar els meus deures d'anglès perquè és molt important per al meu futur; a més, tinc molt de temps lliure aquesta tarda i fa molt bon temps per estudiar.","en":"I do not want to put off my English homework because it is very important for my future; besides, I have a lot of free time this afternoon and the weather is very good for studying."},
-    {"id":"002","key":"handy","audio":"f002.mp3","ca":"El meu nou telèfon intel·ligent és molt pràctic perquè puc utilitzar el GPS per trobar un restaurant, puc trucar a la meva mare cada dia, i també puc fer moltes fotos maques del meu gat al parc.","en":"My new smartphone is very handy because I can use the GPS to find a restaurant, I can call my mother every day, and I can also take many beautiful photos of my cat in the park."},
-    {"id":"003","key":"otherwise","audio":"f003.mp3","ca":"Has de menjar tota la verdura i beure molta aigua cada matí; en cas contrari, no tindràs energia per jugar a futbol amb els teus amics o anar al gimnàs a la nit.","en":"You need to eat all your vegetables and drink a lot of water every morning; otherwise, you will not have energy to play football with your friends or go to the gym at night."},
-    {"id":"004","key":"awkward","audio":"f004.mp3","ca":"Estava en una festa gran amb molta gent i vaig oblidar el nom del meu cap, així que hi va haver un silenci incòmode durant molt de temps i em vaig posar molt vermell de cara.","en":"I was at a big party with many people and I forgot the name of my boss, so there was an awkward silence for a long time and I felt very red in the face."},
-    {"id":"005","key":"amusing","audio":"f005.mp3","ca":"Ahir vaig veure una pel·lícula molt divertida sobre un grup de gossos que saben parlar espanyol i van a una ciutat gran per trobar un tresor secret en una casa petita.","en":"Yesterday I saw a very amusing movie about a group of dogs that can speak Spanish and they go to a big city to find a secret treasure in a small house."},
-    {"id":"006","key":"amazing","audio":"f006.mp3","ca":"La vista des de la finestra del meu hotel és increïble perquè puc veure l'oceà blau, les muntanyes altes amb neu, i el sol preciós cada matí quan bec el meu cafè.","en":"The view from the window of my hotel is amazing because I can see the blue ocean, the tall mountains with snow, and the beautiful sun every morning when I drink my coffee."},
-    {"id":"007","key":"harmless","audio":"f007.mp3","ca":"No cal que tinguis por d'aquell animal petit al jardí perquè és completament inofensiu, només vol menjar una mica d'herba verda i dormir sota l'arbre gran.","en":"You do not need to be afraid of that small animal in the garden because it is completely harmless, it only wants to eat some green grass and sleep under the big tree."},
-    {"id":"008","key":"Whereas","audio":"f008.mp3","ca":"El meu germà sempre sopa molta menjar escombraria com hamburgueses i pizza, mentre que jo prefereixo menjar una amanida saludable amb tomàquets i pollastre perquè vull estar en forma.","en":"My brother always eats a lot of junk food like burgers and pizza for dinner, whereas I prefer to eat a healthy salad with tomatoes and chicken because I want to be fit."},
-    {"id":"009","key":"Therefore","audio":"f009.mp3","ca":"Ahir em vaig despertar molt tard i no vaig tenir temps de esmorzar a casa; per tant, vaig tenir molta gana durant la meva classe d'anglès i no em vaig poder concentrar bé.","en":"Yesterday I woke up very late and I didn't have time to eat breakfast at home; so, I was very hungry during my English class and I couldn't concentrate well."},
-    {"id":"010","key":"Broad","audio":"f010.mp3","ca":"La carretera nova a prop del parc és molt ampla i maca, així que molta gent hi va cada cap de setmana per caminar amb els seus gossos o per anar en bicicleta amb els seus amics.","en":"The new road near the park is very broad and beautiful, so many people go there every weekend to walk with their dogs or to ride their bicycles with their friends."},
-    {"id":"011","key":"Roughly","audio":"f011.mp3","ca":"Crec que hi havia aproximadament vuitanta estudiants al museu ahir, i tots portaven jaquetes vermelles i motxilles grans amb el seu dinar i aigua.","en":"I think there were roughly eighty students in the museum yesterday, and they were all wearing red jackets and carrying big backpacks with their lunch and water."},
-    {"id":"012","key":"Rough","audio":"f012.mp3","ca":"Volíem anar a la platja per nedar a l'oceà, però l'aigua estava molt moguda i el vent era fred, així que vam decidir quedar-nos a l'hotel i jugar a jocs.","en":"We wanted to go to the beach to swim in the ocean, but the water was very rough and the wind was cold, so we decided to stay at the hotel and play games."},
-    {"id":"013","key":"Take up","audio":"f013.mp3","ca":"La meva millor amiga vol començar un nou hobby com la fotografia o la pintura el proper estiu perquè té molt de temps lliure i vol aprendre una cosa creativa.","en":"My best friend wants to take up a new hobby like photography or painting next summer because she has a lot of free time and she wants to learn something creative."},
-    {"id":"014","key":"Warn","audio":"f014.mp3","ca":"He d'advertir-te que la pel·lícula és molt llarga i un poc avorrida, així que hauries de portar alguns aperitius i una beguda si vols anar al cine aquesta nit.","en":"I need to warn you that the movie is very long and a bit boring, so you should bring some snacks and a drink if you want to go to the cinema tonight."},
-    {"id":"015","key":"Distraction","audio":"f015.mp3","ca":"Cada vegada que intento organitzar el meu escriptori abans de començar a treballar, acabo trobant fotografies i cartes velles que em distreuen durant hores, fent-me adonar de quant trobo a faltar els vells temps quan tot era més senzill.","en":"Every time I try to organize my desk before starting to work, I end up finding old photographs and letters that distract me for hours, making me realize how much I miss the old days when everything was simpler."},
-    {"id":"016","key":"Mistake","audio":"f016.mp3","ca":"Estava planejant cuinar un sopar sofisticat per als meus amics aquesta nit, però com que vaig cremar el plat principal mentre parlava per telèfon, vam haver de demanar pizza del local de davant en el seu lloc.","en":"I was planning to cook a sophisticated dinner for my friends tonight, but since I burned the main course while I was talking on the phone, we had to order some pizza from the place across the street instead."},
-    {"id":"017","key":"Delay","audio":"f017.mp3","ca":"Encara que vaig sortir de casa deu minuts abans del que és habitual per evitar l'embús, la forta pluja va causar un gran retard al metro, el que va significar que vaig arribar tard a la meva reunió més important de la setmana.","en":"Even though I left the house ten minutes earlier than usual to avoid the traffic jam, the heavy rain caused a major delay on the subway, which meant that I arrived late for my most important meeting of the week."},
-    {"id":"018","key":"Motivation","audio":"f018.mp3","ca":"Em vaig prometre a mi mateix que aniria al gimnàs almenys quatre vegades per setmana per mantenir-me saludable, però a vegades és extremadament difícil trobar la motivació després d'un dia llarg i estressant a l'oficina.","en":"I promised myself that I would go to the gym at least four times a week to stay healthy, but sometimes it is extremely difficult to find the motivation after a long and stressful day at the office."},
-    {"id":"019","key":"Laundry","audio":"f019.mp3","ca":"La roba bruta s'ha anat acumulant des de dilluns passat, així que hauré de passar tot el meu dissabte rentant, assecant i doblant roba si vull tenir alguna cosa neta per posar-me durant la resta del mes.","en":"The laundry has been piling up since last Monday, so I will have to spend my entire Saturday washing, drying, and folding clothes if I want to have something clean to wear for the rest of the month."},
-    {"id":"020","key":"Repair","audio":"f020.mp3","ca":"Mentre navegava per les xarxes socials ahir, vaig trobar un tutorial sobre com reparar el meu portàtil trencat, però crec que podria ser massa complicat per a mi arreglar-lo sense ajuda professional.","en":"While I was scrolling through social media yesterday, I found a tutorial on how to repair my broken laptop, but I think it might be too complicated for me to fix it without professional help."},
-    {"id":"021","key":"Spending","audio":"f021.mp3","ca":"Vaig anar al centre comercial només per comprar un parell de mitjons, però vaig acabar gastant molts més diners del que pretenia perquè hi havia tants descomptes que simplement no vaig poder resistir-me a comprar una jaqueta nova.","en":"I went to the shopping mall just to buy a pair of socks, but I ended up spending way more money than I intended because there were so many discounts that I simply couldn't resist buying a new jacket."},
-    {"id":"022","key":"Awake","audio":"f022.mp3","ca":"Si hagués sabut que la cafeïna em mantindria despert fins a les tres de la matinada, mai hauria demanat aquell espresso doble després de sopar mentre estava fora amb els meus companys anit.","en":"If I had known that caffeine would keep me awake until three in the morning, I would never have ordered that double espresso after dinner while I was out with my coworkers last night."},
-    {"id":"023","key":"Advice","audio":"f023.mp3","ca":"Vaig notar que les plantes del meu balcó estaven començant a posar-se grogues, així que vaig decidir buscar alguns consells a internet per esbrinar si les estava regant massa o si necessitaven més llum solar.","en":"I noticed that the plants on my balcony were starting to turn yellow, so I decided to look for some advice online to find out if I was watering them too much or if they needed more sunlight."},
-    {"id":"024","key":"Mechanic","audio":"f024.mp3","ca":"Estàvem pensant a anar a la platja aquest cap de setmana, però com que el cotxe fa un soroll estrany, potser l'haurem de portar al mecànic i quedar-nos a la ciutat per explorar el nou museu en el seu lloc.","en":"We were thinking about going to the beach this weekend, but since the car is making a strange noise, we might have to take it to the mechanic and stay in the city to explore the new museum instead."},
-    {"id":"025","key":"Mud","audio":"f025.mp3","ca":"El meu gos sempre s'emociona moltíssim quan plou, corrent pel fang i després entrant a casa abans que pugui netejar-li les potes, el que significa que haig de fregar tot el terra dues vegades al dia.","en":"My dog always gets extremely excited when it rains, running through the mud and then entering the house before I can clean his paws, which means I have to mop the entire floor twice a day."},
-    {"id":"026","key":"Fluency","audio":"f026.mp3","ca":"La raó per la qual estic practicant aquestes frases llargues és que vull millorar la meva fluïdesa per poder parlar amb parlants natius sense haver de parar cada dos segons per pensar en la gramàtica.","en":"The reason why I am practicing these long sentences is that I want to improve my fluency so that I can talk to native speakers without having to stop every two seconds to think about grammar."}
+    {"id":"001","key":"tricky","audio":"f001.mp3","ca":"Crec que trobar un apartament barat al centre de la ciutat és força complicat perquè hi ha molta gent buscant el mateix ara mateix.","en":"I think that finding a cheap apartment in the center of the city is quite tricky because there are many people looking for the same thing right now."},
+    {"id":"002","key":"broad","audio":"f002.mp3","ca":"La vista des del cim de la muntanya era molt àmplia i podíem veure tots els pobles petits i el bosc verd a prop del riu.","en":"The view from the top of the mountain was very broad and we could see all the small villages and the green forest near the river."},
+    {"id":"003","key":"willing","audio":"f003.mp3","ca":"El meu germà sempre està disposat a portar-me a l’aeroport d’hora al matí encara que hagi de treballar més tard aquell dia.","en":"My brother is always willing to drive me to the airport early in the morning even if he has to work later that day."},
+    {"id":"004","key":"call off","audio":"f004.mp3","ca":"El gerent va decidir cancel·lar l’esdeveniment a l’aire lliure perquè la previsió del temps deia que faria molt fred i vent tota la nit.","en":"The manager decided to call off the outdoor event because the weather forecast said it would be very cold and windy all night."},
+    {"id":"005","key":"harmless","audio":"f005.mp3","ca":"No cal que tinguis por d’aquell insecte perquè és completament inofensiu i només vol volar a prop de la llum del llum.","en":"You don't need to be afraid of that insect because it is completely harmless and it just wants to fly near the light of the lamp."},
+    {"id":"006","key":"as long as","audio":"f006.mp3","ca":"Et deixaré el meu llibre preferit sempre que prometis cuidar-lo i tornar-me’l la setmana vinent.","en":"I will lend you my favorite book as long as you promise to take care of it and give it back to me next week."},
+    {"id":"007","key":"worth","audio":"f007.mp3","ca":"Sé que l’entrada al museu és cara, però realment val la pena visitar-lo perquè las pintures de dins són les més famoses del món.","en":"I know the museum ticket is expensive, but it is really worth visiting because the paintings inside are the most famous in the world."},
+    {"id":"008","key":"awkward","audio":"f008.mp3","ca":"Va ser molt incòmode quan em vaig trobar el meu antic cap al supermercat i no sabia què dir-li després de tants anys.","en":"It was very awkward when I met my old boss at the supermarket and I didn't know what to say to him after so many years."},
+    {"id":"009","key":"provided that","audio":"f009.mp3","ca":"Comprarem el cotxe nou el mes que ve sempre que el banc nos doni els diners que necessitem per al primer pagament.","en":"We are going to buy the new car next month provided that the bank gives us the money we need for the first payment."},
+    {"id":"010","key":"tough","audio":"f010.mp3","ca":"L’examen va ser molt difícil i llarg, però em sento contenta perquè vaig estudiar molt i crec que vaig respondre totes les preguntes correctament.","en":"The exam was very tough and long, but I feel happy because I studied a lot and I think I answered all the questions correctly."}
 ];
 
 let remaining=[...items], current=null, currentIndex=0, mode="EN", known=0, studyStarsOnly=false;
@@ -384,7 +370,7 @@ function toggleStar(id, btn) {
     if(current && current.id === id) document.getElementById("starMain").classList.toggle('active', active);
 }
 
-function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "unit_2"; }
+function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "unit_1"; }
 function markAsDone(el) {
     localStorage.setItem(getFolderName(), new Date().toISOString());
     el.innerHTML = "✓"; el.classList.add('marked');

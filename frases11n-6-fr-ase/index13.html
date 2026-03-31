@@ -220,7 +220,7 @@ function normalizeText(text) {
     return text.toLowerCase().replace(/[.,?!"]/g, "").trim();
 }
 
-// Función para detener todos los micros
+// Función para detener todos los micros (evita conflictos entre rosa y azul)
 function stopAllMicrophones() {
     if (isListening && recognition) { recognition.stop(); isListening = false; }
     if (isRecording && mediaRecorder) { 
@@ -293,6 +293,7 @@ if (SpeechRecognition) {
     };
 }
 
+// Comparación inteligente con soporte de contracciones
 function compareSentences(original, spoken) {
     const feedbackDiv = document.getElementById("speech-feedback");
     const origWords = original.split(/\s+/);
@@ -345,6 +346,7 @@ function toggleMic() {
         recognition.stop();
     } else {
         stopAllMicrophones();
+        // Borrar el feedback anterior antes de escuchar la nueva
         document.getElementById("speech-feedback").innerHTML = ""; 
         recognition.start();
     }
@@ -394,8 +396,7 @@ function loadBlock(b) {
     let end = Math.min(start + 10, data.length);
     for (let i = start; i < end; i++) temp.push({...data[i], realIdx: i});
   }
-  // MODIFICACIÓN: Se ha eliminado .sort(() => Math.random() - 0.5) para mantener el orden
-  currentBlockData = temp;
+  currentBlockData = temp.sort(() => Math.random() - 0.5);
   document.querySelectorAll(".block").forEach((btn) => {
     btn.classList.toggle("active", (b === 'T' && btn.textContent === 'T') || (parseInt(btn.textContent)-1 === b));
   });
@@ -450,6 +451,7 @@ function playAudio(speed, forcedAudio = null) {
 
 function pauseAudio() { a.pause(); }
 
+// Función ver con toggle (mostrar/esconder)
 function reveal() {
   if (currentBlockData.length > 0) {
     const item = currentBlockData[pos];
