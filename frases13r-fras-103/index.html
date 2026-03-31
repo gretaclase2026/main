@@ -1,141 +1,128 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ca">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Noves Frases d'Estudi (Català/Anglès)</title>
+<title>Estudi de Frases - Unitat 14</title>
 <style>
-body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
-.card{max-width:720px;margin:20px auto;background:#fff;border-radius:24px;padding:24px;box-shadow:0 8px 18px rgba(0,0,0,.15);position:relative}
+body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
+header{padding:8px 4px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center;align-items:center;gap:4px}
+.unit-number{font-size:22px;font-weight:800;color:#2563eb;margin:0 8px;min-width:20px;text-align:center}
+.mode-btns button{padding:6px 10px;border:none;border-radius:12px;font-weight:700;cursor:pointer;font-size:11px;white-space:nowrap;line-height:1.2}
+.mode-en{background:#dbeafe}
+.mode-es{background:#fde68a}
 
-.modes{display:flex;gap:10px;margin-bottom:10px;width:100%;align-items:center}
-.unit-number{font-weight:bold;font-size:20px;color:#2563eb;padding:0 10px}
-.mode{flex:1;text-align:center;padding:14px;border-radius:24px;font-weight:bold;cursor:pointer;border:2px solid transparent}
-.mode.en{background:#d6e6f5}
-.mode.es{background:#f4d6e6}
-.mode.active{border-color:#999;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
+main{display:flex;justify-content:center;padding:24px}
+.card{position:relative;width:100%;max-width:560px;background:#ffffff;border-radius:28px;padding:32px;box-shadow:0 10px 24px rgba(0,0,0,0.06);text-align:center}
+.counter{position:absolute;top:18px;left:22px;font-weight:800;color:#2563eb}
+.check-box-manual { position: absolute; top: 18px; right: 22px; width: 24px; height: 24px; background: #fff; border: 1.5px solid #22c55e; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 14px; color: transparent; transition: 0.2s; }
+.check-box-manual.marked { background: #22c55e !important; color: white !important; }
+.lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
 
-.blocks{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0;justify-content:center;align-items:center}
-.block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#f1f5f9;cursor:pointer;transition:0.2s}
-.block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1);box-shadow:0 4px 10px rgba(37,99,235,0.3)}
+.blocks{display:flex;flex-wrap:nowrap;gap:6px;justify-content:flex-start;margin:15px 0 20px;overflow-x:auto;padding:5px 0 5px 10px}
+.block{flex: 0 0 auto;width:32px;height:32px;border-radius:50%;border:none;background:#f1f5f9;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.2s}
+.block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1)}
+.block.all-btn { background: #e2e8f0; color: #475569; }
 
-.star-main { background: none; border: none; font-size: 30px; cursor: pointer; color: #cbd5e1; transition: 0.2s; margin-left: 5px; }
-.star-main.active { color: #f59e0b !important; }
+.audio-container { display: flex; justify-content: center; gap: 8px; margin: 10px 0; align-items: center; flex-wrap: nowrap; }
+.audio-btn{width:52px;height:52px;border-radius:50%;border:none;background:#dbeafe;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
+.audio-btn.slow{background:#fef08a;}
+.audio-btn.pause{background:#fee2e2; color: inherit;} 
+.audio-btn.rec{background:#fbcfe8; color: #9d174d;}
+.audio-btn.stt{background:#dbeafe; font-size: 22px;}
 
-.main-box-container{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;margin:35px 0 20px 0}
-.audio-controls{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:15px;flex-wrap:wrap}
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+.recording-active { background: #f06292 !important; color: white !important; }
+.recording-icon { display: inline-block; animation: pulse 1s infinite; }
+.listening { animation: pulse 1.5s infinite; background: #3b82f6 !important; color: white !important; }
 
-.audio-btn{font-size:30px;background:#dcfce7;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
-.audio-btn.slow{background:#fef08a;font-size:28px}
-.audio-btn.pause{background:#fee2e2;font-size:28px}
+.star-btn { background: none; border: none; font-size: 32px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px 0 0; margin-right: 5px; }
+.star-btn.active { color: #f59e0b !important; }
 
-.rec-btn{font-size:30px;background:#fce4ec;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.3s;color:inherit;}
-.rec-btn.recording{background:#f06292 !important; color:white; animation: pulse-pink 1.5s infinite; transform: scale(1.1);}
+.progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
+input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
 
-.mic-btn{font-size:30px;background:#dbeafe;border:none;cursor:pointer;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.3s}
-.mic-btn.listening{background:#2563eb; color:white; animation: pulse-blue 1.5s infinite; transform: scale(1.1);}
+#speechFeedback { font-size: 18px; margin: 15px 0; font-weight: bold; min-height: 28px; line-height: 1.5; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
+.word-correct { color: #16a34a; }
+.word-error { color: #dc2626; text-decoration: line-through; }
+.word-missing { color: #94a3b8; font-style: italic; }
 
-@keyframes pulse-pink { 0% {box-shadow: 0 0 0 0 rgba(240, 98, 146, 0.7);} 70% {box-shadow: 0 0 0 15px rgba(240, 98, 146, 0);} 100% {box-shadow: 0 0 0 0 rgba(240, 98, 146, 0);} }
-@keyframes pulse-blue { 0% {box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7);} 70% {box-shadow: 0 0 0 15px rgba(37, 99, 235, 0);} 100% {box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);} }
+.hidden{display:none !important}
+.es{font-size:19px;color:#2563eb;margin-top:14px;line-height:1.4;font-weight:600}
+.en{font-size:19px;color:#0f172a;margin-top:14px;font-weight:700;line-height:1.4}
 
-.progress-wrapper { width: 100%; max-width: 300px; margin: 10px 0; }
-input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 5px; accent-color: #2563eb; }
+.buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:22px}
+button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;cursor:pointer}
+.reveal{background:#e0f2fe}
+.know{background:#dcfce7}
+.next{background:#fbcfe8}
 
-.counter-side{position:absolute;right:10px;top:-25px;font-weight:bold;color:#2563eb;font-size:22px}
+.list-controls { display: flex; gap: 10px; margin-top: 16px; }
+.list-btn{ flex:1; background:#e9d5ff; border:none; border-radius:16px; padding:14px; font-weight:800; cursor:pointer; font-size:13px }
+.review-btn { background: #fef3c7; color: #92400e; }
 
-#word{font-size:20px;font-weight:800;margin:20px 0;line-height:1.4;min-height:120px;text-align:center;display:flex;align-items:center;justify-content:center;padding:0 10px}
-.txt-es{color:#2563eb} 
-#answer{font-size:18px;font-weight:bold;margin-top:-10px;margin-bottom:20px;text-align:center;min-height:30px;color:#666}
+.list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
+.list-item { display: flex; flex-direction: row; gap: 12px; padding: 15px 0; border-bottom: 1px solid #eee; align-items: center; }
+.list-controls-row { display: flex; flex-direction: row; gap: 6px; align-items: center; flex-shrink: 0; }
+.list-texts { display: flex; flex-direction: column; gap: 4px; flex: 1; }
 
-#speech-feedback { font-size: 19px; margin-bottom: 10px; min-height: 24px; text-align: center; transition: 0.2s; line-height: 1.5;}
-.word-correct { color: #16a34a; font-weight: bold; } 
-.word-error { color: #dc2626; text-decoration: line-through; margin: 0 2px; }
-.word-missing { color: #94a3b8; font-style: italic; margin: 0 2px; }
+.mini-btn { border: none; border-radius: 10px; width: 34px; height: 34px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
+.btn-audio { background: #dbeafe; }
+.btn-rec-mini { background: #fbcfe8; color: #9d174d; transition: 0.2s; }
+.star-btn-list { background: none; border: none; font-size: 24px; cursor: pointer; color: #cbd5e1; padding: 0; line-height: 1; display: flex; align-items: center; }
+.star-btn-list.active { color: #f59e0b !important; }
 
-.actions{display:flex;gap:12px}
-.btn{flex:1;padding:18px;border-radius:18px;border:none;font-weight:bold;font-size:18px;cursor:pointer}
-.btn-reveal{background:#e0f2fe}
-.btn-know{background:#dcfce7}
-.btn-next{background:#fbcfe8}
-
-.list-toggle-btns { display: flex; gap: 10px; margin-top: 20px; }
-.btn-list-main { flex: 1; padding: 12px; border-radius: 12px; border: none; background: #e9d5ff; font-weight: bold; cursor: pointer; }
-.btn-stars-main { background: #fef3c7; color: #92400e; }
-
-#list{margin-top:20px;background:#fff;border-radius:15px;display:none;border:1px solid #ddd;padding:10px}
-.list-item { padding: 15px 0; border-bottom: 1px solid #eee; display: flex; align-items: center; justify-content: flex-start; gap: 15px; }
-.list-btns-col { display: flex; flex-direction: column; gap: 8px; align-items: center; min-width: 45px; }
-.list-content { flex: 1; }
-.mini-btn { border: none; border-radius: 10px; width: 38px; height: 38px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
-.btn-audio-list { background: #dcfce7; }
-.btn-rec-list { background: #fce4ec; font-size: 16px; }
-.btn-rec-list.recording { background: #f06292 !important; color: white; animation: pulse-pink 1.5s infinite; }
-
-.star-list { background: none; border: none; font-size: 24px; color: #cbd5e1; cursor: pointer; padding: 0; }
-.star-list.active { color: #f59e0b !important; }
-
-.blur { filter: blur(5px); transition: filter 0.3s; cursor: pointer; user-select: none; }
+.blur { filter: blur(5px); transition: filter 0.2s; cursor: pointer; user-select: none; }
 .blur.revealed { filter: blur(0); }
-
-.check-box-manual {
-    position: absolute; top: 85px; right: 22px; width: 24px; height: 24px;
-    background: #fff !important; border: 1.5px solid #22c55e !important;
-    border-radius: 6px; display: flex; align-items: center; justify-content: center;
-    cursor: pointer; z-index: 10; transition: all 0.2s; font-size: 14px;
-}
-.check-box-manual.marked { background: #22c55e !important; color: white; }
 </style>
 </head>
 <body>
 
+<header>
+ <div class="mode-btns"><button class="mode-en" onclick="setMode('EN')">ENG → CAT</button></div>
+ <div class="unit-number">14</div>
+ <div class="mode-btns"><button class="mode-es" onclick="setMode('CA')">CAT → ENG</button></div>
+</header>
+
+<main>
 <div class="card">
-  <div class="modes">
-    <div id="modeEN" class="mode en active" onclick="setMode('EN')">ENG → CAT</div>
-    <div class="unit-number">13</div>
-    <div id="modeES" class="mode es" onclick="setMode('CA')">CAT → ENG</div>
-  </div>
+ <div class="counter" id="counter">0 / 0</div>
+ <div class="check-box-manual" id="mainCheck" onclick="markAsDone(this)"></div>
 
-  <div class="blocks" id="blocksContainer"></div>
+ <div id="langLabel" class="lang" style="margin-top: 10px;">ANGLÈS</div>
+ <div id="blockContainer" class="blocks"></div>
 
-  <div class="main-box-container">
-    <div class="counter-side">
-      <span id="pos">0</span> / <span id="total">0</span>
-    </div>
+ <div class="audio-container">
+  <button class="star-btn" id="starBtn" onclick="toggleStar()">★</button>
+  <button class="audio-btn slow" onclick="playCurrent(0.75)">🐢</button>
+  <button class="audio-btn" onclick="playCurrent(1.0)">🔊</button>
+  <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
+  <button class="audio-btn rec" id="recBtn" onclick="toggleRecord('recBtn')">🎤</button>
+  <button class="audio-btn stt" id="sttBtn" onclick="toggleMic()">🎤</button>
+ </div>
+ 
+ <div class="progress-wrapper"><input type="range" id="progressBar" value="0" min="0" max="100" step="0.1"></div>
+ 
+ <div id="es" class="es hidden"></div>
+ <div id="speechFeedback"></div>
+ <div id="en" class="en hidden"></div>
 
-    <div class="audio-controls">
-      <button class="audio-btn slow" onclick="playAudio(0.75)">🐢</button>
-      <button class="audio-btn" onclick="playAudio(1.0)">🔊</button>
-      <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
-      <button class="rec-btn" id="recBtn" onclick="toggleRecord(this)" title="Gravar-se">🎙️</button>
-      <button class="mic-btn" id="micBtn" onclick="toggleDictation()" title="Dictat">🎤</button>
-    </div>
-    
-    <div class="progress-wrapper">
-      <input type="range" id="progressBar" value="0" step="0.1">
-    </div>
-  </div>
-
-  <div id="word"></div>
-  <div id="speech-feedback"></div>
-  <div id="answer"></div>
-
-  <div class="actions">
-    <button class="btn btn-reveal" onclick="reveal()">veure</button>
-    <button class="btn btn-know" onclick="know()">ja la se</button>
-    <button class="btn btn-next" onclick="next()">següent</button>
-  </div>
-  
-  <div class="list-toggle-btns">
-    <button class="btn-list-main" onclick="toggleList('all')">llista del bloc</button>
-    <button class="btn-list-main btn-stars-main" onclick="toggleList('stars')">favorites (★)</button>
-  </div>
-  <div id="list"></div>
+ <div class="buttons">
+  <button class="action reveal" onclick="reveal()">Veure</button>
+  <button class="action know" onclick="know()">Ja la sé</button>
+  <button class="action next" onclick="nextOne()">Següent</button>
+ </div>
+ <div class="list-controls">
+    <button class="list-btn" onclick="toggleList('all')">Llista del bloc</button>
+    <button class="list-btn review-btn" onclick="toggleList('stars')">Favorits (★)</button>
+ </div>
+ <div id="endMsg" class="hidden" style="margin-top:16px; font-weight:800; color:#16a34a;">✔ Bloc completat! 🎉</div>
 </div>
-
-<audio id="audio"></audio>
+</main>
+<div id="listBox" class="list-box hidden"></div>
 
 <script>
-const data = [
+const items = [
     {audio:"f001.mp3",en:"When I hang clothes on the balcony I always use many clothespins because if it starts to get windy the clothes can easily fall from the line.",es:"Quan estenc la roba al balcó sempre utilitzo moltes pinces perquè si comença a fer vent la roba pot caure fàcilment del fil."},
     {audio:"f002.mp3",en:"When I arrive home after work I usually hang my jacket on a hanger so it doesn't get wrinkled and it is easier to find the next day.",es:"Quan arribo a casa després de treballar normalment penjo la jaqueta en un penjador perquè no s’arrugui i sigui més fàcil trobar-la l’endemà."},
     {audio:"f003.mp3",en:"The door was making a strange noise every time I opened it because one of the hinges was a little loose.",es:"La porta feia un soroll estrany cada vegada que l’obria perquè una de les frontisses estava una mica fluixa."},
@@ -172,383 +159,290 @@ const data = [
     {audio:"f034.mp3",en:"When I arrived too early at the bus stop I decided to sit on a bench for a while while watching people pass by in the street.",es:"Quan vaig arribar massa aviat a la parada d’autobús vaig decidir seure una estona en un banc mentre mirava la gent passar pel carrer."},
     {audio:"f035.mp3",en:"Since it was very windy I had to hold my hat with my hand because the wind was almost blowing it away.",es:"Com que feia molt vent vaig haver d’aguantar el barret amb la mà perquè gairebé se me l’emportava l’aire."},
     {audio:"f036.mp3",en:"After a while I realized that I had left the window open and that the room was starting to get cold.",es:"Al cap d’una estona em vaig adonar que havia deixat la finestra oberta i que l’habitació començava a refredar-se."},
-    {audio:"f037.mp3",en:"I had to go back home because I had left my keys on the table near the entrance before leaving.",es:"Vaig haver de tornar a casa perquè m’havia deixat les claus a la taula de l’entrada amb un matí."},
-    {audio:"f038.mp3",en:"I wanted to go for a walk in the city center but in the end I decided to stay home and rest instead of going out.",es:"Volia sortir a caminar pel centre pero al final vaig decidir quedar-me a casa i descansar una mica en lloc de sortir."},
+    {audio:"f037.mp3",en:"I had to go back home because I had left my keys on the table near the entrance before leaving.",es:"Va g haver de tornar a casa perquè m’havia deixat les claus a la taula de l’entrada abans de sortir."},
+    {audio:"f038.mp3",en:"I wanted to go for a walk in the city center but in the end I decided to stay home and rest instead of going out.",es:"Volia sortir a caminar pel centre però al final vaig decidir quedar-me a casa i descansar una mica en lloc de sortir."},
     {audio:"f039.mp3",en:"When I looked at the garage floor I saw a small puddle of water that must have come in under the door.",es:"Quan vaig mirar cap al terra del garatge vaig veure un bassal petit d’aigua que devia haver entrat per sota de la porta."},
     {audio:"f040.mp3",en:"When I closed all the shutters in the evening the house became much quieter and more peaceful.",es:"Quan vaig tancar totes les persianes al vespre la casa va quedar molt més tranquil·la i silenciosa."},
     {audio:"f041.mp3",en:"One Saturday morning I went out to the balcony to hang the clothes and I used several clothespins because it was starting to get a little windy. When I went back inside the house I hung my jacket on a hanger next to the door and I realized that one of the hinges was making a small noise every time I opened the door.",es:"Un dissabte al matí vaig sortir al balcó per estendre la roba i vaig utilitzar diverses pinces perquè començava a fer una mica de vent. Quan vaig tornar a dins de casa vaig penjar la jaqueta en un penjador al costat de la porta i em vaig adonar que una de les frontisses feia un petit soroll cada vegada que obria la porta."},
-    {audio:"f042.mp3",en:"When I walked to the shop I saw that there was a puddle in front of the entrance because it had rained during the night. I walked to the park and found a quiet spot under a tree where I could sit for a while.",es:"Quan vaig anar a la botiga vaig veure que hi havia un bassal davant de l’entrada perquè havia pogut durant la nit. Vaig caminar fins al parc i vaig trobar un lloc tranquil sota un arbre on vaig poder seure una estona."},
+    {audio:"f042.mp3",en:"When I left the house to go to the shop I saw that there was a puddle in front of the entrance because it had rained during the night. I walked to the park and found a quiet spot under a tree where I could sit for a while.",es:"Quan vaig sortir de casa per anar a la botiga vaig veure que hi havia un bassal davant de l’entrada perquè havia plogut durant la nit. Vaig caminar fins al parc i vaig trobar un lloc tranquil sota un arbre on vaig poder seure una estona."},
     {audio:"f043.mp3",en:"One day I tried to connect a new lamp but the cord was short to reach the socket. I had to move the table a little until everything finally worked correctly.",es:"Un dia vaig intentar connectar una làmpada nova però el cable era massa curt per arribar a l’endoll. Vaig haver de moure la taula una mica fins que finalment tot va funcionar correctament."},
-    {audio:"f044.mp3",en:"When we arrived at the park we walked for a while until we found a quiet spot under a tree. We sat there and talked for almost an hour because the weather was very nice.",es:"Quan vam arribar al parc vam caminar una estona fins que vam trobar un lloc tranquil sota un arbre. Ens vam asseure allà i vam parlar durant gairebé una hora perquè feia molt bon temps."},
-    {audio:"f045.mp3",en:"Before leaving the house I closed the garage door with a padlock because I wanted to make sure everything stayed properly locked while we were away.",es:"Abans de marxar de casa vaig tancar la porta del garatge amb un cadenat perquè volia assegurar-me que tot quedava ben tancat mentre no hi érem."}
+    {audio:"f045.mp3",en:"When we arrived at the park we walked for a while until we found a quiet spot under a tree. We sat there and talked for almost an hour because the weather was very nice.",es:"Quan vam arribar al parc vam caminar una estona fins que vam trobar un lloc tranquil sota un arbre. Ens vam asseure allà i vam parlar durant gairebé una hora perquè feia molt bon temps."},
+    {audio:"f044.mp3",en:"Before leaving the house I closed the garage door with a padlock because I wanted to make sure everything stayed properly locked while we were away.",es:"Abans de marxar de casa vaig tancar la porta del garatge amb un cadenat perquè volia assegurar-me que tot quedava ben tancat mentre no hi érem."}
 ];
 
 let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0;
-const a = document.getElementById("audio");
+const audioObj = new Audio();
 const progressBar = document.getElementById("progressBar");
 
-const normalizationMap = {
-    "dont": "do not", "doesn't": "does not", "doesnt": "does not",
-    "didnt": "did not", "didn't": "did not",
-    "isnt": "is not", "isn't": "is not",
-    "arent": "are not", "aren't": "are not",
-    "wasnt": "was not", "wasn't": "was not",
-    "werent": "were not", "weren't": "were not",
-    "havent": "have not", "haven't": "have not",
-    "hasnt": "has not", "hasn't": "has not",
-    "hadnt": "had not", "hadn't": "had not",
-    "wont": "will not", "won't": "will not",
-    "wouldnt": "would not", "wouldn't": "would not",
-    "cant": "can not", "can't": "can not",
-    "couldnt": "could not", "couldn't": "could not",
-    "shouldnt": "should not", "shouldn't": "should not",
-    "im": "i am", "i'm": "i am",
-    "youre": "you are", "you're": "you are",
-    "hes": "he is", "he's": "he is",
-    "shes": "she is", "she's": "she is",
-    "its": "it is", "it's": "it is",
-    "were": "we are", "we're": "we are",
-    "theyre": "they are", "they're": "they are",
-    "ive": "i have", "i've": "i have",
-    "youve": "you have", "you've": "you have",
-    "weve": "we have", "we've": "we have",
-    "theyve": "they have", "they've": "they have",
-    "ill": "i will", "i'll": "i will",
-    "youll": "you will", "you'll": "you will",
-    "hell": "he will", "he'll": "he will",
-    "shell": "she will", "shell": "she will",
-    "well": "we will", "we'll": "we will",
-    "theyll": "they will", "they'll": "they will",
-    "id": "i would", "i'd": "i would",
-    "youd": "you would", "you'd": "you would",
-    "hed": "he would", "he'd": "he would",
-    "shed": "she would", "she'd": "she would",
-    "wed": "we would", "we'd": "we would",
-    "theyd": "they would", "they'd": "they would"
+const contractions = {
+    "i'd": "i would", "you'd": "you would", "he'd": "he would", "she'd": "she would", 
+    "it'd": "it would", "we'd": "we would", "they'd": "they would",
+    "i've": "i have", "you've": "you have", "we've": "we have", "they've": "they have",
+    "isn't": "is not", "aren't": "are not", "wasn't": "was not", "weren't": "were not",
+    "don't": "do not", "doesn't": "does not", "didn't": "did not",
+    "can't": "cannot", "couldn't": "could not", "won't": "will not", "wouldn't": "would not",
+    "it's": "it is", "she's": "she is", "he's": "he is", "there's": "there is",
+    "i'm": "i am", "we're": "we are", "they're": "they are", "you're": "you are",
+    "hadn't": "had not", "wouldn't've": "would not have", "i'll": "i will"
 };
 
-function normalizeText(text) {
-    if (!text) return "";
-    let clean = text.toLowerCase().replace(/[.,?!"]/g, "").trim();
-    let words = clean.split(/\s+/);
-    return words.map(word => {
-        let key = word.replace(/['’‘`]/g, ""); 
-        return normalizationMap[word] || normalizationMap[key] || word;
-    }).join(" ");
+const expanded = {};
+for (let k in contractions) expanded[contractions[k]] = k;
+
+function normalize(w) { return w ? w.toLowerCase().replace(/[.,?!"]/g, "").trim() : ""; }
+
+function compareSentences(originalText, spokenText) {
+    const feedbackDiv = document.getElementById("speechFeedback");
+    const origWords = originalText.split(/\s+/);
+    const spokenWords = spokenText.split(/\s+/);
+    let resultHTML = ""; let sIdx = 0; 
+    for (let i = 0; i < origWords.length; i++) {
+        let matched = false; const oNorm = normalize(origWords[i]);
+        if (sIdx < spokenWords.length) {
+            const sNorm1 = normalize(spokenWords[sIdx]);
+            const sNorm2 = normalize(spokenWords[sIdx + 1]);
+            const sTwoWords = sNorm1 + " " + (sNorm2 || "");
+            if (contractions[oNorm] === sTwoWords) {
+                resultHTML += `<span class="word-correct">${spokenWords[sIdx]} ${spokenWords[sIdx+1]}</span> `;
+                sIdx += 2; matched = true;
+            } else if (i + 1 < origWords.length && (oNorm + " " + normalize(origWords[i+1])) === contractions[sNorm1]) {
+                resultHTML += `<span class="word-correct">${spokenWords[sIdx]}</span> `;
+                sIdx += 1; i++; matched = true;
+            } else if (oNorm === sNorm1 || contractions[oNorm] === sNorm1 || expanded[oNorm] === sNorm1) {
+                resultHTML += `<span class="word-correct">${spokenWords[sIdx]}</span> `;
+                sIdx++; matched = true;
+            }
+        }
+        if (!matched) {
+            let foundAhead = false;
+            for (let look = sIdx; look < sIdx + 3 && look < spokenWords.length; look++) {
+                if (normalize(spokenWords[look]) === oNorm) {
+                    for (let skip = sIdx; skip < look; skip++) resultHTML += `<span class="word-error">${spokenWords[skip]}</span> `;
+                    resultHTML += `<span class="word-correct">${spokenWords[look]}</span> `;
+                    sIdx = look + 1; foundAhead = true; matched = true; break;
+                }
+            }
+            if (!foundAhead) resultHTML += `<span class="word-missing">${origWords[i]}</span> `;
+        }
+    }
+    while (sIdx < spokenWords.length) { resultHTML += `<span class="word-error">${spokenWords[sIdx]}</span> `; sIdx++; }
+    feedbackDiv.innerHTML = resultHTML;
 }
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-let recognition = null;
+let recognition, isListening = false;
 if (SpeechRecognition) {
     recognition = new SpeechRecognition();
-    recognition.lang = 'en-US';
-    recognition.interimResults = false;
-    recognition.continuous = true;
-
-    recognition.onstart = () => {
-        document.getElementById("micBtn").classList.add("listening");
-        document.getElementById("speech-feedback").textContent = "Escoltant...";
-    };
-
-    recognition.onend = () => {
-        document.getElementById("micBtn").classList.remove("listening");
-    };
-
-    recognition.onresult = (event) => {
-        let fullTranscript = "";
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-            fullTranscript += event.results[i][0].transcript + " ";
-        }
-        compareSentences(currentBlockData[pos].en, fullTranscript.trim());
+    recognition.lang = 'en-US'; recognition.interimResults = false; recognition.continuous = true;
+    recognition.onstart = () => { isListening = true; document.getElementById("sttBtn").classList.add("listening"); };
+    recognition.onend = () => { isListening = false; document.getElementById("sttBtn").classList.remove("listening"); };
+    recognition.onresult = (e) => {
+        let transcript = "";
+        for (let i = e.resultIndex; i < e.results.length; i++) transcript += e.results[i][0].transcript + " ";
+        compareSentences(currentBlockData[pos].en, transcript.trim());
     };
 }
 
-function toggleDictation() {
-    if (!recognition || currentBlockData.length === 0) return;
-    if (document.getElementById("micBtn").classList.contains("listening")) {
-        recognition.stop();
-    } else {
-        recognition.start();
+function stopAllMicrophones() {
+    if (isListening && recognition) { recognition.stop(); isListening = false; }
+    if (isRecording && mediaRecorder) { 
+        if (mediaRecorder.state !== 'inactive') mediaRecorder.stop(); 
+        isRecording = false; 
     }
-}
-
-function compareSentences(original, spoken) {
-    const feedbackDiv = document.getElementById("speech-feedback");
-    const normOriginalWords = normalizeText(original).split(/\s+/);
-    const normSpokenWords = normalizeText(spoken).split(/\s+/);
-    const origWordsRaw = original.split(/\s+/);
-    
-    let resultHTML = "";
-    let sIdx = 0;
-    let correctCount = 0;
-
-    normOriginalWords.forEach((normWord, index) => {
-        const originalWordRaw = origWordsRaw[index];
-        let matched = false;
-
-        if (sIdx < normSpokenWords.length && normSpokenWords[sIdx] === normWord) {
-            resultHTML += `<span class="word-correct">${originalWordRaw}</span> `;
-            sIdx++;
-            matched = true;
-            correctCount++;
-        } else {
-            for (let j = sIdx + 1; j < sIdx + 5 && j < normSpokenWords.length; j++) {
-                if (normSpokenWords[j] === normWord) {
-                    for (let k = sIdx; k < j; k++) {
-                        resultHTML += `<span class="word-error">${normSpokenWords[k]}</span> `;
-                    }
-                    resultHTML += `<span class="word-correct">${originalWordRaw}</span> `;
-                    sIdx = j + 1;
-                    matched = true;
-                    correctCount++;
-                    break;
-                }
-            }
-        }
-        if (!matched) resultHTML += `<span class="word-missing">${originalWordRaw}</span> `;
+    if (window.localStream) {
+        window.localStream.getTracks().forEach(track => track.stop());
+        window.localStream = null;
+    }
+    document.getElementById("sttBtn").classList.remove("listening");
+    document.querySelectorAll(".recording-active").forEach(b => {
+        b.classList.remove("recording-active");
+        b.innerHTML = '🎤';
     });
+}
 
-    feedbackDiv.innerHTML = resultHTML.trim();
-
-    if (correctCount >= normOriginalWords.length) {
-        setTimeout(() => { 
-            feedbackDiv.textContent = ""; 
-            know(); 
-            if (recognition) recognition.stop();
-        }, 1500);
+async function toggleMic() {
+    if (!recognition) return;
+    if (isListening) { 
+        recognition.stop(); 
+    } else { 
+        stopAllMicrophones(); 
+        document.getElementById("speechFeedback").innerHTML = "";
+        recognition.start(); 
     }
 }
 
-let mediaRecorder;
-let audioChunks = [];
-let activeRecBtn = null;
-
-async function toggleRecord(btn) {
-    if (activeRecBtn && activeRecBtn !== btn) return; 
-
-    if (!activeRecBtn) {
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            mediaRecorder = new MediaRecorder(stream);
-            audioChunks = [];
-            mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-            mediaRecorder.onstop = () => {
-                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-                const audioUrl = URL.createObjectURL(audioBlob);
-                const userAudio = new Audio(audioUrl);
-                userAudio.play();
-            };
-            mediaRecorder.start();
-            activeRecBtn = btn;
-            btn.classList.add("recording");
-        } catch (err) { alert("Error al accedir al micròfon."); }
-    } else {
-        mediaRecorder.stop();
-        btn.classList.remove("recording");
-        activeRecBtn = null;
-    }
-}
-
-function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "noves_frases"; }
+function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "unitat_14"; }
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
+let mediaRecorder, audioChunks = [], isRecording = false;
 
-a.ontimeupdate = () => { if (a.duration) progressBar.value = (a.currentTime / a.duration) * 100; };
-progressBar.oninput = () => { if (a.duration) a.currentTime = (progressBar.value / 100) * a.duration; };
+async function toggleRecord(targetBtnId) {
+    const btn = document.getElementById(targetBtnId);
+    if (isRecording) { stopAllMicrophones(); return; }
+    stopAllMicrophones(); 
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        window.localStream = stream;
+        mediaRecorder = new MediaRecorder(stream); audioChunks = [];
+        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+        mediaRecorder.onstop = () => {
+            if (audioChunks.length > 0) {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                new Audio(URL.createObjectURL(audioBlob)).play();
+            }
+        };
+        mediaRecorder.start(); 
+        isRecording = true;
+        btn.classList.add("recording-active");
+        btn.innerHTML = '<span class="recording-icon">🎤</span>';
+    } catch (err) { alert("Micròfon no disponible"); }
+}
+
+audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
+progressBar.oninput = () => { if (audioObj.duration) audioObj.currentTime = (progressBar.value / 100) * audioObj.duration; };
 
 function initBlocks() {
-  const container = document.getElementById("blocksContainer");
-  const numBlocks = Math.ceil(data.length / 10);
-  const savedBlock = localStorage.getItem(getFolderName() + "_currentBlock");
+  const container = document.getElementById("blockContainer");
+  const numBlocks = Math.ceil(items.length / 10);
+  const savedBlock = localStorage.getItem(getFolderName() + "_puntoLibro");
   container.innerHTML = "";
+  const allBtn = document.createElement("button");
+  allBtn.className = "block all-btn"; allBtn.textContent = "T";
+  allBtn.onclick = () => loadAll(); container.appendChild(allBtn);
   for (let i = 0; i < numBlocks; i++) {
     const btn = document.createElement("button");
     btn.className = "block"; btn.textContent = i + 1;
-    btn.onclick = () => loadBlock(i);
-    container.appendChild(btn);
+    btn.onclick = () => loadBlock(i); container.appendChild(btn);
   }
-  const btnT = document.createElement("button");
-  btnT.className = "block"; btnT.textContent = "T";
-  btnT.onclick = () => loadBlock('T');
-  container.appendChild(btnT);
-  
-  const starMain = document.createElement("button");
-  starMain.id = "starMain";
-  starMain.className = "star-main";
-  starMain.innerHTML = "★";
-  starMain.onclick = () => toggleStar();
-  container.appendChild(starMain);
-
-  const blockToLoad = (savedBlock !== null) ? (savedBlock === 'T' ? 'T' : parseInt(savedBlock)) : 0;
-  loadBlock(blockToLoad);
+  if (savedBlock === "all") loadAll();
+  else loadBlock((savedBlock !== null) ? parseInt(savedBlock) : 0);
 }
 
 function loadBlock(b) {
-  currentBlockID = b;
-  localStorage.setItem(getFolderName() + "_currentBlock", b);
-  let temp = [];
-  if (b === 'T') { temp = data.map((item, i) => ({...item, realIdx: i})); } 
-  else {
-    let start = b * 10;
-    let end = Math.min(start + 10, data.length);
-    for (let i = start; i < end; i++) temp.push({...data[i], realIdx: i});
-  }
-  currentBlockData = temp.sort(() => Math.random() - 0.5);
-  document.querySelectorAll(".block").forEach((btn) => {
-    btn.classList.toggle("active", (b === 'T' && btn.textContent === 'T') || (parseInt(btn.textContent)-1 === b));
-  });
-  pos = 0; learnedCount = 0;
-  document.getElementById("list").style.display = "none";
-  update(true); 
+  currentBlockID = b; localStorage.setItem(getFolderName() + "_puntoLibro", b);
+  let temp = []; let start = b * 10;
+  for (let i = start; i < Math.min(start + 10, items.length); i++) temp.push({...items[i]});
+  currentBlockData = temp;
+  document.querySelectorAll(".block").forEach((btn, idx) => btn.classList.toggle("active", idx === (b + 1)));
+  pos = 0; learnedCount = 0; document.getElementById("endMsg").classList.add("hidden"); update(true);
 }
 
-function update(fromNextAction = false) {
+function loadAll() {
+  currentBlockID = -1; localStorage.setItem(getFolderName() + "_puntoLibro", "all");
+  currentBlockData = items.map(i => ({...i}));
+  document.querySelectorAll(".block").forEach((btn, idx) => btn.classList.toggle("active", idx === 0));
+  pos = 0; learnedCount = 0; document.getElementById("endMsg").classList.add("hidden"); update(true);
+}
+
+function update(fromAction = false) {
   if (currentBlockData.length === 0) {
-    document.getElementById("word").innerHTML = "¡Bloc Completat! 🎉";
-    document.getElementById("answer").innerHTML = "";
+    document.getElementById("en").classList.add("hidden");
+    document.getElementById("es").classList.add("hidden");
+    document.getElementById("endMsg").classList.remove("hidden");
     return;
   }
-  const item = currentBlockData[pos];
-  document.getElementById("starMain").classList.toggle("active", starredIds.includes(item.realIdx));
-  const w = document.getElementById("word");
-  const ans = document.getElementById("answer");
-  const feedback = document.getElementById("speech-feedback");
-  progressBar.value = 0;
-  ans.style.display = "none";
-  feedback.textContent = "";
+  progressBar.value = 0; const item = currentBlockData[pos];
+  document.getElementById("speechFeedback").innerHTML = "";
+  document.getElementById("starBtn").classList.toggle("active", starredIds.includes(item.audio));
+  
+  const elES = document.getElementById("es");
+  const elEN = document.getElementById("en");
 
   if (mode === "EN") {
-    w.innerHTML = ``; 
-    ans.innerHTML = `<span class="txt-es">${item.es}</span>`;
-    if (fromNextAction) playAudio(1.0);
+    document.getElementById("langLabel").textContent = "ANGLÈS";
+    elEN.innerHTML = item.en; 
+    elEN.classList.remove("hidden");
+    elES.innerHTML = item.es;
+    elES.classList.add("hidden"); // El català comença ocult
+    if (fromAction) playAudio(item.audio, 1.0);
   } else {
-    w.innerHTML = `<div class="txt-es">${item.es}</div>`;
-    ans.innerHTML = `<span>${item.en}</span>`;
+    document.getElementById("langLabel").textContent = "CATALÀ";
+    elES.innerHTML = item.es; 
+    elES.classList.remove("hidden");
+    elEN.innerHTML = item.en;
+    elEN.classList.add("hidden"); // L'anglès comença ocult
   }
-  document.getElementById("pos").textContent = learnedCount;
-  document.getElementById("total").textContent = currentBlockData.length + learnedCount;
+  document.getElementById("counter").textContent = `${learnedCount} / ${currentBlockData.length + learnedCount}`;
 }
 
-function toggleStar(forcedIdx = null) {
-  const idx = forcedIdx !== null ? forcedIdx : (currentBlockData.length > 0 ? currentBlockData[pos].realIdx : null);
-  if (idx === null) return;
-  if (starredIds.includes(idx)) starredIds = starredIds.filter(id => id !== idx);
-  else starredIds.push(idx);
-  localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
-  
-  if (forcedIdx === null) {
-      document.getElementById("starMain").classList.toggle("active", starredIds.includes(idx));
-  }
-}
-
-function playAudio(speed, forcedAudio = null) {
-  const audioFile = forcedAudio || (currentBlockData.length > 0 ? currentBlockData[pos].audio : null);
-  if (!audioFile) return;
-  if (!a.src.includes(audioFile)) { a.src = audioFile; progressBar.value = 0; }
-  a.playbackRate = speed;
-  a.play().catch(() => {});
-}
-
-function pauseAudio() { a.pause(); }
+function playAudio(src, speed) { audioObj.src = src; audioObj.playbackRate = speed; audioObj.play().catch(()=>{}); }
+function playCurrent(speed) { if (currentBlockData.length > 0) playAudio(currentBlockData[pos].audio, speed); }
+function pauseAudio() { audioObj.pause(); }
 
 function reveal() {
-  if (currentBlockData.length > 0) {
-    const item = currentBlockData[pos];
-    const ans = document.getElementById("answer");
-    const w = document.getElementById("word");
-    if (ans.style.display === "none") {
-        if (mode === "EN") w.innerHTML = `<span>${item.en}</span>`;
-        ans.style.display = "block";
-    } else {
-        if (mode === "EN") w.innerHTML = "";
-        ans.style.display = "none";
-    }
-  }
+  if (currentBlockData.length === 0) return;
+  // Simplement forcem que es vegin els dos idiomes
+  document.getElementById("es").classList.remove("hidden");
+  document.getElementById("en").classList.remove("hidden");
 }
 
 function know() {
   if (currentBlockData.length === 0) return;
-  learnedCount++;
-  currentBlockData.splice(pos, 1);
-  if (pos >= currentBlockData.length) pos = 0;
-  update(true);
+  learnedCount++; currentBlockData.splice(pos, 1);
+  if (pos >= currentBlockData.length) pos = 0; update(true);
 }
 
-function next() {
+function nextOne() {
   if (currentBlockData.length === 0) return;
-  pos = (pos + 1) % currentBlockData.length;
-  update(true);
+  pos = (pos + 1) % currentBlockData.length; update(true);
 }
 
-function setMode(m) {
-  mode = m;
-  document.getElementById("modeEN").classList.toggle("active", m === "EN");
-  document.getElementById("modeES").classList.toggle("active", m === "CA");
-  update(true);
+function setMode(m) { mode = m; update(true); }
+
+function toggleStar(forcedId = null) {
+  const audio = forcedId || currentBlockData[pos].audio;
+  if (starredIds.includes(audio)) starredIds = starredIds.filter(id => id !== audio);
+  else starredIds.push(audio);
+  localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
+  update();
 }
 
 function toggleList(type) {
-  const l = document.getElementById("list");
-  if (l.style.display === "block" && l.dataset.type === type) { l.style.display = "none"; return; }
-  l.dataset.type = type;
-  renderList(type);
-  l.style.display = "block";
-}
-
-function toggleBlur(el) {
-    el.classList.toggle('revealed');
+  const box = document.getElementById("listBox");
+  if (!box.classList.contains("hidden") && box.dataset.activeType === type) { box.classList.add("hidden"); return; }
+  box.dataset.activeType = type; renderList(type); box.classList.remove("hidden");
 }
 
 function renderList(type) {
-  const l = document.getElementById("list");
-  l.innerHTML = type === 'stars' ? "<b>Favorites (★):</b><br><br>" : "<b>Llista del bloc:</b><br><br>";
-  
-  let listToRender = [];
-  if (type === 'stars') {
-    listToRender = data.map((item, index) => ({...item, realIdx: index})).filter(i => starredIds.includes(i.realIdx));
-  } else {
-    let start = currentBlockID === 'T' ? 0 : currentBlockID * 10;
-    let end = currentBlockID === 'T' ? data.length : Math.min(start + 10, data.length);
-    listToRender = data.slice(start, end).map((item, index) => ({...item, realIdx: start + index}));
-  }
-
-  if (listToRender.length === 0) { l.innerHTML += "<i>Buit.</i>"; return; }
-
-  listToRender.forEach((item, index) => {
-    const isStarred = starredIds.includes(item.realIdx);
-    const itemDiv = document.createElement("div");
-    itemDiv.className = "list-item";
-    
+  const box = document.getElementById("listBox"); box.innerHTML = "";
+  let listToRender = (type === 'stars') ? items.filter(i => starredIds.includes(i.audio)) : 
+                    (currentBlockID === -1 ? items : items.slice(currentBlockID * 10, (currentBlockID + 1) * 10));
+  if (listToRender.length === 0) { box.innerHTML += "<p style='padding:10px;'>Buit.</p>"; return; }
+  listToRender.forEach((i, index) => {
+    const isStarred = starredIds.includes(i.audio);
+    const itemDiv = document.createElement("div"); itemDiv.className = "list-item";
+    const recId = `rec-list-${index}`;
     itemDiv.innerHTML = `
-      <div class="list-btns-col">
-        <button class="star-list ${isStarred ? 'active' : ''}" onclick="toggleStar(${item.realIdx}); renderList('${type}')">★</button>
-        <button class="mini-btn btn-audio-list" onclick="playAudio(1.0, '${item.audio}')">🔊</button>
-        <button class="mini-btn btn-rec-list" onclick="toggleRecord(this)">🎙️</button>
+      <div class="list-controls-row">
+        <button class="star-btn-list ${isStarred ? 'active' : ''}" onclick="toggleStar('${i.audio}'); renderList('${type}')">★</button>
+        <button class="mini-btn btn-audio" onclick="playAudio('${i.audio}', 1.0)">🔊</button>
+        <button class="mini-btn btn-rec-mini" id="${recId}" onclick="toggleRecord('${recId}')">🎤</button>
       </div>
-      <div class="list-content">
-        <div class="list-texts">
-          <div class="txt-es" style="font-weight:bold; font-size:14px;">${item.es}</div>
-          <div class="blur" style="font-weight:bold; font-size:16px;" onclick="toggleBlur(this)">${item.en}</div>
-        </div>
+      <div class="list-texts">
+        <div style="color:#2563eb; font-weight:700;">${i.es}</div>
+        <div class="blur" style="font-weight:800;" onclick="this.classList.toggle('revealed')">${i.en}</div>
       </div>
     `;
-    l.appendChild(itemDiv);
+    box.appendChild(itemDiv);
   });
 }
 
-function markAsDone(element) {
-    localStorage.setItem(getFolderName(), new Date().toISOString());
-    element.innerHTML = "✓"; element.classList.add('marked');
-    alert("Lliçó marcada ✅");
+function markAsDone(el) {
+    if (!el.classList.contains('marked')) {
+        localStorage.setItem(getFolderName(), new Date().toISOString());
+        el.innerHTML = "✓"; el.classList.add('marked');
+    } else {
+        localStorage.removeItem(getFolderName());
+        el.innerHTML = ""; el.classList.remove('marked');
+    }
 }
 
-const card = document.querySelector(".card");
-const box = document.createElement("div");
-box.className = "check-box-manual";
-if (localStorage.getItem(getFolderName())) { box.innerHTML = "✓"; box.classList.add('marked'); }
-box.onclick = function() { markAsDone(this); };
-card.appendChild(box);
-
-initBlocks();
+window.addEventListener('load', () => {
+    if (localStorage.getItem(getFolderName())) {
+        const mc = document.getElementById("mainCheck");
+        mc.innerHTML = "✓"; mc.classList.add('marked');
+    }
+    initBlocks();
+});
 </script>
 </body>
-</html> 
+</html>
