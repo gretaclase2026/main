@@ -427,93 +427,117 @@ function markAsDone(el) {
 load();
 </script>
 </body>
- <div id="feedback-star" style="position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); font-size:80px; display:none; z-index:2000; pointer-events:none;">⭐</div>
-
 <style>
-  /* Marcador de puntos en el header */
-  header { position: sticky !important; top: 0; z-index: 1000; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; padding: 10px 15px; }
-  .xp-container { background: #fef3c7; color: #92400e; padding: 4px 12px; border-radius: 12px; font-weight: 800; font-size: 16px; border: 1.5px solid #f59e0b; display: flex; align-items: center; gap: 5px; }
-  
-  /* Botón de Rescate */
-  #rescue-btn { display: none; margin: 15px auto; background: #f1f5f9; border: 1px dashed #cbd5e1; color: #64748b; padding: 8px 16px; border-radius: 10px; font-size: 13px; cursor: pointer; font-weight: bold; }
-  
-  /* Animación de la estrella */
-  .animate-star { display: block !important; animation: star-pop 1s ease-out forwards; }
-  @keyframes star-pop {
-    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-    50% { transform: translate(-50%, -50%) scale(1.5); opacity: 1; }
-    100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
-  }
+    /* El marcador de puntos que aparecerá arriba */
+    #puntos-header {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        background: #fef3c7;
+        color: #92400e;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-weight: 900;
+        border: 2px solid #f59e0b;
+        z-index: 2000;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 18px;
+    }
+    /* La estrella gigante que saltará en el centro */
+    #estrella-animada {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        font-size: 120px;
+        z-index: 3000;
+        pointer-events: none;
+        opacity: 0;
+        transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .estrella-activa {
+        transform: translate(-50%, -50%) scale(1.2) !important;
+        opacity: 1 !important;
+    }
+    /* El botón de rescate */
+    #btn-rescat {
+        display: none;
+        margin: 20px auto;
+        padding: 12px;
+        width: 90%;
+        background: #f1f5f9;
+        border: 2px dashed #cbd5e1;
+        border-radius: 12px;
+        font-weight: bold;
+        color: #64748b;
+        cursor: pointer;
+    }
 </style>
 
+<div id="puntos-header">⭐ <span id="val-puntos">0</span></div>
+<div id="estrella-animada">⭐</div>
+
 <script>
-// 1. VARIABLES GLOBALES
-let totalXP = parseInt(localStorage.getItem('global_xp')) || 0;
-let microAttempts = 0;
+(function() {
+    let xp = parseInt(localStorage.getItem('global_xp')) || 0;
+    let intentos = 0;
 
-// 2. FUNCIONES DE APOYO
-function updateXPDisplay() {
-    const el = document.getElementById('global-xp');
-    if(el) el.textContent = totalXP;
-}
+    // Actualizar número inicial
+    document.getElementById('val-puntos').textContent = xp;
 
-function givePoints() {
-    totalXP += 10;
-    localStorage.setItem('global_xp', totalXP);
-    updateXPDisplay();
-    
-    // Mostrar estrella
-    const star = document.getElementById('feedback-star');
-    star.classList.remove('animate-star');
-    void star.offsetWidth; // Truco para reiniciar animación
-    star.classList.add('animate-star');
-    
-    // Resetear fallos y esconder botón
-    microAttempts = 0;
-    document.getElementById('rescue-btn').style.display = "none";
-}
+    // Función principal (La que suma, guarda y anima)
+    window.sumarPuntosYEstrella = function() {
+        // 1. Sumar y guardar en el móvil
+        xp += 10;
+        localStorage.setItem('global_xp', xp);
+        document.getElementById('val-puntos').textContent = xp;
 
-// 3. CONFIGURACIÓN AUTOMÁTICA AL CARGAR
-window.addEventListener('DOMContentLoaded', () => {
-    // Inyectar el marcador de puntos en el header si no existe
-    const header = document.querySelector('header');
-    if(header && !document.getElementById('global-xp')) {
-        const div = document.createElement('div');
-        div.className = 'xp-container';
-        div.innerHTML = `⭐ <span id="global-xp">${totalXP}</span>`;
-        header.appendChild(div);
-    }
+        // 2. Animación de la estrella
+        const est = document.getElementById('estrella-animada');
+        est.classList.add('estrella-activa');
+        setTimeout(() => {
+            est.classList.remove('estrella-activa');
+        }, 1000);
 
-    // Crear el botón de rescate debajo de los controles de audio
-    const audioCont = document.querySelector('.audio-container');
-    if(audioCont && !document.getElementById('rescue-btn')) {
-        const btn = document.createElement('button');
-        btn.id = 'rescue-btn';
-        btn.textContent = 'Validar manual (Rescat)';
-        btn.onclick = givePoints;
-        audioCont.after(btn);
-    }
-    
-    updateXPDisplay();
-
-    // 4. EL MOTOR DEL MICRO (Lo que fallaba antes)
-    const originalOnResult = recognition.onresult;
-    recognition.onresult = (event) => {
-        // Ejecutamos lo que ya hacía el micro antes
-        originalOnResult(event);
-        
-        let spoken = event.results[0][0].transcript;
-        
-        // Comparamos para ver si sumamos fallo o damos estrella
-        if (normalizeText(spoken) === normalizeText(current.en)) {
-            givePoints();
-        } else {
-            microAttempts++;
-            if (microAttempts >= 3) {
-                document.getElementById('rescue-btn').style.display = "block";
-            }
-        }
+        // 3. Resetear fallos y quitar botón
+        intentos = 0;
+        document.getElementById('btn-rescat').style.display = 'none';
     };
-});
+
+    // Inyectar el botón de rescate después de los controles
+    window.addEventListener('load', () => {
+        const contenedor = document.querySelector('.audio-container') || document.body;
+        const b = document.createElement('button');
+        b.id = 'btn-rescat';
+        b.textContent = 'Validar manual (Rescat)';
+        b.onclick = window.sumarPuntosYEstrella;
+        contenedor.after(b);
+
+        // Conectar con tu sistema de voz actual
+        if (typeof recognition !== 'undefined') {
+            const originalResult = recognition.onresult;
+            recognition.onresult = (event) => {
+                // Ejecutamos tu código original para que no se rompa nada
+                if(originalResult) originalResult(event);
+
+                const textoDicho = event.results[0][0].transcript.toLowerCase().trim();
+                const textoCorrecto = current.en.toLowerCase().trim();
+
+                // Si aciertas (limpiando puntos y comas)
+                if (textoDicho.replace(/[^\w\s]/gi, '') === textoCorrecto.replace(/[^\w\s]/gi, '')) {
+                    window.sumarPuntosYEstrella();
+                } else {
+                    // Si fallas, contamos
+                    intentos++;
+                    if (intentos >= 3) {
+                        document.getElementById('btn-rescat').style.display = 'block';
+                    }
+                }
+            };
+        }
+    });
+})();
 </script>
 </html>
