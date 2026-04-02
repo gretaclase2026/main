@@ -601,70 +601,92 @@ window.addEventListener('load', () => {
 });
 </script>
 </body>
-<div id="feedback-star" style="position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); font-size:80px; display:none; z-index:2000; pointer-events:none;">⭐</div>
-
 <style>
-  header { position: sticky !important; top: 0; z-index: 1000; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-  .xp-container { background: #fef3c7; color: #92400e; padding: 4px 10px; border-radius: 10px; font-weight: 800; font-size: 14px; border: 1px solid #f59e0b; display: flex; align-items: center; gap: 5px; margin-left: 10px; }
-  .animate-star { display: block !important; animation: star-pop 1s ease-out forwards; }
-  @keyframes star-pop {
-    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-    50% { transform: translate(-50%, -50%) scale(1.5); opacity: 1; }
-    100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
-  }
-  #rescue-btn { display: none; margin: 10px auto; background: #f1f5f9; border: 1px dashed #cbd5e1; color: #64748b; padding: 6px 15px; border-radius: 10px; font-size: 13px; cursor: pointer; font-weight: bold; }
+    #puntos-header { 
+        position: fixed; top: 15px; right: 15px; 
+        background: #fef3c7; color: #92400e; padding: 6px 16px; 
+        border-radius: 25px; font-weight: 900; border: 2px solid #f59e0b; 
+        z-index: 9999; display: flex; align-items: center; gap: 6px; 
+        font-size: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    #estrella-animada { 
+        position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); 
+        font-size: 100px; z-index: 10000; pointer-events: none; opacity: 0; 
+    }
+    #btn-rescat { 
+        display: none; margin: 15px auto; padding: 6px 20px; 
+        background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 20px; 
+        font-size: 12px; color: #64748b; cursor: pointer; font-weight: 600;
+        text-transform: uppercase;
+    }
 </style>
 
+<div id="puntos-header">⭐ <span id="val-puntos">0</span></div>
+<div id="estrella-animada">⭐</div>
+
 <script>
-// Variables y funciones de apoyo
-let totalXP = parseInt(localStorage.getItem('global_xp')) || 0;
-let microAttempts = 0;
-
-function updateXPDisplay() {
-    const el = document.getElementById('global-xp');
-    if(el) el.textContent = totalXP;
-}
-
-function givePoints() {
-    totalXP += 10;
-    localStorage.setItem('global_xp', totalXP);
-    updateXPDisplay();
-    const star = document.getElementById('feedback-star');
-    star.classList.remove('animate-star');
-    void star.offsetWidth;
-    star.classList.add('animate-star');
-    microAttempts = 0;
-    document.getElementById('rescue-btn').style.display = "none";
-}
-
-// Inyectar el marcador y el botón automáticamente para que no tengas que buscar el HTML
-window.addEventListener('DOMContentLoaded', () => {
-    const header = document.querySelector('header');
-    if(header && !document.getElementById('global-xp')) {
-        header.innerHTML += `<div class="xp-container">⭐ <span id="global-xp">${totalXP}</span></div>`;
-    }
-    const audioCont = document.querySelector('.audio-container');
-    if(audioCont) {
-        const btn = document.createElement('button');
-        btn.id = 'rescue-btn';
-        btn.onclick = givePoints;
-        btn.textContent = 'Validar manual (Rescat)';
-        audioCont.after(btn);
-    }
-    updateXPDisplay();
-
-    // Modificar el comportamiento del micro azul automáticamente
-    const originalOnResult = recognition.onresult;
-    recognition.onresult = (event) => {
-        originalOnResult(event);
-        let transcript = event.results[0][0].transcript;
-        if (normalizeText(transcript) === normalizeText(current.en)) {
-            givePoints();
-        } else {
-            microAttempts++;
-            if (microAttempts >= 3) document.getElementById('rescue-btn').style.display = "block";
-        }
+(function() {
+    let xp = parseInt(localStorage.getItem('global_xp')) || 0;
+    let fallos = 0;
+    
+    const actualizarMarcador = () => {
+        const el = document.getElementById('val-puntos');
+        if(el) el.textContent = xp;
     };
-});
+
+    window.executarAciertoFinal = function() {
+        xp += 10;
+        localStorage.setItem('global_xp', xp);
+        actualizarMarcador();
+
+        const est = document.getElementById('estrella-animada');
+        est.style.transition = "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+        est.style.opacity = "1";
+        est.style.transform = "translate(-50%, -50%) scale(1.4)";
+        
+        setTimeout(() => {
+            est.style.opacity = "0";
+            est.style.transform = "translate(-50%, -50%) scale(0)";
+        }, 1000);
+
+        fallos = 0;
+        document.getElementById('btn-rescat').style.display = 'none';
+    };
+
+    setInterval(() => {
+        const contenedor = document.querySelector('.audio-container');
+        if (contenedor && !document.getElementById('btn-rescat')) {
+            const b = document.createElement('button');
+            b.id = 'btn-rescat';
+            b.textContent = 'IT IS OK';
+            b.onclick = window.executarAciertoFinal;
+            contenedor.after(b);
+            actualizarMarcador();
+        }
+        
+        if (typeof recognition !== 'undefined' && !recognition._puntosVinculados) {
+            recognition._puntosVinculados = true;
+            const originalResult = recognition.onresult;
+            
+            recognition.onresult = (event) => {
+                if(originalResult) originalResult(event);
+                
+                const transcripcio = event.results[0][0].transcript.toLowerCase().trim();
+                const fraseCorrecta = currentBlockData[pos].en.toLowerCase().trim();
+
+                const n1 = transcripcio.replace(/[^\w\s]/gi, '');
+                const n2 = fraseCorrecta.replace(/[^\w\s]/gi, '');
+
+                if (n1 === n2) {
+                    window.executarAciertoFinal();
+                } else {
+                    fallos++;
+                    // Ahora aparece exactamente al tercer fallo
+                    if (fallos >= 3) document.getElementById('btn-rescat').style.display = 'block';
+                }
+            };
+        }
+    }, 800);
+})();
 </script>
 </html>

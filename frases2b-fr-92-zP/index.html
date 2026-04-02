@@ -428,9 +428,53 @@ load();
 </script>
 </body>
 <style>
-    #puntos-header { position: fixed; top: 10px; right: 10px; background: #fef3c7; color: #92400e; padding: 8px 15px; border-radius: 20px; font-weight: 900; border: 2px solid #f59e0b; z-index: 9999; display: flex; align-items: center; gap: 8px; font-size: 18px; }
-    #estrella-animada { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); font-size: 120px; z-index: 10000; pointer-events: none; opacity: 0; }
-    #btn-rescat { display: none; margin: 20px auto; padding: 12px; width: 95%; background: #f1f5f9; border: 2px dashed #cbd5e1; border-radius: 12px; font-weight: bold; color: #64748b; cursor: pointer; }
+    /* Marcador de puntos arriba a la derecha */
+    #puntos-header { 
+        position: fixed; 
+        top: 15px; 
+        right: 15px; 
+        background: #fef3c7; 
+        color: #92400e; 
+        padding: 6px 16px; 
+        border-radius: 25px; 
+        font-weight: 900; 
+        border: 2px solid #f59e0b; 
+        z-index: 9999; 
+        display: flex; 
+        align-items: center; 
+        gap: 6px; 
+        font-size: 16px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    /* Estrella gigante central */
+    #estrella-animada { 
+        position: fixed; 
+        top: 50%; 
+        left: 50%; 
+        transform: translate(-50%, -50%) scale(0); 
+        font-size: 100px; 
+        z-index: 10000; 
+        pointer-events: none; 
+        opacity: 0; 
+    }
+    /* Botón de rescate estilizado y fino */
+    #btn-rescat { 
+        display: none; 
+        margin: 15px auto; 
+        padding: 6px 20px; 
+        width: fit-content; 
+        background: #f8fafc; 
+        border: 1px solid #cbd5e1; 
+        border-radius: 20px; 
+        font-size: 12px; 
+        color: #64748b; 
+        cursor: pointer; 
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    #btn-rescat:active { background: #f1f5f9; transform: scale(0.98); }
 </style>
 
 <div id="puntos-header">⭐ <span id="val-puntos">0</span></div>
@@ -440,19 +484,20 @@ load();
 (function() {
     let xp = parseInt(localStorage.getItem('global_xp')) || 0;
     let fallos = 0;
-    document.getElementById('val-puntos').textContent = xp;
+    
+    const marcador = document.getElementById('val-puntos');
+    if(marcador) marcador.textContent = xp;
 
-    // ESTA ES LA FUNCIÓN QUE HACE SALTAR LA ESTRELLA
-    window.lanzarEstrella = function() {
+    // FUNCIÓ PER GUANYAR PUNTS I MOSTRAR ESTRELLA
+    window.executarAciertoFinal = function() {
         xp += 10;
         localStorage.setItem('global_xp', xp);
-        document.getElementById('val-puntos').textContent = xp;
+        if(marcador) marcador.textContent = xp;
 
         const est = document.getElementById('estrella-animada');
-        // Animación manual directa
         est.style.transition = "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
         est.style.opacity = "1";
-        est.style.transform = "translate(-50%, -50%) scale(1.5)";
+        est.style.transform = "translate(-50%, -50%) scale(1.4)";
         
         setTimeout(() => {
             est.style.opacity = "0";
@@ -460,39 +505,47 @@ load();
         }, 1000);
 
         fallos = 0;
-        document.getElementById('btn-rescat').style.display = 'none';
+        const b = document.getElementById('btn-rescat');
+        if(b) b.style.display = 'none';
     };
 
+    // RASTREJADOR PER INJECTAR EL BOTÓ I VIGILAR EL MICRO
     setInterval(() => {
-        // Poner el botón de rescate si no está
-        const cont = document.querySelector('.audio-container');
-        if (cont && !document.getElementById('btn-rescat')) {
+        const contenedorAudio = document.querySelector('.audio-container');
+        if (contenedorAudio && !document.getElementById('btn-rescat')) {
             const b = document.createElement('button');
             b.id = 'btn-rescat';
-            b.textContent = 'Validar manual (Rescat)';
-            b.onclick = window.lanzarEstrella;
-            cont.after(b);
+            b.textContent = 'IS OK';
+            b.onclick = window.executarAciertoFinal;
+            contenedorAudio.after(b);
         }
         
-        // "Robar" el resultado del micro para lanzar la estrella
-        if (typeof recognition !== 'undefined' && !recognition._detectado) {
-            recognition._detectado = true;
-            const originalOnResult = recognition.onresult;
+        if (typeof recognition !== 'undefined' && !recognition._sistemaPuntosOK) {
+            recognition._sistemaPuntosOK = true;
+            const originalResult = recognition.onresult;
+            
             recognition.onresult = (event) => {
-                if(originalOnResult) originalOnResult(event);
+                if(originalResult) originalResult(event);
                 
-                const dicho = event.results[0][0].transcript.toLowerCase().trim();
-                const correcto = current.en.toLowerCase().trim();
+                const transcripcio = event.results[0][0].transcript.toLowerCase().trim();
+                const fraseCorrecta = current.en.toLowerCase().trim();
 
-                if (dicho.replace(/[^\w\s]/gi, '') === correcto.replace(/[^\w\s]/gi, '')) {
-                    window.lanzarEstrella();
+                // Netegem signes de puntuació per comparar millor
+                const n1 = transcripcio.replace(/[^\w\s]/gi, '');
+                const n2 = fraseCorrecta.replace(/[^\w\s]/gi, '');
+
+                if (n1 === n2) {
+                    window.executarAciertoFinal();
                 } else {
                     fallos++;
-                    if (fallos >= 3) document.getElementById('btn-rescat').style.display = 'block';
+                    if (fallos >= 3) {
+                        const b = document.getElementById('btn-rescat');
+                        if(b) b.style.display = 'block';
+                    }
                 }
             };
         }
-    }, 500);
+    }, 600);
 })();
 </script>
 </html>

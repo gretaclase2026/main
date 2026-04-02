@@ -512,4 +512,125 @@ if (localStorage.getItem(getFolderName())) {
 initBlocks();
 </script>
 </body>
+ <style>
+    /* Marcador de puntos arriba a la derecha */
+    #puntos-header { 
+        position: fixed; 
+        top: 15px; 
+        right: 15px; 
+        background: #fef3c7; 
+        color: #92400e; 
+        padding: 6px 16px; 
+        border-radius: 25px; 
+        font-weight: 900; 
+        border: 2px solid #f59e0b; 
+        z-index: 9999; 
+        display: flex; 
+        align-items: center; 
+        gap: 6px; 
+        font-size: 16px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    /* Estrella gigante central */
+    #estrella-animada { 
+        position: fixed; 
+        top: 50%; 
+        left: 50%; 
+        transform: translate(-50%, -50%) scale(0); 
+        font-size: 100px; 
+        z-index: 10000; 
+        pointer-events: none; 
+        opacity: 0; 
+    }
+    /* Botón de rescate estilizado y fino */
+    #btn-rescat { 
+        display: none; 
+        margin: 15px auto; 
+        padding: 6px 20px; 
+        width: fit-content; 
+        background: #f8fafc; 
+        border: 1px solid #cbd5e1; 
+        border-radius: 20px; 
+        font-size: 12px; 
+        color: #64748b; 
+        cursor: pointer; 
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    #btn-rescat:active { background: #f1f5f9; transform: scale(0.98); }
+</style>
+
+<div id="puntos-header">⭐ <span id="val-puntos">0</span></div>
+<div id="estrella-animada">⭐</div>
+
+<script>
+(function() {
+    let xp = parseInt(localStorage.getItem('global_xp')) || 0;
+    let fallos = 0;
+    
+    const marcador = document.getElementById('val-puntos');
+    if(marcador) marcador.textContent = xp;
+
+    // FUNCIÓ PER GUANYAR PUNTS I MOSTRAR ESTRELLA
+    window.executarAciertoFinal = function() {
+        xp += 10;
+        localStorage.setItem('global_xp', xp);
+        if(marcador) marcador.textContent = xp;
+
+        const est = document.getElementById('estrella-animada');
+        est.style.transition = "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+        est.style.opacity = "1";
+        est.style.transform = "translate(-50%, -50%) scale(1.4)";
+        
+        setTimeout(() => {
+            est.style.opacity = "0";
+            est.style.transform = "translate(-50%, -50%) scale(0)";
+        }, 1000);
+
+        fallos = 0;
+        const b = document.getElementById('btn-rescat');
+        if(b) b.style.display = 'none';
+    };
+
+    // RASTREJADOR PER INJECTAR EL BOTÓ I VIGILAR EL MICRO
+    setInterval(() => {
+        const contenedorAudio = document.querySelector('.audio-container');
+        if (contenedorAudio && !document.getElementById('btn-rescat')) {
+            const b = document.createElement('button');
+            b.id = 'btn-rescat';
+            b.textContent = 'IT IS OK';
+            b.onclick = window.executarAciertoFinal;
+            contenedorAudio.after(b);
+        }
+        
+        if (typeof recognition !== 'undefined' && !recognition._sistemaPuntosOK) {
+            recognition._sistemaPuntosOK = true;
+            const originalResult = recognition.onresult;
+            
+            recognition.onresult = (event) => {
+                if(originalResult) originalResult(event);
+                
+                const transcripcio = event.results[0][0].transcript.toLowerCase().trim();
+                const fraseCorrecta = current.en.toLowerCase().trim();
+
+                // Netegem signes de puntuació per comparar millor
+                const n1 = transcripcio.replace(/[^\w\s]/gi, '');
+                const n2 = fraseCorrecta.replace(/[^\w\s]/gi, '');
+
+                if (n1 === n2) {
+                    window.executarAciertoFinal();
+                } else {
+                    fallos++;
+                    if (fallos >= 3) {
+                        const b = document.getElementById('btn-rescat');
+                        if(b) b.style.display = 'block';
+                    }
+                }
+            };
+        }
+    }, 600);
+})();
+</script>
 </html>
