@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Repàs Vocabulari B1 - 21 Frases</title>
+<title>Estudi de Frases - Unitat 14</title>
 <style>
 body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
 header{padding:8px 4px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center;align-items:center;gap:4px}
@@ -47,7 +47,7 @@ input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius:
 .word-error { color: #dc2626; text-decoration: line-through; }
 .word-missing { color: #94a3b8; font-style: italic; }
 
-.hidden{display:none}
+.hidden{display:none !important}
 .es{font-size:19px;color:#2563eb;margin-top:14px;line-height:1.4;font-weight:600}
 .en{font-size:19px;color:#0f172a;margin-top:14px;font-weight:700;line-height:1.4}
 
@@ -80,8 +80,8 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 
 <header>
  <div class="mode-btns"><button class="mode-en" onclick="setMode('EN')">ENG → CAT</button></div>
- <div class="unit-number">6</div>
- <div class="mode-btns"><button class="mode-es" onclick="setMode('ES')">CAT → ENG</button></div>
+ <div class="unit-number">14</div>
+ <div class="mode-btns"><button class="mode-es" onclick="setMode('CA')">CAT → ENG</button></div>
 </header>
 
 <main>
@@ -123,27 +123,51 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 
 <script>
 const items = [
-  {audio:"f001.mp3", en: "I have a small pebble in my shoe", es: "Tinc una petita pedreta a la sabata"},
-  {audio:"f002.mp3", en: "Tie the package with a piece of string", es: "Lliga el paquet amb un tros de corda"},
-  {audio:"f003.mp3", en: "This dress is made of white lace", es: "Aquest vestit està fet d'encaix blanc"},
-  {audio:"f004.mp3", en: "Put the plant on the window ledge", es: "Posa la planta a la repisa de la finestra"},
-  {audio:"f005.mp3", en: "Button the cuff of your shirt", es: "Abotona el puny de la teva camisa"},
-  {audio:"f006.mp3", en: "The officer put the handcuffs on him", es: "L'oficial li va posar les esposes"},
-  {audio:"f007.mp3", en: "Use the kitchen tongs to turn the meat", es: "Utilitza les pinces de cuina per girar la carn"},
-  {audio:"f008.mp3", en: "She uses tweezers for her eyebrows", es: "Ella fa servir pinces de depilar per a les celles"},
-  {audio:"f009.mp3", en: "The sly fox escaped", es: "La guineu astuta va escapar"},
-  {audio:"f010.mp3", en: "He held her gaze for a moment", es: "Ell va mantenir la mirada per un moment"},
-  {audio:"f011.mp3", en: "I've tidied up every room", es: "He ordenat cada habitació"},
-  {audio:"f012.mp3", en: "Each one is spotless now", es: "Cadascuna està impecable ara"},
-  {audio:"f013.mp3", en: "You ought to go now", es: "Hauries de marxar ara"},
-  {audio:"f014.mp3", en: "I need a hook for my keys", es: "Necesito un ganxo per a les meves claus"},
-  {audio:"f015.mp3", en: "Hook it up to the speaker", es: "Connecta-ho a l'altaveu"},
-  {audio:"f016.mp3", en: "I have a fear of heights", es: "Tinc por a les altures"},
-  {audio:"f017.mp3", en: "The judge was very fair in his decision", es: "El jutge va ser molt just en la seva decisió"},
-  {audio:"f018.mp3", en: "That movie was awesome", es: "Aquella pel·lícula va ser genial"},
-  {audio:"f019.mp3", en: "Flip the pancake", es: "Dona-li la volta a la truita"},
-  {audio:"f020.mp3", en: "The movie has a complex plot", es: "La pel·lícula té una trama completa"},
-  {audio:"f021.mp3", en: "The hearse led the procession", es: "El cotxe fúnebre encapçalava la processó"}
+    {audio:"f001.mp3",en:"When I hang clothes on the balcony I always use many clothespins because if it starts to get windy the clothes can easily fall from the line.",es:"Quan estenc la roba al balcó sempre utilitzo moltes pinces perquè si comença a fer vent la roba pot caure fàcilment del fil."},
+    {audio:"f002.mp3",en:"When I arrive home after work I usually hang my jacket on a hanger so it doesn't get wrinkled and it is easier to find the next day.",es:"Quan arribo a casa després de treballar normalment penjo la jaqueta en un penjador perquè no s’arrugui i sigui més fàcil trobar-la l’endemà."},
+    {audio:"f003.mp3",en:"The door was making a strange noise every time I opened it because one of the hinges was a little loose.",es:"La porta feia un soroll estrany cada vegada que l’obria perquè una de les frontisses estava una mica fluixa."},
+    {audio:"f004.mp3",en:"He closed the door with the latch because the wind was very strong and it could open it easily.",es:"Va tancar la porta amb el pestell perquè el vent era molt fort i podia obrir-la fàcilment."},
+    {audio:"f005.mp3",en:"The cord of the lamp was too short and I had to move the table so it could reach the socket.",es:"El cable de la làmpada era massa curt i vaig haver de moure la taula perquè arribés a l’endoll."},
+    {audio:"f006.mp3",en:"He put a padlock on the garage door because he wanted to make sure nobody could enter when he was not at home.",es:"Va posar un cadenat a la porta del garatge perquè volia assegurar-se que ningú pogués entrar quan ell no era a casa."},
+    {audio:"f007.mp3",en:"There was a small gap between two parked cars and we used that space to park ours.",es:"Hi havia un petit espai entre dos cotxes aparcats i vam aprofitar aquell espai per aparcar el nostre."},
+    {audio:"f008.mp3",en:"When it is very cold I prefer to wear several layers of clothes because then I can remove one if I get too warm later.",es:"Quan fa molt fred prefereixo portar diverses capes de roba perquè així em puc treure alguna peça si després tinc calor."},
+    {audio:"f009.mp3",en:"After walking for a while in the park we found a quiet spot under a tree where we could sit and talk.",es:"Després de caminar una estona pel parc vam trobar un lloc tranquil sota un arbre on vam poder seure i parlar."},
+    {audio:"f010.mp3",en:"When I looked at the wall more carefully I saw a small mark that I had not noticed before.",es:"Quan vaig mirar la paret amb més atenció vaig veure una petita marca que abans no havia notat."},
+    {audio:"f011.mp3",en:"The jeans I bought yesterday are so tight that they are actually hurting my thighs.",es:"Els texans que vaig comprar ahir són tan ajustats que de fet m’estan fent mal a les cuixes."},
+    {audio:"f012.mp3",en:"I have a very tight muscle in my left thigh after running that marathon last weekend.",es:"Tinc un múscul molt tens a la cuixa esquerra després de córrer aquella marató el cap de setmana passat."},
+    {audio:"f013.mp3",en:"Since these leggings are too tight I can barely feel my thighs when I sit down.",es:"Com que aquests leggings són massa ajustats gairebé no puc sentir les cuixes quan m’assec."},
+    {audio:"f014.mp3",en:"The sea is much rougher today than it was yesterday so we should probably stay on the shore.",es:"El mar està molt més picat avui que ahir així que probablement hauríem de quedar-nos a la riba."},
+    {audio:"f015.mp3",en:"This wooden table feels very rough so I need to sand it down to make it smoother.",es:"Aquesta taula de fusta és molt aspra al tacte així que hauré de polir-la perquè quedi més suau."},
+    {audio:"f016.mp3",en:"There were roughly fifty people at the party but it got out of hand when more started arriving.",es:"Hi havia aproximadament cinquanta persones a la festa però la situació es va descontrolar quan en van començar a arribar més."},
+    {audio:"f017.mp3",en:"The bark of this tree is even rougher than the one we saw earlier in the park.",es:"L’escorça d’aquest arbre és encara més aspra que la que vam veure abans al parc."},
+    {audio:"f018.mp3",en:"It was a really tough decision to sell the company but we made a killing in the end.",es:"Va ser una decisió molt difícil vendre l’empresa però al final hi vam guanyar molts diners."},
+    {audio:"f019.mp3",en:"The steak was so tough that I could hardly chew it so I complained to the waiter.",es:"El bistec era tan dur que gairebé no el podia mastegar així que em vaig queixar al cambrer."},
+    {audio:"f020.mp3",en:"I know you are going through a tough time right now but you need to keep your chin up.",es:"Sé que estàs passant per un moment difícil ara mateix però has d’intentar mantenir l’ànim."},
+    {audio:"f021.mp3",en:"Since the floor is still damp after mopping you should watch your step so you do not slip.",es:"Com que el terra encara està humit després de fregar hauries d’anar amb compte per no relliscar."},
+    {audio:"f022.mp3",en:"The fuse blew because the microwave and the oven were running at the same time.",es:"El fusible va saltar perquè el microondas i el forn estaven funcionant alhora."},
+    {audio:"f023.mp3",en:"I do not want to discuss this matter any further because it only brings me great sorrow.",es:"No vull parlar més d’aquest assumpte perquè només em provoca una gran tristesa."},
+    {audio:"f024.mp3",en:"If you have any further questions about how I blew the engine just let me know.",es:"Si tens alguna altra pregunta sobre com vaig espatllar el motor només cal que m’ho diguis."},
+    {audio:"f025.mp3",en:"Since it is roughly three miles to the station we need to get a move on or we will be late.",es:"Com que hi ha aproximadament tres milles fins a l’estació ens hem d’afanyar o arribarem tard."},
+    {audio:"f026.mp3",en:"One morning I went out to the balcony to hang the clothes and I used several clothespins because it was starting to get a little windy.",es:"Un matí vaig sortir al balcó per estendre la roba i vaig utilitzar diverses pinces perquè començava a fer una mica de vent."},
+    {audio:"f027.mp3",en:"Then I went back inside the house and hung my jacket on a hanger next to the door.",es:"Després vaig tornar a dins de casa i vaig penjar la jaqueta en un penjador al costat de la porta."},
+    {audio:"f028.mp3",en:"When I opened the garage door I heard a small noise because one of the hinges was a little loose.",es:"Quan vaig obrir la porta del garaje vaig sentir un petit soroll perquè una de les frontisses estava una mica fluixa."},
+    {audio:"f029.mp3",en:"Before leaving I closed the door with a padlock because I wanted to make sure everything was properly locked.",es:"Abans de marxar vaig tancar la porta amb un cadenat perquè volia assegurar-se que tot quedava ben tancat."},
+    {audio:"f030.mp3",en:"When I looked at the garage floor I noticed a small mark that I did not remember seeing before.",es:"Quan vaig mirar el terra del garatge vaig veure una petita marca que no recordava haver vist abans."},
+    {audio:"f031.mp3",en:"This morning I opened the shutters in the room because I wanted more natural light to come in while I started working calmly.",es:"Aquest matí he obert les persianes de l’habitació perquè volia que entrés mésf llum natural mentre començava a treballar tranquil·lament."},
+    {audio:"f032.mp3",en:"After the rain a large puddle formed in front of the entrance and I had to be careful not to get my shoes wet.",es:"Després de la pluja es va formar un bassal gran davant de l’entrada i vaig haver d’anar amb compte per no mullar-me les sabates."},
+    {audio:"f033.mp3",en:"The charger could not reach the socket so I had to move the chair a little so the cord could reach properly.",es:"El carregador no arribava a l’endoll així que vaig haver de moure la cadira una mica perquè el cable pogués arribar bé."},
+    {audio:"f034.mp3",en:"When I arrived too early at the bus stop I decided to sit on a bench for a while while watching people pass by in the street.",es:"Quan vaig arribar massa aviat a la parada d’autobús vaig decidir seure una estona en un banc mentre mirava la gent passar pel carrer."},
+    {audio:"f035.mp3",en:"Since it was very windy I had to hold my hat with my hand because the wind was almost blowing it away.",es:"Com que feia molt vent vaig haver d’aguantar el barret amb la mà perquè gairebé se me l’emportava l’aire."},
+    {audio:"f036.mp3",en:"After a while I realized that I had left the window open and that the room was starting to get cold.",es:"Al cap d’una estona em vaig adonar que havia deixat la finestra oberta i que l’habitació començava a refredar-se."},
+    {audio:"f037.mp3",en:"I had to go back home because I had left my keys on the table near the entrance before leaving.",es:"Va g haver de tornar a casa perquè m’havia deixat les claus a la taula de l’entrada abans de sortir."},
+    {audio:"f038.mp3",en:"I wanted to go for a walk in the city center but in the end I decided to stay home and rest instead of going out.",es:"Volia sortir a caminar pel centre però al final vaig decidir quedar-me a casa i descansar una mica en lloc de sortir."},
+    {audio:"f039.mp3",en:"When I looked at the garage floor I saw a small puddle of water that must have come in under the door.",es:"Quan vaig mirar cap al terra del garatge vaig veure un bassal petit d’aigua que devia haver entrat per sota de la porta."},
+    {audio:"f040.mp3",en:"When I closed all the shutters in the evening the house became much quieter and more peaceful.",es:"Quan vaig tancar totes les persianes al vespre la casa va quedar molt més tranquil·la i silenciosa."},
+    {audio:"f041.mp3",en:"One Saturday morning I went out to the balcony to hang the clothes and I used several clothespins because it was starting to get a little windy. When I went back inside the house I hung my jacket on a hanger next to the door and I realized that one of the hinges was making a small noise every time I opened the door.",es:"Un dissabte al matí vaig sortir al balcó per estendre la roba i vaig utilitzar diverses pinces perquè començava a fer una mica de vent. Quan vaig tornar a dins de casa vaig penjar la jaqueta en un penjador al costat de la porta i em vaig adonar que una de les frontisses feia un petit soroll cada vegada que obria la porta."},
+    {audio:"f042.mp3",en:"When I left the house to go to the shop I saw that there was a puddle in front of the entrance because it had rained during the night. I walked to the park and found a quiet spot under a tree where I could sit for a while.",es:"Quan vaig sortir de casa per anar a la botiga vaig veure que hi havia un bassal davant de l’entrada perquè havia plogut durant la nit. Vaig caminar fins al parc i vaig trobar un lloc tranquil sota un arbre on vaig poder seure una estona."},
+    {audio:"f043.mp3",en:"One day I tried to connect a new lamp but the cord was short to reach the socket. I had to move the table a little until everything finally worked correctly.",es:"Un dia vaig intentar connectar una làmpada nova però el cable era massa curt per arribar a l’endoll. Vaig haver de moure la taula una mica fins que finalment tot va funcionar correctament."},
+    {audio:"f045.mp3",en:"When we arrived at the park we walked for a while until we found a quiet spot under a tree. We sat there and talked for almost an hour because the weather was very nice.",es:"Quan vam arribar al parc vam caminar una estona fins que vam trobar un lloc tranquil sota un arbre. Ens vam asseure allà i vam parlar durant gairebé una hora perquè feia molt bon temps."},
+    {audio:"f044.mp3",en:"Before leaving the house I closed the garage door with a padlock because I wanted to make sure everything stayed properly locked while we were away.",es:"Abans de marxar de casa vaig tancar la porta del garatge amb un cadenat perquè volia assegurar-me que tot quedava ben tancat mentre no hi érem."}
 ];
 
 let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0;
@@ -238,15 +262,16 @@ function stopAllMicrophones() {
 
 async function toggleMic() {
     if (!recognition) return;
-    if (isListening) { recognition.stop(); } 
-    else { 
+    if (isListening) { 
+        recognition.stop(); 
+    } else { 
         stopAllMicrophones(); 
         document.getElementById("speechFeedback").innerHTML = "";
         recognition.start(); 
     }
 }
 
-function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "unit_6"; }
+function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "unitat_14"; }
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
 let mediaRecorder, audioChunks = [], isRecording = false;
 
@@ -296,14 +321,14 @@ function loadBlock(b) {
   currentBlockID = b; localStorage.setItem(getFolderName() + "_puntoLibro", b);
   let temp = []; let start = b * 10;
   for (let i = start; i < Math.min(start + 10, items.length); i++) temp.push({...items[i]});
-  currentBlockData = temp; // No aleatorio
+  currentBlockData = temp;
   document.querySelectorAll(".block").forEach((btn, idx) => btn.classList.toggle("active", idx === (b + 1)));
   pos = 0; learnedCount = 0; document.getElementById("endMsg").classList.add("hidden"); update(true);
 }
 
 function loadAll() {
   currentBlockID = -1; localStorage.setItem(getFolderName() + "_puntoLibro", "all");
-  currentBlockData = items.map(i => ({...i})); // No aleatorio
+  currentBlockData = items.map(i => ({...i}));
   document.querySelectorAll(".block").forEach((btn, idx) => btn.classList.toggle("active", idx === 0));
   pos = 0; learnedCount = 0; document.getElementById("endMsg").classList.add("hidden"); update(true);
 }
@@ -316,17 +341,25 @@ function update(fromAction = false) {
     return;
   }
   progressBar.value = 0; const item = currentBlockData[pos];
-  document.getElementById("es").classList.add("hidden");
-  document.getElementById("en").classList.add("hidden");
   document.getElementById("speechFeedback").innerHTML = "";
   document.getElementById("starBtn").classList.toggle("active", starredIds.includes(item.audio));
+  
+  const elES = document.getElementById("es");
+  const elEN = document.getElementById("en");
+
   if (mode === "EN") {
     document.getElementById("langLabel").textContent = "ANGLÈS";
-    document.getElementById("en").innerHTML = item.en; document.getElementById("en").classList.remove("hidden");
+    elEN.innerHTML = item.en; 
+    elEN.classList.remove("hidden");
+    elES.innerHTML = item.es;
+    elES.classList.add("hidden"); // El català comença ocult
     if (fromAction) playAudio(item.audio, 1.0);
   } else {
     document.getElementById("langLabel").textContent = "CATALÀ";
-    document.getElementById("es").innerHTML = item.es; document.getElementById("es").classList.remove("hidden");
+    elES.innerHTML = item.es; 
+    elES.classList.remove("hidden");
+    elEN.innerHTML = item.en;
+    elEN.classList.add("hidden"); // L'anglès comença ocult
   }
   document.getElementById("counter").textContent = `${learnedCount} / ${currentBlockData.length + learnedCount}`;
 }
@@ -337,20 +370,9 @@ function pauseAudio() { audioObj.pause(); }
 
 function reveal() {
   if (currentBlockData.length === 0) return;
-  const item = currentBlockData[pos];
-  const esEl = document.getElementById("es");
-  const enEl = document.getElementById("en");
-  const feedbackEl = document.getElementById("speechFeedback");
-
-  if (mode === "EN") {
-    esEl.innerHTML = item.es;
-    esEl.classList.toggle("hidden");
-    if(esEl.classList.contains("hidden")) feedbackEl.innerHTML = "";
-  } else {
-    enEl.innerHTML = item.en;
-    enEl.classList.toggle("hidden");
-    if(enEl.classList.contains("hidden")) feedbackEl.innerHTML = "";
-  }
+  // Simplement forcem que es vegin els dos idiomes
+  document.getElementById("es").classList.remove("hidden");
+  document.getElementById("en").classList.remove("hidden");
 }
 
 function know() {
@@ -423,70 +445,4 @@ window.addEventListener('load', () => {
 });
 </script>
 </body>
-<div id="feedback-star" style="position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); font-size:80px; display:none; z-index:2000; pointer-events:none;">⭐</div>
-
-<style>
-  header { position: sticky !important; top: 0; z-index: 1000; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-  .xp-container { background: #fef3c7; color: #92400e; padding: 4px 10px; border-radius: 10px; font-weight: 800; font-size: 14px; border: 1px solid #f59e0b; display: flex; align-items: center; gap: 5px; margin-left: 10px; }
-  .animate-star { display: block !important; animation: star-pop 1s ease-out forwards; }
-  @keyframes star-pop {
-    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-    50% { transform: translate(-50%, -50%) scale(1.5); opacity: 1; }
-    100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
-  }
-  #rescue-btn { display: none; margin: 10px auto; background: #f1f5f9; border: 1px dashed #cbd5e1; color: #64748b; padding: 6px 15px; border-radius: 10px; font-size: 13px; cursor: pointer; font-weight: bold; }
-</style>
-
-<script>
-// Variables y funciones de apoyo
-let totalXP = parseInt(localStorage.getItem('global_xp')) || 0;
-let microAttempts = 0;
-
-function updateXPDisplay() {
-    const el = document.getElementById('global-xp');
-    if(el) el.textContent = totalXP;
-}
-
-function givePoints() {
-    totalXP += 10;
-    localStorage.setItem('global_xp', totalXP);
-    updateXPDisplay();
-    const star = document.getElementById('feedback-star');
-    star.classList.remove('animate-star');
-    void star.offsetWidth;
-    star.classList.add('animate-star');
-    microAttempts = 0;
-    document.getElementById('rescue-btn').style.display = "none";
-}
-
-// Inyectar el marcador y el botón automáticamente para que no tengas que buscar el HTML
-window.addEventListener('DOMContentLoaded', () => {
-    const header = document.querySelector('header');
-    if(header && !document.getElementById('global-xp')) {
-        header.innerHTML += `<div class="xp-container">⭐ <span id="global-xp">${totalXP}</span></div>`;
-    }
-    const audioCont = document.querySelector('.audio-container');
-    if(audioCont) {
-        const btn = document.createElement('button');
-        btn.id = 'rescue-btn';
-        btn.onclick = givePoints;
-        btn.textContent = 'Validar manual (Rescat)';
-        audioCont.after(btn);
-    }
-    updateXPDisplay();
-
-    // Modificar el comportamiento del micro azul automáticamente
-    const originalOnResult = recognition.onresult;
-    recognition.onresult = (event) => {
-        originalOnResult(event);
-        let transcript = event.results[0][0].transcript;
-        if (normalizeText(transcript) === normalizeText(current.en)) {
-            givePoints();
-        } else {
-            microAttempts++;
-            if (microAttempts >= 3) document.getElementById('rescue-btn').style.display = "block";
-        }
-    };
-});
-</script>
 </html>
