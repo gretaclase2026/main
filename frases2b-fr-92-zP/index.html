@@ -428,52 +428,9 @@ load();
 </script>
 </body>
 <style>
-    /* El marcador de puntos que aparecerá arriba */
-    #puntos-header {
-        position: fixed;
-        top: 10px;
-        right: 10px;
-        background: #fef3c7;
-        color: #92400e;
-        padding: 8px 15px;
-        border-radius: 20px;
-        font-weight: 900;
-        border: 2px solid #f59e0b;
-        z-index: 2000;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 18px;
-    }
-    /* La estrella gigante que saltará en el centro */
-    #estrella-animada {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) scale(0);
-        font-size: 120px;
-        z-index: 3000;
-        pointer-events: none;
-        opacity: 0;
-        transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    .estrella-activa {
-        transform: translate(-50%, -50%) scale(1.2) !important;
-        opacity: 1 !important;
-    }
-    /* El botón de rescate */
-    #btn-rescat {
-        display: none;
-        margin: 20px auto;
-        padding: 12px;
-        width: 90%;
-        background: #f1f5f9;
-        border: 2px dashed #cbd5e1;
-        border-radius: 12px;
-        font-weight: bold;
-        color: #64748b;
-        cursor: pointer;
-    }
+    #puntos-header { position: fixed; top: 10px; right: 10px; background: #fef3c7; color: #92400e; padding: 8px 15px; border-radius: 20px; font-weight: 900; border: 2px solid #f59e0b; z-index: 9999; display: flex; align-items: center; gap: 8px; font-size: 18px; }
+    #estrella-animada { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); font-size: 120px; z-index: 10000; pointer-events: none; opacity: 0; }
+    #btn-rescat { display: none; margin: 20px auto; padding: 12px; width: 95%; background: #f1f5f9; border: 2px dashed #cbd5e1; border-radius: 12px; font-weight: bold; color: #64748b; cursor: pointer; }
 </style>
 
 <div id="puntos-header">⭐ <span id="val-puntos">0</span></div>
@@ -482,62 +439,60 @@ load();
 <script>
 (function() {
     let xp = parseInt(localStorage.getItem('global_xp')) || 0;
-    let intentos = 0;
-
-    // Actualizar número inicial
+    let fallos = 0;
     document.getElementById('val-puntos').textContent = xp;
 
-    // Función principal (La que suma, guarda y anima)
-    window.sumarPuntosYEstrella = function() {
-        // 1. Sumar y guardar en el móvil
+    // ESTA ES LA FUNCIÓN QUE HACE SALTAR LA ESTRELLA
+    window.lanzarEstrella = function() {
         xp += 10;
         localStorage.setItem('global_xp', xp);
         document.getElementById('val-puntos').textContent = xp;
 
-        // 2. Animación de la estrella
         const est = document.getElementById('estrella-animada');
-        est.classList.add('estrella-activa');
+        // Animación manual directa
+        est.style.transition = "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+        est.style.opacity = "1";
+        est.style.transform = "translate(-50%, -50%) scale(1.5)";
+        
         setTimeout(() => {
-            est.classList.remove('estrella-activa');
+            est.style.opacity = "0";
+            est.style.transform = "translate(-50%, -50%) scale(0)";
         }, 1000);
 
-        // 3. Resetear fallos y quitar botón
-        intentos = 0;
+        fallos = 0;
         document.getElementById('btn-rescat').style.display = 'none';
     };
 
-    // Inyectar el botón de rescate después de los controles
-    window.addEventListener('load', () => {
-        const contenedor = document.querySelector('.audio-container') || document.body;
-        const b = document.createElement('button');
-        b.id = 'btn-rescat';
-        b.textContent = 'Validar manual (Rescat)';
-        b.onclick = window.sumarPuntosYEstrella;
-        contenedor.after(b);
-
-        // Conectar con tu sistema de voz actual
-        if (typeof recognition !== 'undefined') {
-            const originalResult = recognition.onresult;
+    setInterval(() => {
+        // Poner el botón de rescate si no está
+        const cont = document.querySelector('.audio-container');
+        if (cont && !document.getElementById('btn-rescat')) {
+            const b = document.createElement('button');
+            b.id = 'btn-rescat';
+            b.textContent = 'Validar manual (Rescat)';
+            b.onclick = window.lanzarEstrella;
+            cont.after(b);
+        }
+        
+        // "Robar" el resultado del micro para lanzar la estrella
+        if (typeof recognition !== 'undefined' && !recognition._detectado) {
+            recognition._detectado = true;
+            const originalOnResult = recognition.onresult;
             recognition.onresult = (event) => {
-                // Ejecutamos tu código original para que no se rompa nada
-                if(originalResult) originalResult(event);
+                if(originalOnResult) originalOnResult(event);
+                
+                const dicho = event.results[0][0].transcript.toLowerCase().trim();
+                const correcto = current.en.toLowerCase().trim();
 
-                const textoDicho = event.results[0][0].transcript.toLowerCase().trim();
-                const textoCorrecto = current.en.toLowerCase().trim();
-
-                // Si aciertas (limpiando puntos y comas)
-                if (textoDicho.replace(/[^\w\s]/gi, '') === textoCorrecto.replace(/[^\w\s]/gi, '')) {
-                    window.sumarPuntosYEstrella();
+                if (dicho.replace(/[^\w\s]/gi, '') === correcto.replace(/[^\w\s]/gi, '')) {
+                    window.lanzarEstrella();
                 } else {
-                    // Si fallas, contamos
-                    intentos++;
-                    if (intentos >= 3) {
-                        document.getElementById('btn-rescat').style.display = 'block';
-                    }
+                    fallos++;
+                    if (fallos >= 3) document.getElementById('btn-rescat').style.display = 'block';
                 }
             };
         }
-    });
+    }, 500);
 })();
 </script>
 </html>
