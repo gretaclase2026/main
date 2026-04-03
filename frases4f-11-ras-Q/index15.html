@@ -69,7 +69,7 @@ input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius:
 button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;cursor:pointer}
 .reveal{background:#e0f2fe}
 .know{background:#dcfce7}
-.next{background:#fbcfe pink}
+.next{background:#fbcfe8}
 .list-controls { display: flex; gap: 10px; margin-top: 16px; }
 .list-btn{ flex:1; background:#e9d5ff; border:none; border-radius:16px; padding:14px; font-weight:800; cursor:pointer; font-size:13px }
 .review-btn { background: #fef3c7; color: #92400e; }
@@ -151,7 +151,7 @@ const items = [
     {audio:"f018.mp3",en:"After the pasta was ready, I looked for the strainer in the sink to remove the hot water, but I realized that it was still inside the dishwasher.",es:"Cuando la pasta estuvo lista, busqué el colador en el fregadero para quitar el agua caliente, pero me di cuenta de que todavía estaba dentro del lavavajillas."},
     {audio:"f019.mp3",en:"My mother always says that you have to use a sieve for the flour when you make a sponge cake so that the texture is much lighter and without any lumps.",es:"Mi madre siempre dice que hay que usar un tamiz para la harina cuando haces un bizcocho para que la textura sea mucho más ligera y sin grumos."},
     {audio:"f020.mp3",en:"I found a tin can of tomato soup in the back of the cupboard that had been there for months, so I decided to heat it up for a quick lunch.",es:"Encontré una lata de sopa de tomate al fondo del armario que llevaba allí meses, así que decidí calentarla para un almuerzo rápido."},
-    {audio:"f021.mp3",en:"It is very difficult for me to open this jar of jam because the lid is stuck, so I might need (have)to put it under some hot water for a few seconds.",es:"Me resulta muy difícil abrir este tarro de mermelada porque la tapa está atascada, así que puede que tenga que ponerlo bajo agua caliente unos segundos."},
+    {audio:"f021.mp3",en:"It is very difficult for me to open this jar of jam because the lid is stuck, so I might need to put it under some hot water for a few seconds.",es:"Me resulta muy difícil abrir este tarro de mermelada porque la tapa está atascada, así que puede que tenga que ponerlo bajo agua caliente unos segundos."},
     {audio:"f022.mp3",en:"We were ready to drink some cold sodas on the terrace, but we had to go back to the kitchen because nobody could find the bottle opener.",es:"Estábamos listos para beber unos refrescos fríos en la terraza, pero tuvimos que volver a la cocina porque nadie encontraba el abrebotellas."},
     {audio:"f023.mp3",en:"Since we are having a nice dinner tonight, I need to find the corkscrew to open the bottle of wine that my friends brought as a gift.",es:"Como esta noche tenemos una cena agradable, necesito encontrar el sacacorchos para abrir la botella de vino que trajeron mis amigos como regalo."},
     {audio:"f024.mp3",en:"I need to find the broom to sweep the kitchen floor because I accidentally dropped a glass and there are small pieces everywhere.",es:"Necesito encontrar la escoba para barrer el suelo de la cocina porque se me cayó un vaso accidentalmente y hay pequeños trozos por todas partes."},
@@ -512,54 +512,23 @@ if (localStorage.getItem(getFolderName())) {
 initBlocks();
 </script>
 </body>
- <style>
-    /* Marcador de puntos arriba a la derecha */
+<style>
     #puntos-header { 
-        position: fixed; 
-        top: 15px; 
-        right: 15px; 
-        background: #fef3c7; 
-        color: #92400e; 
-        padding: 6px 16px; 
-        border-radius: 25px; 
-        font-weight: 900; 
-        border: 2px solid #f59e0b; 
-        z-index: 9999; 
-        display: flex; 
-        align-items: center; 
-        gap: 6px; 
-        font-size: 16px;
+        position: fixed; top: 15px; right: 15px; background: #fef3c7; color: #92400e; 
+        padding: 6px 16px; border-radius: 25px; font-weight: 900; border: 2px solid #f59e0b; 
+        z-index: 9999; display: flex; align-items: center; gap: 6px; font-size: 16px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
-    /* Estrella gigante central */
     #estrella-animada { 
-        position: fixed; 
-        top: 50%; 
-        left: 50%; 
-        transform: translate(-50%, -50%) scale(0); 
-        font-size: 100px; 
-        z-index: 10000; 
-        pointer-events: none; 
-        opacity: 0; 
+        position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); 
+        font-size: 100px; z-index: 10000; pointer-events: none; opacity: 0; display: none;
     }
-    /* Botón de rescate estilizado y fino */
     #btn-rescat { 
-        display: none; 
-        margin: 15px auto; 
-        padding: 6px 20px; 
-        width: fit-content; 
-        background: #f8fafc; 
-        border: 1px solid #cbd5e1; 
-        border-radius: 20px; 
-        font-size: 12px; 
-        color: #64748b; 
-        cursor: pointer; 
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        display: none; margin: 15px auto; padding: 6px 20px; width: fit-content; 
+        background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 20px; 
+        font-size: 12px; color: #64748b; cursor: pointer; font-weight: 600;
+        text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
-    #btn-rescat:active { background: #f1f5f9; transform: scale(0.98); }
 </style>
 
 <div id="puntos-header">⭐ <span id="val-puntos">0</span></div>
@@ -569,17 +538,21 @@ initBlocks();
 (function() {
     let xp = parseInt(localStorage.getItem('global_xp')) || 0;
     let fallos = 0;
-    
     const marcador = document.getElementById('val-puntos');
     if(marcador) marcador.textContent = xp;
 
-    // FUNCIÓ PER GUANYAR PUNTS I MOSTRAR ESTRELLA
     window.executarAciertoFinal = function() {
         xp += 10;
         localStorage.setItem('global_xp', xp);
         if(marcador) marcador.textContent = xp;
 
         const est = document.getElementById('estrella-animada');
+        est.style.display = "block";
+        est.style.transition = "none";
+        est.style.opacity = "0";
+        est.style.transform = "translate(-50%, -50%) scale(0)";
+        void est.offsetWidth; 
+        
         est.style.transition = "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
         est.style.opacity = "1";
         est.style.transform = "translate(-50%, -50%) scale(1.4)";
@@ -587,6 +560,7 @@ initBlocks();
         setTimeout(() => {
             est.style.opacity = "0";
             est.style.transform = "translate(-50%, -50%) scale(0)";
+            setTimeout(() => { est.style.display = "none"; }, 500);
         }, 1000);
 
         fallos = 0;
@@ -594,7 +568,6 @@ initBlocks();
         if(b) b.style.display = 'none';
     };
 
-    // RASTREJADOR PER INJECTAR EL BOTÓ I VIGILAR EL MICRO
     setInterval(() => {
         const contenedorAudio = document.querySelector('.audio-container');
         if (contenedorAudio && !document.getElementById('btn-rescat')) {
@@ -613,13 +586,19 @@ initBlocks();
                 if(originalResult) originalResult(event);
                 
                 const transcripcio = event.results[0][0].transcript.toLowerCase().trim();
-                const fraseCorrecta = current.en.toLowerCase().trim();
+                
+                // DETECTOR AUTOMÁTICO DE VARIABLE (Para que funcione en todos tus archivos)
+                let fraseCorrecta = "";
+                if (typeof current !== 'undefined' && current.en) {
+                    fraseCorrecta = current.en;
+                } else if (typeof currentBlockData !== 'undefined' && currentBlockData[pos]) {
+                    fraseCorrecta = currentBlockData[pos].en;
+                }
 
-                // Netegem signes de puntuació per comparar millor
                 const n1 = transcripcio.replace(/[^\w\s]/gi, '');
-                const n2 = fraseCorrecta.replace(/[^\w\s]/gi, '');
+                const n2 = fraseCorrecta.toLowerCase().trim().replace(/[^\w\s]/gi, '');
 
-                if (n1 === n2) {
+                if (n1 === n2 && n1 !== "") {
                     window.executarAciertoFinal();
                 } else {
                     fallos++;
