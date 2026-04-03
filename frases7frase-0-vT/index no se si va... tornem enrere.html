@@ -17,6 +17,22 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .mode.es{background:#f4d6e6}
 .mode.active{border-color:#999;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
 
+/* ESTILO ACTUALIZADO DEL MARCADOR */
+#puntos-header { 
+    background: #fef3c7; 
+    color: #92400e; 
+    padding: 4px 10px; 
+    border-radius: 12px; 
+    font-weight: 900; 
+    border: 2px solid #f59e0b; 
+    display: flex; 
+    align-items: center; 
+    gap: 4px; 
+    font-size: 13px;
+    cursor: default;
+    margin-left: auto; /* Empuja el marcador a la derecha del todo en la fila */
+}
+
 .blocks{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}
 .block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#fff4cc;cursor:pointer;transition:0.2s;color:#333}
 .block.active{background:#2563eb !important; color: white !important; transform: scale(1.1); box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3)}
@@ -91,14 +107,6 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 }
 .check-box-manual.marked { background: #22c55e !important; color: white; }
 
-/* ESTILOS GAMIFICACIÓN */
-#puntos-header { 
-    position: fixed; top: 15px; left: 15px; 
-    background: #fef3c7; color: #92400e; padding: 6px 16px; 
-    border-radius: 25px; font-weight: 900; border: 2px solid #f59e0b; 
-    z-index: 9999; display: flex; align-items: center; gap: 6px; 
-    font-size: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
 #estrella-animada { 
     position: fixed; top: 50%; left: 50%; 
     transform: translate(-50%, -50%) scale(0); 
@@ -114,14 +122,14 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 </head>
 <body>
 
-<div id="puntos-header">⭐ <span id="val-puntos">0</span></div>
 <div id="estrella-animada">⭐</div>
 
 <div class="card">
   <div class="header-row">
     <div id="modeEN" class="mode en active" onclick="setMode('EN')">ENG → ESP</div>
-    <div class="unit-badge">7</div>
     <div id="modeES" class="mode es" onclick="setMode('ES')">ESP → ENG</div>
+    <div class="unit-badge">7</div>
+    <div id="puntos-header">⭐ <span id="val-puntos">0</span></div>
   </div>
  <button class="star-main" id="starMain" onclick="toggleStar()">★</button>
   <div class="blocks" id="blocksContainer"></div>
@@ -159,7 +167,6 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 <audio id="audio"></audio>
 
 <script>
-// ... (Data array stays the same)
 const data = [
   {en: "We can go now or later, it's up to you.", es: "Podemos ir ahora o más tarde; depende de ti"},
   {en: "The final decision is up to you.", es: "La decisión final depende de ti"},
@@ -602,6 +609,8 @@ card.appendChild(box);
             actualizarMarcador();
         }
     }, 1000);
+    
+    actualizarMarcador();
 })();
 </script>
 </body>
