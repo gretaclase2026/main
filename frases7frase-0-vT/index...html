@@ -12,7 +12,7 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .unit-badge { color: #2563eb; padding: 0 10px; font-weight: bold; font-size: 24px; }
 
 .modes{display:flex;gap:10px;width:100%}
-.mode{flex:none;width:100px;text-align:center;padding:3px;border-radius:8px;font-weight:bold;font-size:11px;cursor:pointer;border:2px solid transparent}
+.mode{flex:1;text-align:center;padding:8px;border-radius:12px;font-weight:bold;cursor:pointer;border:12px solid transparent}
 .mode.en{background:#d6e6f5}
 .mode.es{background:#f4d6e6}
 .mode.active{border-color:#999;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
@@ -47,7 +47,7 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
   100% {box-shadow: 0 0 0 0 rgba(236, 72, 153, 0);} 
 }
 
-.star-main { background: none; border: none; font-size: 15px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px; }
+.star-main { background: none; border: none; font-size: 35px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px; }
 .star-main.active { color: #f59e0b !important; }
 
 .progress-wrapper { width: 100%; max-width: 300px; margin: 10px 0; }
@@ -123,7 +123,7 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
     <div class="unit-badge">7</div>
     <div id="modeES" class="mode es" onclick="setMode('ES')">ESP → ENG</div>
   </div>
- <button class="star-main" id="starMain" onclick="toggleStar()">★</button>
+
   <div class="blocks" id="blocksContainer"></div>
 
   <div class="main-box-container">
