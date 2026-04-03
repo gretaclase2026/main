@@ -12,7 +12,7 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
 .unit-badge { color: #2563eb; padding: 0 10px; font-weight: bold; font-size: 24px; }
 
 .modes{display:flex;gap:10px;width:100%}
-.mode{flex:1;text-align:center;padding:14px;border-radius:24px;font-weight:bold;cursor:pointer;border:2px solid transparent}
+.mode{flex:none;width:100px;text-align:center;padding:3px;border-radius:8px;font-weight:bold;font-size:11px;cursor:pointer;border:2px solid transparent}
 .mode.en{background:#d6e6f5}
 .mode.es{background:#f4d6e6}
 .mode.active{border-color:#999;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
@@ -47,7 +47,7 @@ body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
   100% {box-shadow: 0 0 0 0 rgba(236, 72, 153, 0);} 
 }
 
-.star-main { background: none; border: none; font-size: 35px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px; }
+.star-main { background: none; border: none; font-size: 15px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px; }
 .star-main.active { color: #f59e0b !important; }
 
 .progress-wrapper { width: 100%; max-width: 300px; margin: 10px 0; }
@@ -57,7 +57,6 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 
 #word{font-size:20px;margin:20px 0;line-height:1.4;min-height:120px;text-align:center;display:flex;align-items:center;justify-content:center;padding:0 10px}
 .txt-es{color:#2563eb} 
-/* Estilo para el inglés: Fuente oscura y negrita como el index */
 .txt-en{color:#0f172a; font-weight:700; font-size:20px;}
 
 #answer{font-size:20px;font-weight:bold;margin-top:-10px;margin-bottom:20px;text-align:center;min-height:30px;color:#666}
@@ -91,9 +90,32 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
     cursor: pointer; z-index: 10; transition: all 0.2s; font-size: 14px;
 }
 .check-box-manual.marked { background: #22c55e !important; color: white; }
+
+/* ESTILOS GAMIFICACIÓN */
+#puntos-header { 
+    position: fixed; top: 15px; left: 15px; 
+    background: #fef3c7; color: #92400e; padding: 6px 16px; 
+    border-radius: 25px; font-weight: 900; border: 2px solid #f59e0b; 
+    z-index: 9999; display: flex; align-items: center; gap: 6px; 
+    font-size: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+#estrella-animada { 
+    position: fixed; top: 50%; left: 50%; 
+    transform: translate(-50%, -50%) scale(0); 
+    font-size: 100px; z-index: 10000; pointer-events: none; opacity: 0; 
+}
+#btn-rescat { 
+    display: none; margin: 15px auto; padding: 8px 20px; 
+    width: fit-content; background: #f8fafc; border: 1px solid #cbd5e1; 
+    border-radius: 20px; font-size: 13px; color: #64748b; 
+    cursor: pointer; font-weight: bold; text-transform: uppercase;
+}
 </style>
 </head>
 <body>
+
+<div id="puntos-header">⭐ <span id="val-puntos">0</span></div>
+<div id="estrella-animada">⭐</div>
 
 <div class="card">
   <div class="header-row">
@@ -101,7 +123,7 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
     <div class="unit-badge">7</div>
     <div id="modeES" class="mode es" onclick="setMode('ES')">ESP → ENG</div>
   </div>
-
+ <button class="star-main" id="starMain" onclick="toggleStar()">★</button>
   <div class="blocks" id="blocksContainer"></div>
 
   <div class="main-box-container">
@@ -112,7 +134,7 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
       <button class="audio-btn" onclick="playAudio(1.0)">🔊</button>
       <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
       <button class="mic-btn speech" id="speechBtn" onclick="toggleDictation()">🎤</button>
-      <button class="mic-btn rec" id="recBtn" onclick="toggleRecording('recBtn')">🎤</button>
+      <button class="mic-btn rec" id="recBtn" onclick="toggleRecording('recBtn')">🎙️</button>
     </div>
     <div class="progress-wrapper"><input type="range" id="progressBar" value="0" step="0.1"></div>
   </div>
@@ -128,7 +150,7 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
   </div>
   
   <div class="list-toggle-btns">
-    <button class="btn-list-main" onclick="toggleList('all')"></button>
+    <button class="btn-list-main" onclick="toggleList('all')">llista del bloc</button>
     <button class="btn-list-main" style="background:#fef3c7" onclick="toggleList('stars')">favorites (★)</button>
   </div>
   <div id="list"></div>
@@ -137,6 +159,7 @@ input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 
 <audio id="audio"></audio>
 
 <script>
+// ... (Data array stays the same)
 const data = [
   {en: "We can go now or later, it's up to you.", es: "Podemos ir ahora o más tarde; depende de ti"},
   {en: "The final decision is up to you.", es: "La decisión final depende de ti"},
@@ -309,7 +332,10 @@ function compareSentences(original, spoken) {
     feedbackDiv.innerHTML = resultHTML;
 
     if (correctCount / normOriginalWords.length > 0.9) {
+        if(window.executarAciertoFinal) window.executarAciertoFinal();
         setTimeout(() => { know(); }, 1500);
+    } else {
+        window.registrarFallo();
     }
 }
 
@@ -482,7 +508,7 @@ function toggleList(type) {
 
 function renderList(type) {
   const l = document.getElementById("list");
-  l.innerHTML = `<b>${type === 'stars' ? 'Favorites (★)' : ''}:</b><br><br>`;
+  l.innerHTML = `<b>${type === 'stars' ? 'Favorites (★)' : 'Llista del bloc'}:</b><br><br>`;
   let listToRender = [];
   if (type === 'stars') {
     listToRender = data.map((item, index) => ({...item, realIdx: index+1})).filter(i => starredIds.includes(i.realIdx));
@@ -502,7 +528,7 @@ function renderList(type) {
       <div class="list-item-controls">
         <button class="star-main ${isStarred ? 'active' : ''}" style="font-size:22px; width:30px;" onclick="toggleStar(${item.realIdx}); renderList('${type}')">★</button>
         <button class="mini-btn-list" style="background:#dcfce7" onclick="playAudio(1.0, ${item.realIdx})">🔊</button>
-        <button id="${listRecBtnId}" class="mini-btn-list rec ${isActive}" onclick="toggleRecording('${listRecBtnId}')">🎤</button>
+        <button id="${listRecBtnId}" class="mini-btn-list rec ${isActive}" onclick="toggleRecording('${listRecBtnId}')">🎙️</button>
       </div>
       <div style="flex:1;">
         <div class="txt-es" style="font-weight:bold; font-size:14px;">${item.es}</div>
@@ -526,6 +552,57 @@ box.className = "check-box-manual";
 if (localStorage.getItem(getFolderName())) { box.innerHTML = "✓"; box.classList.add('marked'); }
 box.onclick = function() { markAsDone(this); };
 card.appendChild(box);
+
+// SCRIPT PUNTOS Y BOTÓN RESCATE
+(function() {
+    let xp = parseInt(localStorage.getItem('global_xp')) || 0;
+    let fallos = 0;
+    
+    const actualizarMarcador = () => {
+        const el = document.getElementById('val-puntos');
+        if(el) el.textContent = xp;
+    };
+
+    window.executarAciertoFinal = function() {
+        xp += 10;
+        localStorage.setItem('global_xp', xp);
+        actualizarMarcador();
+
+        const est = document.getElementById('estrella-animada');
+        est.style.transition = "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+        est.style.opacity = "1";
+        est.style.transform = "translate(-50%, -50%) scale(1.4)";
+        
+        setTimeout(() => {
+            est.style.opacity = "0";
+            est.style.transform = "translate(-50%, -50%) scale(0)";
+        }, 1000);
+
+        fallos = 0;
+        const b = document.getElementById('btn-rescat');
+        if(b) b.style.display = 'none';
+    };
+
+    window.registrarFallo = function() {
+        fallos++;
+        if (fallos >= 3) {
+            const b = document.getElementById('btn-rescat');
+            if(b) b.style.display = 'block';
+        }
+    };
+
+    setInterval(() => {
+        const contenedor = document.querySelector('.audio-controls');
+        if (contenedor && !document.getElementById('btn-rescat')) {
+            const b = document.createElement('button');
+            b.id = 'btn-rescat';
+            b.textContent = 'IT IS OK';
+            b.onclick = window.executarAciertoFinal;
+            contenedor.after(b);
+            actualizarMarcador();
+        }
+    }, 1000);
+})();
 </script>
 </body>
 </html>
