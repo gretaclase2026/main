@@ -435,23 +435,11 @@ function loadBlock(b) {
   currentBlockID = b;
   localStorage.setItem(getFolderName() + "_currentBlock", b);
   let temp = [];
-
-  if (b === 'all') {
-    for (let i = 0; i < data.length; i++) {
-      temp.push({...data[i], realIdx: i + 1});
-    }
-    document.querySelectorAll(".block").forEach((btn, idx) => btn.classList.toggle("active", idx === 0));
-  } else {
-    let start = b * 10, end = Math.min(start + 10, data.length);
-    for (let i = start; i < end; i++) {
-      temp.push({...data[i], realIdx: i + 1});
-    }
-    document.querySelectorAll(".block").forEach((btn, idx) => btn.classList.toggle("active", idx === b + 1));
-  }
-
+  let start = b * 10, end = Math.min(start + 10, data.length);
+  for (let i = start; i < end; i++) temp.push({...data[i], realIdx: i+1});
   currentBlockData = temp.sort(() => Math.random() - 0.5);
-  pos = 0; 
-  learnedCount = 0;
+  document.querySelectorAll(".block").forEach((btn, idx) => btn.classList.toggle("active", idx === b));
+  pos = 0; learnedCount = 0;
   document.getElementById("list").style.display = "none";
   if (isRecording) stopRecordingProcess(document.getElementById(currentRecordingBtnId));
   update(true); 
@@ -593,32 +581,7 @@ function markAsDone(element) {
     localStorage.setItem(getFolderName(), new Date().toISOString());
     element.innerHTML = "✓"; element.classList.add('marked');
 }
-function initBlocks() {
-  const container = document.getElementById("blocksContainer");
-  const numBlocks = Math.ceil(data.length / 10);
-  const savedBlock = localStorage.getItem(getFolderName() + "_currentBlock");
-  container.innerHTML = "";
 
-  // Botón T
-  const allBtn = document.createElement("button");
-  allBtn.className = "block";
-  allBtn.textContent = "T";
-  allBtn.style.background = "#e2e8f0";
-  allBtn.onclick = () => loadBlock('all');
-  container.appendChild(allBtn);
-
-  // Botones numéricos
-  for (let i = 0; i < numBlocks; i++) {
-    const btn = document.createElement("button");
-    btn.className = "block";
-    btn.textContent = i + 1;
-    btn.onclick = () => loadBlock(i);
-    container.appendChild(btn);
-  }
-  
-  const blockToLoad = (savedBlock !== null) ? (savedBlock === 'all' ? 'all' : parseInt(savedBlock)) : 0;
-  loadBlock(blockToLoad);
-}
 initBlocks();
 
 const card = document.querySelector(".card");
