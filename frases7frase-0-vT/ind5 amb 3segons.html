@@ -361,7 +361,7 @@ function compareSentences(original, spoken) {
     // Ajuste de sensibilidad para dar por buena la frase
     if (correctCount / origWordsRaw.length >= 0.95) {
         if(window.executarAciertoFinal) window.executarAciertoFinal();
-        setTimeout(() => { know(); }, 4000);
+        setTimeout(() => { know(); }, 3000);
     } else {
         window.registrarFallo();
     }
@@ -477,23 +477,14 @@ function update(fromNextAction = false) {
     aElement.innerHTML = `<span class="txt-es">${item.es}</span>`;
     if (fromNextAction) playAudio(1.0);
   } else {
-    // MODO ESP -> ENG: Mostramos el texto y esperamos 5 segundos para el micro
     w.innerHTML = `<div class="txt-es" style="font-weight:700;">${item.es}</div>`;
     aElement.innerHTML = `<span class="txt-en">${item.en}</span>`;
-    
-    if (fromNextAction) {
-        setTimeout(() => {
-            // Solo activamos si el usuario sigue en modo ESP y no está ya escuchando
-            if (!isListening && mode === "ES") {
-                toggleDictation();
-            }
-        }, 5000); 
-    }
   }
   aElement.style.display = "none";
   document.getElementById("pos").textContent = learnedCount;
   document.getElementById("total").textContent = currentBlockData.length + learnedCount;
 }
+
 function toggleStar(forcedIdx = null) {
   const idx = forcedIdx || currentBlockData[pos].realIdx;
   if (starredIds.includes(idx)) starredIds = starredIds.filter(id => id !== idx);
@@ -507,20 +498,18 @@ function playAudio(speed, forcedIdx = null) {
   a.src = "frase" + num + ".mp3";
   a.playbackRate = speed;
 
+  // Al terminar el sonido, esperamos 1 segundo y abrimos micro
   a.onended = () => {
-    // Solo activamos el micro automáticamente tras el audio si estamos en modo ENG -> ESP
-    // En el modo ESP -> ENG, el micro ya se activa solo por la cuenta atrás de 5 segundos
-    if (mode === "EN") {
-        setTimeout(() => {
-          if (!isListening) {
-            toggleDictation();
-          }
-        }, 1000);
-    }
+    setTimeout(() => {
+      if (!isListening) {
+        toggleDictation();
+      }
+    }, 1000);
   };
 
   a.play().catch(() => {});
 }
+
 function pauseAudio() { a.pause(); }
 
 function toggleReveal() {
