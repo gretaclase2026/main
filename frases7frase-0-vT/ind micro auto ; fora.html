@@ -194,9 +194,9 @@ const data = [
   {en: "Can you give me a hand with these boxes?", es: "¿Puedes echarme una mano con estas cajas?"},
   {en: "Please, give me a hand in the kitchen.", es: "Por favor, échame una mano en la cocina"},
   {en: "I can't do this alone, could you give me a hand?", es: "No puedo hacer esto solo, ¿podrías echarme una mano?"},
-  {en: "The car is being fixed; in the meantime, we can walk.", es: "Están arreglando el coche; mientras tanto, podemos caminar"},
-  {en: "Dinner will be ready soon; in the meantime, have a drink.", es: "La cena estará lista pronto; mientras tanto, toma algo"},
-  {en: "The flight is delayed; in the meantime, let's read.", es: "El vuelo está retrasado; mientras tanto, leamos"},
+  {en: "The car is being fixed, in the meantime, we can walk.", es: "Están arreglando el coche; mientras tanto, podemos caminar"},
+  {en: "Dinner will be ready soon, in the meantime, have a drink.", es: "La cena estará lista pronto; mientras tanto, toma algo"},
+  {en: "The flight is delayed, in the meantime, let's read.", es: "El vuelo está retrasado; mientras tanto, leamos"},
   {en: "To make a long story short, we missed the train.", es: "Para resumir, perdimos el tren"},
   {en: "To make a long story short, they got married.", es: "Para resumir, se casaron"},
   {en: "It was a crazy trip, but to make a long story short, we're home.", es: "Fue un viaje loco, pero para resumir, estamos en casa"},
@@ -212,7 +212,7 @@ const data = [
   {en: "I've been working all day and I'm worn out.", es: "He estado trabajando todo el día y estoy agotado"},
   {en: "The kids are finally asleep, but I'm worn out.", es: "Los niños por fin duermen, pero estoy reventado"},
   {en: "I'm worn out after that long flight.", es: "Estoy agotado después de ese vuelo tan largo"},
-  {en: "Just follow the instructions; it’s not rocket science.", es: "Solo sigue las instrucciones; no es tan difícil"},
+  {en: "Just follow the instructions, it’s not rocket science.", es: "Solo sigue las instrucciones; no es tan difícil"},
   {en: "Cooking this pasta is easy, it's not rocket science.", es: "Cocinar esta pasta es fácil, no tiene ningún misterio"},
   {en: "You can learn the code, it's not rocket science.", es: "Puedes aprender el código, no es tan complicado"},
   {en: "I know you'll be great in the play, break a leg!", es: "Sé que estarás genial en la obra, ¡mucha suerte!"},
@@ -331,7 +331,7 @@ function compareSentences(original, spoken) {
     
     feedbackDiv.innerHTML = resultHTML;
 
-    if (correctCount / normOriginalWords.length > 0.9) {
+    if (correctCount / normOriginalWords.length > 0.99) {
         if(window.executarAciertoFinal) window.executarAciertoFinal();
         setTimeout(() => { know(); }, 1500);
     } else {
@@ -457,6 +457,16 @@ function playAudio(speed, forcedIdx = null) {
   const num = forcedIdx || currentBlockData[pos].realIdx;
   a.src = "frase" + num + ".mp3";
   a.playbackRate = speed;
+
+  // Al terminar el sonido, esperamos 1 segundo y abrimos micro
+  a.onended = () => {
+    setTimeout(() => {
+      if (!isListening) {
+        toggleDictation();
+      }
+    }, 1000);
+  };
+
   a.play().catch(() => {});
 }
 

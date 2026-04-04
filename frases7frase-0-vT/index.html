@@ -194,9 +194,9 @@ const data = [
   {en: "Can you give me a hand with these boxes?", es: "¿Puedes echarme una mano con estas cajas?"},
   {en: "Please, give me a hand in the kitchen.", es: "Por favor, échame una mano en la cocina"},
   {en: "I can't do this alone, could you give me a hand?", es: "No puedo hacer esto solo, ¿podrías echarme una mano?"},
-  {en: "The car is being fixed; in the meantime, we can walk.", es: "Están arreglando el coche; mientras tanto, podemos caminar"},
-  {en: "Dinner will be ready soon; in the meantime, have a drink.", es: "La cena estará lista pronto; mientras tanto, toma algo"},
-  {en: "The flight is delayed; in the meantime, let's read.", es: "El vuelo está retrasado; mientras tanto, leamos"},
+  {en: "The car is being fixed, in the meantime, we can walk.", es: "Están arreglando el coche; mientras tanto, podemos caminar"},
+  {en: "Dinner will be ready soon, in the meantime, have a drink.", es: "La cena estará lista pronto; mientras tanto, toma algo"},
+  {en: "The flight is delayed, in the meantime, let's read.", es: "El vuelo está retrasado; mientras tanto, leamos"},
   {en: "To make a long story short, we missed the train.", es: "Para resumir, perdimos el tren"},
   {en: "To make a long story short, they got married.", es: "Para resumir, se casaron"},
   {en: "It was a crazy trip, but to make a long story short, we're home.", es: "Fue un viaje loco, pero para resumir, estamos en casa"},
@@ -212,7 +212,7 @@ const data = [
   {en: "I've been working all day and I'm worn out.", es: "He estado trabajando todo el día y estoy agotado"},
   {en: "The kids are finally asleep, but I'm worn out.", es: "Los niños por fin duermen, pero estoy reventado"},
   {en: "I'm worn out after that long flight.", es: "Estoy agotado después de ese vuelo tan largo"},
-  {en: "Just follow the instructions; it’s not rocket science.", es: "Solo sigue las instrucciones; no es tan difícil"},
+  {en: "Just follow the instructions, it’s not rocket science.", es: "Solo sigue las instrucciones; no es tan difícil"},
   {en: "Cooking this pasta is easy, it's not rocket science.", es: "Cocinar esta pasta es fácil, no tiene ningún misterio"},
   {en: "You can learn the code, it's not rocket science.", es: "Puedes aprender el código, no es tan complicado"},
   {en: "I know you'll be great in the play, break a leg!", es: "Sé que estarás genial en la obra, ¡mucha suerte!"},
@@ -255,6 +255,20 @@ const data = [
   {en: "I'm pissed because I lost my wallet.", es: "Estoy de mala leche porque perdí mi cartera"},
   {en: "Don't get pissed, it was just a joke.", es: "No te cabrees, solo era una broma"}
 ];
+const contractions = {
+    "i'd": "i would", "you'd": "you would", "he'd": "he would", "she'd": "she would", 
+    "it'd": "it would", "we'd": "we would", "they'd": "they would",
+    "i've": "i have", "you've": "you have", "we've": "we have", "they've": "they have",
+    "isn't": "is not", "aren't": "are not", "wasn't": "was not", "weren't": "were not",
+    "don't": "do not", "doesn't": "does not", "didn't": "did not",
+    "can't": "cannot", "couldn't": "could not", "won't": "will not", "wouldn't": "would not",
+    "it's": "it is", "she's": "she is", "he's": "he is", "there's": "there is",
+    "i'm": "i am", "we're": "we are", "they're": "they are", "you're": "you are",
+    "hadn't": "had not", "wouldn't've": "would not have", "i'll": "i will"
+};
+
+const expanded = {};
+for (let k in contractions) expanded[contractions[k]] = k;
 
 let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0;
 const a = document.getElementById("audio");
@@ -295,43 +309,57 @@ function normalizeText(text) {
 
 function compareSentences(original, spoken) {
     const feedbackDiv = document.getElementById("speech-feedback");
-    const normOriginalWords = normalizeText(original).split(/\s+/);
-    const normSpokenWords = normalizeText(spoken).split(/\s+/);
     const origWordsRaw = original.split(/\s+/);
+    const spokenWordsRaw = spoken.split(/\s+/);
     
     let resultHTML = "";
     let sIdx = 0;
     let correctCount = 0;
 
-    normOriginalWords.forEach((normWord, index) => {
-        const originalWordRaw = origWordsRaw[index];
+    for (let i = 0; i < origWordsRaw.length; i++) {
         let matched = false;
+        const oNorm = normalizeText(origWordsRaw[i]);
 
-        if (sIdx < normSpokenWords.length && normSpokenWords[sIdx] === normWord) {
-            resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
-            sIdx++;
-            matched = true;
-            correctCount++;
-        } else {
-            for (let j = sIdx + 1; j < sIdx + 5 && j < normSpokenWords.length; j++) {
-                if (normSpokenWords[j] === normWord) {
-                    for (let k = sIdx; k < j; k++) {
-                        resultHTML += `<span class="word-error">${normSpokenWords[k]}</span>`;
-                    }
-                    resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
-                    sIdx = j + 1;
-                    matched = true;
-                    correctCount++;
-                    break;
-                }
+        if (sIdx < spokenWordsRaw.length) {
+            const sNorm1 = normalizeText(spokenWordsRaw[sIdx]);
+            const sNorm2 = normalizeText(spokenWordsRaw[sIdx + 1]);
+            const sTwoWords = sNorm1 + " " + (sNorm2 || "");
+
+            // Caso 1: Original es "I'd" y dices "I would"
+            if (contractions[oNorm] === sTwoWords) {
+                resultHTML += `<span class="word-correct">${spokenWordsRaw[sIdx]} ${spokenWordsRaw[sIdx+1]}</span> `;
+                sIdx += 2; matched = true; correctCount++;
+            } 
+            // Caso 2: Original es "I would" y dices "I'd"
+            else if (i + 1 < origWordsRaw.length && (oNorm + " " + normalizeText(origWordsRaw[i+1])) === contractions[sNorm1]) {
+                resultHTML += `<span class="word-correct">${spokenWordsRaw[sIdx]}</span> `;
+                sIdx += 1; i++; matched = true; correctCount += 2;
+            } 
+            // Caso 3: Coincidencia exacta o simple (I'm = I am / etc)
+            else if (oNorm === sNorm1 || contractions[oNorm] === sNorm1 || expanded[oNorm] === sNorm1) {
+                resultHTML += `<span class="word-correct">${spokenWordsRaw[sIdx]}</span> `;
+                sIdx++; matched = true; correctCount++;
             }
         }
-        if (!matched) resultHTML += `<span class="word-missing">${originalWordRaw}</span>`;
-    });
+
+        if (!matched) {
+            // Buscador de seguridad por si te saltas una palabra
+            let foundAhead = false;
+            for (let look = sIdx; look < sIdx + 3 && look < spokenWordsRaw.length; look++) {
+                if (normalizeText(spokenWordsRaw[look]) === oNorm) {
+                    for (let skip = sIdx; skip < look; skip++) resultHTML += `<span class="word-error">${spokenWordsRaw[skip]}</span> `;
+                    resultHTML += `<span class="word-correct">${spokenWordsRaw[look]}</span> `;
+                    sIdx = look + 1; foundAhead = true; matched = true; correctCount++; break;
+                }
+            }
+            if (!foundAhead) resultHTML += `<span class="word-missing">${origWordsRaw[i]}</span> `;
+        }
+    }
     
     feedbackDiv.innerHTML = resultHTML;
 
-    if (correctCount / normOriginalWords.length > 0.99) {
+    // Ajuste de sensibilidad para dar por buena la frase
+    if (correctCount / origWordsRaw.length >= 0.85) {
         if(window.executarAciertoFinal) window.executarAciertoFinal();
         setTimeout(() => { know(); }, 1500);
     } else {
