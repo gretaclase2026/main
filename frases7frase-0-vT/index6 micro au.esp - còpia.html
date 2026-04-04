@@ -437,30 +437,22 @@ function loadBlock(b) {
   let temp = [];
 
   if (b === 'all') {
-    // Si pulsamos T, cargamos todo y MOSTRRAMOS la lista
     for (let i = 0; i < data.length; i++) {
       temp.push({...data[i], realIdx: i + 1});
     }
     document.querySelectorAll(".block").forEach((btn, idx) => btn.classList.toggle("active", idx === 0));
-    
-    // Estas líneas son las nuevas para la T
-    renderList('all');
-    document.getElementById("list").style.display = "block";
-    document.getElementById("list").dataset.type = 'all';
-
   } else {
-    // Si pulsamos un número, cargamos 10 y OCULTAMOS la lista
     let start = b * 10, end = Math.min(start + 10, data.length);
     for (let i = start; i < end; i++) {
       temp.push({...data[i], realIdx: i + 1});
     }
     document.querySelectorAll(".block").forEach((btn, idx) => btn.classList.toggle("active", idx === b + 1));
-    document.getElementById("list").style.display = "none";
   }
 
   currentBlockData = temp.sort(() => Math.random() - 0.5);
   pos = 0; 
   learnedCount = 0;
+  document.getElementById("list").style.display = "none";
   if (isRecording) stopRecordingProcess(document.getElementById(currentRecordingBtnId));
   update(true); 
 }
@@ -577,19 +569,16 @@ function toggleList(type) {
 
 function renderList(type) {
   const l = document.getElementById("list");
-  l.innerHTML = `<b>${type === 'stars' ? 'Favorites (★)' : 'Llista completa'}:</b><br><br>`;
+  l.innerHTML = `<b>${type === 'stars' ? 'Favorites (★)' : 'Llista del bloc'}:</b><br><br>`;
   let listToRender = [];
-  
   if (type === 'stars') {
     listToRender = data.map((item, index) => ({...item, realIdx: index+1})).filter(i => starredIds.includes(i.realIdx));
-  } else if (type === 'all') {
-    listToRender = data.map((item, index) => ({...item, realIdx: index + 1}));
   } else {
     let start = currentBlockID * 10, end = Math.min(start + 10, data.length);
     listToRender = data.slice(start, end).map((item, index) => ({...item, realIdx: start + index + 1}));
   }
   
-  listToRender.forEach((item) => {
+  listToRender.forEach((item, index) => {
     const isStarred = starredIds.includes(item.realIdx);
     const itemDiv = document.createElement("div");
     const listRecBtnId = `recBtnList_${item.realIdx}`;
@@ -610,6 +599,7 @@ function renderList(type) {
     l.appendChild(itemDiv);
   });
 }
+
 function markAsDone(element) {
     localStorage.setItem(getFolderName(), new Date().toISOString());
     element.innerHTML = "✓"; element.classList.add('marked');
