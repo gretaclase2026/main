@@ -331,7 +331,7 @@ function compareSentences(original, spoken) {
     
     feedbackDiv.innerHTML = resultHTML;
 
-    if (correctCount / normOriginalWords.length > 0.99) {
+    if (correctCount / normOriginalWords.length > 0.9) {
         if(window.executarAciertoFinal) window.executarAciertoFinal();
         setTimeout(() => { know(); }, 1500);
     } else {
@@ -457,16 +457,6 @@ function playAudio(speed, forcedIdx = null) {
   const num = forcedIdx || currentBlockData[pos].realIdx;
   a.src = "frase" + num + ".mp3";
   a.playbackRate = speed;
-
-  // Al terminar el sonido, esperamos 1 segundo y abrimos micro
-  a.onended = () => {
-    setTimeout(() => {
-      if (!isListening) {
-        toggleDictation();
-      }
-    }, 1000);
-  };
-
   a.play().catch(() => {});
 }
 
