@@ -364,7 +364,7 @@ function compareSentences(original, spoken) {
     feedbackDiv.innerHTML = resultHTML;
 
     // Ajuste de sensibilidad para dar por buena la frase
-    if (correctCount / origWordsRaw.length >= 0.95) {
+    if (correctCount / origWordsRaw.length >= 0.99) {
         if(window.executarAciertoFinal) window.executarAciertoFinal();
         setTimeout(() => { know(); }, 4000);
     } else {
