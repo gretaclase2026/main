@@ -29,38 +29,17 @@ main{display:flex;justify-content:center;padding:24px}
 .audio-btn.stt{background:#dbeafe; font-size: 22px;}
 
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+.listening { animation: pulse 1.5s infinite; background: #90caf9 !important; color: #0f172a !important; }
+.recording { animation: pulse 1.5s infinite; background: #f48fb1 !important; color: white !important; }
 
-.listening { 
-    animation: pulse 1.5s infinite; 
-    background: #90caf9 !important; 
-    color: #0f172a !important; 
-}
-
-.recording { 
-    animation: pulse 1.5s infinite; 
-    background: #f48fb1 !important; 
-    color: white !important; 
-}
-
-#speechFeedback { 
-    font-size: 18px; 
-    margin: 15px 0; 
-    font-weight: bold; 
-    min-height: 28px; 
-    line-height: 1.5; 
-    padding: 0 10px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 4px;
-}
+#speechFeedback { font-size: 18px; margin: 15px 0; font-weight: bold; min-height: 28px; line-height: 1.5; padding: 0 10px; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
 .word-correct { color: #16a34a; }
 .word-error { color: #dc2626; text-decoration: line-through; }
 .word-missing { color: #94a3b8; font-style: italic; }
 
 .star-btn { background: none; border: none; font-size: 32px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px 0 0; margin-right: 5px; }
 .star-btn.active { color: #f59e0b !important; }
-.progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
+.progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 10px; box-sizing: border-box; }
 input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
 .hidden{display:none}
 .es{font-size:19px;color:#2563eb;margin-top:14px;line-height:1.4;font-weight:600}
@@ -84,6 +63,11 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 .star-btn-list.active { color: #f59e0b !important; }
 .blur { filter: blur(5px); transition: filter 0.2s; cursor: pointer; user-select: none; }
 .blur.revealed { filter: blur(0); }
+
+#puntos-header { position: fixed; top: 45px; right: 15px; background: #fef3c7; color: #92400e; padding: 6px 16px; border-radius: 25px; font-weight: 900; border: 2px solid #f59e0b; z-index: 9999; display: flex; align-items: center; gap: 6px; font-size: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+#estrella-animada { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); font-size: 100px; z-index: 10000; pointer-events: none; opacity: 0; display: none; }
+
+#btn-rescat { display: none; margin: 10px auto; padding: 6px 12px; background: #f8fafc; border: 1.5px solid #22c55e; border-radius: 12px; font-size: 11px; color: #16a34a; cursor: pointer; font-weight: 800; text-transform: uppercase; }
 </style>
 </head>
 <body>
@@ -112,9 +96,12 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
  </div>
  
  <div class="progress-wrapper"><input type="range" id="progressBar" value="0" min="0" max="100" step="0.1"></div>
+ <button id="btn-rescat" onclick="rescueAction()">IT IS OKAY ⭐</button>
+
  <div id="es" class="es hidden"></div>
  <div id="speechFeedback"></div>
  <div id="en" class="en hidden"></div>
+ 
  <div class="buttons">
   <button class="action reveal" onclick="reveal()">Veure</button>
   <button class="action know" onclick="know()">Ja la sé</button>
@@ -128,6 +115,8 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 </div>
 </main>
 <div id="listBox" class="list-box hidden"></div>
+<div id="puntos-header">⭐ <span id="val-puntos">0</span></div>
+<div id="estrella-animada">⭐</div>
 
 <script>
 const items = [
@@ -165,7 +154,7 @@ const items = [
     {audio:"f032.mp3",en:"You should be very careful when you use bleach to clean the bathroom floor because if a single drop falls on your clothes, it will leave a white stain forever.",es:"Deberías tener mucho cuidado cuando uses lejía para limpiar el suelo del baño porque si una sola gota cae sobre la ropa, dejará una mancha blanca para siempre."},
     {audio:"f033.mp3",en:"The vacuum cleaner is making a very strange noise today, so I think the bag might be completely full and I need to empty it before I continue.",es:"La aspiradora está haciendo un ruido muy extraño hoy, así que creo que la bolsa puede estar completamente llena y necesito vaciarla antes de continuar."},
     {audio:"f034.mp3",en:"There was so much rubbish inside the house after the party that we spent the whole morning putting everything into large bags to take them outside.",es:"Había tanta basura dentro de la casa después de la fiesta que pasamos toda la mañana metiéndolo todo en bolsas grandes para sacarlas fuera."},
-    {audio:"f035.mp3",en:"Could you please take the bag out of the kitchen bin and put a new one in, because the smell is starting to be quite unpleasant in the whole room?",es:"¿Podrías por favor sacar la bolsa de la papelera de la cocina y poner una nueva, porque el olor está empezando a ser bastante desagradable en toda la habitación?"},
+    {audio:"f035.mp3",en:"Could you please take the bag out of the kitchen bin and put a new one in, because the smell is starting to be quite unpleasant in the whole room?",es:"¿Podrías por favor sacar la bolsa de la papelera de la cocina y poner una nueva, porque el olor está empezando a ser bastante desagrabable en toda la habitación?"},
     {audio:"f036.mp3",en:"I was trying to use the stapler to keep all these important documents together, but I think it is broken because the papers keep falling apart every time I try.",es:"Estaba intentando usar la grapadora para mantener todos estos documentos importantes juntos, pero creo que está rota porque los papeles se separan cada vez que lo intento."},
     {audio:"f037.mp3",en:"I need to find a box of refills because I just used the last staple and I still have a lot of pages that I need to organize before the end of the day.",es:"Necesito encontrar una caja de recambios porque acabo de usar la última grapa y todavía tengo muchas páginas que organizar antes de que el día termine."},
     {audio:"f038.mp3",en:"I used some transparent tape to fix the corner of the map that was starting to tear, so now it looks much better and it won't break any further.",es:"Usé un poco de cinta adhesiva transparente para arreglar la esquina del mapa que empezaba a romperse, así que ahora se ve mucho mejor y no se romperá más."},
@@ -230,7 +219,7 @@ const normalizationMap = {
     "well": "we will", "we'll": "we will", "theyll": "they will", "they'll": "they will"
 };
 
-let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0;
+let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0, fallos = 0;
 const audioObj = new Audio();
 const progressBar = document.getElementById("progressBar");
 
@@ -239,7 +228,7 @@ function getFolderName() { return "frases4f-11-ras-Q"; }
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
 let mediaRecorder, audioChunks = [], isRecording = false;
 
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+const SpeechRecognition = window.Recognition || window.webkitSpeechRecognition || window.SpeechRecognition;
 let recognition, isListening = false;
 
 if (SpeechRecognition) {
@@ -261,7 +250,6 @@ if (SpeechRecognition) {
 
 function normalizeText(text) {
     if (!text) return "";
-    // Reemplazar apóstrofes curvos por rectos
     let clean = text.toLowerCase().replace(/[’‘]/g, "'");
     clean = clean.replace(/[.,?!"]/g, "").trim();
     let words = clean.split(/\s+/);
@@ -273,11 +261,16 @@ function normalizeText(text) {
 
 function compareSentences(original, spoken) {
     const feedbackDiv = document.getElementById("speechFeedback");
-    const normOriginalWords = normalizeText(original).split(/\s+/);
-    const normSpokenWords = normalizeText(spoken).split(/\s+/);
+    const normOriginal = normalizeText(original);
+    const normSpoken = normalizeText(spoken);
+    const normOriginalWords = normOriginal.split(/\s+/);
+    const normSpokenWords = normSpoken.split(/\s+/);
     const origWordsRaw = original.split(/\s+/);
+    
     let resultHTML = "";
     let sIdx = 0;
+    let correctCount = 0;
+
     normOriginalWords.forEach((normWord, index) => {
         const originalWordRaw = origWordsRaw[index];
         let matched = false;
@@ -285,6 +278,7 @@ function compareSentences(original, spoken) {
             resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
             sIdx++;
             matched = true;
+            correctCount++;
         } else {
             for (let j = sIdx + 1; j < sIdx + 5 && j < normSpokenWords.length; j++) {
                 if (normSpokenWords[j] === normWord) {
@@ -294,6 +288,7 @@ function compareSentences(original, spoken) {
                     resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
                     sIdx = j + 1;
                     matched = true;
+                    correctCount++;
                     break;
                 }
             }
@@ -301,6 +296,28 @@ function compareSentences(original, spoken) {
         if (!matched) resultHTML += `<span class="word-missing">${originalWordRaw}</span>`;
     });
     feedbackDiv.innerHTML = resultHTML;
+
+    let score = correctCount / normOriginalWords.length;
+    if (score >= 0.95) {
+        fallos = 0;
+        document.getElementById('btn-rescat').style.display = 'none';
+        if (window.executarAciertoFinal) window.executarAciertoFinal();
+        setTimeout(() => { know(); }, 3000);
+    } else {
+        fallos++;
+        if (fallos >= 3) {
+            document.getElementById('btn-rescat').style.display = 'block';
+        }
+    }
+}
+
+function rescueAction() {
+    if (!starredIds.includes(currentBlockData[pos].audio)) {
+        toggleStar();
+    }
+    document.getElementById('btn-rescat').style.display = 'none';
+    fallos = 0;
+    if (window.executarAciertoFinal) window.executarAciertoFinal();
 }
 
 function toggleMic() {
@@ -308,7 +325,7 @@ function toggleMic() {
     if (isListening) {
         recognition.stop();
     } else {
-        if (isRecording) { // Parar micro rosa si està actiu
+        if (isRecording) {
             mediaRecorder.stop();
             isRecording = false;
             document.querySelectorAll('.recording').forEach(b => b.classList.remove('recording'));
@@ -322,7 +339,7 @@ async function toggleRecord(targetBtnId) {
     const btn = document.getElementById(targetBtnId);
     if (!isRecording) {
         try {
-            if (isListening) recognition.stop(); // Parar micro blau si està actiu
+            if (isListening) recognition.stop();
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             mediaRecorder = new MediaRecorder(stream);
             audioChunks = [];
@@ -330,7 +347,6 @@ async function toggleRecord(targetBtnId) {
             mediaRecorder.onstop = () => {
                 const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
                 new Audio(URL.createObjectURL(audioBlob)).play();
-                // Neteja de pistes per alliberar el micro per a l'STT
                 stream.getTracks().forEach(track => track.stop());
             };
             mediaRecorder.start();
@@ -375,33 +391,56 @@ function loadBlock(b) {
   let start = b * 10;
   let end = Math.min(start + 10, items.length);
   for (let i = start; i < end; i++) temp.push({...items[i]});
-  currentBlockData = temp; // Eliminat el sort aleatori
+  currentBlockData = temp;
   document.querySelectorAll(".block").forEach((btn, idx) => { btn.classList.toggle("active", idx === (b + 1)); });
-  pos = 0; learnedCount = 0;
+  pos = 0; learnedCount = 0; fallos = 0;
   document.getElementById("endMsg").classList.add("hidden");
+  document.getElementById('btn-rescat').style.display = 'none';
   update(true);
 }
 
 function loadAll() {
   currentBlockID = -1;
   localStorage.setItem(getFolderName() + "_puntoLibro", "all");
-  currentBlockData = items.map(i => ({...i})); // Eliminat el sort aleatori
+  currentBlockData = items.map(i => ({...i}));
   document.querySelectorAll(".block").forEach((btn, idx) => { btn.classList.toggle("active", idx === 0); });
-  pos = 0; learnedCount = 0;
+  pos = 0; learnedCount = 0; fallos = 0;
   document.getElementById("endMsg").classList.add("hidden");
+  document.getElementById('btn-rescat').style.display = 'none';
   update(true);
 }
 
+let autoMicTimer;
+
+function startTimer() {
+    clearTimeout(autoMicTimer);
+    let timeLeft = 10;
+    const feedback = document.getElementById("speechFeedback");
+    
+    autoMicTimer = setInterval(() => {
+        timeLeft--;
+        feedback.innerHTML = `<span style="color:#64748b; font-size:14px;">Micro automàtic en ${timeLeft}s...</span>`;
+        if (timeLeft <= 0) {
+            clearInterval(autoMicTimer);
+            feedback.innerHTML = "";
+            if (!isListening) toggleMic();
+        }
+    }, 1000);
+}
+
 function update(fromAction = false) {
+  clearTimeout(autoMicTimer);
   if (currentBlockData.length === 0) {
     document.getElementById("en").classList.add("hidden");
     document.getElementById("es").classList.add("hidden");
     document.getElementById("speechFeedback").innerHTML = "";
     document.getElementById("endMsg").classList.remove("hidden");
+    document.getElementById('btn-rescat').style.display = 'none';
     return;
   }
   progressBar.value = 0;
   const item = currentBlockData[pos];
+  
   document.getElementById("es").classList.add("hidden");
   document.getElementById("en").classList.add("hidden");
   document.getElementById("speechFeedback").innerHTML = "";
@@ -410,57 +449,48 @@ function update(fromAction = false) {
   if (mode === "EN") {
     document.getElementById("langLabel").textContent = "ANGLÈS";
     document.getElementById("en").innerHTML = item.en;
-    document.getElementById("en").classList.remove("hidden");
-    // Usamos item.audio porque así se llama en este archivo
+    document.getElementById("es").innerHTML = item.es;
     if (fromAction) playAudio(item.audio, 1.0);
   } else {
     document.getElementById("langLabel").textContent = "CASTELLÀ";
     document.getElementById("es").innerHTML = item.es;
+    document.getElementById("en").innerHTML = item.en;
     document.getElementById("es").classList.remove("hidden");
-
-   // Activación automática a los 10 segundos en modo Castellano
-    if (fromAction) {
-        setTimeout(() => {
-            // Cambiado toggleDictation por toggleMic
-            if (!isListening && mode === "ES") toggleMic();
-        }, 10000); 
-    }
+    if (fromAction) startTimer();
   }
   document.getElementById("counter").textContent = `${learnedCount} / ${currentBlockData.length + learnedCount}`;
 }
+
 function playAudio(audioFile, speed) {
-  // Usamos audioObj que es la variable definida al principio del script
   audioObj.src = audioFile; 
   audioObj.playbackRate = speed;
-
   audioObj.onended = () => {
     if (mode === "EN") {
         setTimeout(() => {
-          // Cambiado a toggleMic para que use tu función existente
           if (!isListening) toggleMic();
         }, 1000); 
     }
   };
-  
   audioObj.play().catch(err => console.log("Error con audio:", audioFile));
 }
+
 function playCurrent(speed) { if (currentBlockData.length > 0) playAudio(currentBlockData[pos].audio, speed); }
 function pauseAudio() { audioObj.pause(); }
 
 function reveal() {
   if (currentBlockData.length === 0) return;
-  const item = currentBlockData[pos];
   const esEl = document.getElementById("es");
   const enEl = document.getElementById("en");
   
   if (mode === "EN") {
-    // Si ja és visible el castellà, l'amaguem
-    esEl.classList.toggle("hidden");
-    esEl.innerHTML = item.es;
+    if (enEl.classList.contains("hidden")) {
+        enEl.classList.remove("hidden");
+        esEl.classList.remove("hidden");
+    } else {
+        playCurrent(1.0);
+    }
   } else {
-    // Si ja és visible l'anglès, l'amaguem
     enEl.classList.toggle("hidden");
-    enEl.innerHTML = item.en;
   }
 }
 
@@ -469,12 +499,16 @@ function know() {
   learnedCount++; 
   currentBlockData.splice(pos, 1);
   if (pos >= currentBlockData.length) pos = 0;
+  fallos = 0;
+  document.getElementById('btn-rescat').style.display = 'none';
   update(true);
 }
 
 function nextOne() {
   if (currentBlockData.length === 0) return;
   pos = (pos + 1) % currentBlockData.length;
+  fallos = 0;
+  document.getElementById('btn-rescat').style.display = 'none';
   update(true);
 }
 
@@ -485,7 +519,8 @@ function toggleStar(forcedId = null) {
   if (starredIds.includes(audio)) starredIds = starredIds.filter(id => id !== audio);
   else starredIds.push(audio);
   localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
-  update();
+  const starBtn = document.getElementById("starBtn");
+  if(starBtn) starBtn.classList.toggle("active", starredIds.includes(currentBlockData[pos].audio));
 }
 
 function toggleList(type) {
@@ -533,35 +568,8 @@ if (localStorage.getItem(getFolderName())) {
     if(mc) { mc.innerHTML = "✓"; mc.classList.add('marked'); }
 }
 
-initBlocks();
-</script>
-</body>
-<style>
-    #puntos-header { 
-        position: fixed; top: 45px; right: 15px; background: #fef3c7; color: #92400e; 
-        padding: 6px 16px; border-radius: 25px; font-weight: 900; border: 2px solid #f59e0b; 
-        z-index: 9999; display: flex; align-items: center; gap: 6px; font-size: 16px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    #estrella-animada { 
-        position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); 
-        font-size: 100px; z-index: 10000; pointer-events: none; opacity: 0; display: none;
-    }
-    #btn-rescat { 
-        display: none; margin: 15px auto; padding: 6px 20px; width: fit-content; 
-        background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 20px; 
-        font-size: 12px; color: #64748b; cursor: pointer; font-weight: 600;
-        text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    }
-</style>
-
-<div id="puntos-header">⭐ <span id="val-puntos">0</span></div>
-<div id="estrella-animada">⭐</div>
-
-<script>
 (function() {
     let xp = parseInt(localStorage.getItem('global_xp')) || 0;
-    let fallos = 0;
     const marcador = document.getElementById('val-puntos');
     if(marcador) marcador.textContent = xp;
 
@@ -586,54 +594,10 @@ initBlocks();
             est.style.transform = "translate(-50%, -50%) scale(0)";
             setTimeout(() => { est.style.display = "none"; }, 500);
         }, 1000);
-
-        fallos = 0;
-        const b = document.getElementById('btn-rescat');
-        if(b) b.style.display = 'none';
     };
-
-    setInterval(() => {
-        const contenedorAudio = document.querySelector('.audio-container');
-        if (contenedorAudio && !document.getElementById('btn-rescat')) {
-            const b = document.createElement('button');
-            b.id = 'btn-rescat';
-            b.textContent = 'IT IS OK';
-            b.onclick = window.executarAciertoFinal;
-            contenedorAudio.after(b);
-        }
-        
-        if (typeof recognition !== 'undefined' && !recognition._sistemaPuntosOK) {
-            recognition._sistemaPuntosOK = true;
-            const originalResult = recognition.onresult;
-            
-            recognition.onresult = (event) => {
-                if(originalResult) originalResult(event);
-                
-                const transcripcio = event.results[0][0].transcript.toLowerCase().trim();
-                
-                // DETECTOR AUTOMÁTICO DE VARIABLE (Para que funcione en todos tus archivos)
-                let fraseCorrecta = "";
-                if (typeof current !== 'undefined' && current.en) {
-                    fraseCorrecta = current.en;
-                } else if (typeof currentBlockData !== 'undefined' && currentBlockData[pos]) {
-                    fraseCorrecta = currentBlockData[pos].en;
-                }
-
-                const n1 = transcripcio.replace(/[^\w\s]/gi, '');
-                const n2 = fraseCorrecta.toLowerCase().trim().replace(/[^\w\s]/gi, '');
-
-                if (n1 === n2 && n1 !== "") {
-                    window.executarAciertoFinal();
-                } else {
-                    fallos++;
-                    if (fallos >= 3) {
-                        const b = document.getElementById('btn-rescat');
-                        if(b) b.style.display = 'block';
-                    }
-                }
-            };
-        }
-    }, 600);
 })();
+
+initBlocks();
 </script>
+</body>
 </html>
