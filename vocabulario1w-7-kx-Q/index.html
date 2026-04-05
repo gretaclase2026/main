@@ -3,203 +3,607 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Model estudi definitiu amb frases i blocs</title>
+<title>Greta App - Unitat 1 vocabulari</title>
 <style>
-body{margin:0;font-family:Arial,sans-serif;background:#ececec}
-.card{max-width:720px;margin:20px auto;background:#ffffff;border-radius:24px;padding:24px;box-shadow:0 8px 18px rgba(0,0,0,.15);position: relative !important;}
-.modes{display:flex;gap:10px;margin-bottom:10px}
-.mode{flex:1;text-align:center;padding:14px;border-radius:24px;font-weight:bold;cursor:pointer}
-.mode.en{background:#d6e6f5}
-.mode.es{background:#f4d6e6}
-.mode.active{outline:3px solid #999}
-.blocks{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
-.block{width:38px;height:38px;padding:0;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#fff4cc;cursor:pointer}
-.pblock{background:#fff4cc;}
-.block.active{background:#ffe39a;}
-.counter{text-align:right;font-weight:bold;color:#2563eb;font-size:22px}
-.audio-btn{width:140px;height:140px;margin:16px auto;border-radius:50%;background:#dcfce7;font-size:60px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:0.2s}
-.audio-btn.vibrate{animation:vibrate 0.25s linear 2}
-@keyframes vibrate{0%{transform:translate(0)}25%{transform:translate(2px,-2px)}50%{transform:translate(-2px,2px)}75%{transform:translate(2px,2px)}100%{transform:translate(0)}}
-.word{text-align:center;font-size:32px;margin-bottom:10px}
-
-/* TRADUCCIÓN EN AZUL */
-.answer{text-align:center;font-size:26px;color:#2563eb !important;display:none;margin-top:-10px;margin-bottom:10px;font-weight:bold}
-
-/* ESTILO PARA LA FRASE DE EJEMPLO */
-.example{text-align:center;font-size:16px;color:#555;font-style:italic;display:none;margin-bottom:20px;padding:0 10px}
-
-.controls{display:flex;gap:10px;margin-top:14px}
-.controls button{flex:1;padding:14px;border-radius:20px;border:none;font-size:16px;font-weight:bold;cursor:pointer}
-.veure{background:#cfe3ff} .jase{background:#d7f2e3} .seguent{background:#f4d6e6}
-.list-btn{margin-top:16px;width:100%;padding:14px;border-radius:20px;border:none;background:#e0d8f5;font-weight:bold}
-.list{display:none;margin-top:14px}
-.list-item{border-bottom:1px solid #ddd;padding:10px 0}
-.list-ex{font-size:14px;color:#555;font-style:italic}
-
-/* CUADRITO DE MARCADO */
-.check-box-manual {
-    position: absolute;
-    top: 180px; 
-    right: 20px;
-    width: 24px;
-    height: 24px;
-    background: #fff !important;
-    border: 1.5px solid #22c55e !important;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 100;
-    font-size: 14px;
-    color: #22c55e;
-}
+body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
+header{padding:8px 4px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center;align-items:center;gap:4px}
+.unit-number{font-size:22px;font-weight:800;color:#2563eb;margin:0 8px;min-width:20px;text-align:center}
+.mode-btns button{padding:6px 10px;border:none;border-radius:12px;font-weight:700;cursor:pointer;font-size:11px;white-space:nowrap;line-height:1.2}
+.mode-en{background:#dbeafe}
+.mode-es{background:#fde68a}
+main{display:flex;justify-content:center;padding:24px}
+.card{position:relative;width:100%;max-width:560px;background:#ffffff;border-radius:28px;padding:32px;box-shadow:0 10px 24px rgba(0,0,0,0.06);text-align:center}
+.counter{position:absolute;top:18px;left:22px;font-weight:800;color:#2563eb}
+.check-box-manual { position: absolute; top: 18px; right: 22px; width: 24px; height: 24px; background: #fff; border: 1.5px solid #22c55e; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 14px; }
 .check-box-manual.marked { background: #22c55e !important; color: white !important; }
+.lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
+.blocks{display:flex;flex-wrap:nowrap;gap:6px;justify-content:flex-start;margin:15px 0 20px;overflow-x:auto;padding:5px 0 5px 10px}
+.block{flex: 0 0 auto;width:32px;height:32px;border-radius:50%;border:none;background:#f1f5f9;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.2s}
+.block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1)}
+.block.all-btn { background: #e2e8f0; color: #475569; }
+.audio-container { display: flex; justify-content: center; gap: 8px; margin: 10px 0; align-items: center; flex-wrap: nowrap; }
+.audio-btn{width:52px;height:52px;border-radius:50%;border:none;background:#dbeafe;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
+.audio-btn.slow{background:#fef08a;}
+.audio-btn.pause{background:#fee2e2; color: inherit;} 
+.audio-btn.rec{background:#fca5a5; color: white;}
+.audio-btn.stt{background:#dbeafe; font-size: 22px;}
+
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+.listening { animation: pulse 1.5s infinite; background: #90caf9 !important; color: #0f172a !important; }
+.recording { animation: pulse 1.5s infinite; background: #f48fb1 !important; color: white !important; }
+
+#speechFeedback { font-size: 18px; margin: 15px 0; font-weight: bold; min-height: 28px; line-height: 1.5; padding: 0 10px; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
+.word-correct { color: #16a34a; }
+.word-error { color: #dc2626; text-decoration: line-through; }
+.word-missing { color: #94a3b8; font-style: italic; }
+
+.star-btn { background: none; border: none; font-size: 32px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px 0 0; margin-right: 5px; }
+.star-btn.active { color: #f59e0b !important; }
+.progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 10px; box-sizing: border-box; }
+input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
+.hidden{display:none}
+.es{font-size:19px;color:#2563eb;margin-top:14px;line-height:1.4;font-weight:600}
+.en{font-size:19px;color:#0f172a;margin-top:14px;font-weight:700;line-height:1.4}
+.buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:22px}
+button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;cursor:pointer}
+.reveal{background:#e0f2fe}
+.know{background:#dcfce7}
+.next{background:#fbcfe8}
+.list-controls { display: flex; gap: 10px; margin-top: 16px; }
+.list-btn{ flex:1; background:#e9d5ff; border:none; border-radius:16px; padding:14px; font-weight:800; cursor:pointer; font-size:13px }
+.review-btn { background: #fef3c7; color: #92400e; }
+.list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
+.list-item { display: flex; align-items: flex-start; gap: 15px; padding: 15px 0; border-bottom: 1px solid #eee; }
+.list-controls-side { display: flex; flex-direction: column; gap: 8px; min-width: 44px; align-items: center; }
+.list-texts { flex-grow: 1; display: flex; flex-direction: column; gap: 6px; }
+.mini-btn { border: none; border-radius: 10px; width: 38px; height: 38px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+.btn-audio { background: #dbeafe; }
+.btn-rec-mini { background: #fbcfe8; }
+.star-btn-list { background: none; border: none; font-size: 26px; cursor: pointer; color: #cbd5e1; padding: 0; line-height: 1; }
+.star-btn-list.active { color: #f59e0b !important; }
+.blur { filter: blur(5px); transition: filter 0.2s; cursor: pointer; user-select: none; }
+.blur.revealed { filter: blur(0); }
+
+#puntos-header { position: fixed; top: 45px; right: 15px; background: #fef3c7; color: #92400e; padding: 6px 16px; border-radius: 25px; font-weight: 900; border: 2px solid #f59e0b; z-index: 9999; display: flex; align-items: center; gap: 6px; font-size: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+#estrella-animada { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); font-size: 100px; z-index: 10000; pointer-events: none; opacity: 0; display: none; }
+
+#btn-rescat { display: none; margin: 10px auto; padding: 6px 12px; background: #f8fafc; border: 1.5px solid #22c55e; border-radius: 12px; font-size: 11px; color: #16a34a; cursor: pointer; font-weight: 800; text-transform: uppercase; }
 </style>
 </head>
 <body>
 
+<header>
+ <div class="mode-btns"><button class="mode-en" onclick="setMode('EN')">Anglès → Castellà</button></div>
+ <div class="unit-number">VOC 1</div>
+ <div class="mode-btns"><button class="mode-es" onclick="setMode('ES')">Castellà → Anglès</button></div>
+</header>
+
+<main>
 <div class="card">
-  <div class="modes">
-    <div id="modeEN" class="mode en active" onclick="setMode('EN')">anglès → castellà</div>
-    <div id="modeES" class="mode es" onclick="setMode('ES')">castellà → anglès</div>
-  </div>
-  <div class="blocks" id="blocks"><button class="block pblock active" onclick="selectAll()">T</button></div>
-  <div class="counter"><span id="pos">1</span> / <span id="total">0</span></div>
-  <div class="audio-btn" onclick="playAudio()">🔊</div>
-  <audio id="audio"></audio>
-  <div id="word" class="word"></div>
-  <div id="answer" class="answer"></div>
-  <div id="example" class="example"></div>
-  <div class="controls">
-    <button class="veure" onclick="reveal()">Veure</button>
-    <button class="jase" onclick="know()">Ja la sé</button>
-    <button class="seguent" onclick="next()">Següent</button>
-  </div>
-  <button class="list-btn" onclick="toggleList()">Veure toda la llista</button>
-  <div id="list" class="list"></div>
+ <div class="counter" id="counter">0 / 0</div>
+ <div class="check-box-manual" id="mainCheck" onclick="markAsDone(this)"></div>
+
+ <div id="langLabel" class="lang" style="margin-top: 10px;">ANGLÈS</div>
+ <div id="blockContainer" class="blocks"></div>
+
+ <div class="audio-container">
+  <button class="star-btn" id="starBtn" onclick="toggleStar()">★</button>
+  <button class="audio-btn slow" onclick="playCurrent(0.75)">🐢</button>
+  <button class="audio-btn" onclick="playCurrent(1.0)">🔊</button>
+  <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
+  <button class="audio-btn rec" id="recBtn" onclick="toggleRecord('recBtn')">🎤</button>
+  <button class="audio-btn stt" id="sttBtn" onclick="toggleMic()">🎤</button>
+ </div>
+ 
+ <div class="progress-wrapper"><input type="range" id="progressBar" value="0" min="0" max="100" step="0.1"></div>
+ <button id="btn-rescat" onclick="rescueAction()">IT IS OKAY ⭐</button>
+
+ <div id="es" class="es hidden"></div>
+ <div id="speechFeedback"></div>
+ <div id="en" class="en hidden"></div>
+ 
+ <div class="buttons">
+  <button class="action reveal" onclick="reveal()">Veure</button>
+  <button class="action know" onclick="know()">Ja la sé</button>
+  <button class="action next" onclick="nextOne()">Següent</button>
+ </div>
+ <div class="list-controls">
+    <button class="list-btn" onclick="toggleList('all')">Tota la llista</button>
+    <button class="list-btn review-btn" onclick="toggleList('stars')">Repàs (★)</button>
+ </div>
+ <div id="endMsg" class="hidden" style="margin-top:16px; font-weight:800; color:#16a34a;">✔ Bloc completat!</div>
 </div>
+</main>
+<div id="listBox" class="list-box hidden"></div>
+<div id="puntos-header">⭐ <span id="val-puntos">0</span></div>
+<div id="estrella-animada">⭐</div>
 
 <script>
-const data = [
-{'audio': 'f001.mp3', 'en': 'Out of date', 'es': 'Anticuado / Caducado', 'ex': 'That fashion style is a bit out of date now.'}, {'audio': 'f002.mp3', 'en': 'Frightened', 'es': 'Asustado', 'ex': 'The loud noise made the child feel frightened.'}, {'audio': 'f003.mp3', 'en': 'Amazed', 'es': 'Alucinado / Muy sorprendido', 'ex': 'I was amazed by the beautiful view from the top.'}, {'audio': 'f004.mp3', 'en': 'Amusing', 'es': 'Gracioso / Divertido', 'ex': 'He told us an amusing story about his cat.'}, {'audio': 'f005.mp3', 'en': 'Awkward', 'es': 'Incomodo / Patoso', 'ex': 'There was an awkward silence after his comment.'}, {'audio': 'f006.mp3', 'en': 'Broad', 'es': 'Ancho / Amplio', 'ex': 'He has very broad shoulders.'}, {'audio': 'f007.mp3', 'en': 'Clumsy', 'es': 'Torpe', 'ex': "I'm so clumsy; I just spilled my coffee again."}, {'audio': 'f008.mp3', 'en': 'Delighted', 'es': 'Encantado / Muy feliz', 'ex': 'She was delighted with her birthday presents.'}, {'audio': 'f009.mp3', 'en': 'Handy', 'es': 'Pratico / Util / A mano', 'ex': 'This tool is very handy for small repairs.'}, {'audio': 'f010.mp3', 'en': 'Harmless', 'es': 'Inofensivo', 'ex': "Don't worry, that spider is completely harmless."}, {'audio': 'f011.mp3', 'en': 'Odd', 'es': 'Extraño / Raro', 'ex': 'It’s odd that he hasn’t called me yet.'}, {'audio': 'f012.mp3', 'en': 'Rough', 'es': 'Aproximado / Rugoso / Agitado', 'ex': 'The sea was very rough during the storm.'}, {'audio': 'f013.mp3', 'en': 'Slightly', 'es': 'Ligeramente', 'ex': 'I’m feeling slightly better than yesterday.'}, {'audio': 'f014.mp3', 'en': 'Substantial', 'es': 'Sustancial / Considerable', 'ex': 'They made a substantial profit this year.'}, {'audio': 'f015.mp3', 'en': 'Tough', 'es': 'Dificil / Duro / Resistente', 'ex': 'It was a tough decision to make.'}, {'audio': 'f016.mp3', 'en': 'Tricky', 'es': 'Complicado / Mañoso', 'ex': 'This puzzle is quite tricky to solve.'}, {'audio': 'f017.mp3', 'en': 'Vague', 'es': 'Impreciso / Vago', 'ex': 'His instructions were too vague to follow.'}, {'audio': 'f018.mp3', 'en': 'Worldwide', 'es': 'Mundial / En todo el mundo', 'ex': 'The company has a worldwide reputation.'}, {'audio': 'f019.mp3', 'en': 'Furthermore', 'es': 'Ademas / Es mas', 'ex': "The house is beautiful; furthermore, it's very cheap."}, {'audio': 'f020.mp3', 'en': 'Moreover', 'es': 'Ademas / Es mas', 'ex': "The house is beautiful; moreover, it's very cheap."}, {'audio': 'f021.mp3', 'en': 'Therefore', 'es': 'Por lo tanto', 'ex': "I forgot my wallet; therefore, I couldn't buy it."}, {'audio': 'f022.mp3', 'en': 'Whereas', 'es': 'Mientras que (contraste)', 'ex': 'She loves spicy food, whereas I hate it.'}, {'audio': 'f023.mp3', 'en': 'Otherwise', 'es': 'De lo contrario', 'ex': "Put on a coat; otherwise, you'll catch a cold."}, {'audio': 'f024.mp3', 'en': 'Provided that', 'es': 'Siempre que / Con la condicion de que', 'ex': 'You can go provided that you finish your homework.'}, {'audio': 'f025.mp3', 'en': 'As long as', 'es': 'Siempre y cuando / Mientras', 'ex': "I'll help you as long as you try your best."}, {'audio': 'f026.mp3', 'en': 'Eventually', 'es': 'Finalmente / Con el tiempo', 'ex': 'It took a while, but we eventually arrived.'}, {'audio': 'f027.mp3', 'en': 'Relatively', 'es': 'Relativamente / Bastante', 'ex': 'The exam was relatively easy for me.'}, {'audio': 'f028.mp3', 'en': 'Increasingly', 'es': 'Cada vez mas', 'ex': 'It is becoming increasingly difficult to find a job.'}, {'audio': 'f029.mp3', 'en': 'Roughly', 'es': 'Aproximadamente / A ojo', 'ex': 'There were roughly fifty people at the party.'}, {'audio': 'f030.mp3', 'en': 'Encourage', 'es': 'Animar / Fomentar', 'ex': 'My parents always encourage me to study.'}, {'audio': 'f031.mp3', 'en': 'Warn', 'es': 'Avisar / Advertir', 'ex': 'I must warn you about the slippery floor.'}, {'audio': 'f032.mp3', 'en': 'Carry out', 'es': 'Llevar a cabo / Realizar', 'ex': 'The scientist will carry out the experiment today.'}, {'audio': 'f033.mp3', 'en': 'Turn out', 'es': 'Resultar ser / Salir de una manera', 'ex': 'The party turned out to be a great success.'}, {'audio': 'f034.mp3', 'en': 'Call off', 'es': 'Cancelar', 'ex': 'They decided to call off the match due to rain.'}, {'audio': 'f035.mp3', 'en': 'Put off', 'es': 'Posponer', 'ex': 'Never put off until tomorrow what you can do today.'}, {'audio': 'f036.mp3', 'en': 'Take up', 'es': 'Empezar una actividad / Ocupar espacio', 'ex': 'I’m thinking of taking up yoga next month.'}, {'audio': 'f037.mp3', 'en': 'Aware', 'es': 'Consciente / Enterado', 'ex': 'Are you aware of the new rules?'}, {'audio': 'f038.mp3', 'en': 'Willing', 'es': 'Dispuesto / Con ganas', 'ex': 'He is willing to help us with the project.'}, {'audio': 'f039.mp3', 'en': 'Worth', 'es': 'Valer la pena / Valor', 'ex': 'That museum is definitely worth a visit.'}, {'audio': 'f040.mp3', 'en': 'To advocate', 'es': 'Defender / Abogar por', 'ex': 'He advocates for a healthier lifestyle.'}, {'audio': 'f041.mp3', 'en': 'To assert', 'es': 'Afirmar / Aseverar', 'ex': 'She asserted her right to remain silent.'}, {'audio': 'f042.mp3', 'en': 'To bewilder', 'es': 'Desconcertar / Confundir', 'ex': 'The complex instructions bewildered the tourists.'}, {'audio': 'f043.mp3', 'en': 'To cherish', 'es': 'Valorar / Atesorar', 'ex': 'I cherish the memories of our childhood.'}, {'audio': 'f044.mp3', 'en': 'To conceal', 'es': 'Ocultar / Esconder', 'ex': 'He tried to conceal his disappointment.'}, {'audio': 'f045.mp3', 'en': 'To convey', 'es': 'Transmitir / Expresar', 'ex': "It's difficult to convey my feelings in words."}, {'audio': 'f046.mp3', 'en': 'To devise', 'es': 'Idear / Inventar', 'ex': 'We need to devise a new strategy.'}, {'audio': 'f047.mp3', 'en': 'To emphasize', 'es': 'Enfatizar / Destacar', 'ex': 'The teacher emphasized the importance of exercise.'}, {'audio': 'f048.mp3', 'en': 'To hinder', 'es': 'Dificultar / Obstaculizar', 'ex': 'The heavy rain hindered our progress.'}, {'audio': 'f049.mp3', 'en': 'To neglect', 'es': 'Descuidar / Desatender', 'ex': "Don't neglect your health while working hard."}, {'audio': 'f050.mp3', 'en': 'To strive', 'es': 'Esforzarse / Luchar por', 'ex': 'We strive to provide the best service possible.'}, {'audio': 'f051.mp3', 'en': 'To thrive', 'es': 'Prosperar / Crecer mucho', 'ex': 'Small businesses are thriving in this city.'}, {'audio': 'f052.mp3', 'en': 'To undergo', 'es': 'Someterse a / Experimentar', 'ex': 'The building is undergoing major renovations.'}, {'audio': 'f053.mp3', 'en': 'To uphold', 'es': 'Mantener / Defender', 'ex': 'The court upheld the previous decision.'}, {'audio': 'f054.mp3', 'en': 'Abrupt', 'es': 'Abrupto / Repentino', 'ex': 'The meeting came to an abrupt end.'}, {'audio': 'f055.mp3', 'en': 'Bizarre', 'es': 'Extraño / Estrambotico', 'ex': 'It was a bizarre situation that no one expected.'}, {'audio': 'f056.mp3', 'en': 'Cunning', 'es': 'Astuto / Ladino', 'ex': 'The fox used a cunning trick to escape.'}, {'audio': 'f057.mp3', 'en': 'Dreadful', 'es': 'Espantoso / Terrible', 'ex': 'The weather today is absolutely dreadful.'}, {'audio': 'f058.mp3', 'en': 'Flawless', 'es': 'Impecable / Sin fallos', 'ex': 'Her performance on the piano was flawless.'}, {'audio': 'f059.mp3', 'en': 'Gullible', 'es': 'Ingenuo / Facil de engañar', 'ex': 'He is so gullible he believes everything on the internet.'}, {'audio': 'f060.mp3', 'en': 'Harsh', 'es': 'Duro / Severo', 'ex': 'The winter in the mountains is very harsh.'}, {'audio': 'f061.mp3', 'en': 'Invaluable', 'es': 'Inestimable / De valor incalculable', 'ex': 'Your help has been invaluable to the project.'}, {'audio': 'f062.mp3', 'en': 'Lethal', 'es': 'Letal / Mortal', 'ex': 'These chemicals can be lethal if swallowed.'}, {'audio': 'f063.mp3', 'en': 'Overwhelming', 'es': 'Abrumador', 'ex': 'The amount of work was overwhelming.'}, {'audio': 'f064.mp3', 'en': 'Peculiar', 'es': 'Peculiar / Raro', 'ex': 'The food had a peculiar but pleasant taste.'}, {'audio': 'f065.mp3', 'en': 'Remarkable', 'es': 'Notable / Extraordinario', 'ex': 'She has made remarkable progress this term.'}, {'audio': 'f066.mp3', 'en': 'Swift', 'es': 'Rapido / Veloz', 'ex': 'The government promised a swift response.'}, {'audio': 'f067.mp3', 'en': 'Vivid', 'es': 'Vivido / Muy claro', 'ex': 'I have a vivid memory of my first day at school.'}, {'audio': 'f068.mp3', 'en': 'Breakthrough', 'es': 'Avance / Descubrimiento importante', 'ex': 'Scientists have made a major breakthrough in cancer research.'}, {'audio': 'f069.mp3', 'en': 'Drawback', 'es': 'Inconveniente / Desventaja', 'ex': 'The main drawback of this car is its high price.'}, {'audio': 'f070.mp3', 'en': 'Incentive', 'es': 'Incentivo / Aliciente', 'ex': 'The company offers a bonus as an incentive.'}, {'audio': 'f071.mp3', 'en': 'Leisure', 'es': 'Ocio / Tiempo libre', 'ex': 'What do you like to do in your leisure time?'}, {'audio': 'f072.mp3', 'en': 'Outcome', 'es': 'Resultado / Desenlace', 'ex': 'We are waiting for the final outcome of the election.'}, {'audio': 'f073.mp3', 'en': 'Shortage', 'es': 'Escasez', 'ex': 'There is a severe shortage of skilled workers.'}, {'audio': 'f074.mp3', 'en': 'Trend', 'es': 'Tendencia', 'ex': "There's a growing trend towards remote working."}, {'audio': 'f075.mp3', 'en': 'To back down', 'es': 'Echarse atras / Ceder', 'ex': 'Neither side was willing to back down.'}, {'audio': 'f076.mp3', 'en': 'To call for', 'es': 'Requerir / Exigir', 'ex': 'The situation calls for immediate action.'}, {'audio': 'f077.mp3', 'en': 'To drop out', 'es': 'Abandonar', 'ex': 'He decided to drop out of university.'}, {'audio': 'f078.mp3', 'en': 'To get over', 'es': 'Superar', 'ex': 'It took her a long time to get over the breakup.'}, {'audio': 'f079.mp3', 'en': 'To hand in', 'es': 'Entregar', 'ex': 'Please hand in your assignments by Friday.'}, {'audio': 'f080.mp3', 'en': 'To look down on', 'es': 'Despreciar', 'ex': "She looks down on people who don't have a degree."}, {'audio': 'f081.mp3', 'en': 'To mess up', 'es': 'Arruinar / Meter la pata', 'ex': "I'm sorry, I really messed up this time."}, {'audio': 'f082.mp3', 'en': 'To turn down', 'es': 'Rechazar / Bajar volumen', 'ex': 'They turned down my job application.'}
+const items = [
+    {"audio": "f001.mp3", "en": "Out of date", "es": "Anticuado / Caducado", "ex": "That fashion style is a bit out of date now."},
+    {"audio": "f002.mp3", "en": "Frightened", "es": "Asustado", "ex": "The loud noise made the child feel frightened."},
+    {"audio": "f003.mp3", "en": "Amazed", "es": "Alucinado / Muy sorprendido", "ex": "I was amazed by the beautiful view from the top."},
+    {"audio": "f004.mp3", "en": "Amusing", "es": "Gracioso / Divertido", "ex": "He told us an amusing story about his cat."},
+    {"audio": "f005.mp3", "en": "Awkward", "es": "Incomodo / Patoso", "ex": "There was an awkward silence after his comment."},
+    {"audio": "f006.mp3", "en": "Broad", "es": "Ancho / Amplio", "ex": "He has very broad shoulders."},
+    {"audio": "f007.mp3", "en": "Clumsy", "es": "Torpe", "ex": "I'm so clumsy; I just spilled my coffee again."},
+    {"audio": "f008.mp3", "en": "Delighted", "es": "Encantado / Muy feliz", "ex": "She was delighted with her birthday presents."},
+    {"audio": "f009.mp3", "en": "Handy", "es": "Pratico / Util / A mano", "ex": "This tool is very handy for small repairs."},
+    {"audio": "f010.mp3", "en": "Harmless", "es": "Inofensivo", "ex": "Don't worry, that spider is completely harmless."},
+    {"audio": "f011.mp3", "en": "Odd", "es": "Extraño / Raro", "ex": "It’s odd that he hasn’t called me yet."},
+    {"audio": "f012.mp3", "en": "Rough", "es": "Aproximado / Rugoso / Agitado", "ex": "The sea was very rough during the storm."},
+    {"audio": "f013.mp3", "en": "Slightly", "es": "Ligeramente", "ex": "I’m feeling slightly better than yesterday."},
+    {"audio": "f014.mp3", "en": "Substantial", "es": "Sustancial / Considerable", "ex": "They made a substantial profit this year."},
+    {"audio": "f015.mp3", "en": "Tough", "es": "Dificil / Duro / Resistente", "ex": "It was a tough decision to make."},
+    {"audio": "f016.mp3", "en": "Tricky", "es": "Complicado / Mañoso", "ex": "This puzzle is quite tricky to solve."},
+    {"audio": "f017.mp3", "en": "Vague", "es": "Impreciso / Vago", "ex": "His instructions were too vague to follow."},
+    {"audio": "f018.mp3", "en": "Worldwide", "es": "Mundial / En todo el mundo", "ex": "The company has a worldwide reputation."},
+    {"audio": "f019.mp3", "en": "Furthermore", "es": "Ademas / Es mas", "ex": "The house is beautiful; furthermore, it's very cheap."},
+    {"audio": "f020.mp3", "en": "Moreover", "es": "Ademas / Es mas", "ex": "The house is beautiful; moreover, it's very cheap."},
+    {"audio": "f021.mp3", "en": "Therefore", "es": "Por lo tanto", "ex": "I forgot my wallet; therefore, I couldn't buy it."},
+    {"audio": "f022.mp3", "en": "Whereas", "es": "Mientras que (contraste)", "ex": "She loves spicy food, whereas I hate it."},
+    {"audio": "f023.mp3", "en": "Otherwise", "es": "De lo contrario", "ex": "Put on a coat; otherwise, you'll catch a cold."},
+    {"audio": "f024.mp3", "en": "Provided that", "es": "Siempre que / Con la condicion de que", "ex": "You can go provided that you finish your homework."},
+    {"audio": "f025.mp3", "en": "As long as", "es": "Siempre y cuando / Mientras", "ex": "I'll help you as long as you try your best."},
+    {"audio": "f026.mp3", "en": "Eventually", "es": "Finalmente / Con el tiempo", "ex": "It took a while, but we eventually arrived."},
+    {"audio": "f027.mp3", "en": "Relatively", "es": "Relativamente / Bastante", "ex": "The exam was relatively easy for me."},
+    {"audio": "f028.mp3", "en": "Increasingly", "es": "Cada vez mas", "ex": "It is becoming increasingly difficult to find a job."},
+    {"audio": "f029.mp3", "en": "Roughly", "es": "Aproximadamente / A ojo", "ex": "There were roughly fifty people at the party."},
+    {"audio": "f030.mp3", "en": "Encourage", "es": "Animar / Fomentar", "ex": "My parents always encourage me to study."},
+    {"audio": "f031.mp3", "en": "Warn", "es": "Avisar / Advertir", "ex": "I must warn you about the slippery floor."},
+    {"audio": "f032.mp3", "en": "Carry out", "es": "Llevar a cabo / Realizar", "ex": "The scientist will carry out the experiment today."},
+    {"audio": "f033.mp3", "en": "Turn out", "es": "Resultar ser / Salir de una manera", "ex": "The party turned out to be a great success."},
+    {"audio": "f034.mp3", "en": "Call off", "es": "Cancelar", "ex": "They decided to call off the match due to rain."},
+    {"audio": "f035.mp3", "en": "Put off", "es": "Posponer", "ex": "Never put off until tomorrow what you can do today."},
+    {"audio": "f036.mp3", "en": "Take up", "es": "Empezar una actividad / Ocupar espacio", "ex": "I’m thinking of taking up yoga next month."},
+    {"audio": "f037.mp3", "en": "Aware", "es": "Consciente / Enterado", "ex": "Are you aware of the new rules?"},
+    {"audio": "f038.mp3", "en": "Willing", "es": "Dispuesto / Con ganas", "ex": "He is willing to help us with the project."},
+    {"audio": "f039.mp3", "en": "Worth", "es": "Valer la pena / Valor", "ex": "That museum is definitely worth a visit."},
+    {"audio": "f040.mp3", "en": "To advocate", "es": "Defender / Abogar por", "ex": "He advocates for a healthier lifestyle."},
+    {"audio": "f041.mp3", "en": "To assert", "es": "Afirmar / Aseverar", "ex": "She asserted her right to remain silent."},
+    {"audio": "f042.mp3", "en": "To bewilder", "es": "Desconcertar / Confundir", "ex": "The complex instructions bewildered the tourists."},
+    {"audio": "f043.mp3", "en": "To cherish", "es": "Valorar / Atesorar", "ex": "I cherish the memories of our childhood."},
+    {"audio": "f044.mp3", "en": "To conceal", "es": "Ocultar / Esconder", "ex": "He tried to conceal his disappointment."},
+    {"audio": "f045.mp3", "en": "To convey", "es": "Transmitir / Expresar", "ex": "It's difficult to convey my feelings in words."},
+    {"audio": "f046.mp3", "en": "To devise", "es": "Idear / Inventar", "ex": "We need to devise a new strategy."},
+    {"audio": "f047.mp3", "en": "To emphasize", "es": "Enfatizar / Destacar", "ex": "The teacher emphasized the importance of exercise."},
+    {"audio": "f048.mp3", "en": "To hinder", "es": "Dificultar / Obstaculizar", "ex": "The heavy rain hindered our progress."},
+    {"audio": "f049.mp3", "en": "To neglect", "es": "Descuidar / Desatender", "ex": "Don't neglect your health while working hard."},
+    {"audio": "f050.mp3", "en": "To strive", "es": "Esforzarse / Luchar por", "ex": "We strive to provide the best service possible."},
+    {"audio": "f051.mp3", "en": "To thrive", "es": "Prosperar / Crecer mucho", "ex": "Small businesses are thriving in this city."},
+    {"audio": "f052.mp3", "en": "To undergo", "es": "Someterse a / Experimentar", "ex": "The building is undergoing major renovations."},
+    {"audio": "f053.mp3", "en": "To uphold", "es": "Mantener / Defender", "ex": "The court upheld the previous decision."},
+    {"audio": "f054.mp3", "en": "Abrupt", "es": "Abrupto / Repentino", "ex": "The meeting came to an abrupt end."},
+    {"audio": "f055.mp3", "en": "Bizarre", "es": "Extraño / Estrambotico", "ex": "It was a bizarre situation that no one expected."},
+    {"audio": "f056.mp3", "en": "Cunning", "es": "Astuto / Ladino", "ex": "The fox used a cunning trick to escape."},
+    {"audio": "f057.mp3", "en": "Dreadful", "es": "Espantoso / Terrible", "ex": "The weather today is absolutely dreadful."},
+    {"audio": "f058.mp3", "en": "Flawless", "es": "Impecable / Sin fallos", "ex": "Her performance on the piano was flawless."},
+    {"audio": "f059.mp3", "en": "Gullible", "es": "Ingenuo / Facil de engañar", "ex": "He is so gullible he believes everything on the internet."},
+    {"audio": "f060.mp3", "en": "Harsh", "es": "Duro / Severo", "ex": "The winter in the mountains is very harsh."},
+    {"audio": "f061.mp3", "en": "Invaluable", "es": "Inestimable / De valor incalculable", "ex": "Your help has been invaluable to the project."},
+    {"audio": "f062.mp3", "en": "Lethal", "es": "Letal / Mortal", "ex": "These chemicals can be lethal if swallowed."},
+    {"audio": "f063.mp3", "en": "Overwhelming", "es": "Abrumador", "ex": "The amount of work was overwhelming."},
+    {"audio": "f064.mp3", "en": "Peculiar", "es": "Peculiar / Raro", "ex": "The food had a peculiar but pleasant taste."},
+    {"audio": "f065.mp3", "en": "Remarkable", "es": "Notable / Extraordinario", "ex": "She has made remarkable progress this term."},
+    {"audio": "f066.mp3", "en": "Swift", "es": "Rapido / Veloz", "ex": "The government promised a swift response."},
+    {"audio": "f067.mp3", "en": "Vivid", "es": "Vivido / Muy claro", "ex": "I have a vivid memory of my first day at school."},
+    {"audio": "f068.mp3", "en": "Breakthrough", "es": "Avance / Descubrimiento importante", "ex": "Scientists have made a major breakthrough in cancer research."},
+    {"audio": "f069.mp3", "en": "Drawback", "es": "Inconveniente / Desventaja", "ex": "The main drawback of this car is its high price."},
+    {"audio": "f070.mp3", "en": "Incentive", "es": "Incentivo / Aliciente", "ex": "The company offers a bonus as an incentive."},
+    {"audio": "f071.mp3", "en": "Leisure", "es": "Ocio / Tiempo libre", "ex": "What do you like to do in your leisure time?"},
+    {"audio": "f072.mp3", "en": "Outcome", "es": "Resultado / Desenlace", "ex": "We are waiting for the final outcome of the election."},
+    {"audio": "f073.mp3", "en": "Shortage", "es": "Escasez", "ex": "There is a severe shortage of skilled workers."},
+    {"audio": "f074.mp3", "en": "Trend", "es": "Tendencia", "ex": "There's a growing trend towards remote working."},
+    {"audio": "f075.mp3", "en": "To back down", "es": "Echarse atras / Ceder", "ex": "Neither side was willing to back down."},
+    {"audio": "f076.mp3", "en": "To call for", "es": "Requerir / Exigir", "ex": "The situation calls for immediate action."},
+    {"audio": "f077.mp3", "en": "To drop out", "es": "Abandonar", "ex": "He decided to drop out of university."},
+    {"audio": "f078.mp3", "en": "To get over", "es": "Superar", "ex": "It took her a long time to get over the breakup."},
+    {"audio": "f079.mp3", "en": "To hand in", "es": "Entregar", "ex": "Please hand in your assignments by Friday."},
+    {"audio": "f080.mp3", "en": "To look down on", "es": "Despreciar", "ex": "She looks down on people who don't have a degree."},
+    {"audio": "f081.mp3", "en": "To mess up", "es": "Arruinar / Meter la pata", "ex": "I'm sorry, I really messed up this time."},
+    {"audio": "f082.mp3", "en": "To turn down", "es": "Rechazar / Bajar volumen", "ex": "They turned down my job application."}
 ];
 
-let mode="EN";
-let activeIndices=data.map((_,i)=>i);
-let pos=0;
-let learnedCount=0;
-let initialTotal=activeIndices.length;
+const normalizationMap = {
+    "dont": "do not", "doesn't": "does not", "doesnt": "does not", "didnt": "did not", "didn't": "did not",
+    "isnt": "is not", "isn't": "is not", "arent": "are not", "aren't": "are not",
+    "wasnt": "was not", "wasn't": "was not", "werent": "were not", "weren't": "were not",
+    "havent": "have not", "haven't": "have not", "hasnt": "has not", "hasn't": "has not",
+    "hadnt": "had not", "hadn't": "had not", "wont": "will not", "won't": "will not",
+    "wouldnt": "would not", "wouldn't": "would not", "cant": "can not", "can't": "can not",
+    "couldnt": "could not", "couldn't": "could not", "im": "i am", "i'm": "i am",
+    "youre": "you are", "you're": "you are", "hes": "he is", "he's": "he is",
+    "shes": "she is", "she's": "she is", "its": "it is", "it's": "it is",
+    "were": "we are", "we're": "we are", "theyre": "they are", "they're": "they are",
+    "ive": "i have", "i've": "i have", "youve": "you have", "you've": "you have",
+    "weve": "we have", "we've": "we have", "theyve": "they have", "they've": "they have",
+    "id": "i would", "i'd": "i would", "youd": "you would", "you'd": "you would",
+    "hed": "he would", "he'd": "he would", "shed": "she would", "she'd": "she would",
+    "wed": "we would", "we'd": "we would", "theyd": "they would", "they'd": "they would",
+    "ill": "i will", "i'll": "i will", "youll": "you will", "you'll": "you will",
+    "hell": "he will", "he'll": "he will", "shell": "she will", "she'll": "she will",
+    "well": "we will", "we'll": "we will", "theyll": "they will", "they'll": "they will"
+};
 
-// CREAR BOTONES DE BLOQUES
-const blocksDiv=document.getElementById("blocks");
-const blockCount=Math.ceil(data.length/10);
-for(let i=0;i<blockCount;i++){
-  const b=document.createElement("button");
-  b.className="block";
-  b.textContent=i;
-  b.onclick=()=>selectBlock(i);
-  blocksDiv.appendChild(b);
+let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0, fallos = 0;
+const audioObj = new Audio();
+const progressBar = document.getElementById("progressBar");
+
+function getFolderName() { return "vocabulario1w-7-kx-Q"; }
+
+let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
+let mediaRecorder, audioChunks = [], isRecording = false;
+
+const SpeechRecognition = window.Recognition || window.webkitSpeechRecognition || window.SpeechRecognition;
+let recognition, isListening = false;
+
+if (SpeechRecognition) {
+    recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    recognition.continuous = true;
+
+    recognition.onstart = () => { isListening = true; document.getElementById("sttBtn").classList.add("listening"); };
+    recognition.onend = () => { isListening = false; document.getElementById("sttBtn").classList.remove("listening"); };
+    recognition.onresult = (event) => {
+        let fullTranscript = "";
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+            fullTranscript += event.results[i][0].transcript + " ";
+        }
+        compareSentences(currentBlockData[pos].en, fullTranscript.trim());
+    };
 }
 
-function selectAll(){
-  document.querySelectorAll(".block").forEach(x=>x.classList.remove("active"));
-  document.querySelector(".pblock").classList.add("active");
-  activeIndices = data.map((_,i)=>i);
-  pos = 0; learnedCount = 0; initialTotal = activeIndices.length;
-  update();
+function normalizeText(text) {
+    if (!text) return "";
+    let clean = text.toLowerCase().replace(/[’‘]/g, "'");
+    clean = clean.replace(/[.,?!"]/g, "").trim();
+    let words = clean.split(/\s+/);
+    return words.map(word => {
+        let key = word.replace("'", ""); 
+        return normalizationMap[word] || normalizationMap[key] || word;
+    }).join(" ");
 }
 
-function selectBlock(b){
-  document.querySelectorAll(".block").forEach(x=>x.classList.remove("active"));
-  blocksDiv.children[b+1].classList.add("active");
-  activeIndices=[];
-  const start=b*10;
-  const end=Math.min(start+9,data.length-1);
-  for(let i=start;i<=end;i++) activeIndices.push(i);
-  pos=0; learnedCount = 0; initialTotal = activeIndices.length;
-  update();
+function compareSentences(original, spoken) {
+    const feedbackDiv = document.getElementById("speechFeedback");
+    const normOriginal = normalizeText(original);
+    const normSpoken = normalizeText(spoken);
+    const normOriginalWords = normOriginal.split(/\s+/);
+    const normSpokenWords = normSpoken.split(/\s+/);
+    const origWordsRaw = original.split(/\s+/);
+    
+    let resultHTML = "";
+    let sIdx = 0;
+    let correctCount = 0;
+
+    normOriginalWords.forEach((normWord, index) => {
+        const originalWordRaw = origWordsRaw[index];
+        let matched = false;
+        if (sIdx < normSpokenWords.length && normSpokenWords[sIdx] === normWord) {
+            resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
+            sIdx++;
+            matched = true;
+            correctCount++;
+        } else {
+            for (let j = sIdx + 1; j < sIdx + 5 && j < normSpokenWords.length; j++) {
+                if (normSpokenWords[j] === normWord) {
+                    for (let k = sIdx; k < j; k++) {
+                        resultHTML += `<span class="word-error">${normSpokenWords[k]}</span>`;
+                    }
+                    resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
+                    sIdx = j + 1;
+                    matched = true;
+                    correctCount++;
+                    break;
+                }
+            }
+        }
+        if (!matched) resultHTML += `<span class="word-missing">${originalWordRaw}</span>`;
+    });
+    feedbackDiv.innerHTML = resultHTML;
+
+    let score = correctCount / normOriginalWords.length;
+    if (score >= 0.95) {
+        fallos = 0;
+        document.getElementById('btn-rescat').style.display = 'none';
+        if (window.executarAciertoFinal) window.executarAciertoFinal();
+        setTimeout(() => { know(); }, 3000);
+    } else {
+        fallos++;
+        if (fallos >= 3) {
+            document.getElementById('btn-rescat').style.display = 'block';
+        }
+    }
 }
 
-function setMode(m){
-  mode=m;
-  document.getElementById("modeEN").classList.toggle("active",m==="EN");
-  document.getElementById("modeES").classList.toggle("active",m==="ES");
-  update();
+function rescueAction() {
+    if (!starredIds.includes(currentBlockData[pos].audio)) {
+        toggleStar();
+    }
+    document.getElementById('btn-rescat').style.display = 'none';
+    fallos = 0;
+    if (window.executarAciertoFinal) window.executarAciertoFinal();
 }
 
-function update(){
-  const idx=activeIndices[pos];
-  document.getElementById("word").textContent= mode==="EN" ? "" : data[idx].es;
-  document.getElementById("answer").textContent= mode==="EN" ? data[idx].es : data[idx].en;
-  document.getElementById("example").textContent= data[idx].ex;
-  document.getElementById("answer").style.display="none";
-  document.getElementById("example").style.display="none";
-  document.getElementById("pos").textContent=learnedCount;
-  document.getElementById("total").textContent=initialTotal;
-  if(mode==="EN") playAudio();
+function toggleMic() {
+    if (!recognition) { alert("Navegador no suportat."); return; }
+    if (isListening) {
+        recognition.stop();
+    } else {
+        if (isRecording) {
+            mediaRecorder.stop();
+            isRecording = false;
+            document.querySelectorAll('.recording').forEach(b => b.classList.remove('recording'));
+        }
+        document.getElementById("speechFeedback").innerHTML = "";
+        recognition.start();
+    }
 }
 
-function reveal(){
-  document.getElementById("answer").style.display="block";
-  document.getElementById("example").style.display="block";
-  if(mode==="EN"){ document.getElementById("word").textContent=data[activeIndices[pos]].en; }
-  else { playAudio(); }
+async function toggleRecord(targetBtnId) {
+    const btn = document.getElementById(targetBtnId);
+    if (!isRecording) {
+        try {
+            if (isListening) recognition.stop();
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
+            mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+            mediaRecorder.onstop = () => {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                new Audio(URL.createObjectURL(audioBlob)).play();
+                stream.getTracks().forEach(track => track.stop());
+            };
+            mediaRecorder.start();
+            isRecording = true;
+            btn.classList.add("recording");
+        } catch (err) { alert("Error al accedir al micròfon."); }
+    } else {
+        mediaRecorder.stop(); 
+        isRecording = false;
+        btn.classList.remove("recording");
+    }
 }
 
-function know(){
-  learnedCount++;
-  activeIndices.splice(pos,1);
-  if(activeIndices.length === 0) { alert("¡Molt bé! Has acabat el bloc."); selectAll(); return; }
-  if(pos>=activeIndices.length) pos=0;
-  update();
+audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
+progressBar.oninput = () => { if (audioObj.duration) audioObj.currentTime = (progressBar.value / 100) * audioObj.duration; };
+
+function initBlocks() {
+  const container = document.getElementById("blockContainer");
+  const numBlocks = Math.ceil(items.length / 10);
+  const savedBlock = localStorage.getItem(getFolderName() + "_puntoLibro");
+  container.innerHTML = "";
+  const allBtn = document.createElement("button");
+  allBtn.className = "block all-btn";
+  allBtn.textContent = "T";
+  allBtn.onclick = () => loadAll();
+  container.appendChild(allBtn);
+  for (let i = 0; i < numBlocks; i++) {
+    const btn = document.createElement("button");
+    btn.className = "block";
+    btn.textContent = i + 1;
+    btn.onclick = () => loadBlock(i);
+    container.appendChild(btn);
+  }
+  if (savedBlock === "all") loadAll();
+  else loadBlock((savedBlock !== null) ? parseInt(savedBlock) : 0);
 }
 
-function next(){
-  pos=(pos+1)%activeIndices.length;
-  update();
+function loadBlock(b) {
+  currentBlockID = b;
+  localStorage.setItem(getFolderName() + "_puntoLibro", b);
+  let temp = [];
+  let start = b * 10;
+  let end = Math.min(start + 10, items.length);
+  for (let i = start; i < end; i++) temp.push({...items[i]});
+  currentBlockData = temp;
+  document.querySelectorAll(".block").forEach((btn, idx) => { btn.classList.toggle("active", idx === (b + 1)); });
+  pos = 0; learnedCount = 0; fallos = 0;
+  document.getElementById("endMsg").classList.add("hidden");
+  document.getElementById('btn-rescat').style.display = 'none';
+  update(true);
 }
 
-function playAudio(){
-  const a=document.getElementById("audio");
-  a.src=data[activeIndices[pos]].audio;
-  a.currentTime=0;
-  const btn=document.querySelector('.audio-btn');
-  btn.classList.remove('vibrate'); void btn.offsetWidth; btn.classList.add('vibrate');
-  a.play().catch(()=>{});
+function loadAll() {
+  currentBlockID = -1;
+  localStorage.setItem(getFolderName() + "_puntoLibro", "all");
+  currentBlockData = items.map(i => ({...i}));
+  document.querySelectorAll(".block").forEach((btn, idx) => { btn.classList.toggle("active", idx === 0); });
+  pos = 0; learnedCount = 0; fallos = 0;
+  document.getElementById("endMsg").classList.add("hidden");
+  document.getElementById('btn-rescat').style.display = 'none';
+  update(true);
 }
 
-function toggleList(){
-  const l=document.getElementById("list");
-  if(l.style.display==="block"){l.style.display="none";return;}
-  l.innerHTML="";
-  activeIndices.forEach(i=>{
-    const d=document.createElement("div");
-    d.className="list-item";
-    d.innerHTML="<strong>"+data[i].en+"</strong> — <span style='color:#2563eb'>"+data[i].es+"</span><div class='list-ex'>"+data[i].ex+"</div>";
-    l.appendChild(d);
+let autoMicTimer;
+
+function startTimer() {
+    clearTimeout(autoMicTimer);
+    let timeLeft = 10;
+    const feedback = document.getElementById("speechFeedback");
+    
+    autoMicTimer = setInterval(() => {
+        timeLeft--;
+        feedback.innerHTML = `<span style="color:#64748b; font-size:14px;">Micro automàtic en ${timeLeft}s...</span>`;
+        if (timeLeft <= 0) {
+            clearInterval(autoMicTimer);
+            feedback.innerHTML = "";
+            if (!isListening) toggleMic();
+        }
+    }, 1000);
+}
+
+function update(fromAction = false) {
+  clearTimeout(autoMicTimer);
+  if (currentBlockData.length === 0) {
+    document.getElementById("en").classList.add("hidden");
+    document.getElementById("es").classList.add("hidden");
+    document.getElementById("speechFeedback").innerHTML = "";
+    document.getElementById("endMsg").classList.remove("hidden");
+    document.getElementById('btn-rescat').style.display = 'none';
+    return;
+  }
+  progressBar.value = 0;
+  const item = currentBlockData[pos];
+  
+  document.getElementById("es").classList.add("hidden");
+  document.getElementById("en").classList.add("hidden");
+  document.getElementById("speechFeedback").innerHTML = "";
+  document.getElementById("starBtn").classList.toggle("active", starredIds.includes(item.audio));
+
+  if (mode === "EN") {
+    document.getElementById("langLabel").textContent = "ANGLÈS";
+    document.getElementById("en").innerHTML = item.en;
+    document.getElementById("es").innerHTML = item.es;
+    if (fromAction) playAudio(item.audio, 1.0);
+  } else {
+    document.getElementById("langLabel").textContent = "CASTELLÀ";
+    document.getElementById("es").innerHTML = item.es;
+    document.getElementById("en").innerHTML = item.en;
+    document.getElementById("es").classList.remove("hidden");
+    if (fromAction) startTimer();
+  }
+  document.getElementById("counter").textContent = `${learnedCount} / ${currentBlockData.length + learnedCount}`;
+}
+
+function playAudio(audioFile, speed) {
+  audioObj.src = audioFile; 
+  audioObj.playbackRate = speed;
+  audioObj.onended = () => {
+    if (mode === "EN") {
+        setTimeout(() => {
+          if (!isListening) toggleMic();
+        }, 1000); 
+    }
+  };
+  audioObj.play().catch(err => console.log("Error con audio:", audioFile));
+}
+
+function playCurrent(speed) { if (currentBlockData.length > 0) playAudio(currentBlockData[pos].audio, speed); }
+function pauseAudio() { audioObj.pause(); }
+
+function reveal() {
+  if (currentBlockData.length === 0) return;
+  const esEl = document.getElementById("es");
+  const enEl = document.getElementById("en");
+  
+  if (mode === "EN") {
+    if (enEl.classList.contains("hidden")) {
+        enEl.classList.remove("hidden");
+        esEl.classList.remove("hidden");
+    } else {
+        playCurrent(1.0);
+    }
+  } else {
+    enEl.classList.toggle("hidden");
+  }
+}
+
+function know() {
+  if (currentBlockData.length === 0) return;
+  learnedCount++; 
+  currentBlockData.splice(pos, 1);
+  if (pos >= currentBlockData.length) pos = 0;
+  fallos = 0;
+  document.getElementById('btn-rescat').style.display = 'none';
+  update(true);
+}
+
+function nextOne() {
+  if (currentBlockData.length === 0) return;
+  pos = (pos + 1) % currentBlockData.length;
+  fallos = 0;
+  document.getElementById('btn-rescat').style.display = 'none';
+  update(true);
+}
+
+function setMode(m) { mode = m; update(true); }
+
+function toggleStar(forcedId = null) {
+  const audio = forcedId || currentBlockData[pos].audio;
+  if (starredIds.includes(audio)) starredIds = starredIds.filter(id => id !== audio);
+  else starredIds.push(audio);
+  localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
+  const starBtn = document.getElementById("starBtn");
+  if(starBtn) starBtn.classList.toggle("active", starredIds.includes(currentBlockData[pos].audio));
+}
+
+function toggleList(type) {
+  const box = document.getElementById("listBox");
+  if (!box.classList.contains("hidden") && box.dataset.activeType === type) { box.classList.add("hidden"); return; }
+  box.dataset.activeType = type;
+  renderList(type);
+  box.classList.remove("hidden");
+}
+
+function renderList(type) {
+  const box = document.getElementById("listBox");
+  box.innerHTML = type === 'stars' ? "<h3>Frases destacades (★):</h3>" : "";
+  let listToRender = [];
+  if (type === 'stars') listToRender = items.filter(i => starredIds.includes(i.audio));
+  else listToRender = (currentBlockID === -1) ? items : items.slice(currentBlockID * 10, (currentBlockID + 1) * 10);
+  if (listToRender.length === 0) { box.innerHTML += "<p style='padding:10px;'>Buit.</p>"; return; }
+  listToRender.forEach((i, index) => {
+    const isStarred = starredIds.includes(i.audio);
+    const itemDiv = document.createElement("div");
+    itemDiv.className = "list-item";
+    const recId = `rec-list-${index}`;
+    itemDiv.innerHTML = `
+      <div class="list-controls-side">
+        <button class="star-btn-list ${isStarred ? 'active' : ''}" onclick="toggleStar('${i.audio}'); renderList('${type}')">★</button>
+        <button class="mini-btn btn-audio" onclick="playAudio('${i.audio}', 1.0)">🔊</button>
+        <button class="mini-btn btn-rec-mini" id="${recId}" onclick="toggleRecord('${recId}')">🎤</button>
+      </div>
+      <div class="list-texts">
+        <div style="color:#2563eb; font-weight:700;">${i.es}</div>
+        <div id="rev-${index}" class="blur" style="font-weight:800;" onclick="this.classList.toggle('revealed')">${i.en}</div>
+      </div>
+    `;
+    box.appendChild(itemDiv);
   });
-  l.style.display="block";
 }
 
-// BOTÓN DE MARCADO INTELIGENTE
-function getFolderName() {
-    const parts = window.location.pathname.split('/').filter(Boolean);
-    return parts[parts.length - 2] || "unknown";
-}
-function markAsDone(element) {
+function markAsDone(el) {
     localStorage.setItem(getFolderName(), new Date().toISOString());
-    element.innerHTML = "✓"; element.classList.add('marked');
-    alert("Lliçó marcada ✅");
+    el.innerHTML = "✓"; el.classList.add('marked');
 }
-const card = document.querySelector(".card");
-const box = document.createElement("div");
-box.className = "check-box-manual";
-if (localStorage.getItem(getFolderName())) { box.innerHTML = "✓"; box.classList.add('marked'); }
-box.onclick = function() { markAsDone(this); };
-card.appendChild(box);
 
-update();
+if (localStorage.getItem(getFolderName())) { 
+    const mc = document.getElementById("mainCheck");
+    if(mc) { mc.innerHTML = "✓"; mc.classList.add('marked'); }
+}
+
+(function() {
+    let xp = parseInt(localStorage.getItem('global_xp')) || 0;
+    const marcador = document.getElementById('val-puntos');
+    if(marcador) marcador.textContent = xp;
+
+    window.executarAciertoFinal = function() {
+        xp += 10;
+        localStorage.setItem('global_xp', xp);
+        if(marcador) marcador.textContent = xp;
+
+        const est = document.getElementById('estrella-animada');
+        est.style.display = "block";
+        est.style.transition = "none";
+        est.style.opacity = "0";
+        est.style.transform = "translate(-50%, -50%) scale(0)";
+        void est.offsetWidth; 
+        
+        est.style.transition = "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+        est.style.opacity = "1";
+        est.style.transform = "translate(-50%, -50%) scale(1.4)";
+        
+        setTimeout(() => {
+            est.style.opacity = "0";
+            est.style.transform = "translate(-50%, -50%) scale(0)";
+            setTimeout(() => { est.style.display = "none"; }, 500);
+        }, 1000);
+    };
+})();
+
+initBlocks();
 </script>
 </body>
 </html>
