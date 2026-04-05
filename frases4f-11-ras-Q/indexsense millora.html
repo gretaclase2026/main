@@ -406,44 +406,20 @@ function update(fromAction = false) {
   document.getElementById("en").classList.add("hidden");
   document.getElementById("speechFeedback").innerHTML = "";
   document.getElementById("starBtn").classList.toggle("active", starredIds.includes(item.audio));
-
   if (mode === "EN") {
     document.getElementById("langLabel").textContent = "ANGLÈS";
     document.getElementById("en").innerHTML = item.en;
     document.getElementById("en").classList.remove("hidden");
-    // Usamos item.audio porque así se llama en este archivo
     if (fromAction) playAudio(item.audio, 1.0);
   } else {
     document.getElementById("langLabel").textContent = "CASTELLÀ";
     document.getElementById("es").innerHTML = item.es;
     document.getElementById("es").classList.remove("hidden");
-
-   // Activación automática a los 10 segundos en modo Castellano
-    if (fromAction) {
-        setTimeout(() => {
-            // Cambiado toggleDictation por toggleMic
-            if (!isListening && mode === "ES") toggleMic();
-        }, 10000); 
-    }
   }
   document.getElementById("counter").textContent = `${learnedCount} / ${currentBlockData.length + learnedCount}`;
 }
-function playAudio(audioFile, speed) {
-  // Usamos audioObj que es la variable definida al principio del script
-  audioObj.src = audioFile; 
-  audioObj.playbackRate = speed;
 
-  audioObj.onended = () => {
-    if (mode === "EN") {
-        setTimeout(() => {
-          // Cambiado a toggleMic para que use tu función existente
-          if (!isListening) toggleMic();
-        }, 1000); 
-    }
-  };
-  
-  audioObj.play().catch(err => console.log("Error con audio:", audioFile));
-}
+function playAudio(src, speed) { audioObj.src = src; audioObj.playbackRate = speed; audioObj.play().catch(() => {}); }
 function playCurrent(speed) { if (currentBlockData.length > 0) playAudio(currentBlockData[pos].audio, speed); }
 function pauseAudio() { audioObj.pause(); }
 
