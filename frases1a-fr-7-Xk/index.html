@@ -128,9 +128,10 @@ const items = [
     {"id":"006","key":"as long as","audio":"f006.mp3","es":"Et deixaré el meu llibre preferit sempre que prometis cuidar-lo i tornar-me’l la setmana vinent.","en":"I will lend you my favorite book as long as you promise to take care of it and give it back to me next week."},
     {"id":"007","key":"worth","audio":"f007.mp3","es":"Sé que l’entrada al museu és cara, però realment val la pena visitar-lo perquè las pintures de dins són les més famoses del món.","en":"I know the museum ticket is expensive, but it is really worth visiting because the paintings inside are the most famous in the world."},
     {"id":"008","key":"awkward","audio":"f008.mp3","es":"Va ser molt incòmode quan em vaig trobar el meu antic cap al supermercat i no sabia què dir-li després de tants anys.","en":"It was very awkward when I met my old boss at the supermarket and I didn't know what to say to him after so many years."},
-    {"id":"009","key":"provided that","audio":"f009.mp3","es":"Comprarem el cotxe nou el mes que ve sempre que el banc nos doni els diners que necessitem per al primer pagament.","en":"We are going to buy the new car next month provided that the bank gives us the money we need for the first payment."},
+    {"id":"009","key":"provided that","audio":"f009.mp3","es":"Comprarem el cotxe nou el mes que ve siempre que el banc nos doni els diners que necessitem per al primer pagament.","en":"We are going to buy the new car next month provided that the bank gives us the money we need for the first payment."},
     {"id":"010","key":"tough","audio":"f010.mp3","es":"L’examen va ser molt difícil i llarg, però em sento contenta perquè vaig estudiar molt i crec que vaig respondre totes les preguntes correctament.","en":"The exam was very tough and long, but I feel happy because I studied a lot and I think I answered all the questions correctly."}
 ];
+
 const normalizationMap = {
     "dont": "do not", "doesn't": "does not", "doesnt": "does not", "didnt": "did not", "didn't": "did not",
     "isnt": "is not", "isn't": "is not", "arent": "are not", "aren't": "are not",
@@ -456,6 +457,21 @@ function toggleStar(forcedId = null) {
   if(starBtn) starBtn.classList.toggle("active", starredIds.includes(currentBlockData[pos].audio));
 }
 
+function clearAllStars() {
+  if (confirm("Vols eliminar totes les estrelles de la llista?")) {
+    starredIds = [];
+    localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
+    
+    const starBtn = document.getElementById("starBtn");
+    if(starBtn) starBtn.classList.remove("active");
+    
+    const box = document.getElementById("listBox");
+    if (!box.classList.contains("hidden")) {
+      renderList(box.dataset.activeType);
+    }
+  }
+}
+
 function toggleList(type) {
   const box = document.getElementById("listBox");
   if (!box.classList.contains("hidden") && box.dataset.activeType === type) { box.classList.add("hidden"); return; }
@@ -466,11 +482,25 @@ function toggleList(type) {
 
 function renderList(type) {
   const box = document.getElementById("listBox");
-  box.innerHTML = type === 'stars' ? "<h3>Frases destacades (★):</h3>" : "";
+  if (type === 'stars') {
+    box.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+        <h3 style="margin:0;">Frases destacades (★):</h3>
+        <button onclick="clearAllStars()" style="background:#fee2e2; color:#dc2626; border:none; padding:4px 8px; border-radius:8px; font-size:10px; font-weight:800; cursor:pointer;">NETEJAR TOT 🗑️</button>
+      </div>`;
+  } else {
+    box.innerHTML = "";
+  }
+
   let listToRender = [];
   if (type === 'stars') listToRender = items.filter(i => starredIds.includes(i.audio));
   else listToRender = (currentBlockID === -1) ? items : items.slice(currentBlockID * 10, (currentBlockID + 1) * 10);
-  if (listToRender.length === 0) { box.innerHTML += "<p style='padding:10px;'>Buit.</p>"; return; }
+  
+  if (listToRender.length === 0) { 
+    box.innerHTML += "<p style='padding:10px;'>Buit.</p>"; 
+    return; 
+  }
+
   listToRender.forEach((i, index) => {
     const isStarred = starredIds.includes(i.audio);
     const itemDiv = document.createElement("div");
