@@ -3,283 +3,249 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nevertheless - Pràctica</title>
+<title> Greta App - 7 Frases</title>
 <style>
-body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
-.card{max-width:720px;margin:20px auto;background:#fff;border-radius:24px;padding:24px;box-shadow:0 8px 18px rgba(0,0,0,.15);position:relative}
+body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
+header{padding:8px 4px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center;align-items:center;gap:4px}
+.unit-number{font-size:22px;font-weight:800;color:#2563eb;margin:0 8px;min-width:20px;text-align:center}
+.mode-btns button{padding:6px 10px;border:none;border-radius:12px;font-weight:700;cursor:pointer;font-size:11px;white-space:nowrap;line-height:1.2}
+.mode-en{background:#dbeafe}
+.mode-es{background:#fde68a}
+main{display:flex;justify-content:center;padding:24px}
+.card{position:relative;width:100%;max-width:560px;background:#ffffff;border-radius:28px;padding:32px;box-shadow:0 10px 24px rgba(0,0,0,0.06);text-align:center}
+.counter{position:absolute;top:18px;left:22px;font-weight:800;color:#2563eb}
+.check-box-manual { position: absolute; top: 18px; right: 22px; width: 24px; height: 24px; background: #fff; border: 1.5px solid #22c55e; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 14px; }
+.check-box-manual.marked { background: #22c55e !important; color: white !important; }
+.lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
+.blocks{display:flex;flex-wrap:nowrap;gap:6px;justify-content:flex-start;margin:15px 0 20px;overflow-x:auto;padding:5px 0 5px 10px}
+.block{flex: 0 0 auto;width:32px;height:32px;border-radius:50%;border:none;background:#f1f5f9;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.2s}
+.block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1)}
+.block.all-btn { background: #e2e8f0; color: #475569; }
+.audio-container { display: flex; justify-content: center; gap: 8px; margin: 10px 0; align-items: center; flex-wrap: nowrap; }
+.audio-btn{width:52px;height:52px;border-radius:50%;border:none;background:#dbeafe;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
+.audio-btn.slow{background:#fef08a;}
+.audio-btn.pause{background:#fee2e2; color: inherit;} 
+.audio-btn.rec{background:#fca5a5; color: white;}
+.audio-btn.stt{background:#dbeafe; font-size: 22px;}
 
-.header-row { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
-.unit-badge { color: #2563eb; padding: 0 10px; font-weight: bold; font-size: 24px; }
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+.listening { animation: pulse 1.5s infinite; background: #90caf9 !important; color: #0f172a !important; }
+.recording { animation: pulse 1.5s infinite; background: #f48fb1 !important; color: white !important; }
 
-.modes{display:flex;gap:10px;width:100%}
-.mode{flex:none;width:100px;text-align:center;padding:3px;border-radius:8px;font-weight:bold;font-size:11px;cursor:pointer;border:2px solid transparent}
-.mode.en{background:#d6e6f5}
-.mode.es{background:#f4d6e6}
-.mode.active{border-color:#999;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
-
-.blocks{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}
-.block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#fff4cc;cursor:pointer;transition:0.2s;color:#333}
-.block.active{background:#2563eb !important; color: white !important; transform: scale(1.1); box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3)}
-
-.main-box-container{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;margin:10px 0}
-.audio-controls{display:flex;align-items:center;gap:12px;margin-bottom:15px}
-
-.audio-btn, .mic-btn{font-size:24px; border:none; cursor:pointer; width:50px; height:50px; border-radius:50%; display:flex; align-items:center; justify-content:center; transition: 0.2s}
-.audio-btn{background:#dcfce7}
-.audio-btn.slow{background:#fef08a}
-.audio-btn.pause{background:#fee2e2}
-
-.mic-btn.speech{background:#dbeafe; color: #1e40af;}
-.mic-btn.listening{background:#2563eb !important; color:white; animation: pulse-blue 1.5s infinite;}
-
-.mic-btn.rec{background:#fbcfe8; color: #9d174d;}
-.mic-btn.rec.active, .mini-btn-list.rec.active {background:#ec4899 !important; color:white !important; animation: pulse-pink 1.5s infinite;}
-
-@keyframes pulse-blue { 
-  0% {box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7);} 
-  70% {box-shadow: 0 0 0 10px rgba(37, 99, 235, 0);} 
-  100% {box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);} 
-}
-
-@keyframes pulse-pink { 
-  0% {box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.7);} 
-  70% {box-shadow: 0 0 0 10px rgba(236, 72, 153, 0);} 
-  100% {box-shadow: 0 0 0 0 rgba(236, 72, 153, 0);} 
-}
-
-.star-main { background: none; border: none; font-size: 28px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px; display: flex; align-items: center; justify-content: center; }
-.star-main.active { color: #f59e0b !important; }
-
-.progress-wrapper { width: 100%; max-width: 300px; margin: 10px 0; }
-input[type="range"] { width: 100%; cursor: pointer; height: 8px; border-radius: 5px; accent-color: #2563eb; }
-
-.counter-side{position:absolute;right:10px;top:-25px;font-weight:bold;color:#2563eb;font-size:20px}
-
-#word{font-size:20px;margin:20px 0;line-height:1.4;min-height:120px;text-align:center;display:flex;align-items:center;justify-content:center;padding:0 10px}
-.txt-es{color:#2563eb} 
-.txt-en{color:#0f172a; font-weight:700; font-size:20px;}
-
-#answer{font-size:20px;font-weight:bold;margin-top:-10px;margin-bottom:20px;text-align:center;min-height:30px;color:#666}
-
-#speech-feedback { font-size: 19px; margin-bottom: 10px; min-height: 28px; text-align: center; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; transition: 0.2s;}
-.word-correct { color: #22c55e; font-weight: bold; }
-.word-error { color: #ef4444; text-decoration: line-through; }
+#speechFeedback { font-size: 18px; margin: 15px 0; font-weight: bold; min-height: 28px; line-height: 1.5; padding: 0 10px; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
+.word-correct { color: #16a34a; }
+.word-error { color: #dc2626; text-decoration: line-through; }
 .word-missing { color: #94a3b8; font-style: italic; }
 
-.actions{display:flex;gap:12px}
-.btn{flex:1;padding:18px;border-radius:18px;border:none;font-weight:bold;font-size:18px;cursor:pointer}
-.btn-reveal{background:#e0f2fe}
-.btn-know{background:#dcfce7}
-.btn-next{background:#fbcfe8}
-
-.list-toggle-btns { display: flex; gap: 10px; margin-top: 20px; }
-.btn-list-main { flex: 1; padding: 12px; border-radius: 12px; border: none; background: #e9d5ff; font-weight: bold; cursor: pointer; }
-#list{margin-top:20px;background:#fff;border-radius:15px;display:none;border:1px solid #ddd;padding:10px}
-
-.list-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #eee; }
-.list-item-controls { display: flex; align-items: center; gap: 8px; }
-.mini-btn-list { border: none; border-radius: 8px; width: 34px; height: 34px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: 0.2s;}
-.mini-btn-list.rec { background: #f8bbd0; color: #9d174d; }
-.blur { font-weight: 800; font-size: 15px; color: #0f172a; filter: blur(5px); transition: filter 0.2s; cursor: pointer; user-select: none; }
+.star-btn { background: none; border: none; font-size: 32px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px 0 0; margin-right: 5px; }
+.star-btn.active { color: #f59e0b !important; }
+.progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 10px; box-sizing: border-box; }
+input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
+.hidden{display:none}
+.es{font-size:19px;color:#2563eb;margin-top:14px;line-height:1.4;font-weight:600}
+.en{font-size:19px;color:#0f172a;margin-top:14px;font-weight:700;line-height:1.4}
+.buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:22px}
+button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;cursor:pointer}
+.reveal{background:#e0f2fe}
+.know{background:#dcfce7}
+.next{background:#fbcfe8}
+.list-controls { display: flex; gap: 10px; margin-top: 16px; }
+.list-btn{ flex:1; background:#e9d5ff; border:none; border-radius:16px; padding:14px; font-weight:800; cursor:pointer; font-size:13px }
+.review-btn { background: #fef3c7; color: #92400e; }
+.list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
+/* PEGA ESTO EN SU LUGAR */
+.list-item { display: flex; flex-direction: row; gap: 12px; padding: 15px 0; border-bottom: 1px solid #eee; align-items: center; }
+.list-controls-row { display: flex; flex-direction: row; gap: 6px; align-items: center; flex-shrink: 0; }
+.list-texts { display: flex; flex-direction: column; gap: 4px; flex: 1; }.mini-btn { border: none; border-radius: 10px; width: 38px; height: 38px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+.btn-audio { background: #dbeafe; }
+.btn-rec-mini { background: #fbcfe8; }
+.star-btn-list { background: none; border: none; font-size: 26px; cursor: pointer; color: #cbd5e1; padding: 0; line-height: 1; }
+.star-btn-list.active { color: #f59e0b !important; }
+.blur { filter: blur(5px); transition: filter 0.2s; cursor: pointer; user-select: none; }
 .blur.revealed { filter: blur(0); }
 
-.check-box-manual {
-    position: absolute; top: 110px; right: 22px; width: 24px; height: 24px;
-    background: #fff !important; border: 1.5px solid #22c55e !important;
-    border-radius: 6px; display: flex; align-items: center; justify-content: center;
-    cursor: pointer; z-index: 10; transition: all 0.2s; font-size: 14px;
-}
-.check-box-manual.marked { background: #22c55e !important; color: white; }
+#puntos-header { position: fixed; top: 45px; right: 15px; background: #fef3c7; color: #92400e; padding: 6px 16px; border-radius: 25px; font-weight: 900; border: 2px solid #f59e0b; z-index: 9999; display: flex; align-items: center; gap: 6px; font-size: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+#estrella-animada { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); font-size: 100px; z-index: 10000; pointer-events: none; opacity: 0; display: none; }
 
-#puntos-header { 
-    position: fixed; top: 15px; left: 15px; 
-    background: #fef3c7; color: #92400e; padding: 6px 16px; 
-    border-radius: 25px; font-weight: 900; border: 2px solid #f59e0b; 
-    z-index: 9999; display: flex; align-items: center; gap: 6px; 
-    font-size: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-#estrella-animada { 
-    position: fixed; top: 50%; left: 50%; 
-    transform: translate(-50%, -50%) scale(0); 
-    font-size: 100px; z-index: 10000; pointer-events: none; opacity: 0; 
-}
-#btn-rescat { 
-    display: none; margin: 15px auto; padding: 8px 20px; 
-    width: fit-content; background: #f8fafc; border: 1px solid #cbd5e1; 
-    border-radius: 20px; font-size: 13px; color: #64748b; 
-    cursor: pointer; font-weight: bold; text-transform: uppercase;
-}
+#btn-rescat { display: none; margin: 10px auto; padding: 6px 12px; background: #f8fafc; border: 1.5px solid #22c55e; border-radius: 12px; font-size: 11px; color: #16a34a; cursor: pointer; font-weight: 800; text-transform: uppercase; }
 </style>
 </head>
 <body>
 
+<header>
+ <div class="mode-btns"><button class="mode-en" onclick="setMode('EN')">Anglès → Català</button></div>
+ <div class="unit-number">7</div>
+ <div class="mode-btns"><button class="mode-es" onclick="setMode('ES')">Català → Anglès</button></div>
+</header>
+
+<main>
+<div class="card">
+ <div class="counter" id="counter">0 / 0</div>
+ <div class="check-box-manual" id="mainCheck" onclick="markAsDone(this)"></div>
+
+ <div id="langLabel" class="lang" style="margin-top: 10px;">ANGLÈS</div>
+ <div id="blockContainer" class="blocks"></div>
+
+ <div class="audio-container">
+  <button class="star-btn" id="starBtn" onclick="toggleStar()">★</button>
+  <button class="audio-btn slow" onclick="playCurrent(0.75)">🐢</button>
+  <button class="audio-btn" onclick="playCurrent(1.0)">🔊</button>
+  <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
+  <button class="audio-btn rec" id="recBtn" onclick="toggleRecord('recBtn')">🎤</button>
+  <button class="audio-btn stt" id="sttBtn" onclick="toggleMic()">🎤</button>
+ </div>
+ 
+ <div class="progress-wrapper"><input type="range" id="progressBar" value="0" min="0" max="100" step="0.1"></div>
+ <button id="btn-rescat" onclick="rescueAction()">IT IS OKAY ⭐</button>
+
+ <div id="es" class="es hidden"></div>
+ <div id="speechFeedback"></div>
+ <div id="en" class="en hidden"></div>
+ 
+ <div class="buttons">
+  <button class="action reveal" onclick="reveal()">Veure</button>
+  <button class="action know" onclick="know()">Ja la sé</button>
+  <button class="action next" onclick="nextOne()">Següent</button>
+ </div>
+ <div class="list-controls">
+    <button class="list-btn" onclick="toggleList('all')">Tota la llista</button>
+    <button class="list-btn review-btn" onclick="toggleList('stars')">Repàs (★)</button>
+ </div>
+ <div id="endMsg" class="hidden" style="margin-top:16px; font-weight:800; color:#16a34a;">✔ Bloc completat!</div>
+</div>
+</main>
+<div id="listBox" class="list-box hidden"></div>
 <div id="puntos-header">⭐ <span id="val-puntos">0</span></div>
 <div id="estrella-animada">⭐</div>
 
-<div class="card">
-  <div class="header-row">
-    <div id="modeEN" class="mode en active" onclick="setMode('EN')">ENG → ESP</div>
-    <div class="unit-badge">7</div>
-    <div id="modeES" class="mode es" onclick="setMode('ES')">ESP → ENG</div>
-  </div>
-
-  <div class="blocks" id="blocksContainer"></div>
-
-  <div class="main-box-container">
-    <div class="counter-side"><span id="pos">0</span> / <span id="total">0</span></div>
-    <div class="audio-controls">
-      <button class="star-main" id="starMain" onclick="toggleStar()">★</button>
-      <button class="audio-btn slow" onclick="playAudio(0.75)">🐢</button>
-      <button class="audio-btn" onclick="playAudio(1.0)">🔊</button>
-      <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
-      <button class="mic-btn speech" id="speechBtn" onclick="toggleDictation()">🎤</button>
-      <button class="mic-btn rec" id="recBtn" onclick="toggleRecording('recBtn')">🎙️</button>
-    </div>
-    <div class="progress-wrapper"><input type="range" id="progressBar" value="0" step="0.1"></div>
-  </div>
-
-  <div id="word"></div>
-  <div id="speech-feedback"></div>
-  <div id="answer"></div>
-
-  <div class="actions">
-    <button class="btn btn-reveal" onclick="toggleReveal()">veure</button>
-    <button class="btn btn-know" onclick="know()">ja la se</button>
-    <button class="btn btn-next" onclick="next()">següent</button>
-  </div>
-  
-  <div class="list-toggle-btns">
-    <button class="btn-list-main" onclick="toggleList('all')">llista del bloc</button>
-    <button class="btn-list-main" style="background:#fef3c7" onclick="toggleList('stars')">favorites (★)</button>
-  </div>
-  <div id="list"></div>
-</div>
-
-<audio id="audio"></audio>
-
 <script>
-const data = [
-  {en: "We can go now or later, it's up to you.", es: "Podemos ir ahora o más tarde; depende de ti"},
-  {en: "The final decision is up to you.", es: "La decisión final depende de ti"},
-  {en: "What do you want for dinner? It's up to you.", es: "¿Qué quieres para cenar? Depende de ti"},
-  {en: "Hi! How's it going today?", es: "¡Hola! ¿Cómo va todo hoy?"},
-  {en: "How's it going with your new job?", es: "¿Cómo va todo con tu nuevo trabajo?"},
-  {en: "I haven't seen you in weeks! How's it going?", es: "¡No te he visto en semanas! ¿Cómo va todo?"},
-  {en: "Don't worry, I'm on my way.", es: "No te preocupes, estoy en camino"},
-  {en: "I'm on my way to the office.", es: "Estoy de camino a la oficina"},
-  {en: "I just left the house, I'm on my way.", es: "Acabo de salir de casa, estoy en camino"},
-  {en: "Take your time to finish the report.", es: "Tómate tu tiempo para terminar el informe"},
-  {en: "No rush, just take your time.", es: "Sin prisas, tómate tu tiempo"},
-  {en: "You don't have to decide now, take your time.", es: "No tienes que decidir ahora, tómate tu tiempo"},
-  {en: "Let's keep in touch over the summer.", es: "Mantengamos el contacto durante el verano"},
-  {en: "We should keep in touch more often.", es: "Deberíamos mantener el contacto más a menudo"},
-  {en: "Good luck with the move, keep in touch!", es: "¡Buena suerte con la mudanza, mantén el contacto!"},
-  {en: "I don't care what they say.", es: "No me importa lo que digan"},
-  {en: "Which one do you want? I don't care.", es: "¿Cuál quieres? Me da igual"},
-  {en: "It can be red or blue, I don't care.", es: "Puede ser rojo o azul, no me importa"},
-  {en: "Come in and make yourself at home.", es: "Entra y siéntete como en casa"},
-  {en: "Please, make yourself at home and have some coffee.", es: "Por favor, siéntete como en casa y toma un café"},
-  {en: "Sit down, relax, and make yourself at home.", es: "Siéntate, relájate y siéntete como en casa"},
-  {en: "The project is difficult, but so far, so good.", es: "El proyecto es difícil, pero por ahora todo bien"},
-  {en: "How is the course? So far, so good.", es: "¿Cómo va el curso? Por ahora todo bien"},
-  {en: "I started the diet yesterday and so far, so good.", es: "Empecé la dieta ayer y por ahora todo bien"},
-  {en: "I lost my pen, but it's not a big deal.", es: "He perdido mi bolígrafo, pero no es para tanto"},
-  {en: "Don't cry, it's not a big deal.", es: "No llores, no es gran cosa"},
-  {en: "We missed the bus, but it's not a big deal.", es: "Perdimos el autobús, pero no es para tanto"},
-  {en: "I'm looking forward to the weekend.", es: "Tengo muchas ganas de que llegue el fin de semana"},
-  {en: "I'm looking forward to meeting you.", es: "Tengo muchas ganas de conocerte"},
-  {en: "Your party sounds great, I'm looking forward to it.", es: "Tu fiesta suena genial, tengo muchas ganas de ir"},
-  {en: "Can you give me a hand with these boxes?", es: "¿Puedes echarme una mano con estas cajas?"},
-  {en: "Please, give me a hand in the kitchen.", es: "Por favor, échame una mano en la cocina"},
-  {en: "I can't do this alone, could you give me a hand?", es: "No puedo hacer esto solo, ¿podrías echarme una mano?"},
-  {en: "The car is being fixed, in the meantime, we can walk.", es: "Están arreglando el coche; mientras tanto, podemos caminar"},
-  {en: "Dinner will be ready soon, in the meantime, have a drink.", es: "La cena estará lista pronto; mientras tanto, toma algo"},
-  {en: "The flight is delayed, in the meantime, let's read.", es: "El vuelo está retrasado; mientras tanto, leamos"},
-  {en: "To make a long story short, we missed the train.", es: "Para resumir, perdimos el tren"},
-  {en: "To make a long story short, they got married.", es: "Para resumir, se casaron"},
-  {en: "It was a crazy trip, but to make a long story short, we're home.", es: "Fue un viaje loco, pero para resumir, estamos en casa"},
-  {en: "I'll let you know as soon as I arrive.", es: "Te avisaré en cuanto llegue"},
-  {en: "If I'm free tomorrow, I'll let you know.", es: "Si estoy libre mañana, te aviso"},
-  {en: "I'm still thinking about it, I'll let you know my decision.", es: "Todavía lo estoy pensando, te haré saber mi decisión"},
-  {en: "I forgot what I was saying, never mind.", es: "Olvidé lo que estaba diciendo, no importa"},
-  {en: "Never mind, I'll do it myself.", es: "Olvídalo, lo haré yo mismo"},
-  {en: "Is there a problem? No, never mind, it's fine.", es: "¿Hay algún problema? No, olvídalo, está bien"},
-  {en: "After months of exercise, I'm fit as a fiddle.", es: "Después de meses de ejercicio, estoy sano como una pera"},
-  {en: "My grandfather is 80, but he's fit as a fiddle.", es: "My grandfather is 80, but he's fit as a fiddle."},
-  {en: "I feel fit as a fiddle after my morning run.", es: "Me siento estupendamente después de mi carrera matutina"},
-  {en: "I've been working all day and I'm worn out.", es: "He estado trabajando todo el día y estoy agotado"},
-  {en: "The kids are finally asleep, but I'm worn out.", es: "Los niños por fin duermen, pero estoy reventado"},
-  {en: "I'm worn out after that long flight.", es: "Estoy agotado después de ese vuelo tan largo"},
-  {en: "Just follow the instructions, it's not rocket science.", es: "Solo sigue las instrucciones; no es tan difícil"},
-  {en: "Cooking this pasta is easy, it's not rocket science.", es: "Cocinar esta pasta es fácil, no tiene ningún misterio"},
-  {en: "You can learn the code, it's not rocket science.", es: "Puedes aprender el código, no es tan complicado"},
-  {en: "I know you'll be great in the play, break a leg!", es: "Sé que estarás genial en la obra, ¡mucha suerte!"},
-  {en: "Break a leg at your presentation today!", es: "¡Mucha suerte en tu presentación de hoy!"},
-  {en: "Go out there and break a leg, everyone!", es: "¡Salid ahí fuera y mucha suerte a todos!"},
-  {en: "I'm exhausted from all this studying.", es: "Estoy agotado de tanto estudiar"},
-  {en: "She was exhausted after the marathon.", es: "Ella estaba exhausta después del maratón"},
-  {en: "I'm absolutely exhausted, I need to sleep.", es: "Estoy absolutamente exhausto, necesito dormir"},
-  {en: "She's over the moon about her new job.", es: "Está encantadísima con su nuevo trabajo"},
-  {en: "We're over the moon with the news.", es: "Estamos locos de contentos con la noticia"},
-  {en: "I was over the moon when I passed the exam.", es: "Estaba feliz de la vida cuando aprobé el examen"},
-  {en: "What's for dinner? I'm starving!", es: "¿Qué hay para cenar? ¡Estoy muerto de hambre!"},
-  {en: "I skipped lunch today and now I'm starving.", es: "Me salté el almuerzo hoy y ahora estoy hambriento"},
-  {en: "Is the food ready? I'm absolutely starving.", es: "¿Está lista la comida? Estoy que me muero de hambre"},
-  {en: "I haven't seen you in ages, let's catch up today.", es: "No te he visto en siglos, pongámonos al día hoy"},
-  {en: "Are you free for coffee? Let's catch up today.", es: "¿Estas libre para un café? Pongámonos al día hoy"},
-  {en: "We have so much to talk about, let's catch up today.", es: "Tenemos tanto de qué hablar, pongámonos al día hoy"},
-  {en: "I'm really pissed off because they lied to me.", es: "Estoy muy cabreado porque me mintieron"},
-  {en: "Don't talk to him right now, he's pissed off.", es: "No hables con él ahora mismo, está cabreado"},
-  {en: "I was pissed off when the flight was cancelled.", es: "Estaba muy molesto cuando se canalizó el vuelo"},
-  {en: "What a long day, I'm absolutely beat.", es: "Vaya día más largo, estoy para el arrastre"},
-  {en: "I can't go to the gym tonight, I'm beat.", es: "No puedo ir al gimnasio esta noche, estoy reventado"},
-  {en: "After the hike, we were all beat.", es: "Después de la caminata, todos estábamos agotados"},
-  {en: "How are you? I'm great, thanks!", es: "¿Cómo estás? ¡Estoy genial, gracias!"},
-  {en: "I just got a promotion, so I'm great.", es: "Acabo de conseguir un ascenso, así que estoy de maravilla"},
-  {en: "I'm great today, the weather is perfect.", es: "Estoy genial hoy, el tiempo es perfecto"},
-  {en: "Can we talk later? I'm a bit busy now.", es: "¿Podemos hablar luego? Ahora estoy algo ocupado"},
-  {en: "I've been busy all morning with meetings.", es: "He estado ocupado toda la mañana con reuniones"},
-  {en: "I'm too busy to go out tonight.", es: "Estoy demasiado ocupado para salir esta noche"},
-  {en: "I'm tied up at the office until 7:00 PM.", es: "Estoy liado en la oficina hasta las 7 de la tarde"},
-  {en: "She's tied up with the new project right now.", es: "Ella está liada con el nuevo proyecto ahora mismo"},
-  {en: "I'd love to help, but I'm tied up all afternoon.", es: "Me encantaría ayudar, pero estoy pillado toda la tarde"},
-  {en: "I can't take on more work, I'm swamped.", es: "No puedo aceptar más trabajo, estoy desbordado"},
-  {en: "Sorry for the late reply, I've been swamped.", es: "Perdón por tardar en responder, he estado a tope"},
-  {en: "We are absolutely swamped with orders this week.", es: "Estamos absolutamente desbordados de pedidos esta semana"},
-  {en: "That was a delicious dinner, but I'm stuffed.", es: "Fue una cena deliciosa, pero estoy llenísimo"},
-  {en: "No more cake for me, I'm stuffed.", es: "No más tarta para mí, estoy a tope"},
-  {en: "I'm stuffed! I shouldn't have eaten that last taco.", es: "¡Estoy a reventar! No debí comer ese último taco"},
-  {en: "He was so pissed he didn't even say goodbye.", es: "Estaba tan mosqueado que ni siquiera se despidió"},
-  {en: "I'm pissed because I lost my wallet.", es: "Estoy de mala leche porque perdí mi cartera"},
-  {en: "Don't get pissed, it was just a joke.", es: "No te cabrees, solo era una broma"}
+const items = [
+  {audio:"frase1.mp3", en: "We can go now or later, it's up to you.", es: "Podem ir ara o més tard; depèn de tu"},
+  {audio:"frase2.mp3", en: "The final decision is up to you.", es: "La decisió final depèn de tu"},
+  {audio:"frase3.mp3", en: "What do you want for dinner? It's up to you.", es: "Què vols per sopar? Depèn de tu"},
+  {audio:"frase4.mp3", en: "Hi! How's it going today?", es: "Hola! Com va tot avui?"},
+  {audio:"frase5.mp3", en: "How's it going with your new job?", es: "Com va tot amb la teva nova feina?"},
+  {audio:"frase6.mp3", en: "I haven't seen you in weeks! How's it going?", es: "No t'he vist en setmanes! Com va tot?"},
+  {audio:"frase7.mp3", en: "Don't worry, I'm on my way.", es: "No et preocupis, estic en camí"},
+  {audio:"frase8.mp3", en: "I'm on my way to the office.", es: "Estic de camí a l'oficina"},
+  {audio:"frase9.mp3", en: "I just left the house, I'm on my way.", es: "Acabo de sortir de casa, estic en camí"},
+  {audio:"frase10.mp3", en: "Take your time to finish the report.", es: "Pren-te el teu temps per acabar l'informe"},
+  {audio:"frase11.mp3", en: "No rush, just take your time.", es: "Sense presses, pren-te el teu temps"},
+  {audio:"frase12.mp3", en: "You don't have to decide now, take your time.", es: "No has de decidir ara, pren-te el teu temps"},
+  {audio:"frase13.mp3", en: "Let's keep in touch over the summer.", es: "Mantinguem el contacte durant l'estiu"},
+  {audio:"frase14.mp3", en: "We should keep in touch more often.", es: "Hauríem de mantenir el contacte més sovint"},
+  {audio:"frase15.mp3", en: "Good luck with the move, keep in touch!", es: "Bona sort amb la mudança, mantén el contacte!"},
+  {audio:"frase16.mp3", en: "I don't care what they say.", es: "No m'importa el que diguin"},
+  {audio:"frase17.mp3", en: "Which one do you want? I don't care.", es: "Quin vols? M'és igual"},
+  {audio:"frase18.mp3", en: "It can be red or blue, I don't care.", es: "Pot ser vermell o blau, no m'importa"},
+  {audio:"frase19.mp3", en: "Come in and make yourself at home.", es: "Entra i sent-te com a casa"},
+  {audio:"frase20.mp3", en: "Please, make yourself at home and have some coffee.", es: "Si us plau, sent-te com a casa i pren un cafè"},
+  {audio:"frase21.mp3", en: "Sit down, relax, and make yourself at home.", es: "Seu, relaxa't i sent-te com a casa"},
+  {audio:"frase22.mp3", en: "The project is difficult, but so far, so good.", es: "El projecte és difícil, però per ara tot bé"},
+  {audio:"frase23.mp3", en: "How is the course? So far, so good.", es: "Com va el curs? Per ara tot bé"},
+  {audio:"frase24.mp3", en: "I started the diet yesterday and so far, so good.", es: "Vaig començar la dieta ahir i per ara tot bé"},
+  {audio:"frase25.mp3", en: "I lost my pen, but it's not a big deal.", es: "He perdut el meu bolígraf, però no n'hi ha per tant"},
+  {audio:"frase26.mp3", en: "Don't cry, it's not a big deal.", es: "No ploris, no és gran cosa"},
+  {audio:"frase27.mp3", en: "We missed the bus, but it's not a big deal.", es: "Hem perdut l'autobús, però no n'hi ha per tant"},
+  {audio:"frase28.mp3", en: "I'm looking forward to the weekend.", es: "Tinc moltes ganes que arribi el cap de setmana"},
+  {audio:"frase29.mp3", en: "I'm looking forward to meeting you.", es: "Tinc moltes ganes de conèixer-te"},
+  {audio:"frase30.mp3", en: "Your party sounds great, I'm looking forward to it.", es: "La teva festa sona genial, tinc moltes ganes d'arribar-hi"},
+  {audio:"frase31.mp3", en: "Can you give me a hand with these boxes?", es: "Em pots donar un cop de mà amb aquestes caixes?"},
+  {audio:"frase32.mp3", en: "Please, give me a hand in the kitchen.", es: "Si us plau, dona'm un cop de mà a la cuina"},
+  {audio:"frase33.mp3", en: "I can't do this alone, could you give me a hand?", es: "No puc fer això sol, em podries donar un cop de mà?"},
+  {audio:"frase34.mp3", en: "The car is being fixed, in the meantime, we can walk.", es: "Estan arreglant el cotxe; mentrestant, podem caminar"},
+  {audio:"frase35.mp3", en: "Dinner will be ready soon, in the meantime, have a drink.", es: "El sopar estarà llest aviat; mentrestant, pren alguna cosa"},
+  {audio:"frase36.mp3", en: "The flight is delayed, in the meantime, let's read.", es: "El vol està retardat; mentrestant, llegim"},
+  {audio:"frase37.mp3", en: "To make a long story short, we missed the train.", es: "Per resumir, vam perdre el tren"},
+  {audio:"frase38.mp3", en: "To make a long story short, they got married.", es: "Per resumir, es van casar"},
+  {audio:"frase39.mp3", en: "It was a crazy trip, but to make a long story short, we're home.", es: "Va ser un viatge boig, però per resumir, som a casa"},
+  {audio:"frase40.mp3", en: "I'll let you know as soon as I arrive.", es: "T'avisaré així que arribi"},
+  {audio:"frase41.mp3", en: "If I'm free tomorrow, I'll let you know.", es: "Si estic lliure demà, t'aviso"},
+  {audio:"frase42.mp3", en: "I'm still thinking about it, I'll let you know my decision.", es: "Encara m'ho estic pensant, et faré saber la meva decisió"},
+  {audio:"frase43.mp3", en: "I forgot what I was saying, never mind.", es: "He oblidat el que deia, no importa"},
+  {audio:"frase44.mp3", en: "Never mind, I'll do it myself.", es: "Oblida-ho, ho faré jo mateix"},
+  {audio:"frase45.mp3", en: "Is there a problem? No, never mind, it's fine.", es: "Hi ha algun problema? No, oblida-ho, està bé"},
+  {audio:"frase46.mp3", en: "After months of exercise, I'm fit as a fiddle.", es: "Després de mesos d'exercici, estic sa com un gínjol"},
+  {audio:"frase47.mp3", en: "My grandfather is 80, but he's fit as a fiddle.", es: "El meu avi té 80 anys, però està com un roure"},
+  {audio:"frase48.mp3", en: "I feel fit as a fiddle after my morning run.", es: "Em sento estupendament després de la meva cursa matinal"},
+  {audio:"frase49.mp3", en: "I've been working all day and I'm worn out.", es: "He estat treballant tot el dia i estic esgotat"},
+  {audio:"frase50.mp3", en: "The kids are finally asleep, but I'm worn out.", es: "Els nens per fi dormen, però estic reventat"},
+  {audio:"frase51.mp3", en: "I'm worn out after that long flight.", es: "Estic esgotat després d'aquell vol tan llarg"},
+  {audio:"frase52.mp3", en: "Just follow the instructions, it's not rocket science.", es: "Només segueix les instruccions; no és tan difícil"},
+  {audio:"frase53.mp3", en: "Cooking this pasta is easy, it's not rocket science.", es: "Cuinar aquesta pasta és fàcil, no té cap misteri"},
+  {audio:"frase54.mp3", en: "You can learn the code, it's not rocket science.", es: "Pots aprendre el codi, no és tan complicat"},
+  {audio:"frase55.mp3", en: "I know you'll be great in the play, break a leg!", es: "Sé que estaràs genial en l'obra, molta sort!"},
+  {audio:"frase56.mp3", en: "Break a leg at your presentation today!", es: "Molta sort en la teva presentació d'avui!"},
+  {audio:"frase57.mp3", en: "Go out there and break a leg, everyone!", es: "Sortiu allà fora i molta sort a tots!"},
+  {audio:"frase58.mp3", en: "I'm exhausted from all this studying.", es: "Estic esgotat de tant estudiar"},
+  {audio:"frase59.mp3", en: "She was exhausted after the marathon.", es: "Ella estava exhausta després de la marató"},
+  {audio:"frase60.mp3", en: "I'm absolutely exhausted, I need to sleep.", es: "Estic absolutament exhaust, necessito dormir"},
+  {audio:"frase61.mp3", en: "She's over the moon about her new job.", es: "Està encantadíssima amb la seva nova feina"},
+  {audio:"frase62.mp3", en: "We're over the moon with the news.", es: "Estem bojos de contents amb la notícia"},
+  {audio:"frase63.mp3", en: "I was over the moon when I passed the exam.", es: "Estava feliç de la vida quan vaig aprovar l'examen"},
+  {audio:"frase64.mp3", en: "What's for dinner? I'm starving!", es: "Què hi ha per sopar? Estic mort de fam!"},
+  {audio:"frase65.mp3", en: "I skipped lunch today and now I'm starving.", es: "M'he saltat el dinar avui i ara estic afamat"},
+  {audio:"frase66.mp3", en: "Is the food ready? I'm absolutely starving.", es: "Està llesta el menjar? Estic que em moro de fam"},
+  {audio:"frase67.mp3", en: "I haven't seen you in ages, let's catch up today.", es: "No t'he vist en segles, posem-nos al dia avui"},
+  {audio:"frase68.mp3", en: "Are you free for coffee? Let's catch up today.", es: "Estàs lliure per a un cafè? Posem-nos al dia avui"},
+  {audio:"frase69.mp3", en: "We have so much to talk about, let's catch up today.", es: "Tenim tant de què parlar, posem-nos al dia avui"},
+  {audio:"frase70.mp3", en: "I'm really pissed off because they lied to me.", es: "Estic molt cabrejat perquè em van mentir"},
+  {audio:"frase71.mp3", en: "Don't talk to him right now, he's pissed off.", es: "No parlis amb ell ara mateix, està cabrejat"},
+  {audio:"frase72.mp3", en: "I was pissed off when the flight was cancelled.", es: "Estava molt molest quan es va cancel·lar el vol"},
+  {audio:"frase73.mp3", en: "What a long day, I'm absolutely beat.", es: "Quin dia més llarg, estic per a l'arrossegall"},
+  {audio:"frase74.mp3", en: "I can't go to the gym tonight, I'm beat.", es: "No puc anar al gimnàs aquesta nit, estic reventat"},
+  {audio:"frase75.mp3", en: "After the hike, we were all beat.", es: "Després de la caminada, tots estàvem esgotats"},
+  {audio:"frase76.mp3", en: "How are you? I'm great, thanks!", es: "Com estàs? Estic genial, gràcies!"},
+  {audio:"frase77.mp3", en: "I just got a promotion, so I'm great.", es: "Acabo d'aconseguir un ascens, així que estic de meravella"},
+  {audio:"frase78.mp3", en: "I'm great today, the weather is perfect.", es: "Estic genial avui, el temps és perfecte"},
+  {audio:"frase79.mp3", en: "Can we talk later? I'm a bit busy now.", es: "Podem parlar després? Ara estic una mica ocupat"},
+  {audio:"frase80.mp3", en: "I've been busy all morning with meetings.", es: "He estat ocupat tot el matí amb reunions"},
+  {audio:"frase81.mp3", en: "I'm too busy to go out tonight.", es: "Estic massa ocupat per sortir aquesta nit"},
+  {audio:"frase82.mp3", en: "I'm tied up at the office until 7:00 PM.", es: "Estic lligat a l'oficina fins a les 7 de la tarda"},
+  {audio:"frase83.mp3", en: "She's tied up with the new project right now.", es: "Ella està lliada amb el nou projecte ara mateix"},
+  {audio:"frase84.mp3", en: "I'd love to help, but I'm tied up all afternoon.", es: "M'encantaria ajudar, però estic pillat tota la tarda"},
+  {audio:"frase85.mp3", en: "I can't take on more work, I'm swamped.", es: "No puc acceptar més feina, estic desbordat"},
+  {audio:"frase86.mp3", en: "Sorry for the late reply, I've been swamped.", es: "Perdó per trigar a respondre, he estat a tope"},
+  {audio:"frase87.mp3", en: "We are absolutely swamped with orders this week.", es: "Estem absolutament desbordats de comandes aquesta setmana"},
+  {audio:"frase88.mp3", en: "That was a delicious dinner, but I'm stuffed.", es: "Va ser un sopar deliciós, però estic fartíssim"},
+  {audio:"frase89.mp3", en: "No more cake for me, I'm stuffed.", es: "No més pastís per a mi, estic a tope"},
+  {audio:"frase90.mp3", en: "I'm stuffed! I shouldn't have eaten that last taco.", es: "Estic a reventar! No hauria d'haver menjat aquell últim taco"},
+  {audio:"frase91.mp3", en: "He was so pissed he didn't even say goodbye.", es: "Estava tan mosquejat que ni tan sols es va acomiadar"},
+  {audio:"frase92.mp3", en: "I'm pissed because I lost my wallet.", es: "Estic de mala llet perquè vaig perdre la meva cartera"},
+  {audio:"frase93.mp3", en: "Don't get pissed, it was just a joke.", es: "No et cabregis, només era una broma"}
 ];
-const contractions = {
-    "i'd": "i would", "you'd": "you would", "he'd": "he would", "she'd": "she would", 
-    "it'd": "it would", "we'd": "we would", "they'd": "they would",
-    "i've": "i have", "you've": "you have", "we've": "we have", "they've": "they have",
-    "isn't": "is not", "aren't": "are not", "wasn't": "was not", "weren't": "were not",
-    "don't": "do not", "doesn't": "does not", "didn't": "did not",
-    "can't": "cannot", "couldn't": "could not", "won't": "will not", "wouldn't": "would not",
-    "it's": "it is", "she's": "she is", "he's": "he is", "there's": "there is",
-    "i'm": "i am", "we're": "we are", "they're": "they are", "you're": "you are",
-    "hadn't": "had not", "wouldn't've": "would not have", "i'll": "i will",
-    "you'll": "you will", "he'll": "he will", "she'll": "she will", 
-    "it'll": "it will", "we'll": "we will", "they'll": "they will",
-    "hasn't": "has not", "haven't": "have not", "shouldn't": "should not",
-    "how's": "how is", "what's": "what is", "who's": "who is", 
-    "where's": "where is", "let's": "let us"
+const normalizationMap = {
+    "dont": "do not", "doesn't": "does not", "doesnt": "does not", "didnt": "did not", "didn't": "did not",
+    "isnt": "is not", "isn't": "is not", "arent": "are not", "aren't": "are not",
+    "wasnt": "was not", "wasn't": "was not", "werent": "were not", "weren't": "were not",
+    "havent": "have not", "haven't": "have not", "hasnt": "has not", "hasn't": "has not",
+    "hadnt": "had not", "hadn't": "had not", "wont": "will not", "won't": "will not",
+    "wouldnt": "would not", "wouldn't": "would not", "cant": "can not", "can't": "can not",
+    "couldnt": "could not", "couldn't": "could not", "im": "i am", "i'm": "i am",
+    "youre": "you are", "you're": "you are", "hes": "he is", "he's": "he is",
+    "shes": "she is", "she's": "she is", "its": "it is", "it's": "it is",
+    "were": "we are", "we're": "we are", "theyre": "they are", "they're": "they are",
+    "ive": "i have", "i've": "i have", "youve": "you have", "you've": "you have",
+    "weve": "we have", "we've": "we have", "theyve": "they have", "they've": "they have",
+    "id": "i would", "i'd": "i would", "youd": "you would", "you'd": "you would",
+    "hed": "he would", "he'd": "he would", "shed": "she would", "she'd": "she would",
+    "wed": "we would", "we'd": "we would", "theyd": "they would", "they'd": "they would",
+    "ill": "i will", "i'll": "i will", "youll": "you will", "you'll": "you will",
+    "hell": "he will", "he'll": "he will", "shell": "she will", "she'll": "she will",
+    "well": "we will", "we'll": "we will", "theyll": "they will", "they'll": "they will"
 };
 
-const expanded = {};
-for (let k in contractions) expanded[contractions[k]] = k;
-
-let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0;
-const a = document.getElementById("audio");
+let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0, fallos = 0;
+const audioObj = new Audio();
 const progressBar = document.getElementById("progressBar");
 
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-let recognition = null;
-let isListening = false;
+function getFolderName() { return "frases7frase-0-vT"; }
+
+let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
+let mediaRecorder, audioChunks = [], isRecording = false;
+
+const SpeechRecognition = window.Recognition || window.webkitSpeechRecognition || window.SpeechRecognition;
+let recognition, isListening = false;
 
 if (SpeechRecognition) {
     recognition = new SpeechRecognition();
@@ -287,15 +253,8 @@ if (SpeechRecognition) {
     recognition.interimResults = false;
     recognition.continuous = true;
 
-    recognition.onstart = () => {
-        isListening = true;
-        document.getElementById("speechBtn").classList.add("listening");
-        document.getElementById("speech-feedback").innerHTML = "";
-    };
-    recognition.onend = () => {
-        isListening = false;
-        document.getElementById("speechBtn").classList.remove("listening");
-    };
+    recognition.onstart = () => { isListening = true; document.getElementById("sttBtn").classList.add("listening"); };
+    recognition.onend = () => { isListening = false; document.getElementById("sttBtn").classList.remove("listening"); };
     recognition.onresult = (event) => {
         let fullTranscript = "";
         for (let i = event.resultIndex; i < event.results.length; i++) {
@@ -307,297 +266,131 @@ if (SpeechRecognition) {
 
 function normalizeText(text) {
     if (!text) return "";
-    return text.toLowerCase().replace(/[.,?!"]/g, "").trim();
+    let clean = text.toLowerCase().replace(/[’‘]/g, "'");
+    clean = clean.replace(/[.,?!"]/g, "").trim();
+    let words = clean.split(/\s+/);
+    return words.map(word => {
+        let key = word.replace("'", ""); 
+        return normalizationMap[word] || normalizationMap[key] || word;
+    }).join(" ");
 }
 
 function compareSentences(original, spoken) {
-    const feedbackDiv = document.getElementById("speech-feedback");
+    const feedbackDiv = document.getElementById("speechFeedback");
+    const normOriginal = normalizeText(original);
+    const normSpoken = normalizeText(spoken);
+    const normOriginalWords = normOriginal.split(/\s+/);
+    const normSpokenWords = normSpoken.split(/\s+/);
     const origWordsRaw = original.split(/\s+/);
-    const spokenWordsRaw = spoken.split(/\s+/);
     
     let resultHTML = "";
     let sIdx = 0;
     let correctCount = 0;
 
-    for (let i = 0; i < origWordsRaw.length; i++) {
-        let matched = false;
-        const oNorm = normalizeText(origWordsRaw[i]);
-
-        if (sIdx < spokenWordsRaw.length) {
-            const sNorm1 = normalizeText(spokenWordsRaw[sIdx]);
-            const sNorm2 = normalizeText(spokenWordsRaw[sIdx + 1]);
-            const sTwoWords = sNorm1 + " " + (sNorm2 || "");
-
-            if (contractions[oNorm] === sTwoWords) {
-                resultHTML += `<span class="word-correct">${spokenWordsRaw[sIdx]} ${spokenWordsRaw[sIdx+1]}</span> `;
-                sIdx += 2; matched = true; correctCount++;
-            } 
-            else if (i + 1 < origWordsRaw.length && (oNorm + " " + normalizeText(origWordsRaw[i+1])) === contractions[sNorm1]) {
-                resultHTML += `<span class="word-correct">${spokenWordsRaw[sIdx]}</span> `;
-                sIdx += 1; i++; matched = true; correctCount += 2;
-            } 
-            else if (oNorm === sNorm1 || contractions[oNorm] === sNorm1 || expanded[oNorm] === sNorm1) {
-                resultHTML += `<span class="word-correct">${spokenWordsRaw[sIdx]}</span> `;
-                sIdx++; matched = true; correctCount++;
-            }
-        }
-
-        if (!matched) {
-            let foundAhead = false;
-            for (let look = sIdx; look < sIdx + 3 && look < spokenWordsRaw.length; look++) {
-                if (normalizeText(spokenWordsRaw[look]) === oNorm) {
-                    for (let skip = sIdx; skip < look; skip++) resultHTML += `<span class="word-error">${spokenWordsRaw[skip]}</span> `;
-                    resultHTML += `<span class="word-correct">${spokenWordsRaw[look]}</span> `;
-                    sIdx = look + 1; foundAhead = true; matched = true; correctCount++; break;
+    normOriginalWords.forEach((normWord, index) => {
+        const originalWordRaw = origWordsRaw[index]; 
+    if (!originalWordRaw) return;
+       
+ let matched = false;
+        if (sIdx < normSpokenWords.length && normSpokenWords[sIdx] === normWord) {
+            resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
+            sIdx++;
+            matched = true;
+            correctCount++;
+        } else {
+            for (let j = sIdx + 1; j < sIdx + 5 && j < normSpokenWords.length; j++) {
+                if (normSpokenWords[j] === normWord) {
+                    for (let k = sIdx; k < j; k++) {
+                        resultHTML += `<span class="word-error">${normSpokenWords[k]}</span>`;
+                    }
+                    resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
+                    sIdx = j + 1;
+                    matched = true;
+                    correctCount++;
+                    break;
                 }
             }
-            if (!foundAhead) resultHTML += `<span class="word-missing">${origWordsRaw[i]}</span> `;
         }
-    }
-    
+        if (!matched) resultHTML += `<span class="word-missing">${originalWordRaw}</span>`;
+    });
     feedbackDiv.innerHTML = resultHTML;
 
-    if (correctCount / origWordsRaw.length >= 0.99) {
-        if(window.executarAciertoFinal) window.executarAciertoFinal();
-        setTimeout(() => { know(); }, 4000);
+    let score = correctCount / normOriginalWords.length;
+    if (score >= 0.99) {
+        fallos = 0;
+        document.getElementById('btn-rescat').style.display = 'none';
+        if (window.executarAciertoFinal) window.executarAciertoFinal();
+        setTimeout(() => { know(); }, 3000);
     } else {
-        window.registrarFallo();
+        fallos++;
+        if (fallos >= 3) {
+            document.getElementById('btn-rescat').style.display = 'block';
+        }
     }
 }
 
-function toggleDictation() {
-    if (!recognition) { alert("Navegador no compatible."); return; }
-    if (isListening) recognition.stop();
-    else recognition.start();
-}
-
-let mediaRecorder;
-let audioChunks = [];
-let isRecording = false;
-let currentRecordingBtnId = null;
-
-async function toggleRecording(btnId = "recBtn") {
-  const btn = document.getElementById(btnId);
-  if (isRecording) {
-      if (currentRecordingBtnId === btnId) { stopRecordingProcess(btn); return; } 
-      else {
-          stopRecordingProcess(document.getElementById(currentRecordingBtnId));
-          await new Promise(r => setTimeout(r, 150));
-      }
-  }
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    mediaRecorder = new MediaRecorder(stream);
-    audioChunks = [];
-    mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-    mediaRecorder.onstop = () => {
-      const audioUrl = URL.createObjectURL(new Blob(audioChunks, { type: 'audio/mpeg' }));
-      new Audio(audioUrl).play();
-    };
-    mediaRecorder.start();
-    isRecording = true;
-    currentRecordingBtnId = btnId;
-    btn.classList.add("active");
-  } catch (err) { isRecording = false; }
-}
-
-function stopRecordingProcess(btn) {
-    if (mediaRecorder && mediaRecorder.state !== "inactive") mediaRecorder.stop();
-    isRecording = false;
-    currentRecordingBtnId = null;
-    if (btn) btn.classList.remove("active");
-}
-
-function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || "unknown"; }
-let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
-
-a.ontimeupdate = () => { if (a.duration) progressBar.value = (a.currentTime / a.duration) * 100; };
-progressBar.oninput = () => { if (a.duration) a.currentTime = (progressBar.value / 100) * a.duration; };
-
-function loadBlock(b) {
-  currentBlockID = b;
-  localStorage.setItem(getFolderName() + "_currentBlock", b);
-  let temp = [];
-
-  if (b === 'all') {
-    for (let i = 0; i < data.length; i++) {
-      temp.push({...data[i], realIdx: i + 1});
+function rescueAction() {
+    if (!starredIds.includes(currentBlockData[pos].audio)) {
+        toggleStar();
     }
-    document.querySelectorAll(".block").forEach((btn, idx) => btn.classList.toggle("active", idx === 0));
-    renderList('all');
-    document.getElementById("list").style.display = "block";
-    document.getElementById("list").dataset.type = 'all';
-  } else {
-    let start = b * 10, end = Math.min(start + 10, data.length);
-    for (let i = start; i < end; i++) {
-      temp.push({...data[i], realIdx: i + 1});
+    document.getElementById('btn-rescat').style.display = 'none';
+    fallos = 0;
+    if (window.executarAciertoFinal) window.executarAciertoFinal();
+}
+
+function toggleMic() {
+    if (!recognition) { alert("Navegador no suportat."); return; }
+    if (isListening) {
+        recognition.stop();
+    } else {
+        if (isRecording) {
+            mediaRecorder.stop();
+            isRecording = false;
+            document.querySelectorAll('.recording').forEach(b => b.classList.remove('recording'));
+        }
+        document.getElementById("speechFeedback").innerHTML = "";
+        recognition.start();
     }
-    document.querySelectorAll(".block").forEach((btn, idx) => btn.classList.toggle("active", idx === b + 1));
-    document.getElementById("list").style.display = "none";
-  }
-
-  currentBlockData = temp.sort(() => Math.random() - 0.5);
-  pos = 0; 
-  learnedCount = 0;
-  if (isRecording) stopRecordingProcess(document.getElementById(currentRecordingBtnId));
-  update(true); 
 }
 
-function update(fromNextAction = false) {
-  if (currentBlockData.length === 0) {
-    document.getElementById("word").innerHTML = "¡Bloque Completado! 🎉";
-    document.getElementById("answer").innerHTML = "";
-    document.getElementById("speech-feedback").innerHTML = "";
-    return;
-  }
-  document.getElementById("speech-feedback").innerHTML = "";
-  const item = currentBlockData[pos];
-  document.getElementById("starMain").classList.toggle("active", starredIds.includes(item.realIdx));
-  
-  const w = document.getElementById("word");
-  const aElement = document.getElementById("answer");
-  progressBar.value = 0;
-
-  if (mode === "EN") {
-    w.innerHTML = ``; 
-    aElement.innerHTML = `<span class="txt-es">${item.es}</span>`;
-    if (fromNextAction) playAudio(1.0);
-  } else {
-    w.innerHTML = `<div class="txt-es" style="font-weight:700;">${item.es}</div>`;
-    aElement.innerHTML = `<span class="txt-en">${item.en}</span>`;
-    if (fromNextAction) {
-        setTimeout(() => {
-            if (!isListening && mode === "ES") toggleDictation();
-        }, 10000); 
+async function toggleRecord(targetBtnId) {
+    const btn = document.getElementById(targetBtnId);
+    if (!isRecording) {
+        try {
+            if (isListening) recognition.stop();
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
+            mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+            mediaRecorder.onstop = () => {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                new Audio(URL.createObjectURL(audioBlob)).play();
+                stream.getTracks().forEach(track => track.stop());
+            };
+            mediaRecorder.start();
+            isRecording = true;
+            btn.classList.add("recording");
+        } catch (err) { alert("Error al accedir al micròfon."); }
+    } else {
+        mediaRecorder.stop(); 
+        isRecording = false;
+        btn.classList.remove("recording");
     }
-  }
-  aElement.style.display = "none";
-  document.getElementById("pos").textContent = learnedCount;
-  document.getElementById("total").textContent = currentBlockData.length + learnedCount;
 }
 
-function toggleStar(forcedIdx = null) {
-  const idx = forcedIdx || currentBlockData[pos].realIdx;
-  if (starredIds.includes(idx)) starredIds = starredIds.filter(id => id !== idx);
-  else starredIds.push(idx);
-  localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
-  update();
-}
-
-function playAudio(speed, forcedIdx = null) {
-  const num = forcedIdx || currentBlockData[pos].realIdx;
-  a.src = "frase" + num + ".mp3";
-  a.playbackRate = speed;
-  a.onended = () => {
-    if (mode === "EN") {
-        setTimeout(() => {
-          if (!isListening) toggleDictation();
-        }, 1000);
-    }
-  };
-  a.play().catch(() => {});
-}
-
-function pauseAudio() { a.pause(); }
-
-function toggleReveal() {
-  const aElement = document.getElementById("answer");
-  const wElement = document.getElementById("word");
-  const item = currentBlockData[pos];
-  if (aElement.style.display === "none") {
-    if (mode === "EN") wElement.innerHTML = `<span class="txt-en">${item.en}</span>`;
-    aElement.style.display = "block";
-  } else {
-    if (mode === "EN") wElement.innerHTML = "";
-    aElement.style.display = "none";
-  }
-}
-
-function know() {
-  if (currentBlockData.length === 0) return;
-  learnedCount++;
-  currentBlockData.splice(pos, 1);
-  if (pos >= currentBlockData.length) pos = 0;
-  if (isRecording) stopRecordingProcess(document.getElementById(currentRecordingBtnId));
-  update(true);
-}
-
-function next() {
-  if (currentBlockData.length === 0) return;
-  pos = (pos + 1) % currentBlockData.length;
-  if (isRecording) stopRecordingProcess(document.getElementById(currentRecordingBtnId));
-  update(true);
-}
-
-function setMode(m) {
-  mode = m;
-  document.getElementById("modeEN").classList.toggle("active", m === "EN");
-  document.getElementById("modeES").classList.toggle("active", m === "ES");
-  update(true);
-}
-
-function toggleList(type) {
-  const l = document.getElementById("list");
-  if (l.style.display === "block" && l.dataset.type === type) { l.style.display = "none"; return; }
-  l.dataset.type = type;
-  renderList(type);
-  l.style.display = "block";
-}
-
-function renderList(type) {
-  const l = document.getElementById("list");
-  l.innerHTML = `<b>${type === 'stars' ? 'Favorites (★)' : 'Llista completa'}:</b><br><br>`;
-  let listToRender = [];
-  
-  if (type === 'stars') {
-    listToRender = data.map((item, index) => ({...item, realIdx: index+1})).filter(i => starredIds.includes(i.realIdx));
-  } else if (type === 'all') {
-    listToRender = data.map((item, index) => ({...item, realIdx: index + 1}));
-  } else {
-    let start = currentBlockID * 10, end = Math.min(start + 10, data.length);
-    listToRender = data.slice(start, end).map((item, index) => ({...item, realIdx: start + index + 1}));
-  }
-  
-  listToRender.forEach((item) => {
-    const isStarred = starredIds.includes(item.realIdx);
-    const itemDiv = document.createElement("div");
-    const listRecBtnId = `recBtnList_${item.realIdx}`;
-    itemDiv.className = "list-item";
-    const isActive = (isRecording && currentRecordingBtnId === listRecBtnId) ? "active" : "";
-
-    itemDiv.innerHTML = `
-      <div class="list-item-controls">
-        <button class="star-main ${isStarred ? 'active' : ''}" style="font-size:22px; width:30px;" onclick="toggleStar(${item.realIdx}); renderList('${type}')">★</button>
-        <button class="mini-btn-list" style="background:#dcfce7" onclick="playAudio(1.0, ${item.realIdx})">🔊</button>
-        <button id="${listRecBtnId}" class="mini-btn-list rec ${isActive}" onclick="toggleRecording('${listRecBtnId}')">🎙️</button>
-      </div>
-      <div style="flex:1;">
-        <div class="txt-es" style="font-weight:bold; font-size:14px;">${item.es}</div>
-        <div class="blur" onclick="this.classList.toggle('revealed')">${item.en}</div>
-      </div>
-    `;
-    l.appendChild(itemDiv);
-  });
-}
-
-function markAsDone(element) {
-    localStorage.setItem(getFolderName(), new Date().toISOString());
-    element.innerHTML = "✓"; element.classList.add('marked');
-}
+audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
+progressBar.oninput = () => { if (audioObj.duration) audioObj.currentTime = (progressBar.value / 100) * audioObj.duration; };
 
 function initBlocks() {
-  const container = document.getElementById("blocksContainer");
-  const numBlocks = Math.ceil(data.length / 10);
-  const savedBlock = localStorage.getItem(getFolderName() + "_currentBlock");
+  const container = document.getElementById("blockContainer");
+  const numBlocks = Math.ceil(items.length / 10);
+  const savedBlock = localStorage.getItem(getFolderName() + "_puntoLibro");
   container.innerHTML = "";
-
   const allBtn = document.createElement("button");
-  allBtn.className = "block";
+  allBtn.className = "block all-btn";
   allBtn.textContent = "T";
-  allBtn.style.background = "#e2e8f0";
-  allBtn.onclick = () => loadBlock('all');
+  allBtn.onclick = () => loadAll();
   container.appendChild(allBtn);
-
   for (let i = 0; i < numBlocks; i++) {
     const btn = document.createElement("button");
     btn.className = "block";
@@ -605,65 +398,254 @@ function initBlocks() {
     btn.onclick = () => loadBlock(i);
     container.appendChild(btn);
   }
-  
-  const blockToLoad = (savedBlock !== null) ? (savedBlock === 'all' ? 'all' : parseInt(savedBlock)) : 0;
-  loadBlock(blockToLoad);
+  if (savedBlock === "all") loadAll();
+  else loadBlock((savedBlock !== null) ? parseInt(savedBlock) : 0);
 }
-initBlocks();
 
-const card = document.querySelector(".card");
-const box = document.createElement("div");
-box.className = "check-box-manual";
-if (localStorage.getItem(getFolderName())) { box.innerHTML = "✓"; box.classList.add('marked'); }
-box.onclick = function() { markAsDone(this); };
-card.appendChild(box);
+function loadBlock(b) {
+  currentBlockID = b;
+  localStorage.setItem(getFolderName() + "_puntoLibro", b);
+  let temp = [];
+  let start = b * 10;
+  let end = Math.min(start + 10, items.length);
+  for (let i = start; i < end; i++) temp.push({...items[i]});
+  currentBlockData = temp;
+  document.querySelectorAll(".block").forEach((btn, idx) => { btn.classList.toggle("active", idx === (b + 1)); });
+  pos = 0; learnedCount = 0; fallos = 0;
+  document.getElementById("endMsg").classList.add("hidden");
+  document.getElementById('btn-rescat').style.display = 'none';
+  update(true);
+}
+
+function loadAll() {
+  currentBlockID = -1;
+  localStorage.setItem(getFolderName() + "_puntoLibro", "all");
+  currentBlockData = items.map(i => ({...i}));
+  document.querySelectorAll(".block").forEach((btn, idx) => { btn.classList.toggle("active", idx === 0); });
+  pos = 0; learnedCount = 0; fallos = 0;
+  document.getElementById("endMsg").classList.add("hidden");
+  document.getElementById('btn-rescat').style.display = 'none';
+  update(true);
+}
+
+let autoMicTimer;
+
+function startTimer() {
+    clearTimeout(autoMicTimer);
+    let timeLeft = 10;
+    const feedback = document.getElementById("speechFeedback");
+    
+    autoMicTimer = setInterval(() => {
+        timeLeft--;
+        feedback.innerHTML = `<span style="color:#64748b; font-size:14px;">Micro automàtic en ${timeLeft}s...</span>`;
+        if (timeLeft <= 0) {
+            clearInterval(autoMicTimer);
+            feedback.innerHTML = "";
+            if (!isListening) toggleMic();
+        }
+    }, 1000);
+}
+
+function update(fromAction = false) {
+  clearTimeout(autoMicTimer);
+  if (currentBlockData.length === 0) {
+    document.getElementById("en").classList.add("hidden");
+    document.getElementById("es").classList.add("hidden");
+    document.getElementById("speechFeedback").innerHTML = "";
+    document.getElementById("endMsg").classList.remove("hidden");
+    document.getElementById('btn-rescat').style.display = 'none';
+    return;
+  }
+  progressBar.value = 0;
+  const item = currentBlockData[pos];
+  
+  document.getElementById("es").classList.add("hidden");
+  document.getElementById("en").classList.add("hidden");
+  document.getElementById("speechFeedback").innerHTML = "";
+  document.getElementById("starBtn").classList.toggle("active", starredIds.includes(item.audio));
+
+  if (mode === "EN") {
+    document.getElementById("langLabel").textContent = "ANGLÈS";
+    document.getElementById("en").innerHTML = item.en;
+    document.getElementById("es").innerHTML = item.es;
+    if (fromAction) playAudio(item.audio, 1.0);
+  } else {
+    document.getElementById("langLabel").textContent = "CASTELLÀ";
+    document.getElementById("es").innerHTML = item.es;
+    document.getElementById("en").innerHTML = item.en;
+    document.getElementById("es").classList.remove("hidden");
+    if (fromAction) startTimer();
+  }
+  document.getElementById("counter").textContent = `${learnedCount} / ${currentBlockData.length + learnedCount}`;
+}
+
+function playAudio(audioFile, speed) {
+  audioObj.src = audioFile; 
+  audioObj.playbackRate = speed;
+  audioObj.onended = () => {
+    if (mode === "EN") {
+        setTimeout(() => {
+          if (!isListening) toggleMic();
+        }, 1000); 
+    }
+  };
+  audioObj.play().catch(err => console.log("Error con audio:", audioFile));
+}
+
+function playCurrent(speed) { if (currentBlockData.length > 0) playAudio(currentBlockData[pos].audio, speed); }
+function pauseAudio() { audioObj.pause(); }
+
+function reveal() {
+  if (currentBlockData.length === 0) return;
+  const esEl = document.getElementById("es");
+  const enEl = document.getElementById("en");
+  
+  if (mode === "EN") {
+    if (enEl.classList.contains("hidden")) {
+        enEl.classList.remove("hidden");
+        esEl.classList.remove("hidden");
+    } else {
+        playCurrent(1.0);
+    }
+  } else {
+    enEl.classList.toggle("hidden");
+  }
+}
+
+function know() {
+  if (currentBlockData.length === 0) return;
+  learnedCount++; 
+  currentBlockData.splice(pos, 1);
+  if (pos >= currentBlockData.length) pos = 0;
+  fallos = 0;
+  document.getElementById('btn-rescat').style.display = 'none';
+  update(true);
+}
+
+function nextOne() {
+  if (currentBlockData.length === 0) return;
+  pos = (pos + 1) % currentBlockData.length;
+  fallos = 0;
+  document.getElementById('btn-rescat').style.display = 'none';
+  update(true);
+}
+
+function setMode(m) { mode = m; update(true); }
+
+function toggleStar(forcedId = null) {
+  const audio = forcedId || currentBlockData[pos].audio;
+  if (starredIds.includes(audio)) starredIds = starredIds.filter(id => id !== audio);
+  else starredIds.push(audio);
+  localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
+  const starBtn = document.getElementById("starBtn");
+  if(starBtn) starBtn.classList.toggle("active", starredIds.includes(currentBlockData[pos].audio));
+}
+
+function clearAllStars() {
+  if (confirm("Vols eliminar totes les estrelles de la llista?")) {
+    starredIds = [];
+    localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
+    
+    const starBtn = document.getElementById("starBtn");
+    if(starBtn) starBtn.classList.remove("active");
+    
+    const box = document.getElementById("listBox");
+    if (!box.classList.contains("hidden")) {
+      renderList(box.dataset.activeType);
+    }
+  }
+}
+
+function toggleList(type) {
+  const box = document.getElementById("listBox");
+  if (!box.classList.contains("hidden") && box.dataset.activeType === type) { box.classList.add("hidden"); return; }
+  box.dataset.activeType = type;
+  renderList(type);
+  box.classList.remove("hidden");
+}
+
+function renderList(type) {
+  const box = document.getElementById("listBox");
+  if (type === 'stars') {
+    box.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+        <h3 style="margin:0;">Frases destacades (★):</h3>
+        <button onclick="clearAllStars()" style="background:#fee2e2; color:#dc2626; border:none; padding:4px 8px; border-radius:8px; font-size:10px; font-weight:800; cursor:pointer;">NETEJAR TOT 🗑️</button>
+      </div>`;
+  } else {
+    box.innerHTML = "";
+  }
+
+  let listToRender = [];
+  if (type === 'stars') listToRender = items.filter(i => starredIds.includes(i.audio));
+  else listToRender = (currentBlockID === -1) ? items : items.slice(currentBlockID * 10, (currentBlockID + 1) * 10);
+  
+  if (listToRender.length === 0) { 
+    box.innerHTML += "<p style='padding:10px;'>Buit.</p>"; 
+    return; 
+  }
+
+  listToRender.forEach((i, index) => {
+    const isStarred = starredIds.includes(i.audio);
+    const itemDiv = document.createElement("div");
+    itemDiv.className = "list-item";
+    const recId = `rec-list-${index}`;
+    
+    itemDiv.innerHTML = `
+      <div class="list-controls-row">
+        <button class="star-btn-list ${isStarred ? 'active' : ''}" onclick="toggleStar('${i.audio}'); renderList('${type}')">★</button>
+        <button class="mini-btn btn-audio" onclick="playAudio('${i.audio}', 1.0)">🔊</button>
+        <button class="mini-btn btn-rec-mini" id="${recId}" onclick="toggleRecord('${recId}')">🎤</button>
+      </div>
+      <div class="list-texts">
+        <div style="color:#2563eb; font-weight:700;">${i.es}</div>
+        <div class="blur" style="font-weight:800;" onclick="this.classList.toggle('revealed')">${i.en}</div>
+      </div>
+    `;
+    box.appendChild(itemDiv);
+  });
+}
+
+function markAsDone(el) {
+    localStorage.setItem(getFolderName(), new Date().toISOString());
+    el.innerHTML = "✓"; el.classList.add('marked');
+}
+
+if (localStorage.getItem(getFolderName())) { 
+    const mc = document.getElementById("mainCheck");
+    if(mc) { mc.innerHTML = "✓"; mc.classList.add('marked'); }
+}
 
 (function() {
     let xp = parseInt(localStorage.getItem('global_xp')) || 0;
-    let fallos = 0;
-    
-    const actualizarMarcador = () => {
-        const el = document.getElementById('val-puntos');
-        if(el) el.textContent = xp;
-    };
+    const marcador = document.getElementById('val-puntos');
+    if(marcador) marcador.textContent = xp;
 
     window.executarAciertoFinal = function() {
         xp += 10;
         localStorage.setItem('global_xp', xp);
-        actualizarMarcador();
+        if(marcador) marcador.textContent = xp;
+
         const est = document.getElementById('estrella-animada');
+        est.style.display = "block";
+        est.style.transition = "none";
+        est.style.opacity = "0";
+        est.style.transform = "translate(-50%, -50%) scale(0)";
+        void est.offsetWidth; 
+        
         est.style.transition = "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
         est.style.opacity = "1";
         est.style.transform = "translate(-50%, -50%) scale(1.4)";
+        
         setTimeout(() => {
             est.style.opacity = "0";
             est.style.transform = "translate(-50%, -50%) scale(0)";
+            setTimeout(() => { est.style.display = "none"; }, 500);
         }, 1000);
-        fallos = 0;
-        const b = document.getElementById('btn-rescat');
-        if(b) b.style.display = 'none';
     };
-
-    window.registrarFallo = function() {
-        fallos++;
-        if (fallos >= 3) {
-            const b = document.getElementById('btn-rescat');
-            if(b) b.style.display = 'block';
-        }
-    };
-
-    setInterval(() => {
-        const contenedor = document.querySelector('.audio-controls');
-        if (contenedor && !document.getElementById('btn-rescat')) {
-            const b = document.createElement('button');
-            b.id = 'btn-rescat';
-            b.textContent = 'IT IS OK';
-            b.onclick = window.executarAciertoFinal;
-            contenedor.after(b);
-            actualizarMarcador();
-        }
-    }, 1000);
 })();
+
+initBlocks();
 </script>
 </body>
 </html>
