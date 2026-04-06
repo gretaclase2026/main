@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Greta App - Unitat 2</title>
+<title> Greta App - 10 Frases</title>
 <style>
 body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
 header{padding:8px 4px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center;align-items:center;gap:4px}
@@ -73,7 +73,7 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 <body>
 
 <header>
- <div class="mode-btns"><button class="mode-en" onclick="setMode('EN')">Anglès → Castalà</button></div>
+ <div class="mode-btns"><button class="mode-en" onclick="setMode('EN')">Anglès → Català</button></div>
  <div class="unit-number">2</div>
  <div class="mode-btns"><button class="mode-es" onclick="setMode('ES')">Català → Anglès</button></div>
 </header>
@@ -147,7 +147,6 @@ const items = [
     {"audio":"f025.mp3","es":"El meu gos sempre s'emociona moltíssim quan plou, corrent pel fang i després entrant a casa abans que pugui netejar-li les potes, el que significa que haig de fregar tot el terra dues vegades al dia.","en":"My dog always gets extremely excited when it rains, running through the mud and then entering the house before I can clean his paws, which means I have to mop the entire floor twice a day."},
     {"audio":"f026.mp3","es":"La raó per la qual estic practicant aquestes frases llargues és que vull millorar la meva fluïdesa per poder parlar amb parlants natius sense haver de parar cada dos segons per pensar en la gramàtica.","en":"The reason why I am practicing these long sentences is that I want to improve my fluency so that I can talk to native speakers without having to stop every two seconds to think about grammar."}
 ];
-   
 
 const normalizationMap = {
     "dont": "do not", "doesn't": "does not", "doesnt": "does not", "didnt": "did not", "didn't": "did not",
@@ -474,6 +473,21 @@ function toggleStar(forcedId = null) {
   if(starBtn) starBtn.classList.toggle("active", starredIds.includes(currentBlockData[pos].audio));
 }
 
+function clearAllStars() {
+  if (confirm("Vols eliminar totes les estrelles de la llista?")) {
+    starredIds = [];
+    localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
+    
+    const starBtn = document.getElementById("starBtn");
+    if(starBtn) starBtn.classList.remove("active");
+    
+    const box = document.getElementById("listBox");
+    if (!box.classList.contains("hidden")) {
+      renderList(box.dataset.activeType);
+    }
+  }
+}
+
 function toggleList(type) {
   const box = document.getElementById("listBox");
   if (!box.classList.contains("hidden") && box.dataset.activeType === type) { box.classList.add("hidden"); return; }
@@ -484,11 +498,25 @@ function toggleList(type) {
 
 function renderList(type) {
   const box = document.getElementById("listBox");
-  box.innerHTML = type === 'stars' ? "<h3>Frases destacades (★):</h3>" : "";
+  if (type === 'stars') {
+    box.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+        <h3 style="margin:0;">Frases destacades (★):</h3>
+        <button onclick="clearAllStars()" style="background:#fee2e2; color:#dc2626; border:none; padding:4px 8px; border-radius:8px; font-size:10px; font-weight:800; cursor:pointer;">NETEJAR TOT 🗑️</button>
+      </div>`;
+  } else {
+    box.innerHTML = "";
+  }
+
   let listToRender = [];
   if (type === 'stars') listToRender = items.filter(i => starredIds.includes(i.audio));
   else listToRender = (currentBlockID === -1) ? items : items.slice(currentBlockID * 10, (currentBlockID + 1) * 10);
-  if (listToRender.length === 0) { box.innerHTML += "<p style='padding:10px;'>Buit.</p>"; return; }
+  
+  if (listToRender.length === 0) { 
+    box.innerHTML += "<p style='padding:10px;'>Buit.</p>"; 
+    return; 
+  }
+
   listToRender.forEach((i, index) => {
     const isStarred = starredIds.includes(i.audio);
     const itemDiv = document.createElement("div");
