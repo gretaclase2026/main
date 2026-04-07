@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Estudi de Viatge - 200 Frases</title>
+<title> Greta App - VIATGE</title>
 <style>
 body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
 header{padding:8px 4px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center;align-items:center;gap:4px}
@@ -53,10 +53,10 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 .list-btn{ flex:1; background:#e9d5ff; border:none; border-radius:16px; padding:14px; font-weight:800; cursor:pointer; font-size:13px }
 .review-btn { background: #fef3c7; color: #92400e; }
 .list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
-/* PEGA ESTO EN SU LUGAR */
-.list-item { display: flex; flex-direction: row; gap: 12px; padding: 15px 0; border-bottom: 1px solid #eee; align-items: center; }
-.list-controls-row { display: flex; flex-direction: row; gap: 6px; align-items: center; flex-shrink: 0; }
-.list-texts { display: flex; flex-direction: column; gap: 4px; flex: 1; }.mini-btn { border: none; border-radius: 10px; width: 38px; height: 38px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+.list-item { display: flex; align-items: flex-start; gap: 15px; padding: 15px 0; border-bottom: 1px solid #eee; }
+.list-controls-side { display: flex; flex-direction: column; gap: 8px; min-width: 44px; align-items: center; }
+.list-texts { flex-grow: 1; display: flex; flex-direction: column; gap: 6px; }
+.mini-btn { border: none; border-radius: 10px; width: 38px; height: 38px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
 .btn-audio { background: #dbeafe; }
 .btn-rec-mini { background: #fbcfe8; }
 .star-btn-list { background: none; border: none; font-size: 26px; cursor: pointer; color: #cbd5e1; padding: 0; line-height: 1; }
@@ -74,7 +74,7 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 
 <header>
  <div class="mode-btns"><button class="mode-en" onclick="setMode('EN')">Anglès → Català</button></div>
- <div class="unit-number">✈️</div>
+ <div class="unit-number">🛫</div>
  <div class="mode-btns"><button class="mode-es" onclick="setMode('ES')">Català → Anglès</button></div>
 </header>
 
@@ -126,7 +126,7 @@ const items = [
     {audio:"f003.mp3",en:"Is the flight on time?",es:"¿El vuelo sale a tiempo?"},
     {audio:"f004.mp3",en:"Where's the check-in desk for British Airways?",es:"¿Dónde está el mostrador de facturación de British Airways?"},
     {audio:"f005.mp3",en:"I've only got one bag to check.",es:"Solo tengo una maleta para facturar."},
-    {audio:"f006.mp3",en:"Can I take this as carry-on luggage?",es:"¿Puedo llevar esto como equipaje de mano?"},
+    {audio:"f006.mp3",en:"Can I take this as carry on luggage?",es:"¿Puedo llevar esto como equipaje de mano?"},
     {audio:"f007.mp3",en:"I'd prefer a window seat, please.",es:"Preferiría un asiento de ventanilla, por favor."},
     {audio:"f008.mp3",en:"Is there an aisle seat available?",es:"¿Hay algún asiento de pasillo disponible?"},
     {audio:"f009.mp3",en:"My suitcase is over the weight limit.",es:"Mi maleta supera el límite de peso."},
@@ -329,6 +329,8 @@ const items = [
     {audio:"f200.mp3",en:"Thank you for everything.",es:"Gracias por todo."}
 ];
 
+
+
 const normalizationMap = {
     "dont": "do not", "doesn't": "does not", "doesnt": "does not", "didnt": "did not", "didn't": "did not",
     "isnt": "is not", "isn't": "is not", "arent": "are not", "aren't": "are not",
@@ -354,7 +356,7 @@ let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockI
 const audioObj = new Audio();
 const progressBar = document.getElementById("progressBar");
 
-function getFolderName() { return "frases15z-fr-12-kQ"; }
+function getFolderName() { return "C:\Users\HP\OneDrive - Kornerstone School\Documents\GitHub\main\frases15z-fr-12-kQ"; }
 
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
 let mediaRecorder, audioChunks = [], isRecording = false;
@@ -705,16 +707,15 @@ function renderList(type) {
     const itemDiv = document.createElement("div");
     itemDiv.className = "list-item";
     const recId = `rec-list-${index}`;
-    
     itemDiv.innerHTML = `
-      <div class="list-controls-row">
+      <div class="list-controls-side">
         <button class="star-btn-list ${isStarred ? 'active' : ''}" onclick="toggleStar('${i.audio}'); renderList('${type}')">★</button>
         <button class="mini-btn btn-audio" onclick="playAudio('${i.audio}', 1.0)">🔊</button>
         <button class="mini-btn btn-rec-mini" id="${recId}" onclick="toggleRecord('${recId}')">🎤</button>
       </div>
       <div class="list-texts">
         <div style="color:#2563eb; font-weight:700;">${i.es}</div>
-        <div class="blur" style="font-weight:800;" onclick="this.classList.toggle('revealed')">${i.en}</div>
+        <div id="rev-${index}" class="blur" style="font-weight:800;" onclick="this.classList.toggle('revealed')">${i.en}</div>
       </div>
     `;
     box.appendChild(itemDiv);

@@ -3,101 +3,386 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vocabulari Definitiu - Verificat</title>
+<title> Greta App - VOC 2</title>
 <style>
-body{margin:0;font-family:Arial,sans-serif;background:#ececec;color:#333}
-.card{max-width:720px;margin:20px auto;background:#fff;border-radius:24px;padding:24px;box-shadow:0 8px 18px rgba(0,0,0,.15);position:relative}
+body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
+header{padding:8px 4px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center;align-items:center;gap:4px}
+.unit-number{font-size:22px;font-weight:800;color:#2563eb;margin:0 8px;min-width:20px;text-align:center}
+.mode-btns button{padding:6px 10px;border:none;border-radius:12px;font-weight:700;cursor:pointer;font-size:11px;white-space:nowrap;line-height:1.2}
+.mode-en{background:#dbeafe}
+.mode-es{background:#fde68a}
+main{display:flex;justify-content:center;padding:24px}
+.card{position:relative;width:100%;max-width:560px;background:#ffffff;border-radius:28px;padding:32px;box-shadow:0 10px 24px rgba(0,0,0,0.06);text-align:center}
+.counter{position:absolute;top:18px;left:22px;font-weight:800;color:#2563eb}
+.check-box-manual { position: absolute; top: 18px; right: 22px; width: 24px; height: 24px; background: #fff; border: 1.5px solid #22c55e; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 14px; }
+.check-box-manual.marked { background: #22c55e !important; color: white !important; }
+.lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
+.blocks{display:flex;flex-wrap:nowrap;gap:6px;justify-content:flex-start;margin:15px 0 20px;overflow-x:auto;padding:5px 0 5px 10px}
+.block{flex: 0 0 auto;width:32px;height:32px;border-radius:50%;border:none;background:#f1f5f9;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.2s}
+.block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1)}
+.block.all-btn { background: #e2e8f0; color: #475569; }
+.audio-container { display: flex; justify-content: center; gap: 8px; margin: 10px 0; align-items: center; flex-wrap: nowrap; }
+.audio-btn{width:52px;height:52px;border-radius:50%;border:none;background:#dbeafe;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
+.audio-btn.slow{background:#fef08a;}
+.audio-btn.pause{background:#fee2e2; color: inherit;} 
+.audio-btn.rec{background:#fca5a5; color: white;}
+.audio-btn.stt{background:#dbeafe; font-size: 22px;}
 
-.modes{display:flex;gap:10px;margin-bottom:10px;width:100%}
-.mode{flex:1;text-align:center;padding:14px;border-radius:24px;font-weight:bold;cursor:pointer;border:2px solid transparent}
-.mode.en{background:#d6e6f5}
-.mode.es{background:#f4d6e6}
-.mode.active{border-color:#999;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+.listening { animation: pulse 1.5s infinite; background: #90caf9 !important; color: #0f172a !important; }
+.recording { animation: pulse 1.5s infinite; background: #f48fb1 !important; color: white !important; }
 
-.blocks{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}
-.block{width:40px;height:40px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-weight:bold;background:#fff4cc;cursor:pointer;transition:0.2s}
-.block.active{background:#ffcc00;transform:scale(1.1);box-shadow:inset 0 0 5px rgba(0,0,0,0.2)}
+#speechFeedback { font-size: 18px; margin: 15px 0; font-weight: bold; min-height: 28px; line-height: 1.5; padding: 0 10px; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
+.word-correct { color: #16a34a; }
+.word-error { color: #dc2626; text-decoration: line-through; }
+.word-missing { color: #94a3b8; font-style: italic; }
 
-.main-box-container{display:flex;align-items:center;justify-content:center;position:relative;margin:20px 0}
-.main-box{text-align:center;display:flex;flex-direction:column;justify-content:center;align-items:center}
+.star-btn { background: none; border: none; font-size: 32px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px 0 0; margin-right: 5px; }
+.star-btn.active { color: #f59e0b !important; }
+.progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 10px; box-sizing: border-box; }
+input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
+.hidden{display:none}
+.es{font-size:19px;color:#2563eb;margin-top:14px;line-height:1.4;font-weight:600}
+.en{font-size:19px;color:#0f172a;margin-top:14px;font-weight:700;line-height:1.4}
+.buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:22px}
+button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;cursor:pointer}
+.reveal{background:#e0f2fe}
+.know{background:#dcfce7}
+.next{background:#fbcfe8}
+.list-controls { display: flex; gap: 10px; margin-top: 16px; }
+.list-btn{ flex:1; background:#e9d5ff; border:none; border-radius:16px; padding:14px; font-weight:800; cursor:pointer; font-size:13px }
+.review-btn { background: #fef3c7; color: #92400e; }
+.list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
+/* PEGA ESTO EN SU LUGAR */
+.list-item { display: flex; flex-direction: row; gap: 12px; padding: 15px 0; border-bottom: 1px solid #eee; align-items: center; }
+.list-controls-row { display: flex; flex-direction: row; gap: 6px; align-items: center; flex-shrink: 0; }
+.list-texts { display: flex; flex-direction: column; gap: 4px; flex: 1; }.mini-btn { border: none; border-radius: 10px; width: 38px; height: 38px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+.btn-audio { background: #dbeafe; }
+.btn-rec-mini { background: #fbcfe8; }
+.star-btn-list { background: none; border: none; font-size: 26px; cursor: pointer; color: #cbd5e1; padding: 0; line-height: 1; }
+.star-btn-list.active { color: #f59e0b !important; }
+.blur { filter: blur(5px); transition: filter 0.2s; cursor: pointer; user-select: none; }
+.blur.revealed { filter: blur(0); }
 
-.audio-btn{font-size:60px;background:#dcfce7;border:none;cursor:pointer;width:140px;height:140px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.2s}
-.audio-btn.vibrate{animation:vibrate 0.25s linear 2}
-@keyframes vibrate{0%{transform:translate(0)}25%{transform:translate(2px,-2px)}50%{transform:translate(-2px,2px)}75%{transform:translate(2px,2px)}100%{transform:translate(0)}}
-.audio-btn:active{transform:scale(0.95)}
+#puntos-header { position: fixed; top: 45px; right: 15px; background: #fef3c7; color: #92400e; padding: 6px 16px; border-radius: 25px; font-weight: 900; border: 2px solid #f59e0b; z-index: 9999; display: flex; align-items: center; gap: 6px; font-size: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+#estrella-animada { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); font-size: 100px; z-index: 10000; pointer-events: none; opacity: 0; display: none; }
 
-.counter-side{position:absolute;right:10px;font-weight:bold;color:#2563eb;font-size:22px}
-
-#word{font-size:32px;font-weight:800;margin:20px 0;line-height:1.2;min-height:40px;text-align:center}
-.txt-es{color:#2563eb} 
-.txt-cat{color:#666}
-#answer{font-size:24px;font-weight:bold;margin-top:-10px;margin-bottom:20px;text-align:center}
-
-.actions{display:flex;gap:12px}
-.btn{flex:1;padding:18px;border-radius:18px;border:none;font-weight:bold;font-size:18px;cursor:pointer}
-.btn-reveal{background:#e0f2fe}
-.btn-know{background:#dcfce7}
-.btn-next{background:#fbcfe8}
-
-#list{margin-top:20px;background:#f9f9f9;padding:15px;border-radius:15px;display:none;border:1px solid #ddd}
+#btn-rescat { display: none; margin: 10px auto; padding: 6px 12px; background: #f8fafc; border: 1.5px solid #22c55e; border-radius: 12px; font-size: 11px; color: #16a34a; cursor: pointer; font-weight: 800; text-transform: uppercase; }
 </style>
 </head>
 <body>
 
+<header>
+ <div class="mode-btns"><button class="mode-en" onclick="setMode('EN')">Anglès → Català</button></div>
+ <div class="unit-number">VOC 2</div>
+ <div class="mode-btns"><button class="mode-es" onclick="setMode('ES')">Català → Anglès</button></div>
+</header>
+
+<main>
 <div class="card">
-  <div class="modes">
-    <div id="modeEN" class="mode en active" onclick="setMode('EN')">ENG → ESP/CAT</div>
-    <div id="modeES" class="mode es" onclick="setMode('ES')">ESP/CAT → ENG</div>
-  </div>
+ <div class="counter" id="counter">0 / 0</div>
+ <div class="check-box-manual" id="mainCheck" onclick="markAsDone(this)"></div>
 
-  <div class="blocks" id="blocksContainer"></div>
+ <div id="langLabel" class="lang" style="margin-top: 10px;">ANGLÈS</div>
+ <div id="blockContainer" class="blocks"></div>
 
-  <div class="main-box-container">
-    <div class="main-box">
-      <button class="audio-btn" onclick="playAudio()">🔊</button>
-    </div>
-    <div class="counter-side">
-      <span id="pos">0</span> / <span id="total">0</span>
-    </div>
-  </div>
+ <div class="audio-container">
+  <button class="star-btn" id="starBtn" onclick="toggleStar()">★</button>
+  <button class="audio-btn slow" onclick="playCurrent(0.75)">🐢</button>
+  <button class="audio-btn" onclick="playCurrent(1.0)">🔊</button>
+  <button class="audio-btn pause" onclick="pauseAudio()">⏸</button>
+  <button class="audio-btn rec" id="recBtn" onclick="toggleRecord('recBtn')">🎤</button>
+  <button class="audio-btn stt" id="sttBtn" onclick="toggleMic()">🎤</button>
+ </div>
+ 
+ <div class="progress-wrapper"><input type="range" id="progressBar" value="0" min="0" max="100" step="0.1"></div>
+ <button id="btn-rescat" onclick="rescueAction()">IT IS OKAY ⭐</button>
 
-  <div id="word"></div>
-  <div id="answer"></div>
-
-  <div class="actions">
-    <button class="btn btn-reveal" onclick="reveal()">Veure</button>
-    <button class="btn btn-know" onclick="know()">Ja la sé</button>
-    <button class="btn btn-next" onclick="next()">Següent</button>
-  </div>
-  
-  <button id="listBtn" onclick="toggleList()" style="width:100%;margin-top:20px;padding:12px;border-radius:12px;border:none;background:#e9d5ff;font-weight:bold;cursor:pointer">Mostrar llista del bloc</button>
-  <div id="list"></div>
+ <div id="es" class="es hidden"></div>
+ <div id="speechFeedback"></div>
+ <div id="en" class="en hidden"></div>
+ 
+ <div class="buttons">
+  <button class="action reveal" onclick="reveal()">Veure</button>
+  <button class="action know" onclick="know()">Ja la sé</button>
+  <button class="action next" onclick="nextOne()">Següent</button>
+ </div>
+ <div class="list-controls">
+    <button class="list-btn" onclick="toggleList('all')">Tota la llista</button>
+    <button class="list-btn review-btn" onclick="toggleList('stars')">Repàs (★)</button>
+ </div>
+ <div id="endMsg" class="hidden" style="margin-top:16px; font-weight:800; color:#16a34a;">✔ Bloc completat!</div>
 </div>
-
-<audio id="audio"></audio>
+</main>
+<div id="listBox" class="list-box hidden"></div>
+<div id="puntos-header">⭐ <span id="val-puntos">0</span></div>
+<div id="estrella-animada">⭐</div>
 
 <script>
-const data = [
-  {en:"Shallow",es:"Poc profundo",cat:"Poc profund"},{en:"Wholesale",es:"Al engros",cat:"A l'engròs"},{en:"Retail",es:"Al detall",cat:"Al detall"},{en:"Lid",es:"Tapa",cat:"Tapa"},{en:"Pattern",es:"Patron",cat:"Patró"},{en:"Policy",es:"Politica / normes",cat:"Política"},{en:"Whether",es:"Si (opcion)",cat:"Si"},{en:"Handle",es:"Nansa / gestionar",cat:"Pega / Gestionar"},{en:"Hinge",es:"Frontissa",cat:"Bisagra"},{en:"Spill",es:"Vessar",cat:"Vessar"},
-  {en:"Stain",es:"Taca",cat:"Taca"},{en:"Thread",es:"Fil",cat:"Fil"},{en:"Tame",es:"Docil",cat:"Dòcil"},{en:"Raw",es:"Cru",cat:"Cru"},{en:"Stale",es:"Ressec",cat:"Ressec"},{en:"Shrug",es:"Encongir espatlles",cat:"Encongir espatlles"},{en:"Wander",es:"Vagarejar",cat:"Vagar"},{en:"Fetch",es:"Anar a buscar",cat:"Anar a buscar"},{en:"Lean",es:"Recolzar-se",cat:"Recolzar-se"},{en:"Gaze",es:"Mirar fixament",cat:"Mirar fixament"},
-  {en:"Frown",es:"Arrufar el front",cat:"Frunzir el cellat"},{en:"Odd",es:"Estrany",cat:"Estrany"},{en:"Tough",es:"Dur",cat:"Dur / Difícil"},{en:"Harsh",es:"Dur / sever",cat:"Sever"},{en:"Broad",es:"Ample",cat:"Ampli"},{en:"Tight",es:"Estret",cat:"Apretat"},{en:"Loose",es:"Fluix",cat:"Fluix"},{en:"Hardly",es:"Amb prou feines",cat:"Gairebé no"},{en:"Barely",es:"Gairebe no",cat:"Amb prou feines"},{en:"Nonetheless",es:"Tanmateix",cat:"No obstant"},
-  {en:"Overall",es:"En general",cat:"En general"},{en:"Disgust",es:"Fastic",cat:"Fàstic"},{en:"Sensible",es:"Assenyat",cat:"Sensat"},{en:"Plug",es:"Endoll",cat:"Endoll"},{en:"Socket",es:"Presa",cat:"Sòcol"},{en:"Aisle",es:"Passadis",cat:"Passadís"},{en:"Sweat",es:"Suar",cat:"Suar"},{en:"Sigh",es:"Sospirar",cat:"Sospirar"},{en:"Chew",es:"Mastegar",cat:"Mastegar"},{en:"Stubborn",es:"Tossut",cat:"Tossut"},
-  {en:"Clumsy",es:"Maldestre",cat:"Maldestre"},{en:"Dull",es:"Avorrit",cat:"Sopifer / Avorrit"},{en:"Slippery",es:"Relliscos",cat:"Relliscos"},{en:"Sour",es:"Acid",cat:"Àcid"},{en:"Sibling",es:"Germa / germana",cat:"Germà / Germana"},{en:"Fate",es:"Desti",cat:"Destí"},{en:"Grief",es:"Dol",cat:"Dol / Pena"},{en:"Burden",es:"Carrega",cat:"Càrrega"},{en:"Support",es:"Donar suport",cat:"Suport"},{en:"Somewhat",es:"Una mica",cat:"Una mica"},
-  {en:"Layout",es:"Disposicio",cat:"Disseny / Disposició"},{en:"Thigh",es:"Cuixa",cat:"Cuixa"},{en:"Tummy",es:"Panxa",cat:"Panxa"},{en:"Itch",es:"Picor",cat:"Picor"},{en:"Bruise",es:"Blau",cat:"Morat"},{en:"Blister",es:"Butllofa",cat:"Butllofa"},{en:"Scar",es:"Cicatriu",cat:"Cicatriu"},{en:"Wrench",es:"Clau anglesa",cat:"Clau anglesa"},{en:"Screwdriver",es:"Tornavis",cat:"Tornavís"},{en:"Tape",es:"Cinta",cat:"Cinta"},
-  {en:"Driveway",es:"Entrada cotxe",cat:"Entrada cotxes"},{en:"Tiles",es:"Rajoles",cat:"Rajoles"},{en:"Greedy",es:"Avar",cat:"Llepafils / Avar"},{en:"Grumpy",es:"Malcarat",cat:"Malcarat"},{en:"Narrow",es:"Estret",cat:"Estret"},{en:"Plain",es:"Senzill",cat:"Senzill / Pla"},{en:"Mend",es:"Apedaçar",cat:"Adobar"},{en:"Fortnight",es:"Quinzena",cat:"Quinzena"},{en:"Constipated",es:"Restrenyit",cat:"Estrenyit"},{en:"Fabric",es:"Teixit",cat:"Teixit"},
-  {en:"Tray",es:"Safata",cat:"Safata"},{en:"Ripe",es:"Madur",cat:"Madur"},{en:"Rotten",es:"Podrit",cat:"Podrit"},{en:"Bland",es:"Insipid",cat:"Insípid"},{en:"Mist",es:"Boirina",cat:"Boirina"},{en:"Fog",es:"Boira",cat:"Boira"},{en:"Puddle",es:"Bassal",cat:"Bassal"},{en:"Tide",es:"Marea",cat:"Marea"},{en:"Thunder",es:"Tro",cat:"Tro"},{en:"Sleeve",es:"Maniga",cat:"Mànega"},
-  {en:"Laces",es:"Cordons",cat:"Cordons"},{en:"Dizzy",es:"Marejat",cat:"Marejat"},{en:"Numb",es:"Entumit",cat:"Entumit"}
+const items = [
+  {audio:"f001.mp3", en:"Shallow", es:"Poc profundo / Poc profund"},
+  {audio:"f002.mp3", en:"Wholesale", es:"Al engros / A l'engròs"},
+  {audio:"f003.mp3", en:"Retail", es:"Al detall / Al detall"},
+  {audio:"f004.mp3", en:"Lid", es:"Tapa / Tapa"},
+  {audio:"f005.mp3", en:"Pattern", es:"Patron / Patró"},
+  {audio:"f006.mp3", en:"Policy", es:"Politica / normes / Política"},
+  {audio:"f007.mp3", en:"Whether", es:"Si (opcion) / Si"},
+  {audio:"f008.mp3", en:"Handle", es:"Nansa / gestionar / Pega / Gestionar"},
+  {audio:"f009.mp3", en:"Hinge", es:"Frontissa / Bisagra"},
+  {audio:"f010.mp3", en:"Spill", es:"Vessar / Vessar"},
+  {audio:"f011.mp3", en:"Stain", es:"Taca / Taca"},
+  {audio:"f012.mp3", en:"Thread", es:"Fil / Fil"},
+  {audio:"f013.mp3", en:"Tame", es:"Docil / Dòcil"},
+  {audio:"f014.mp3", en:"Raw", es:"Cru / Cru"},
+  {audio:"f015.mp3", en:"Stale", es:"Ressec / Ressec"},
+  {audio:"f016.mp3", en:"Shrug", es:"Encongir espatlles / Encongir espatlles"},
+  {audio:"f017.mp3", en:"Wander", es:"Vagarejar / Vagar"},
+  {audio:"f018.mp3", en:"Fetch", es:"Anar a buscar / Anar a buscar"},
+  {audio:"f019.mp3", en:"Lean", es:"Recolzar-se / Recolzar-se"},
+  {audio:"f020.mp3", en:"Gaze", es:"Mirar fixament / Mirar fixament"},
+  {audio:"f021.mp3", en:"Frown", es:"Arrufar el front / Frunzir el cellat"},
+  {audio:"f022.mp3", en:"Odd", es:"Estrany / Estrany"},
+  {audio:"f023.mp3", en:"Tough", es:"Dur / Dur / Difícil"},
+  {audio:"f024.mp3", en:"Harsh", es:"Dur / sever / Sever"},
+  {audio:"f025.mp3", en:"Broad", es:"Ample / Ampli"},
+  {audio:"f026.mp3", en:"Tight", es:"Estret / Apretat"},
+  {audio:"f027.mp3", en:"Loose", es:"Fluix / Fluix"},
+  {audio:"f028.mp3", en:"Hardly", es:"Amb prou feines / Gairebé no"},
+  {audio:"f029.mp3", en:"Barely", es:"Gairebe no / Amb prou feines"},
+  {audio:"f030.mp3", en:"Nonetheless", es:"Tanmateix / No obstant"},
+  {audio:"f031.mp3", en:"Overall", es:"En general / En general"},
+  {audio:"f032.mp3", en:"Disgust", es:"Fastic / Fàstic"},
+  {audio:"f033.mp3", en:"Sensible", es:"Assenyat / Sensat"},
+  {audio:"f034.mp3", en:"Plug", es:"Endoll / Endoll"},
+  {audio:"f035.mp3", en:"Socket", es:"Presa / Sòcol"},
+  {audio:"f036.mp3", en:"Aisle", es:"Passadis / Passadís"},
+  {audio:"f037.mp3", en:"Sweat", es:"Suar / Suar"},
+  {audio:"f038.mp3", en:"Sigh", es:"Sospirar / Sospirar"},
+  {audio:"f039.mp3", en:"Chew", es:"Mastegar / Mastegar"},
+  {audio:"f040.mp3", en:"Stubborn", es:"Tossut / Tossut"},
+  {audio:"f041.mp3", en:"Clumsy", es:"Maldestre / Maldestre"},
+  {audio:"f042.mp3", en:"Dull", es:"Avorrit / Sopifer / Avorrit"},
+  {audio:"f043.mp3", en:"Slippery", es:"Relliscos / Relliscos"},
+  {audio:"f044.mp3", en:"Sour", es:"Acid / Àcid"},
+  {audio:"f045.mp3", en:"Sibling", es:"Germa / germana / Germà / Germana"},
+  {audio:"f046.mp3", en:"Fate", es:"Desti / Destí"},
+  {audio:"f047.mp3", en:"Grief", es:"Dol / Dol / Pena"},
+  {audio:"f048.mp3", en:"Burden", es:"Carrega / Càrrega"},
+  {audio:"f049.mp3", en:"Support", es:"Donar suport / Suport"},
+  {audio:"f050.mp3", en:"Somewhat", es:"Una mica / Una mica"},
+  {audio:"f051.mp3", en:"Layout", es:"Disposicio / Disseny / Disposició"},
+  {audio:"f052.mp3", en:"Thigh", es:"Cuixa / Cuixa"},
+  {audio:"f053.mp3", en:"Tummy", es:"Panxa / Panxa"},
+  {audio:"f054.mp3", en:"Itch", es:"Picor / Picor"},
+  {audio:"f055.mp3", en:"Bruise", es:"Blau / Morat"},
+  {audio:"f056.mp3", en:"Blister", es:"Butllofa / Butllofa"},
+  {audio:"f057.mp3", en:"Scar", es:"Cicatriu / Cicatriu"},
+  {audio:"f058.mp3", en:"Wrench", es:"Clau anglesa / Clau anglesa"},
+  {audio:"f059.mp3", en:"Screwdriver", es:"Tornavis / Tornavís"},
+  {audio:"f060.mp3", en:"Tape", es:"Cinta / Cinta"},
+  {audio:"f061.mp3", en:"Driveway", es:"Entrada cotxe / Entrada cotxes"},
+  {audio:"f062.mp3", en:"Tiles", es:"Rajoles / Rajoles"},
+  {audio:"f063.mp3", en:"Greedy", es:"Avar / Llepafils / Avar"},
+  {audio:"f064.mp3", en:"Grumpy", es:"Malcarat / Malcarat"},
+  {audio:"f065.mp3", en:"Narrow", es:"Estret / Estret"},
+  {audio:"f066.mp3", en:"Plain", es:"Senzill / Senzill / Pla"},
+  {audio:"f067.mp3", en:"Mend", es:"Apedaçar / Adobar"},
+  {audio:"f068.mp3", en:"Fortnight", es:"Quinzena / Quinzena"},
+  {audio:"f069.mp3", en:"Constipated", es:"Restrenyit / Estrenyit"},
+  {audio:"f070.mp3", en:"Fabric", es:"Teixit / Teixit"},
+  {audio:"f071.mp3", en:"Tray", es:"Safata / Safata"},
+  {audio:"f072.mp3", en:"Ripe", es:"Madur / Madur"},
+  {audio:"f073.mp3", en:"Rotten", es:"Podrit / Podrit"},
+  {audio:"f074.mp3", en:"Bland", es:"Insipid / Insípid"},
+  {audio:"f075.mp3", en:"Mist", es:"Boirina / Boirina"},
+  {audio:"f076.mp3", en:"Fog", es:"Boira / Boira"},
+  {audio:"f077.mp3", en:"Puddle", es:"Bassal / Bassal"},
+  {audio:"f078.mp3", en:"Tide", es:"Marea / Marea"},
+  {audio:"f079.mp3", en:"Thunder", es:"Tro / Tro"},
+  {audio:"f080.mp3", en:"Sleeve", es:"Maniga / Mànega"},
+  {audio:"f081.mp3", en:"Laces", es:"Cordons / Cordons"},
+  {audio:"f082.mp3", en:"Dizzy", es:"Marejat / Marejat"},
+  {audio:"f083.mp3", en:"Numb", es:"Entumit / Entumit"}
 ];
 
-let currentBlockData = [];
-let pos = 0;
-let mode = "EN";
-let learnedCount = 0;
-let currentBlockID = 0;
+
+const normalizationMap = {
+    "dont": "do not", "doesn't": "does not", "doesnt": "does not", "didnt": "did not", "didn't": "did not",
+    "isnt": "is not", "isn't": "is not", "arent": "are not", "aren't": "are not",
+    "wasnt": "was not", "wasn't": "was not", "werent": "were not", "weren't": "were not",
+    "havent": "have not", "haven't": "have not", "hasnt": "has not", "hasn't": "has not",
+    "hadnt": "had not", "hadn't": "had not", "wont": "will not", "won't": "will not",
+    "wouldnt": "would not", "wouldn't": "would not", "cant": "can not", "can't": "can not",
+    "couldnt": "could not", "couldn't": "could not", "im": "i am", "i'm": "i am",
+    "youre": "you are", "you're": "you are", "hes": "he is", "he's": "he is",
+    "shes": "she is", "she's": "she is", "its": "it is", "it's": "it is",
+    "were": "we are", "we're": "we are", "theyre": "they are", "they're": "they are",
+    "ive": "i have", "i've": "i have", "youve": "you have", "you've": "you have",
+    "weve": "we have", "we've": "we have", "theyve": "they have", "they've": "they have",
+    "id": "i would", "i'd": "i would", "youd": "you would", "you'd": "you would",
+    "hed": "he would", "he'd": "he would", "shed": "she would", "she'd": "she would",
+    "wed": "we would", "we'd": "we would", "theyd": "they would", "they'd": "they would",
+    "ill": "i will", "i'll": "i will", "youll": "you will", "you'll": "you will",
+    "hell": "he will", "he'll": "he will", "shell": "she will", "she'll": "she will",
+    "well": "we will", "we'll": "we will", "theyll": "they will", "they'll": "they will"
+};
+
+let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0, fallos = 0;
+const audioObj = new Audio();
+const progressBar = document.getElementById("progressBar");
+
+function getFolderName() { return "vocabulario2z-92-rp-M"; }
+
+let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
+let mediaRecorder, audioChunks = [], isRecording = false;
+
+const SpeechRecognition = window.Recognition || window.webkitSpeechRecognition || window.SpeechRecognition;
+let recognition, isListening = false;
+
+if (SpeechRecognition) {
+    recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    recognition.continuous = true;
+
+    recognition.onstart = () => { isListening = true; document.getElementById("sttBtn").classList.add("listening"); };
+    recognition.onend = () => { isListening = false; document.getElementById("sttBtn").classList.remove("listening"); };
+    recognition.onresult = (event) => {
+        let fullTranscript = "";
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+            fullTranscript += event.results[i][0].transcript + " ";
+        }
+        compareSentences(currentBlockData[pos].en, fullTranscript.trim());
+    };
+}
+
+function normalizeText(text) {
+    if (!text) return "";
+    let clean = text.toLowerCase().replace(/[’‘]/g, "'");
+    clean = clean.replace(/[.,?!"]/g, "").trim();
+    let words = clean.split(/\s+/);
+    return words.map(word => {
+        let key = word.replace("'", ""); 
+        return normalizationMap[word] || normalizationMap[key] || word;
+    }).join(" ");
+}
+
+function compareSentences(original, spoken) {
+    const feedbackDiv = document.getElementById("speechFeedback");
+    const normOriginal = normalizeText(original);
+    const normSpoken = normalizeText(spoken);
+    const normOriginalWords = normOriginal.split(/\s+/);
+    const normSpokenWords = normSpoken.split(/\s+/);
+    const origWordsRaw = original.split(/\s+/);
+    
+    let resultHTML = "";
+    let sIdx = 0;
+    let correctCount = 0;
+
+    normOriginalWords.forEach((normWord, index) => {
+        const originalWordRaw = origWordsRaw[index]; 
+    if (!originalWordRaw) return;
+       
+ let matched = false;
+        if (sIdx < normSpokenWords.length && normSpokenWords[sIdx] === normWord) {
+            resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
+            sIdx++;
+            matched = true;
+            correctCount++;
+        } else {
+            for (let j = sIdx + 1; j < sIdx + 5 && j < normSpokenWords.length; j++) {
+                if (normSpokenWords[j] === normWord) {
+                    for (let k = sIdx; k < j; k++) {
+                        resultHTML += `<span class="word-error">${normSpokenWords[k]}</span>`;
+                    }
+                    resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
+                    sIdx = j + 1;
+                    matched = true;
+                    correctCount++;
+                    break;
+                }
+            }
+        }
+        if (!matched) resultHTML += `<span class="word-missing">${originalWordRaw}</span>`;
+    });
+    feedbackDiv.innerHTML = resultHTML;
+
+    let score = correctCount / normOriginalWords.length;
+    if (score >= 0.99) {
+        fallos = 0;
+        document.getElementById('btn-rescat').style.display = 'none';
+        if (window.executarAciertoFinal) window.executarAciertoFinal();
+        setTimeout(() => { know(); }, 3000);
+    } else {
+        fallos++;
+        if (fallos >= 3) {
+            document.getElementById('btn-rescat').style.display = 'block';
+        }
+    }
+}
+
+function rescueAction() {
+    if (!starredIds.includes(currentBlockData[pos].audio)) {
+        toggleStar();
+    }
+    document.getElementById('btn-rescat').style.display = 'none';
+    fallos = 0;
+    if (window.executarAciertoFinal) window.executarAciertoFinal();
+}
+
+function toggleMic() {
+    if (!recognition) { alert("Navegador no suportat."); return; }
+    if (isListening) {
+        recognition.stop();
+    } else {
+        if (isRecording) {
+            mediaRecorder.stop();
+            isRecording = false;
+            document.querySelectorAll('.recording').forEach(b => b.classList.remove('recording'));
+        }
+        document.getElementById("speechFeedback").innerHTML = "";
+        recognition.start();
+    }
+}
+
+async function toggleRecord(targetBtnId) {
+    const btn = document.getElementById(targetBtnId);
+    if (!isRecording) {
+        try {
+            if (isListening) recognition.stop();
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
+            mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+            mediaRecorder.onstop = () => {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                new Audio(URL.createObjectURL(audioBlob)).play();
+                stream.getTracks().forEach(track => track.stop());
+            };
+            mediaRecorder.start();
+            isRecording = true;
+            btn.classList.add("recording");
+        } catch (err) { alert("Error al accedir al micròfon."); }
+    } else {
+        mediaRecorder.stop(); 
+        isRecording = false;
+        btn.classList.remove("recording");
+    }
+}
+
+audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
+progressBar.oninput = () => { if (audioObj.duration) audioObj.currentTime = (progressBar.value / 100) * audioObj.duration; };
 
 function initBlocks() {
-  const container = document.getElementById("blocksContainer");
-  const numBlocks = Math.ceil(data.length / 10);
+  const container = document.getElementById("blockContainer");
+  const numBlocks = Math.ceil(items.length / 10);
+  const savedBlock = localStorage.getItem(getFolderName() + "_puntoLibro");
+  container.innerHTML = "";
+  const allBtn = document.createElement("button");
+  allBtn.className = "block all-btn";
+  allBtn.textContent = "T";
+  allBtn.onclick = () => loadAll();
+  container.appendChild(allBtn);
   for (let i = 0; i < numBlocks; i++) {
     const btn = document.createElement("button");
     btn.className = "block";
@@ -105,162 +390,254 @@ function initBlocks() {
     btn.onclick = () => loadBlock(i);
     container.appendChild(btn);
   }
-  const btnT = document.createElement("button");
-  btnT.className = "block"; btnT.textContent = "T";
-  btnT.onclick = () => loadBlock('T');
-  container.appendChild(btnT);
-  loadBlock(0);
+  if (savedBlock === "all") loadAll();
+  else loadBlock((savedBlock !== null) ? parseInt(savedBlock) : 0);
 }
 
 function loadBlock(b) {
   currentBlockID = b;
+  localStorage.setItem(getFolderName() + "_puntoLibro", b);
   let temp = [];
-  if (b === 'T') {
-    temp = data.map((item, i) => ({...item, realIdx: i+1}));
-  } else {
-    let start = b * 10;
-    let end = Math.min(start + 10, data.length);
-    for (let i = start; i < end; i++) {
-      temp.push({...data[i], realIdx: i+1});
-    }
-  }
-  currentBlockData = temp.sort(() => Math.random() - 0.5);
-  
-  document.querySelectorAll(".block").forEach((btn, idx) => {
-    btn.classList.toggle("active", (b === 'T' && btn.textContent === 'T') || (idx === b));
-  });
-
-  pos = 0; learnedCount = 0;
-  document.getElementById("list").style.display = "none";
-  update(true); 
-}
-
-function setMode(m) {
-  mode = m;
-  document.getElementById("modeEN").classList.toggle("active", m === "EN");
-  document.getElementById("modeES").classList.toggle("active", m === "ES");
+  let start = b * 10;
+  let end = Math.min(start + 10, items.length);
+  for (let i = start; i < end; i++) temp.push({...items[i]});
+  currentBlockData = temp;
+  document.querySelectorAll(".block").forEach((btn, idx) => { btn.classList.toggle("active", idx === (b + 1)); });
+  pos = 0; learnedCount = 0; fallos = 0;
+  document.getElementById("endMsg").classList.add("hidden");
+  document.getElementById('btn-rescat').style.display = 'none';
   update(true);
 }
 
-function update(fromNextAction = false) {
-  if (currentBlockData.length === 0) {
-    document.getElementById("word").innerHTML = "¡Bloc Completat!";
-    document.getElementById("answer").innerHTML = "";
-    return;
-  }
-  const item = currentBlockData[pos];
-  const translation = `<span class="txt-es">${item.es}</span> / <span class="txt-cat">${item.cat}</span>`;
-  
-  if (mode === "EN") {
-    document.getElementById("word").textContent = ""; 
-    document.getElementById("answer").innerHTML = `<div style="color:#999; font-size:18px; margin-bottom:5px;">${item.en}</div>` + translation;
-    if (fromNextAction) playAudio();
-  } else {
-    document.getElementById("word").innerHTML = translation;
-    document.getElementById("answer").textContent = item.en;
-  }
-  
-  document.getElementById("answer").style.display = "none";
-  document.getElementById("pos").textContent = learnedCount;
-  document.getElementById("total").textContent = currentBlockData.length + learnedCount;
+function loadAll() {
+  currentBlockID = -1;
+  localStorage.setItem(getFolderName() + "_puntoLibro", "all");
+  currentBlockData = items.map(i => ({...i}));
+  document.querySelectorAll(".block").forEach((btn, idx) => { btn.classList.toggle("active", idx === 0); });
+  pos = 0; learnedCount = 0; fallos = 0;
+  document.getElementById("endMsg").classList.add("hidden");
+  document.getElementById('btn-rescat').style.display = 'none';
+  update(true);
 }
 
+let autoMicTimer;
+
+function startTimer() {
+    clearTimeout(autoMicTimer);
+    let timeLeft = 10;
+    const feedback = document.getElementById("speechFeedback");
+    
+    autoMicTimer = setInterval(() => {
+        timeLeft--;
+        feedback.innerHTML = `<span style="color:#64748b; font-size:14px;">Micro automàtic en ${timeLeft}s...</span>`;
+        if (timeLeft <= 0) {
+            clearInterval(autoMicTimer);
+            feedback.innerHTML = "";
+            if (!isListening) toggleMic();
+        }
+    }, 1000);
+}
+
+function update(fromAction = false) {
+  clearTimeout(autoMicTimer);
+  if (currentBlockData.length === 0) {
+    document.getElementById("en").classList.add("hidden");
+    document.getElementById("es").classList.add("hidden");
+    document.getElementById("speechFeedback").innerHTML = "";
+    document.getElementById("endMsg").classList.remove("hidden");
+    document.getElementById('btn-rescat').style.display = 'none';
+    return;
+  }
+  progressBar.value = 0;
+  const item = currentBlockData[pos];
+  
+  document.getElementById("es").classList.add("hidden");
+  document.getElementById("en").classList.add("hidden");
+  document.getElementById("speechFeedback").innerHTML = "";
+  document.getElementById("starBtn").classList.toggle("active", starredIds.includes(item.audio));
+
+  if (mode === "EN") {
+    document.getElementById("langLabel").textContent = "ANGLÈS";
+    document.getElementById("en").innerHTML = item.en;
+    document.getElementById("es").innerHTML = item.es;
+    if (fromAction) playAudio(item.audio, 1.0);
+  } else {
+    document.getElementById("langLabel").textContent = "CASTELLÀ";
+    document.getElementById("es").innerHTML = item.es;
+    document.getElementById("en").innerHTML = item.en;
+    document.getElementById("es").classList.remove("hidden");
+    if (fromAction) startTimer();
+  }
+  document.getElementById("counter").textContent = `${learnedCount} / ${currentBlockData.length + learnedCount}`;
+}
+
+function playAudio(audioFile, speed) {
+  audioObj.src = audioFile; 
+  audioObj.playbackRate = speed;
+  audioObj.onended = () => {
+    if (mode === "EN") {
+        setTimeout(() => {
+          if (!isListening) toggleMic();
+        }, 1000); 
+    }
+  };
+  audioObj.play().catch(err => console.log("Error con audio:", audioFile));
+}
+
+function playCurrent(speed) { if (currentBlockData.length > 0) playAudio(currentBlockData[pos].audio, speed); }
+function pauseAudio() { audioObj.pause(); }
+
 function reveal() {
-  if (currentBlockData.length > 0) {
-    document.getElementById("answer").style.display = "block";
-    if (mode === "ES") playAudio(); 
+  if (currentBlockData.length === 0) return;
+  const esEl = document.getElementById("es");
+  const enEl = document.getElementById("en");
+  
+  if (mode === "EN") {
+    if (enEl.classList.contains("hidden")) {
+        enEl.classList.remove("hidden");
+        esEl.classList.remove("hidden");
+    } else {
+        playCurrent(1.0);
+    }
+  } else {
+    enEl.classList.toggle("hidden");
   }
 }
 
 function know() {
   if (currentBlockData.length === 0) return;
-  learnedCount++;
+  learnedCount++; 
   currentBlockData.splice(pos, 1);
   if (pos >= currentBlockData.length) pos = 0;
+  fallos = 0;
+  document.getElementById('btn-rescat').style.display = 'none';
   update(true);
 }
 
-function next() {
+function nextOne() {
   if (currentBlockData.length === 0) return;
   pos = (pos + 1) % currentBlockData.length;
+  fallos = 0;
+  document.getElementById('btn-rescat').style.display = 'none';
   update(true);
 }
 
-function playAudio() {
-  if (currentBlockData.length === 0) return;
-  const num = currentBlockData[pos].realIdx.toString().padStart(3, "0");
-  const a = document.getElementById("audio");
-  a.src = "f" + num + ".mp3";
-  const btn=document.querySelector('.audio-btn');btn.classList.remove('vibrate');void btn.offsetWidth;btn.classList.add('vibrate');a.play().catch(() => {});
+function setMode(m) { mode = m; update(true); }
+
+function toggleStar(forcedId = null) {
+  const audio = forcedId || currentBlockData[pos].audio;
+  if (starredIds.includes(audio)) starredIds = starredIds.filter(id => id !== audio);
+  else starredIds.push(audio);
+  localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
+  const starBtn = document.getElementById("starBtn");
+  if(starBtn) starBtn.classList.toggle("active", starredIds.includes(currentBlockData[pos].audio));
 }
 
-function toggleList() {
-  const l = document.getElementById("list");
-  if (l.style.display === "block") { l.style.display = "none"; return; }
-  l.innerHTML = "<b>Llista del bloc:</b><br><br>";
-  let start = currentBlockID === 'T' ? 0 : currentBlockID * 10;
-  let end = currentBlockID === 'T' ? data.length : Math.min(start + 10, data.length);
-  let originalBlock = data.slice(start, end);
-  originalBlock.forEach((item) => {
-    l.innerHTML += `<div style="margin-bottom:8px"><b>${item.en}</b> - <span class="txt-es">${item.es}</span> / <span class="txt-cat">${item.cat}</span></div>`;
-  });
-  l.style.display = "block";
+function clearAllStars() {
+  if (confirm("Vols eliminar totes les estrelles de la llista?")) {
+    starredIds = [];
+    localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
+    
+    const starBtn = document.getElementById("starBtn");
+    if(starBtn) starBtn.classList.remove("active");
+    
+    const box = document.getElementById("listBox");
+    if (!box.classList.contains("hidden")) {
+      renderList(box.dataset.activeType);
+    }
+  }
 }
+
+function toggleList(type) {
+  const box = document.getElementById("listBox");
+  if (!box.classList.contains("hidden") && box.dataset.activeType === type) { box.classList.add("hidden"); return; }
+  box.dataset.activeType = type;
+  renderList(type);
+  box.classList.remove("hidden");
+}
+
+function renderList(type) {
+  const box = document.getElementById("listBox");
+  if (type === 'stars') {
+    box.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+        <h3 style="margin:0;">Frases destacades (★):</h3>
+        <button onclick="clearAllStars()" style="background:#fee2e2; color:#dc2626; border:none; padding:4px 8px; border-radius:8px; font-size:10px; font-weight:800; cursor:pointer;">NETEJAR TOT 🗑️</button>
+      </div>`;
+  } else {
+    box.innerHTML = "";
+  }
+
+  let listToRender = [];
+  if (type === 'stars') listToRender = items.filter(i => starredIds.includes(i.audio));
+  else listToRender = (currentBlockID === -1) ? items : items.slice(currentBlockID * 10, (currentBlockID + 1) * 10);
+  
+  if (listToRender.length === 0) { 
+    box.innerHTML += "<p style='padding:10px;'>Buit.</p>"; 
+    return; 
+  }
+
+  listToRender.forEach((i, index) => {
+    const isStarred = starredIds.includes(i.audio);
+    const itemDiv = document.createElement("div");
+    itemDiv.className = "list-item";
+    const recId = `rec-list-${index}`;
+    
+    itemDiv.innerHTML = `
+      <div class="list-controls-row">
+        <button class="star-btn-list ${isStarred ? 'active' : ''}" onclick="toggleStar('${i.audio}'); renderList('${type}')">★</button>
+        <button class="mini-btn btn-audio" onclick="playAudio('${i.audio}', 1.0)">🔊</button>
+        <button class="mini-btn btn-rec-mini" id="${recId}" onclick="toggleRecord('${recId}')">🎤</button>
+      </div>
+      <div class="list-texts">
+        <div style="color:#2563eb; font-weight:700;">${i.es}</div>
+        <div class="blur" style="font-weight:800;" onclick="this.classList.toggle('revealed')">${i.en}</div>
+      </div>
+    `;
+    box.appendChild(itemDiv);
+  });
+}
+
+function markAsDone(el) {
+    localStorage.setItem(getFolderName(), new Date().toISOString());
+    el.innerHTML = "✓"; el.classList.add('marked');
+}
+
+if (localStorage.getItem(getFolderName())) { 
+    const mc = document.getElementById("mainCheck");
+    if(mc) { mc.innerHTML = "✓"; mc.classList.add('marked'); }
+}
+
+(function() {
+    let xp = parseInt(localStorage.getItem('global_xp')) || 0;
+    const marcador = document.getElementById('val-puntos');
+    if(marcador) marcador.textContent = xp;
+
+    window.executarAciertoFinal = function() {
+        xp += 10;
+        localStorage.setItem('global_xp', xp);
+        if(marcador) marcador.textContent = xp;
+
+        const est = document.getElementById('estrella-animada');
+        est.style.display = "block";
+        est.style.transition = "none";
+        est.style.opacity = "0";
+        est.style.transform = "translate(-50%, -50%) scale(0)";
+        void est.offsetWidth; 
+        
+        est.style.transition = "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+        est.style.opacity = "1";
+        est.style.transform = "translate(-50%, -50%) scale(1.4)";
+        
+        setTimeout(() => {
+            est.style.opacity = "0";
+            est.style.transform = "translate(-50%, -50%) scale(0)";
+            setTimeout(() => { est.style.display = "none"; }, 500);
+        }, 1000);
+    };
+})();
 
 initBlocks();
- // --- CÓDIGO INTELIGENTE PARA EL CUADRITO DE MARCADO ---
-
-const style = document.createElement('style');
-style.innerHTML = `
-    .check-box-manual {
-        position: absolute;
-        top: 85px; 
-        right: 22px;
-        width: 24px;
-        height: 24px;
-        background: #fff !important;
-        border: 1.5px solid #22c55e !important;
-        border-radius: 6px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        z-index: 10;
-        transition: all 0.2s;
-        font-size: 14px;
-    }
-    .check-box-manual.marked { 
-        background: #22c55e !important; 
-        color: white; 
-    }
-`;
-document.head.appendChild(style);
-
-function getFolderName() {
-    const path = window.location.pathname;
-    return path.split('/').filter(Boolean).slice(-2, -1)[0] || "unknown";
-}
-
-function markAsDone(element) {
-    localStorage.setItem(getFolderName(), new Date().toISOString());
-    element.innerHTML = "✓";
-    element.classList.add('marked');
-    alert("Lliçó marcada ✅");
-}
-
-// 1. Crear el cuadrito
-const card = document.querySelector(".card");
-const box = document.createElement("div");
-box.className = "check-box-manual";
-
-// 2. Comprobar si ya estaba marcada antes de pintarla
-if (localStorage.getItem(getFolderName())) {
-    box.innerHTML = "✓";
-    box.classList.add('marked');
-}
-
-box.onclick = function() { markAsDone(this); };
-card.appendChild(box);
 </script>
 </body>
 </html>
