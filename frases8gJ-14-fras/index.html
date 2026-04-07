@@ -68,6 +68,14 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 #estrella-animada { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); font-size: 100px; z-index: 10000; pointer-events: none; opacity: 0; display: none; }
 
 #btn-rescat { display: none; margin: 10px auto; padding: 6px 12px; background: #f8fafc; border: 1.5px solid #22c55e; border-radius: 12px; font-size: 11px; color: #16a34a; cursor: pointer; font-weight: 800; text-transform: uppercase; }
+.pron {
+  color: #9333ea;
+  font-size: 15px;
+  margin-top: 5px;
+  font-style: italic;
+  font-weight: 500;
+  display: block;
+}
 </style>
 </head>
 <body>
@@ -120,59 +128,57 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 
 <script>
 const items = [
-  {audio:"f001.mp3", en: "I am going to do it", es: "Ho faré"},
-  {audio:"f002.mp3", en: "I want to go now", es: "Vull anar-me'n ara"},
-  {audio:"f003.mp3", en: "I have got to leave", es: "Me n'he d'anar"},
-  {audio:"f004.mp3", en: "Give me a break", es: "Dona'm un respir"},
-  {audio:"f005.mp3", en: "Let me know later", es: "Avisa'm després"},
-  {audio:"f006.mp3", en: "It is kind of funny", es: "És una mica divertit"},
-  {audio:"f007.mp3", en: "I do not know yet", es: "Encara no ho sé"},
-  {audio:"f008.mp3", en: "Get out of here", es: "Fora d'aquí"},
-  {audio:"f009.mp3", en: "What are you doing?", es: "Què fas?"},
-  {audio:"f010.mp3", en: "It is because I can", es: "És perquè puc"},
-  {audio:"f011.mp3", en: "I have to study more", es: "He d'estudiar més"},
-  {audio:"f012.mp3", en: "She has to work", es: "Ella ha de trabajar"},
-  {audio:"f013.mp3", en: "I used to live here", es: "Solia viure aquí"},
-  {audio:"f014.mp3", en: "Did you see him?", es: "El vas veure?"},
-  {audio:"f015.mp3", en: "I should have told you", es: "T'ho hauria d'haver dit"},
-  {audio:"f016.mp3", en: "It would have been nice", es: "Hauria estat bé"},
-  {audio:"f017.mp3", en: "You could have won", es: "Podries haver guanyat"},
-  {audio:"f018.mp3", en: "He must have forgot", es: "Ell deu haver oblidat"},
-  {audio:"f019.mp3", en: "There is a lot of time", es: "Hi ha molt de temps"},
-  {audio:"f020.mp3", en: "Tell them the truth", es: "Digues-los la veritat"},
-  {audio:"f021.mp3", en: "Don't you like it?", es: "No t'agrada?"},
-  {audio:"f022.mp3", en: "Won't you come?", es: "No vindràs?"},
-  {audio:"f023.mp3", en: "I am out of money", es: "M'he quedat sense diners"},
-  {audio:"f024.mp3", en: "Sort of boring", es: "Una mica avorrit"},
-  {audio:"f025.mp3", en: "I am going to eat", es: "Aniré a menjar"},
-  {audio:"f026.mp3", en: "Do you want a drink?", es: "Vols beure alguna cosa?"},
-  {audio:"f027.mp3", en: "Got you!", es: "T'he enxampat!"},
-  {audio:"f028.mp3", en: "See you later", es: "Ens veiem després"},
-  {audio:"f029.mp3", en: "How are you doing?", es: "Com te va?"},
-  {audio:"f030.mp3", en: "I am about to cry", es: "Estic a punt de plorar"},
-  {audio:"f031.mp3", en: "Come here right now", es: "Vine aquí ara mateix"},
-  {audio:"f032.mp3", en: "Why do you lie?", es: "Per què mentes?"},
-  {audio:"f033.mp3", en: "Is he your brother?", es: "És ell el teu germà?"},
-  {audio:"f034.mp3", en: "Did you ever go?", es: "Hi vas anar mai?"},
-  {audio:"f035.mp3", en: "I will ask her later", es: "Li preguntaré després"},
-  {audio:"f036.mp3", en: "Don't you know?", es: "No ho saps?"},
-  {audio:"f037.mp3", en: "Not yet", es: "Encara no"},
-  {audio:"f038.mp3", en: "Meet you there", es: "Ens veiem allà"},
-  {audio:"f039.mp3", en: "Bless you", es: "Salut / Jesús"},
-  {audio:"f040.mp3", en: "Can't you see?", es: "No ho pots veure?"},
-  {audio:"f041.mp3", en: "Wouldn't you?", es: "No ho faries tu?"},
-  {audio:"f042.mp3", en: "What do you think?", es: "Què en penses?"},
-  {audio:"f043.mp3", en: "I'll get you", es: "T'atraparé"},
-  {audio:"f044.mp3", en: "Could you help me?", es: "Em podries ajudar?"},
-  {audio:"f045.mp3", en: "Might have been", es: "Podria haver estat"},
-  {audio:"f046.mp3", en: "Bet you", es: "T'aposto"},
-  {audio:"f047.mp3", en: "In front of", es: "Davant de"},
-  {audio:"f048.mp3", en: "Want a cup of tea?", es: "Vols una tassa de te?"},
-  {audio:"f049.mp3", en: "Lots of people", es: "Molta gent"},
-  {audio:"f050.mp3", en: "I am going to try", es: "Ho intentaré"}
+  {audio:"f001.mp3", en: "I am going to do it", es: "Ho faré", fast: "Gonna"},
+  {audio:"f002.mp3", en: "I want to go now", es: "Vull anar-me'n ara", fast: "Wanna"},
+  {audio:"f003.mp3", en: "I have got to leave", es: "Me n'he d'anar", fast: "Gotta"},
+  {audio:"f004.mp3", en: "Give me a break", es: "Dona'm un respir", fast: "Gimme"},
+  {audio:"f005.mp3", en: "Let me know later", es: "Avisa'm després", fast: "Lemme"},
+  {audio:"f006.mp3", en: "It is kind of funny", es: "És una mica divertit", fast: "Kinda"},
+  {audio:"f007.mp3", en: "I do not know yet", es: "Encara no ho sé", fast: "Dunno"},
+  {audio:"f008.mp3", en: "Get out of here", es: "Fora d'aquí", fast: "Outta"},
+  {audio:"f009.mp3", en: "What are you doing?", es: "Què fas?", fast: "Whatcha"},
+  {audio:"f010.mp3", en: "It is because I can", es: "És perquè puc", fast: "'Cause"},
+  {audio:"f011.mp3", en: "I have to study more", es: "He d'estudiar més", fast: "Hafta"},
+  {audio:"f012.mp3", en: "She has to work", es: "Ella ha de trabajar", fast: "Hasta"},
+  {audio:"f013.mp3", en: "I used to live here", es: "Solia viure aquí", fast: "Usta"},
+  {audio:"f014.mp3", en: "Did you see him?", es: "El vas veure?", fast: "Didja"},
+  {audio:"f015.mp3", en: "I should have told you", es: "T'ho hauria d'haver dit", fast: "Shoulda"},
+  {audio:"f016.mp3", en: "It would have been nice", es: "Hauria estat bé", fast: "Woulda"},
+  {audio:"f017.mp3", en: "You could have won", es: "Podries haver guanyat", fast: "Coulda"},
+  {audio:"f018.mp3", en: "He must have forgot", es: "Ell deu haver oblidat", fast: "Musta"},
+  {audio:"f019.mp3", en: "There is a lot of time", es: "Hi ha molt de temps", fast: "Lotta"},
+  {audio:"f020.mp3", en: "Tell them the truth", es: "Digues-los la veritat", fast: "Tell'em"},
+  {audio:"f021.mp3", en: "Don't you like it?", es: "No t'agrada?", fast: "Doncha"},
+  {audio:"f022.mp3", en: "Won't you come?", es: "No vindràs?", fast: "Woncha"},
+  {audio:"f023.mp3", en: "I am out of money", es: "M'he quedat sense diners", fast: "Outta"},
+  {audio:"f024.mp3", en: "Sort of boring", es: "Una mica avorrit", fast: "Sorta"},
+  {audio:"f025.mp3", en: "I am going to eat", es: "Aniré a menjar", fast: "Gonna"},
+  {audio:"f026.mp3", en: "Do you want a drink?", es: "Vols beure alguna cosa?", fast: "Wanna"},
+  {audio:"f027.mp3", en: "Got you!", es: "T'he enxampat!", fast: "Gotcha"},
+  {audio:"f028.mp3", en: "See you later", es: "Ens veiem después", fast: "See ya"},
+  {audio:"f029.mp3", en: "How are you doing?", es: "Com te va?", fast: "How ya doin'"},
+  {audio:"f030.mp3", en: "I am about to cry", es: "Estic a punt de plorar", fast: "Bouta"},
+  {audio:"f031.mp3", en: "Come here right now", es: "Vine aquí ara mateix", fast: "Comeer"},
+  {audio:"f032.mp3", en: "Why do you lie?", es: "Per què mentes?", fast: "Why july"},
+  {audio:"f033.mp3", en: "Is he your brother?", es: "És ell el teu germà?", fast: "Izi"},
+  {audio:"f034.mp3", en: "Did you ever go?", es: "Hi vas anar mai?", fast: "Jeveer"},
+  {audio:"f035.mp3", en: "I will ask her later", es: "Li preguntaré después", fast: "Alaskar"},
+  {audio:"f036.mp3", en: "Don't you know?", es: "No ho saps?", fast: "Doncha"},
+  {audio:"f037.mp3", en: "Not yet", es: "Encara no", fast: "Nachet"},
+  {audio:"f038.mp3", en: "Meet you there", es: "Ens veiem allà", fast: "Meecha"},
+  {audio:"f039.mp3", en: "Bless you", es: "Salut / Jesús", fast: "Blessha"},
+  {audio:"f040.mp3", en: "Can't you see?", es: "No ho pots veure?", fast: "Cancha"},
+  {audio:"f041.mp3", en: "Wouldn't you?", es: "No ho faries tu?", fast: "Woodencha"},
+  {audio:"f042.mp3", en: "What do you think?", es: "Què en penses?", fast: "Whatcha"},
+  {audio:"f043.mp3", en: "I'll get you", es: "T'atraparé", fast: "Getcha"},
+  {audio:"f044.mp3", en: "Could you help me?", es: "Em podries ajudar?", fast: "Couldja"},
+  {audio:"f045.mp3", en: "Might have been", es: "Podria haver estat", fast: "Mighta"},
+  {audio:"f046.mp3", en: "Bet you", es: "T'aposto", fast: "Betcha"},
+  {audio:"f047.mp3", en: "In front of", es: "Davant de", fast: "In fronna"},
+  {audio:"f048.mp3", en: "Want a cup of tea?", es: "Vols una tassa de te?", fast: "Wanna cuppa"},
+  {audio:"f049.mp3", en: "Lots of people", es: "Molta gent", fast: "Lotsa"},
+  {audio:"f050.mp3", en: "I am going to try", es: "Ho intentaré", fast: "Gonna"}
 ];
-
-
 
 const normalizationMap = {
     "dont": "do not", "doesn't": "does not", "doesnt": "does not", "didnt": "did not", "didn't": "did not",
@@ -459,19 +465,21 @@ function reveal() {
   if (currentBlockData.length === 0) return;
   const esEl = document.getElementById("es");
   const enEl = document.getElementById("en");
+  const item = currentBlockData[pos]; 
   
   if (mode === "EN") {
     if (enEl.classList.contains("hidden")) {
+        enEl.innerHTML = `${item.en} <div class="pron">Sona com: ${item.fast}</div>`;
         enEl.classList.remove("hidden");
         esEl.classList.remove("hidden");
     } else {
         playCurrent(1.0);
     }
   } else {
+    enEl.innerHTML = `${item.en} <div class="pron">Sona com: ${item.fast}</div>`;
     enEl.classList.toggle("hidden");
   }
 }
-
 function know() {
   if (currentBlockData.length === 0) return;
   learnedCount++; 
@@ -551,7 +559,7 @@ function renderList(type) {
     itemDiv.className = "list-item";
     const recId = `rec-list-${index}`;
     
-    itemDiv.innerHTML = `
+  itemDiv.innerHTML = `
       <div class="list-controls-row">
         <button class="star-btn-list ${isStarred ? 'active' : ''}" onclick="toggleStar('${i.audio}'); renderList('${type}')">★</button>
         <button class="mini-btn btn-audio" onclick="playAudio('${i.audio}', 1.0)">🔊</button>
@@ -559,7 +567,12 @@ function renderList(type) {
       </div>
       <div class="list-texts">
         <div style="color:#2563eb; font-weight:700;">${i.es}</div>
-        <div class="blur" style="font-weight:800;" onclick="this.classList.toggle('revealed')">${i.en}</div>
+        <div class="blur" style="font-weight:800;" onclick="this.classList.toggle('revealed')">
+          ${i.en}
+          <div style="color:#9333ea; font-size:13px; font-style:italic; font-weight:500; margin-top:2px;">
+            Sona com: ${i.fast}
+          </div>
+        </div>
       </div>
     `;
     box.appendChild(itemDiv);
