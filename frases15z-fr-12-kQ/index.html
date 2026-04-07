@@ -11,77 +11,71 @@ header{padding:8px 4px;background:#fff;border-bottom:1px solid #e5e7eb;display:f
 .mode-btns button{padding:6px 10px;border:none;border-radius:12px;font-weight:700;cursor:pointer;font-size:11px;white-space:nowrap;line-height:1.2}
 .mode-en{background:#dbeafe}
 .mode-es{background:#fde68a}
-
 main{display:flex;justify-content:center;padding:24px}
 .card{position:relative;width:100%;max-width:560px;background:#ffffff;border-radius:28px;padding:32px;box-shadow:0 10px 24px rgba(0,0,0,0.06);text-align:center}
 .counter{position:absolute;top:18px;left:22px;font-weight:800;color:#2563eb}
-.check-box-manual { position: absolute; top: 18px; right: 22px; width: 24px; height: 24px; background: #fff; border: 1.5px solid #22c55e; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 14px; color: transparent; transition: 0.2s; }
+.check-box-manual { position: absolute; top: 18px; right: 22px; width: 24px; height: 24px; background: #fff; border: 1.5px solid #22c55e; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 14px; }
 .check-box-manual.marked { background: #22c55e !important; color: white !important; }
 .lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
-
 .blocks{display:flex;flex-wrap:nowrap;gap:6px;justify-content:flex-start;margin:15px 0 20px;overflow-x:auto;padding:5px 0 5px 10px}
 .block{flex: 0 0 auto;width:32px;height:32px;border-radius:50%;border:none;background:#f1f5f9;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.2s}
 .block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1)}
 .block.all-btn { background: #e2e8f0; color: #475569; }
-
 .audio-container { display: flex; justify-content: center; gap: 8px; margin: 10px 0; align-items: center; flex-wrap: nowrap; }
 .audio-btn{width:52px;height:52px;border-radius:50%;border:none;background:#dbeafe;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
 .audio-btn.slow{background:#fef08a;}
 .audio-btn.pause{background:#fee2e2; color: inherit;} 
-.audio-btn.rec{background:#fbcfe8; color: #9d174d;}
+.audio-btn.rec{background:#fca5a5; color: white;}
 .audio-btn.stt{background:#dbeafe; font-size: 22px;}
 
-@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-.recording-active { background: #f06292 !important; color: white !important; }
-.recording-icon { display: inline-block; animation: pulse 1s infinite; }
-.listening { animation: pulse 1.5s infinite; background: #3b82f6 !important; color: white !important; }
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+.listening { animation: pulse 1.5s infinite; background: #90caf9 !important; color: #0f172a !important; }
+.recording { animation: pulse 1.5s infinite; background: #f48fb1 !important; color: white !important; }
 
-.star-btn { background: none; border: none; font-size: 32px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px 0 0; margin-right: 5px; }
-.star-btn.active { color: #f59e0b !important; }
-
-.progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 25px; box-sizing: border-box; }
-input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
-
-#speechFeedback { font-size: 18px; margin: 15px 0; font-weight: bold; min-height: 28px; line-height: 1.5; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
+#speechFeedback { font-size: 18px; margin: 15px 0; font-weight: bold; min-height: 28px; line-height: 1.5; padding: 0 10px; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
 .word-correct { color: #16a34a; }
 .word-error { color: #dc2626; text-decoration: line-through; }
 .word-missing { color: #94a3b8; font-style: italic; }
 
+.star-btn { background: none; border: none; font-size: 32px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px 0 0; margin-right: 5px; }
+.star-btn.active { color: #f59e0b !important; }
+.progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 10px; box-sizing: border-box; }
+input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
 .hidden{display:none}
 .es{font-size:19px;color:#2563eb;margin-top:14px;line-height:1.4;font-weight:600}
 .en{font-size:19px;color:#0f172a;margin-top:14px;font-weight:700;line-height:1.4}
-
 .buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:22px}
 button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;cursor:pointer}
 .reveal{background:#e0f2fe}
 .know{background:#dcfce7}
 .next{background:#fbcfe8}
-
 .list-controls { display: flex; gap: 10px; margin-top: 16px; }
 .list-btn{ flex:1; background:#e9d5ff; border:none; border-radius:16px; padding:14px; font-weight:800; cursor:pointer; font-size:13px }
 .review-btn { background: #fef3c7; color: #92400e; }
-
 .list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
+/* PEGA ESTO EN SU LUGAR */
 .list-item { display: flex; flex-direction: row; gap: 12px; padding: 15px 0; border-bottom: 1px solid #eee; align-items: center; }
 .list-controls-row { display: flex; flex-direction: row; gap: 6px; align-items: center; flex-shrink: 0; }
-.list-texts { display: flex; flex-direction: column; gap: 4px; flex: 1; }
-
-.mini-btn { border: none; border-radius: 10px; width: 34px; height: 34px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
+.list-texts { display: flex; flex-direction: column; gap: 4px; flex: 1; }.mini-btn { border: none; border-radius: 10px; width: 38px; height: 38px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
 .btn-audio { background: #dbeafe; }
-.btn-rec-mini { background: #fbcfe8; color: #9d174d; transition: 0.2s; }
-.star-btn-list { background: none; border: none; font-size: 24px; cursor: pointer; color: #cbd5e1; padding: 0; line-height: 1; display: flex; align-items: center; }
+.btn-rec-mini { background: #fbcfe8; }
+.star-btn-list { background: none; border: none; font-size: 26px; cursor: pointer; color: #cbd5e1; padding: 0; line-height: 1; }
 .star-btn-list.active { color: #f59e0b !important; }
-
 .blur { filter: blur(5px); transition: filter 0.2s; cursor: pointer; user-select: none; }
 .blur.revealed { filter: blur(0); }
+
+#puntos-header { position: fixed; top: 45px; right: 15px; background: #fef3c7; color: #92400e; padding: 6px 16px; border-radius: 25px; font-weight: 900; border: 2px solid #f59e0b; z-index: 9999; display: flex; align-items: center; gap: 6px; font-size: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+#estrella-animada { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); font-size: 100px; z-index: 10000; pointer-events: none; opacity: 0; display: none; }
+
+#btn-rescat { display: none; margin: 10px auto; padding: 6px 12px; background: #f8fafc; border: 1.5px solid #22c55e; border-radius: 12px; font-size: 11px; color: #16a34a; cursor: pointer; font-weight: 800; text-transform: uppercase; }
 </style>
 </head>
 <body>
 
 <header>
- <div class="mode-btns"><button class="mode-en" onclick="setMode('EN')">ENG → ESP</button></div>
+ <div class="mode-btns"><button class="mode-en" onclick="setMode('EN')">Anglès → Català</button></div>
  <div class="unit-number">✈️</div>
- <div class="mode-btns"><button class="mode-es" onclick="setMode('CA')">ESP → ENG</button></div>
+ <div class="mode-btns"><button class="mode-es" onclick="setMode('ES')">Català → Anglès</button></div>
 </header>
 
 <main>
@@ -102,28 +96,31 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
  </div>
  
  <div class="progress-wrapper"><input type="range" id="progressBar" value="0" min="0" max="100" step="0.1"></div>
- 
+ <button id="btn-rescat" onclick="rescueAction()">IT IS OKAY ⭐</button>
+
  <div id="es" class="es hidden"></div>
  <div id="speechFeedback"></div>
  <div id="en" class="en hidden"></div>
-
+ 
  <div class="buttons">
   <button class="action reveal" onclick="reveal()">Veure</button>
   <button class="action know" onclick="know()">Ja la sé</button>
   <button class="action next" onclick="nextOne()">Següent</button>
  </div>
  <div class="list-controls">
-    <button class="list-btn" onclick="toggleList('all')">Llista del bloc</button>
-    <button class="list-btn review-btn" onclick="toggleList('stars')">Favorits (★)</button>
+    <button class="list-btn" onclick="toggleList('all')">Tota la llista</button>
+    <button class="list-btn review-btn" onclick="toggleList('stars')">Repàs (★)</button>
  </div>
- <div id="endMsg" class="hidden" style="margin-top:16px; font-weight:800; color:#16a34a;">✔ Bloc completat! 🎉</div>
+ <div id="endMsg" class="hidden" style="margin-top:16px; font-weight:800; color:#16a34a;">✔ Bloc completat!</div>
 </div>
 </main>
 <div id="listBox" class="list-box hidden"></div>
+<div id="puntos-header">⭐ <span id="val-puntos">0</span></div>
+<div id="estrella-animada">⭐</div>
 
 <script>
 const items = [
-    // BLOQUE 1: AEROPUERTO
+    // AEROPUERTO (001-050)
     {audio:"f001.mp3",en:"I'd like to check in for my flight.",es:"Me gustaría facturar para mi vuelo."},
     {audio:"f002.mp3",en:"Here's my passport and booking reference.",es:"Aquí tienes mi pasaporte y referencia de reserva."},
     {audio:"f003.mp3",en:"Is the flight on time?",es:"¿El vuelo sale a tiempo?"},
@@ -164,7 +161,7 @@ const items = [
     {audio:"f038.mp3",en:"Is this your first time in the UK?",es:"¿Es tu primera vez en el Reino Unido?"},
     {audio:"f039.mp3",en:"Where's the exit?",es:"¿Dónde está la salida?"},
     {audio:"f040.mp3",en:"The plane's taking off now.",es:"El avión está despegando ahora."},
-    {audio:"f041.mp3",en:"I'm feeling a bit airsick.",es:"Me siento un poco mareado (en el avión)."},
+    {audio:"f041.mp3",en:"I'm feeling a bit airsick.",es:"Me siento un poco mareado."},
     {audio:"f042.mp3",en:"Keep your seat upright, please.",es:"Mantenga su asiento en posición vertical, por favor."},
     {audio:"f043.mp3",en:"Switch your phone to flight mode.",es:"Pon tu teléfono en modo avión."},
     {audio:"f044.mp3",en:"Is there Wi-Fi on the plane?",es:"¿Hay Wi-Fi en el avión?"},
@@ -175,7 +172,7 @@ const items = [
     {audio:"f049.mp3",en:"I'm travelling alone.",es:"Viajo solo/a."},
     {audio:"f050.mp3",en:"Have a safe flight!",es:"¡Ten un buen viaje!"},
 
-    // BLOQUE 2: HOTEL
+    // HOTEL (051-100)
     {audio:"f051.mp3",en:"I have a reservation under the name García.",es:"Tengo una reserva a nombre de García."},
     {audio:"f052.mp3",en:"I’d like to check in, please.",es:"Me gustaría registrarme, por favor."},
     {audio:"f053.mp3",en:"Do you have any rooms available for tonight?",es:"¿Tiene habitaciones disponibles para esta noche?"},
@@ -227,7 +224,7 @@ const items = [
     {audio:"f099.mp3",en:"Can I have a receipt, please?",es:"¿Puedo tener un recibo, por favor?"},
     {audio:"f100.mp3",en:"Thank you for your help.",es:"Gracias por su ayuda."},
 
-    // BLOQUE 3: DIRECCIONES Y TRANSPORTE
+    // TRANSPORTE (101-150)
     {audio:"f101.mp3",en:"Excuse me, can you help me?",es:"Disculpe, ¿puede ayudarme?"},
     {audio:"f102.mp3",en:"Where is the nearest bus stop?",es:"¿Dónde está la parada de autobús más cercana?"},
     {audio:"f103.mp3",en:"How do I get to the train station?",es:"¿Cómo se va a la estación de tren?"},
@@ -237,7 +234,7 @@ const items = [
     {audio:"f107.mp3",en:"Turn left at the next corner.",es:"Gire a la izquierda en la próxima esquina."},
     {audio:"f108.mp3",en:"Turn right at the traffic lights.",es:"Gire a la derecha en el semáforo."},
     {audio:"f109.mp3",en:"It is on the opposite side of the road.",es:"Está en el lado opuesto de la carretera."},
-    {audio:"f110.mp3",en:"Where can I buy a ticket?",es:"¿Dónde está el mostrador de facturación de British Airways?"},
+    {audio:"f110.mp3",en:"Where can I buy a ticket?",es:"¿Dónde puedo comprar un billete?"},
     {audio:"f111.mp3",en:"A single ticket to the city centre, please.",es:"Un billete de ida al centro, por favor."},
     {audio:"f112.mp3",en:"I would like a return ticket.",es:"Me gustaría un billete de ida y vuelta."},
     {audio:"f113.mp3",en:"Which bus goes to the museum?",es:"¿Qué autobús va al museo?"},
@@ -279,7 +276,7 @@ const items = [
     {audio:"f149.mp3",en:"The post office is between the bakery and the bank.",es:"La oficina de correos está entre la panadería y el banco."},
     {audio:"f150.mp3",en:"Thank you, have a nice day!",es:"¡Gracias, tenga un buen día!"},
 
-    // BLOQUE 4: RESTAURANTES, COMPRAS Y EMERGENCIAS
+    // RESTAURANTES Y EMERGENCIAS (151-200)
     {audio:"f151.mp3",en:"I'd like to book a table for two at eight o'clock.",es:"Me gustaría reservar una mesa para dos a las ocho."},
     {audio:"f152.mp3",en:"A table for four, please.",es:"Una mesa para cuatro, por favor."},
     {audio:"f153.mp3",en:"Can we see the menu, please?",es:"¿Podemos ver el menú, por favor?"},
@@ -332,131 +329,168 @@ const items = [
     {audio:"f200.mp3",en:"Thank you for everything.",es:"Gracias por todo."}
 ];
 
-let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0;
+const normalizationMap = {
+    "dont": "do not", "doesn't": "does not", "doesnt": "does not", "didnt": "did not", "didn't": "did not",
+    "isnt": "is not", "isn't": "is not", "arent": "are not", "aren't": "are not",
+    "wasnt": "was not", "wasn't": "was not", "werent": "were not", "weren't": "were not",
+    "havent": "have not", "haven't": "have not", "hasnt": "has not", "hasn't": "has not",
+    "hadnt": "had not", "hadn't": "had not", "wont": "will not", "won't": "will not",
+    "wouldnt": "would not", "wouldn't": "would not", "cant": "can not", "can't": "can not",
+    "couldnt": "could not", "couldn't": "could not", "im": "i am", "i'm": "i am",
+    "youre": "you are", "you're": "you are", "hes": "he is", "he's": "he is",
+    "shes": "she is", "she's": "she is", "its": "it is", "it's": "it is",
+    "were": "we are", "we're": "we are", "theyre": "they are", "they're": "they are",
+    "ive": "i have", "i've": "i have", "youve": "you have", "you've": "you have",
+    "weve": "we have", "we've": "we have", "theyve": "they have", "they've": "they have",
+    "id": "i would", "i'd": "i would", "youd": "you would", "you'd": "you would",
+    "hed": "he would", "he'd": "he would", "shed": "she would", "she'd": "she would",
+    "wed": "we would", "we'd": "we would", "theyd": "they would", "they'd": "they would",
+    "ill": "i will", "i'll": "i will", "youll": "you will", "you'll": "you will",
+    "hell": "he will", "he'll": "he will", "shell": "she will", "she'll": "she will",
+    "well": "we will", "we'll": "we will", "theyll": "they will", "they'll": "they will"
+};
+
+let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0, fallos = 0;
 const audioObj = new Audio();
 const progressBar = document.getElementById("progressBar");
 
-const contractions = {
-    "i'd": "i would", "you'd": "you would", "he'd": "he would", "she'd": "she would", 
-    "it'd": "it would", "we'd": "we would", "they'd": "they would",
-    "i've": "i have", "you've": "you have", "we've": "we have", "they've": "they have",
-    "isn't": "is not", "aren't": "are not", "wasn't": "was not", "weren't": "were not",
-    "don't": "do not", "doesn't": "does not", "didn't": "did not",
-    "can't": "cannot", "couldn't": "could not", "won't": "will not", "wouldn't": "would not",
-    "it's": "it is", "she's": "she is", "he's": "he is", "there's": "there is",
-    "i'm": "i am", "we're": "we are", "they're": "they are", "you're": "you are",
-    "hadn't": "had not", "wouldn't've": "would not have", "i'll": "i will"
-};
+function getFolderName() { return "frases15z-fr-12-kQ"; }
 
-const expanded = {};
-for (let k in contractions) expanded[contractions[k]] = k;
-
-function normalize(w) { return w ? w.toLowerCase().replace(/[.,?!"]/g, "").trim() : ""; }
-
-function compareSentences(originalText, spokenText) {
-    const feedbackDiv = document.getElementById("speechFeedback");
-    const origWords = originalText.split(/\s+/);
-    const spokenWords = spokenText.split(/\s+/);
-    let resultHTML = ""; let sIdx = 0; 
-    for (let i = 0; i < origWords.length; i++) {
-        let matched = false; const oNorm = normalize(origWords[i]);
-        if (sIdx < spokenWords.length) {
-            const sNorm1 = normalize(spokenWords[sIdx]);
-            const sNorm2 = normalize(spokenWords[sIdx + 1]);
-            const sTwoWords = sNorm1 + " " + (sNorm2 || "");
-            if (contractions[oNorm] === sTwoWords) {
-                resultHTML += `<span class="word-correct">${spokenWords[sIdx]} ${spokenWords[sIdx+1]}</span> `;
-                sIdx += 2; matched = true;
-            } else if (i + 1 < origWords.length && (oNorm + " " + normalize(origWords[i+1])) === contractions[sNorm1]) {
-                resultHTML += `<span class="word-correct">${spokenWords[sIdx]}</span> `;
-                sIdx += 1; i++; matched = true;
-            } else if (oNorm === sNorm1 || contractions[oNorm] === sNorm1 || expanded[oNorm] === sNorm1) {
-                resultHTML += `<span class="word-correct">${spokenWords[sIdx]}</span> `;
-                sIdx++; matched = true;
-            }
-        }
-        if (!matched) {
-            let foundAhead = false;
-            for (let look = sIdx; look < sIdx + 3 && look < spokenWords.length; look++) {
-                if (normalize(spokenWords[look]) === oNorm) {
-                    for (let skip = sIdx; skip < look; skip++) resultHTML += `<span class="word-error">${spokenWords[skip]}</span> `;
-                    resultHTML += `<span class="word-correct">${spokenWords[look]}</span> `;
-                    sIdx = look + 1; foundAhead = true; matched = true; break;
-                }
-            }
-            if (!foundAhead) resultHTML += `<span class="word-missing">${origWords[i]}</span> `;
-        }
-    }
-    while (sIdx < spokenWords.length) { resultHTML += `<span class="word-error">${spokenWords[sIdx]}</span> `; sIdx++; }
-    feedbackDiv.innerHTML = resultHTML;
-}
-
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-let recognition, isListening = false;
-if (SpeechRecognition) {
-    recognition = new SpeechRecognition();
-    recognition.lang = 'en-US'; recognition.interimResults = false; recognition.continuous = true;
-    recognition.onstart = () => { isListening = true; document.getElementById("sttBtn").classList.add("listening"); };
-    recognition.onend = () => { isListening = false; document.getElementById("sttBtn").classList.remove("listening"); };
-    recognition.onresult = (e) => {
-        let transcript = "";
-        for (let i = e.resultIndex; i < e.results.length; i++) transcript += e.results[i][0].transcript + " ";
-        compareSentences(currentBlockData[pos].en, transcript.trim());
-    };
-}
-
-function stopAllMicrophones() {
-    if (isListening && recognition) { recognition.stop(); isListening = false; }
-    if (isRecording && mediaRecorder) { 
-        if (mediaRecorder.state !== 'inactive') mediaRecorder.stop(); 
-        isRecording = false; 
-    }
-    if (window.localStream) {
-        window.localStream.getTracks().forEach(track => track.stop());
-        window.localStream = null;
-    }
-    document.getElementById("sttBtn").classList.remove("listening");
-    document.querySelectorAll(".recording-active").forEach(b => {
-        b.classList.remove("recording-active");
-        b.innerHTML = '🎤';
-    });
-}
-
-async function toggleMic() {
-    if (!recognition) return;
-    if (isListening) { 
-        recognition.stop(); 
-    } else { 
-        stopAllMicrophones(); 
-        document.getElementById("speechFeedback").innerHTML = "";
-        recognition.start(); 
-    }
-}
-
-function getFolderName() { return window.location.pathname.split('/').filter(Boolean).slice(-1)[0] || "viaje_ingles"; }
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
 let mediaRecorder, audioChunks = [], isRecording = false;
 
+const SpeechRecognition = window.Recognition || window.webkitSpeechRecognition || window.SpeechRecognition;
+let recognition, isListening = false;
+
+if (SpeechRecognition) {
+    recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    recognition.continuous = true;
+
+    recognition.onstart = () => { isListening = true; document.getElementById("sttBtn").classList.add("listening"); };
+    recognition.onend = () => { isListening = false; document.getElementById("sttBtn").classList.remove("listening"); };
+    recognition.onresult = (event) => {
+        let fullTranscript = "";
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+            fullTranscript += event.results[i][0].transcript + " ";
+        }
+        compareSentences(currentBlockData[pos].en, fullTranscript.trim());
+    };
+}
+
+function normalizeText(text) {
+    if (!text) return "";
+    let clean = text.toLowerCase().replace(/[’‘]/g, "'");
+    clean = clean.replace(/[.,?!"]/g, "").trim();
+    let words = clean.split(/\s+/);
+    return words.map(word => {
+        let key = word.replace("'", ""); 
+        return normalizationMap[word] || normalizationMap[key] || word;
+    }).join(" ");
+}
+
+function compareSentences(original, spoken) {
+    const feedbackDiv = document.getElementById("speechFeedback");
+    const normOriginal = normalizeText(original);
+    const normSpoken = normalizeText(spoken);
+    const normOriginalWords = normOriginal.split(/\s+/);
+    const normSpokenWords = normSpoken.split(/\s+/);
+    const origWordsRaw = original.split(/\s+/);
+    
+    let resultHTML = "";
+    let sIdx = 0;
+    let correctCount = 0;
+
+    normOriginalWords.forEach((normWord, index) => {
+        const originalWordRaw = origWordsRaw[index]; 
+    if (!originalWordRaw) return;
+       
+ let matched = false;
+        if (sIdx < normSpokenWords.length && normSpokenWords[sIdx] === normWord) {
+            resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
+            sIdx++;
+            matched = true;
+            correctCount++;
+        } else {
+            for (let j = sIdx + 1; j < sIdx + 5 && j < normSpokenWords.length; j++) {
+                if (normSpokenWords[j] === normWord) {
+                    for (let k = sIdx; k < j; k++) {
+                        resultHTML += `<span class="word-error">${normSpokenWords[k]}</span>`;
+                    }
+                    resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
+                    sIdx = j + 1;
+                    matched = true;
+                    correctCount++;
+                    break;
+                }
+            }
+        }
+        if (!matched) resultHTML += `<span class="word-missing">${originalWordRaw}</span>`;
+    });
+    feedbackDiv.innerHTML = resultHTML;
+
+    let score = correctCount / normOriginalWords.length;
+    if (score >= 0.99) {
+        fallos = 0;
+        document.getElementById('btn-rescat').style.display = 'none';
+        if (window.executarAciertoFinal) window.executarAciertoFinal();
+        setTimeout(() => { know(); }, 3000);
+    } else {
+        fallos++;
+        if (fallos >= 3) {
+            document.getElementById('btn-rescat').style.display = 'block';
+        }
+    }
+}
+
+function rescueAction() {
+    if (!starredIds.includes(currentBlockData[pos].audio)) {
+        toggleStar();
+    }
+    document.getElementById('btn-rescat').style.display = 'none';
+    fallos = 0;
+    if (window.executarAciertoFinal) window.executarAciertoFinal();
+}
+
+function toggleMic() {
+    if (!recognition) { alert("Navegador no suportat."); return; }
+    if (isListening) {
+        recognition.stop();
+    } else {
+        if (isRecording) {
+            mediaRecorder.stop();
+            isRecording = false;
+            document.querySelectorAll('.recording').forEach(b => b.classList.remove('recording'));
+        }
+        document.getElementById("speechFeedback").innerHTML = "";
+        recognition.start();
+    }
+}
+
 async function toggleRecord(targetBtnId) {
     const btn = document.getElementById(targetBtnId);
-    if (isRecording) { stopAllMicrophones(); return; }
-    stopAllMicrophones(); 
-    try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        window.localStream = stream;
-        mediaRecorder = new MediaRecorder(stream); audioChunks = [];
-        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-        mediaRecorder.onstop = () => {
-            if (audioChunks.length > 0) {
+    if (!isRecording) {
+        try {
+            if (isListening) recognition.stop();
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
+            mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+            mediaRecorder.onstop = () => {
                 const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
                 new Audio(URL.createObjectURL(audioBlob)).play();
-            }
-        };
-        mediaRecorder.start(); 
-        isRecording = true;
-        btn.classList.add("recording-active");
-        btn.innerHTML = '<span class="recording-icon">🎤</span>';
-    } catch (err) { alert("Micròfon no disponible"); }
+                stream.getTracks().forEach(track => track.stop());
+            };
+            mediaRecorder.start();
+            isRecording = true;
+            btn.classList.add("recording");
+        } catch (err) { alert("Error al accedir al micròfon."); }
+    } else {
+        mediaRecorder.stop(); 
+        isRecording = false;
+        btn.classList.remove("recording");
+    }
 }
 
 audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
@@ -468,78 +502,147 @@ function initBlocks() {
   const savedBlock = localStorage.getItem(getFolderName() + "_puntoLibro");
   container.innerHTML = "";
   const allBtn = document.createElement("button");
-  allBtn.className = "block all-btn"; allBtn.textContent = "T";
-  allBtn.onclick = () => loadAll(); container.appendChild(allBtn);
+  allBtn.className = "block all-btn";
+  allBtn.textContent = "T";
+  allBtn.onclick = () => loadAll();
+  container.appendChild(allBtn);
   for (let i = 0; i < numBlocks; i++) {
     const btn = document.createElement("button");
-    btn.className = "block"; btn.textContent = i + 1;
-    btn.onclick = () => loadBlock(i); container.appendChild(btn);
+    btn.className = "block";
+    btn.textContent = i + 1;
+    btn.onclick = () => loadBlock(i);
+    container.appendChild(btn);
   }
   if (savedBlock === "all") loadAll();
   else loadBlock((savedBlock !== null) ? parseInt(savedBlock) : 0);
 }
 
 function loadBlock(b) {
-  currentBlockID = b; localStorage.setItem(getFolderName() + "_puntoLibro", b);
-  let temp = []; let start = b * 10;
-  for (let i = start; i < Math.min(start + 10, items.length); i++) temp.push({...items[i]});
+  currentBlockID = b;
+  localStorage.setItem(getFolderName() + "_puntoLibro", b);
+  let temp = [];
+  let start = b * 10;
+  let end = Math.min(start + 10, items.length);
+  for (let i = start; i < end; i++) temp.push({...items[i]});
   currentBlockData = temp;
-  document.querySelectorAll(".block").forEach((btn, idx) => btn.classList.toggle("active", idx === (b + 1)));
-  pos = 0; learnedCount = 0; document.getElementById("endMsg").classList.add("hidden"); update(true);
+  document.querySelectorAll(".block").forEach((btn, idx) => { btn.classList.toggle("active", idx === (b + 1)); });
+  pos = 0; learnedCount = 0; fallos = 0;
+  document.getElementById("endMsg").classList.add("hidden");
+  document.getElementById('btn-rescat').style.display = 'none';
+  update(true);
 }
 
 function loadAll() {
-  currentBlockID = -1; localStorage.setItem(getFolderName() + "_puntoLibro", "all");
+  currentBlockID = -1;
+  localStorage.setItem(getFolderName() + "_puntoLibro", "all");
   currentBlockData = items.map(i => ({...i}));
-  document.querySelectorAll(".block").forEach((btn, idx) => btn.classList.toggle("active", idx === 0));
-  pos = 0; learnedCount = 0; document.getElementById("endMsg").classList.add("hidden"); update(true);
+  document.querySelectorAll(".block").forEach((btn, idx) => { btn.classList.toggle("active", idx === 0); });
+  pos = 0; learnedCount = 0; fallos = 0;
+  document.getElementById("endMsg").classList.add("hidden");
+  document.getElementById('btn-rescat').style.display = 'none';
+  update(true);
+}
+
+let autoMicTimer;
+
+function startTimer() {
+    clearTimeout(autoMicTimer);
+    let timeLeft = 10;
+    const feedback = document.getElementById("speechFeedback");
+    
+    autoMicTimer = setInterval(() => {
+        timeLeft--;
+        feedback.innerHTML = `<span style="color:#64748b; font-size:14px;">Micro automàtic en ${timeLeft}s...</span>`;
+        if (timeLeft <= 0) {
+            clearInterval(autoMicTimer);
+            feedback.innerHTML = "";
+            if (!isListening) toggleMic();
+        }
+    }, 1000);
 }
 
 function update(fromAction = false) {
+  clearTimeout(autoMicTimer);
   if (currentBlockData.length === 0) {
     document.getElementById("en").classList.add("hidden");
     document.getElementById("es").classList.add("hidden");
+    document.getElementById("speechFeedback").innerHTML = "";
     document.getElementById("endMsg").classList.remove("hidden");
+    document.getElementById('btn-rescat').style.display = 'none';
     return;
   }
-  progressBar.value = 0; const item = currentBlockData[pos];
+  progressBar.value = 0;
+  const item = currentBlockData[pos];
+  
   document.getElementById("es").classList.add("hidden");
   document.getElementById("en").classList.add("hidden");
   document.getElementById("speechFeedback").innerHTML = "";
   document.getElementById("starBtn").classList.toggle("active", starredIds.includes(item.audio));
+
   if (mode === "EN") {
     document.getElementById("langLabel").textContent = "ANGLÈS";
-    document.getElementById("en").innerHTML = item.en; document.getElementById("en").classList.remove("hidden");
+    document.getElementById("en").innerHTML = item.en;
+    document.getElementById("es").innerHTML = item.es;
     if (fromAction) playAudio(item.audio, 1.0);
   } else {
     document.getElementById("langLabel").textContent = "CASTELLÀ";
-    document.getElementById("es").innerHTML = item.es; document.getElementById("es").classList.remove("hidden");
+    document.getElementById("es").innerHTML = item.es;
+    document.getElementById("en").innerHTML = item.en;
+    document.getElementById("es").classList.remove("hidden");
+    if (fromAction) startTimer();
   }
   document.getElementById("counter").textContent = `${learnedCount} / ${currentBlockData.length + learnedCount}`;
 }
 
-function playAudio(src, speed) { audioObj.src = src; audioObj.playbackRate = speed; audioObj.play().catch(()=>{}); }
+function playAudio(audioFile, speed) {
+  audioObj.src = audioFile; 
+  audioObj.playbackRate = speed;
+  audioObj.onended = () => {
+    if (mode === "EN") {
+        setTimeout(() => {
+          if (!isListening) toggleMic();
+        }, 1000); 
+    }
+  };
+  audioObj.play().catch(err => console.log("Error con audio:", audioFile));
+}
+
 function playCurrent(speed) { if (currentBlockData.length > 0) playAudio(currentBlockData[pos].audio, speed); }
 function pauseAudio() { audioObj.pause(); }
 
 function reveal() {
   if (currentBlockData.length === 0) return;
-  const item = currentBlockData[pos];
   const esEl = document.getElementById("es");
   const enEl = document.getElementById("en");
-  if (mode === "EN") { esEl.innerHTML = item.es; esEl.classList.toggle("hidden"); } 
-  else { enEl.innerHTML = item.en; enEl.classList.toggle("hidden"); }
+  
+  if (mode === "EN") {
+    if (enEl.classList.contains("hidden")) {
+        enEl.classList.remove("hidden");
+        esEl.classList.remove("hidden");
+    } else {
+        playCurrent(1.0);
+    }
+  } else {
+    enEl.classList.toggle("hidden");
+  }
 }
 
 function know() {
   if (currentBlockData.length === 0) return;
-  learnedCount++; currentBlockData.splice(pos, 1);
-  if (pos >= currentBlockData.length) pos = 0; update(true);
+  learnedCount++; 
+  currentBlockData.splice(pos, 1);
+  if (pos >= currentBlockData.length) pos = 0;
+  fallos = 0;
+  document.getElementById('btn-rescat').style.display = 'none';
+  update(true);
 }
 
 function nextOne() {
   if (currentBlockData.length === 0) return;
-  pos = (pos + 1) % currentBlockData.length; update(true);
+  pos = (pos + 1) % currentBlockData.length;
+  fallos = 0;
+  document.getElementById('btn-rescat').style.display = 'none';
+  update(true);
 }
 
 function setMode(m) { mode = m; update(true); }
@@ -549,24 +652,60 @@ function toggleStar(forcedId = null) {
   if (starredIds.includes(audio)) starredIds = starredIds.filter(id => id !== audio);
   else starredIds.push(audio);
   localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
-  update();
+  const starBtn = document.getElementById("starBtn");
+  if(starBtn) starBtn.classList.toggle("active", starredIds.includes(currentBlockData[pos].audio));
+}
+
+function clearAllStars() {
+  if (confirm("Vols eliminar totes les estrelles de la llista?")) {
+    starredIds = [];
+    localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
+    
+    const starBtn = document.getElementById("starBtn");
+    if(starBtn) starBtn.classList.remove("active");
+    
+    const box = document.getElementById("listBox");
+    if (!box.classList.contains("hidden")) {
+      renderList(box.dataset.activeType);
+    }
+  }
 }
 
 function toggleList(type) {
   const box = document.getElementById("listBox");
   if (!box.classList.contains("hidden") && box.dataset.activeType === type) { box.classList.add("hidden"); return; }
-  box.dataset.activeType = type; renderList(type); box.classList.remove("hidden");
+  box.dataset.activeType = type;
+  renderList(type);
+  box.classList.remove("hidden");
 }
 
 function renderList(type) {
-  const box = document.getElementById("listBox"); box.innerHTML = "";
-  let listToRender = (type === 'stars') ? items.filter(i => starredIds.includes(i.audio)) : 
-                    (currentBlockID === -1 ? items : items.slice(currentBlockID * 10, (currentBlockID + 1) * 10));
-  if (listToRender.length === 0) { box.innerHTML += "<p style='padding:10px;'>Buit.</p>"; return; }
+  const box = document.getElementById("listBox");
+  if (type === 'stars') {
+    box.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+        <h3 style="margin:0;">Frases destacades (★):</h3>
+        <button onclick="clearAllStars()" style="background:#fee2e2; color:#dc2626; border:none; padding:4px 8px; border-radius:8px; font-size:10px; font-weight:800; cursor:pointer;">NETEJAR TOT 🗑️</button>
+      </div>`;
+  } else {
+    box.innerHTML = "";
+  }
+
+  let listToRender = [];
+  if (type === 'stars') listToRender = items.filter(i => starredIds.includes(i.audio));
+  else listToRender = (currentBlockID === -1) ? items : items.slice(currentBlockID * 10, (currentBlockID + 1) * 10);
+  
+  if (listToRender.length === 0) { 
+    box.innerHTML += "<p style='padding:10px;'>Buit.</p>"; 
+    return; 
+  }
+
   listToRender.forEach((i, index) => {
     const isStarred = starredIds.includes(i.audio);
-    const itemDiv = document.createElement("div"); itemDiv.className = "list-item";
+    const itemDiv = document.createElement("div");
+    itemDiv.className = "list-item";
     const recId = `rec-list-${index}`;
+    
     itemDiv.innerHTML = `
       <div class="list-controls-row">
         <button class="star-btn-list ${isStarred ? 'active' : ''}" onclick="toggleStar('${i.audio}'); renderList('${type}')">★</button>
@@ -583,63 +722,32 @@ function renderList(type) {
 }
 
 function markAsDone(el) {
-    if (!el.classList.contains('marked')) {
-        localStorage.setItem(getFolderName(), new Date().toISOString());
-        el.innerHTML = "✓"; el.classList.add('marked');
-    } else {
-        localStorage.removeItem(getFolderName());
-        el.innerHTML = ""; el.classList.remove('marked');
-    }
+    localStorage.setItem(getFolderName(), new Date().toISOString());
+    el.innerHTML = "✓"; el.classList.add('marked');
 }
 
-window.addEventListener('load', () => {
-    if (localStorage.getItem(getFolderName())) {
-        const mc = document.getElementById("mainCheck");
-        mc.innerHTML = "✓"; mc.classList.add('marked');
-    }
-    initBlocks();
-});
-</script>
-</body>
-<style>
-    #puntos-header { 
-        position: fixed; top: 15px; right: 15px; 
-        background: #fef3c7; color: #92400e; padding: 6px 16px; 
-        border-radius: 25px; font-weight: 900; border: 2px solid #f59e0b; 
-        z-index: 9999; display: flex; align-items: center; gap: 6px; 
-        font-size: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    #estrella-animada { 
-        position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); 
-        font-size: 100px; z-index: 10000; pointer-events: none; opacity: 0; 
-    }
-    #btn-rescat { 
-        display: none; margin: 15px auto; padding: 6px 20px; 
-        background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 20px; 
-        font-size: 12px; color: #64748b; cursor: pointer; font-weight: 600;
-        text-transform: uppercase;
-    }
-</style>
+if (localStorage.getItem(getFolderName())) { 
+    const mc = document.getElementById("mainCheck");
+    if(mc) { mc.innerHTML = "✓"; mc.classList.add('marked'); }
+}
 
-<div id="puntos-header">⭐ <span id="val-puntos">0</span></div>
-<div id="estrella-animada">⭐</div>
-
-<script>
 (function() {
     let xp = parseInt(localStorage.getItem('global_xp')) || 0;
-    let fallos = 0;
-    
-    const actualizarMarcador = () => {
-        const el = document.getElementById('val-puntos');
-        if(el) el.textContent = xp;
-    };
+    const marcador = document.getElementById('val-puntos');
+    if(marcador) marcador.textContent = xp;
 
     window.executarAciertoFinal = function() {
         xp += 10;
         localStorage.setItem('global_xp', xp);
-        actualizarMarcador();
+        if(marcador) marcador.textContent = xp;
 
         const est = document.getElementById('estrella-animada');
+        est.style.display = "block";
+        est.style.transition = "none";
+        est.style.opacity = "0";
+        est.style.transform = "translate(-50%, -50%) scale(0)";
+        void est.offsetWidth; 
+        
         est.style.transition = "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
         est.style.opacity = "1";
         est.style.transform = "translate(-50%, -50%) scale(1.4)";
@@ -647,46 +755,12 @@ window.addEventListener('load', () => {
         setTimeout(() => {
             est.style.opacity = "0";
             est.style.transform = "translate(-50%, -50%) scale(0)";
+            setTimeout(() => { est.style.display = "none"; }, 500);
         }, 1000);
-
-        fallos = 0;
-        document.getElementById('btn-rescat').style.display = 'none';
     };
-
-    setInterval(() => {
-        const contenedor = document.querySelector('.audio-container');
-        if (contenedor && !document.getElementById('btn-rescat')) {
-            const b = document.createElement('button');
-            b.id = 'btn-rescat';
-            b.textContent = 'IT IS OK';
-            b.onclick = window.executarAciertoFinal;
-            contenedor.after(b);
-            actualizarMarcador();
-        }
-        
-        if (typeof recognition !== 'undefined' && !recognition._puntosVinculados) {
-            recognition._puntosVinculados = true;
-            const originalResult = recognition.onresult;
-            
-            recognition.onresult = (event) => {
-                if(originalResult) originalResult(event);
-                
-                const transcripcio = event.results[0][0].transcript.toLowerCase().trim();
-                const fraseCorrecta = currentBlockData[pos].en.toLowerCase().trim();
-
-                const n1 = transcripcio.replace(/[^\w\s]/gi, '');
-                const n2 = fraseCorrecta.replace(/[^\w\s]/gi, '');
-
-                if (n1 === n2) {
-                    window.executarAciertoFinal();
-                } else {
-                    fallos++;
-                    // Ahora aparece exactamente al tercer fallo
-                    if (fallos >= 3) document.getElementById('btn-rescat').style.display = 'block';
-                }
-            };
-        }
-    }, 800);
 })();
+
+initBlocks();
 </script>
+</body>
 </html>
