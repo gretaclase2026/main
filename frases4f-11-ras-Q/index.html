@@ -74,7 +74,7 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 
 <header>
  <div class="mode-btns"><button class="mode-en" onclick="setMode('EN')">Anglès → Català</button></div>
- <div class="unit-number">4</div>
+ <div class="unit-number">1</div>
  <div class="mode-btns"><button class="mode-es" onclick="setMode('ES')">Català → Anglès</button></div>
 </header>
 
@@ -273,10 +273,8 @@ function compareSentences(original, spoken) {
     let correctCount = 0;
 
     normOriginalWords.forEach((normWord, index) => {
-        const originalWordRaw = origWordsRaw[index]; 
-    if (!originalWordRaw) return;
-       
- let matched = false;
+        const originalWordRaw = origWordsRaw[index];
+        let matched = false;
         if (sIdx < normSpokenWords.length && normSpokenWords[sIdx] === normWord) {
             resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
             sIdx++;

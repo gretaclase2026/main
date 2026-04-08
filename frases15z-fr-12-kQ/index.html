@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> Greta App - VIATGE</title>
+<title> Greta App - 15 Frases</title>
 <style>
 body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
 header{padding:8px 4px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center;align-items:center;gap:4px}
@@ -74,7 +74,7 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 
 <header>
  <div class="mode-btns"><button class="mode-en" onclick="setMode('EN')">Anglès → Català</button></div>
- <div class="unit-number">🛫</div>
+ <div class="unit-number">Viatge</div>
  <div class="mode-btns"><button class="mode-es" onclick="setMode('ES')">Català → Anglès</button></div>
 </header>
 
@@ -356,7 +356,7 @@ let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockI
 const audioObj = new Audio();
 const progressBar = document.getElementById("progressBar");
 
-function getFolderName() { return "C:\Users\HP\OneDrive - Kornerstone School\Documents\GitHub\main\frases15z-fr-12-kQ"; }
+function getFolderName() { return "frases15z-fr-12-kQ"; }
 
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
 let mediaRecorder, audioChunks = [], isRecording = false;
@@ -405,10 +405,8 @@ function compareSentences(original, spoken) {
     let correctCount = 0;
 
     normOriginalWords.forEach((normWord, index) => {
-        const originalWordRaw = origWordsRaw[index]; 
-    if (!originalWordRaw) return;
-       
- let matched = false;
+        const originalWordRaw = origWordsRaw[index];
+        let matched = false;
         if (sIdx < normSpokenWords.length && normSpokenWords[sIdx] === normWord) {
             resultHTML += `<span class="word-correct">${originalWordRaw}</span>`;
             sIdx++;
@@ -433,7 +431,7 @@ function compareSentences(original, spoken) {
     feedbackDiv.innerHTML = resultHTML;
 
     let score = correctCount / normOriginalWords.length;
-    if (score >= 0.99) {
+    if (score >= 0.95) {
         fallos = 0;
         document.getElementById('btn-rescat').style.display = 'none';
         if (window.executarAciertoFinal) window.executarAciertoFinal();
