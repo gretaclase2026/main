@@ -255,6 +255,9 @@
             let nombreFinal = encodeURIComponent(nombreLimpio);
             
             audioElement.src = `audios/${nombreFinal}.mp3`;
+            audioElement.onplay = () => {
+        audioElement.playbackRate = vel;
+    };
             
             audioElement.play().catch(() => {
                 vIndex++;
