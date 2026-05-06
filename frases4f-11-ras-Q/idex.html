@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿ <!DOCTYPE html>
 <html lang="ca">
 <head>
 <meta charset="UTF-8">
@@ -208,13 +208,14 @@ const items = [
 ];
 
 // Lógica del Cronómetro (Horas y Minutos)
-let totalMinutes = 0;
+// Lógica del Cronómetro Persistente (se guarda automáticamente)
+let totalMinutes = parseInt(localStorage.getItem('tiempo_total_estudio')) || 0;
 let timerInterval;
-
 function startGlobalTimer() {
-    // Se ejecuta cada 60 segundos (60000 ms)
+    updateTimerDisplay(); 
     timerInterval = setInterval(() => {
         totalMinutes++;
+        localStorage.setItem('tiempo_total_estudio', totalMinutes);
         updateTimerDisplay();
     }, 60000);
 }
@@ -222,16 +223,19 @@ function startGlobalTimer() {
 function updateTimerDisplay() {
     const hrs = Math.floor(totalMinutes / 60);
     const mins = totalMinutes % 60;
-    document.getElementById('val-timer').textContent = 
-        `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
+    const el = document.getElementById('val-timer');
+    if (el) {
+        el.textContent = hrs.toString().padStart(2, '0') + ":" + mins.toString().padStart(2, '0');
+    }
 }
-
 function resetTimer() {
-    totalMinutes = 0;
-    updateTimerDisplay();
+    if (confirm("¿Quieres reiniciar el cronómetro global?")) {
+        totalMinutes = 0;
+        localStorage.setItem('tiempo_total_estudio', 0);
+        updateTimerDisplay(); 
+    }
 }
 
-// Inicia el contador al cargar la página
 startGlobalTimer();
 
 // ... (Resto del código original sin cambios)
