@@ -284,7 +284,7 @@ function normalizeText(text) {
     }).join(" ");
 }
 
-   function compareSentences(original, spoken) {
+function compareSentences(original, spoken) {
     const feedbackDiv = document.getElementById("speechFeedback");
     const normOriginal = normalizeText(original);
     const normSpoken = normalizeText(spoken);
@@ -344,7 +344,9 @@ function normalizeText(text) {
             document.getElementById('btn-rescat').style.display = 'block';
         }
     }
-}function rescueAction() {
+}
+
+function rescueAction() {
     // Hemos eliminado la comprobación de starredIds y la llamada a toggleStar()
     document.getElementById('btn-rescat').style.display = 'none';
     fallos = 0;
@@ -514,7 +516,7 @@ function pauseAudio() {
     btn.textContent = "⏸";
   } else {
     audioObj.pause();
-    btn.textContent = ▶️";
+    btn.textContent = "▶️";
   }
 }
 
