@@ -290,7 +290,7 @@ function normalizeText(text) {
     feedbackDiv.innerHTML = resultHTML;
 
     let score = correctCount / normOriginalWords.length;
-    if (score >= 0.95) {
+    if (score >= 0.99) {
         fallos = 0;
         document.getElementById('btn-rescat').style.display = 'none';
         if (window.executarAciertoFinal) window.executarAciertoFinal();
