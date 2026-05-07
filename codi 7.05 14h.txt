@@ -14,33 +14,30 @@ header{padding:8px 4px;background:#fff;border-bottom:1px solid #e5e7eb;display:f
 main{display:flex;justify-content:center;padding:24px}
 .card{position:relative;width:100%;max-width:560px;background:#ffffff;border-radius:28px;padding:32px;box-shadow:0 10px 24px rgba(0,0,0,0.06);text-align:center}
 .counter{position:absolute;top:18px;left:22px;font-weight:800;color:#2563eb}
-.check-box-manual { position: absolute; top: 18px; right: 22px; width: 24px; height: 24px; background: #fff; border: 1.5px solid #22c55e; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 14px; }
-.check-box-manual.marked { background: #22c55e !important; color: white !important; }
+.check-box-manual{position:absolute;top:18px;right:22px;width:24px;height:24px;background:#fff;border:1.5px solid #22c55e;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;font-size:14px}
+.check-box-manual.marked{background:#22c55e!important;color:white!important}
 .lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
 .blocks{display:flex;flex-wrap:nowrap;gap:6px;justify-content:flex-start;margin:15px 0 20px;overflow-x:auto;padding:5px 0 5px 10px}
-.block{flex: 0 0 auto;width:32px;height:32px;border-radius:50%;border:none;background:#f1f5f9;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.2s}
-.block.active{background:#2563eb !important;color:#fff !important;transform:scale(1.1)}
-.block.all-btn { background: #e2e8f0; color: #475569; }
-.audio-container { display: flex; justify-content: center; gap: 8px; margin: 10px 0; align-items: center; flex-wrap: nowrap; }
-.audio-btn{width:52px;height:52px;border-radius:50%;border:none;background:#dcfce7;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s;}
-.audio-btn.slow{background:#fef08a;}
-.audio-btn.pause{background:#fee2e2; color: inherit;} 
-.audio-btn.rec{background:#fca5a5; color: white;}
-.audio-btn.stt{background:#dbeafe; font-size: 22px;}
-
-@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-.listening { animation: pulse 1.5s infinite; background: #90caf9 !important; color: #0f172a !important; }
-.recording { animation: pulse 1.5s infinite; background: #f48fb1 !important; color: white !important; }
-
-#speechFeedback { font-size: 18px; margin: 15px 0; font-weight: bold; min-height: 28px; line-height: 1.5; padding: 0 10px; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
-.word-correct { color: #16a34a; }
-.word-error { color: #dc2626; text-decoration: line-through; }
-.word-missing { color: #94a3b8; font-style: italic; }
-
-.star-btn { background: none; border: none; font-size: 32px; cursor: pointer; color: #cbd5e1; transition: 0.2s; padding: 0 5px 0 0; margin-right: 5px; }
-.star-btn.active { color: #f59e0b !important; }
-.progress-wrapper { width: 100%; padding: 0 10px; margin: 15px 0 10px; box-sizing: border-box; }
-input[type="range"] { width: 100%; cursor: pointer; height: 10px; border-radius: 5px; accent-color: #2563eb; }
+.block{flex:0 0 auto;width:32px;height:32px;border-radius:50%;border:none;background:#f1f5f9;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.2s}
+.block.active{background:#2563eb!important;color:#fff!important;transform:scale(1.1)}
+.block.all-btn{background:#e2e8f0;color:#475569}
+.audio-container{display:flex;justify-content:center;gap:8px;margin:10px 0;align-items:center;flex-wrap:nowrap}
+.audio-btn{width:52px;height:52px;border-radius:50%;border:none;background:#dcfce7;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s}
+.audio-btn.slow{background:#fef08a}
+.audio-btn.pause{background:#fee2e2;color:inherit}
+.audio-btn.rec{background:#fca5a5;color:white}
+.audio-btn.stt{background:#dbeafe;font-size:22px}
+@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
+.listening{animation:pulse 1.5s infinite;background:#90caf9!important;color:#0f172a!important}
+.recording{animation:pulse 1.5s infinite;background:#f48fb1!important;color:white!important}
+#speechFeedback{font-size:18px;margin:15px 0;font-weight:bold;min-height:28px;line-height:1.5;padding:0 10px;display:flex;flex-wrap:wrap;justify-content:center;gap:4px}
+.word-correct{color:#16a34a}
+.word-error{color:#dc2626;text-decoration:line-through}
+.word-missing{color:#94a3b8;font-style:italic}
+.star-btn{background:none;border:none;font-size:32px;cursor:pointer;color:#cbd5e1;transition:0.2s;padding:0 5px 0 0;margin-right:5px}
+.star-btn.active{color:#f59e0b!important}
+.progress-wrapper{width:100%;padding:0 10px;margin:15px 0 10px;box-sizing:border-box}
+input[type="range"]{width:100%;cursor:pointer;height:10px;border-radius:5px;accent-color:#2563eb}
 .hidden{display:none}
 .es{font-size:19px;color:#2563eb;margin-top:14px;line-height:1.4;font-weight:600}
 .en{font-size:19px;color:#0f172a;margin-top:14px;font-weight:700;line-height:1.4}
@@ -49,46 +46,39 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 .reveal{background:#e0f2fe}
 .know{background:#dcfce7}
 .next{background:#fbcfe8}
-.list-controls { display: flex; gap: 10px; margin-top: 16px; }
-.list-btn{ flex:1; background:#e9d5ff; border:none; border-radius:16px; padding:14px; font-weight:800; cursor:pointer; font-size:13px }
-.review-btn { background: #fef3c7; color: #92400e; }
+.list-controls{display:flex;gap:10px;margin-top:16px}
+.list-btn{flex:1;background:#e9d5ff;border:none;border-radius:16px;padding:14px;font-weight:800;cursor:pointer;font-size:13px}
+.review-btn{background:#fef3c7;color:#92400e}
 .list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
-.list-item { display: flex; align-items: flex-start; gap: 15px; padding: 15px 0; border-bottom: 1px solid #eee; }
-.list-controls-side { display: flex; flex-direction: column; gap: 8px; min-width: 44px; align-items: center; }
-.list-texts { flex-grow: 1; display: flex; flex-direction: column; gap: 6px; }
-.mini-btn { border: none; border-radius: 50%; width: 38px; height: 38px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
-.btn-audio { background: #dcfce7; }
-.btn-rec-mini { background: #fbcfe8; }
-.star-btn-list { background: none; border: none; font-size: 26px; cursor: pointer; color: #cbd5e1; padding: 0; line-height: 1; }
-.star-btn-list.active { color: #f59e0b !important; }
-.blur { filter: blur(5px); transition: filter 0.2s; cursor: pointer; user-select: none; }
-.blur.revealed { filter: blur(0); }
-
-#estrella-animada { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); font-size: 100px; z-index: 10000; pointer-events: none; opacity: 0; display: none; }
-#btn-rescat { display: none; margin: 10px auto; padding: 6px 12px; background: #f8fafc; border: 1.5px solid #22c55e; border-radius: 12px; font-size: 11px; color: #16a34a; cursor: pointer; font-weight: 800; text-transform: uppercase; }
-
-/* Cabecera de estadísticas y tiempo */
-.stats-header { position: fixed; top: 45px; right: 15px; display: flex; gap: 8px; z-index: 9999; }
-.stat-pill { background: #fef3c7; color: #92400e; padding: 6px 14px; border-radius: 25px; font-weight: 900; border: 2px solid #f59e0b; font-size: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 6px; }
-#timer-pill { background: #dbeafe; color: #1e40af; border-color: #3b82f6; cursor: pointer; }
+.list-item{display:flex;align-items:flex-start;gap:15px;padding:15px 0;border-bottom:1px solid #eee}
+.list-controls-side{display:flex;flex-direction:column;gap:8px;min-width:44px;align-items:center}
+.list-texts{flex-grow:1;display:flex;flex-direction:column;gap:6px}
+.mini-btn{border:none;border-radius:50%;width:38px;height:38px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:0.2s}
+.btn-audio{background:#dcfce7}
+.btn-rec-mini{background:#fbcfe8}
+.star-btn-list{background:none;border:none;font-size:26px;cursor:pointer;color:#cbd5e1;padding:0;line-height:1}
+.star-btn-list.active{color:#f59e0b!important}
+.blur{filter:blur(5px);transition:filter 0.2s;cursor:pointer;user-select:none}
+.blur.revealed{filter:blur(0)}
+#estrella-animada{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);font-size:100px;z-index:10000;pointer-events:none;opacity:0;display:none}
+#btn-rescat{display:none;margin:10px auto;padding:6px 12px;background:#f8fafc;border:1.5px solid #22c55e;border-radius:12px;font-size:11px;color:#16a34a;cursor:pointer;font-weight:800;text-transform:uppercase}
+.stats-header{position:fixed;top:45px;right:15px;display:flex;gap:8px;z-index:9999}
+.stat-pill{background:#fef3c7;color:#92400e;padding:6px 14px;border-radius:25px;font-weight:900;border:2px solid #f59e0b;font-size:15px;box-shadow:0 2px 8px rgba(0,0,0,0.1);display:flex;align-items:center;gap:6px}
+#timer-pill{background:#dbeafe;color:#1e40af;border-color:#3b82f6;cursor:pointer}
 </style>
 </head>
 <body>
-
 <header>
  <div class="mode-btns"><button class="mode-en" onclick="setMode('EN')">Anglès → Own</button></div>
  <div class="unit-number">[NUM_UNIDAD]</div>
  <div class="mode-btns"><button class="mode-es" onclick="setMode('ES')">Own → Anglès</button></div>
 </header>
-
 <main>
 <div class="card">
  <div class="counter" id="counter">0 / 0</div>
  <div class="check-box-manual" id="mainCheck" onclick="markAsDone(this)"></div>
-
  <div id="langLabel" class="lang" style="margin-top: 10px;">ANGLÈS</div>
  <div id="blockContainer" class="blocks"></div>
-
  <div class="audio-container">
   <button class="star-btn" id="starBtn" onclick="toggleStar()">★</button>
   <button class="audio-btn slow" onclick="playCurrent(0.75)">🐢</button>
@@ -97,41 +87,31 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
   <button class="audio-btn rec" id="recBtn" onclick="toggleRecord('recBtn')">🎤</button>
   <button class="audio-btn stt" id="sttBtn" onclick="toggleMic()">🎤</button>
  </div>
- 
  <div class="progress-wrapper"><input type="range" id="progressBar" value="0" min="0" max="100" step="0.1"></div>
  <button id="btn-rescat" onclick="rescueAction()">IT IS OKAY ⭐</button>
-
  <div id="es" class="es hidden"></div>
  <div id="speechFeedback"></div>
  <div id="en" class="en hidden"></div>
- 
  <div class="buttons">
   <button class="action reveal" onclick="reveal()">Veure</button>
   <button class="action know" onclick="know()">Ja la sé</button>
   <button class="action next" onclick="nextOne()">Següent</button>
  </div>
  <div class="list-controls">
-    <button class="list-btn" onclick="toggleList('all')">Tota la llista</button>
-    <button class="list-btn review-btn" onclick="toggleList('stars')">Repàs (★)</button>
+  <button class="list-btn" onclick="toggleList('all')">Tota la llista</button>
+  <button class="list-btn review-btn" onclick="toggleList('stars')">Repàs (★)</button>
  </div>
  <div id="endMsg" class="hidden" style="margin-top:16px; font-weight:800; color:#16a34a;">✔ Bloc completat!</div>
 </div>
 </main>
-
 <div id="listBox" class="list-box hidden"></div>
-
 <div class="stats-header">
-    <div id="timer-pill" class="stat-pill" onclick="resetTimer()">⏱️ <span id="val-timer">00:00</span></div>
-    <div id="puntos-pill" class="stat-pill">⭐ <span id="val-puntos">0</span></div>
+ <div id="timer-pill" class="stat-pill" onclick="resetTimer()">⏱️ <span id="val-timer">00:00</span></div>
+ <div id="puntos-pill" class="stat-pill">⭐ <span id="val-puntos">0</span></div>
 </div>
-
 <div id="estrella-animada">⭐</div>
-
 <script>
 [LISTA_ITEMS]
-
-// Lógica del Cronómetro (Horas y Minutos)
-// Lógica del Cronómetro Persistente (se guarda automáticamente)
 let totalMinutes = parseInt(localStorage.getItem('tiempo_total_estudio')) || 0;
 let timerInterval;
 function startGlobalTimer() {
@@ -142,14 +122,11 @@ function startGlobalTimer() {
         updateTimerDisplay();
     }, 60000);
 }
-
 function updateTimerDisplay() {
     const hrs = Math.floor(totalMinutes / 60);
     const mins = totalMinutes % 60;
     const el = document.getElementById('val-timer');
-    if (el) {
-        el.textContent = hrs.toString().padStart(2, '0') + ":" + mins.toString().padStart(2, '0');
-    }
+    if (el) { el.textContent = hrs.toString().padStart(2, '0') + ":" + mins.toString().padStart(2, '0'); }
 }
 function resetTimer() {
     if (confirm("¿Quieres reiniciar el cronómetro global?")) {
@@ -158,85 +135,33 @@ function resetTimer() {
         updateTimerDisplay(); 
     }
 }
-
 startGlobalTimer();
-
-// ... (Resto del código original sin cambios)
 const normalizationMap = {
-    "dont": "do not", "don't": "do not",
-    "doesnt": "does not", "doesn't": "does not",
-    "didnt": "did not", "didn't": "did not",
-    "isnt": "is not", "isn't": "is not",
-    "arent": "are not", "aren't": "are not",
-    "wasnt": "was not", "wasn't": "was not",
-    "werent": "were not", "weren't": "were not",
-    "havent": "have not", "haven't": "have not",
-    "hasnt": "has not", "hasn't": "has not",
-    "hadnt": "had not", "hadn't": "had not",
-    "wont": "will not", "won't": "will not",
-    "wouldnt": "would not", "wouldn't": "would not",
-    "cant": "cannot", "can't": "cannot",
-    "couldnt": "could not", "couldn't": "could not",
-    "shouldnt": "should not", "shouldn't": "should not",
-    "mustnt": "must not", "mustn't": "must not",
-    "mightnt": "might not", "mightn't": "might not",
-    "shant": "shall not", "shan't": "shall not",
-    "neednt": "need not", "needn't": "need not",
-    "oughtnt": "ought not", "oughtn't": "ought not",
-    "darent": "dare not", "daren't": "dare not",
-    "aint": "am not", "ain't": "am not",
-    "im": "i am", "i'm": "i am",
-    "youre": "you are", "you're": "you are",
-    "hes": "he is", "he's": "he is",
-    "shes": "she is", "she's": "she is",
-    "its": "it is", "it's": "it is",
-    "were": "we are", "we're": "we are",
-    "theyre": "they are", "they're": "they are",
-    "ive": "i have", "i've": "i have",
-    "youve": "you have", "you've": "you have",
-    "weve": "we have", "we've": "we have",
-    "theyve": "they have", "they've": "they have",
-    "id": "i would", "i'd": "i would",
-    "youd": "you would", "you'd": "you would",
-    "hed": "he would", "he'd": "he would",
-    "shed": "she would", "she'd": "she would",
-    "itd": "it would", "it'd": "it would",
-    "wed": "we would", "we'd": "we would",
-    "theyd": "they would", "they'd": "they would",
-    "ill": "i will", "i'll": "i will",
-    "youll": "you will", "you'll": "you will",
-    "hell": "he will", "he'll": "he will",
-    "shell": "she will", "she'll": "she will",
-    "itll": "it will", "it'll": "it will",
-    "well": "we will", "we'll": "we will",
-    "theyll": "they will", "they'll": "they will",
-    "thats": "that is", "that's": "that is",
-    "thatll": "that will", "that'll": "that will",
-    "whats": "what is", "what's": "what is",
-    "whos": "who is", "who's": "who is",
-    "wheres": "where is", "where's": "where is",
-    "hows": "how is", "how's": "how is",
-    "lets": "let us", "let's": "let us",
-    "theres": "there is", "there's": "there is",
-    "therell": "there will", "there'll": "there will",
-    "wholl": "who will", "who'll": "who will",
-    "yall": "you all", "y'all": "you all",
-    "mightve": "might have", "might've": "might have",
-    "mustve": "must have", "must've": "must have",
-    "shouldve": "should have", "should've": "should have",
-    "couldve": "could have", "could've": "could have",
-    "wouldve": "would have", "would've": "would have",
-    "wouldntve": "would not have", "wouldn't've": "would not have",
-    "shouldntve": "should not have", "shouldn't've": "should not have",
-    "couldntve": "could not have", "couldn't've": "could not have"
+    "dont": "do not", "don't": "do not", "doesnt": "does not", "doesn't": "does not", "didnt": "did not", "didn't": "did not",
+    "isnt": "is not", "isn't": "is not", "arent": "are not", "aren't": "are not", "wasnt": "was not", "wasn't": "was not",
+    "werent": "were not", "weren't": "were not", "havent": "have not", "haven't": "have not", "hasnt": "has not", "hasn't": "has not",
+    "hadnt": "had not", "hadn't": "had not", "wont": "will not", "won't": "will not", "wouldnt": "would not", "wouldn't": "would not",
+    "cant": "cannot", "can't": "cannot", "couldnt": "could not", "couldn't": "could not", "shouldnt": "should not", "shouldn't": "should not",
+    "mustnt": "must not", "mustn't": "must not", "mightnt": "might not", "mightn't": "might not", "shant": "shall not", "shan't": "shall not",
+    "neednt": "need not", "needn't": "need not", "oughtnt": "ought not", "oughtn't": "ought not", "darent": "dare not", "daren't": "dare not",
+    "aint": "am not", "ain't": "am not", "im": "i am", "i'm": "i am", "youre": "you are", "you're": "you are", "hes": "he is", "he's": "he is",
+    "shes": "she is", "she's": "she is", "its": "it is", "it's": "it is", "were": "we are", "we're": "we are", "theyre": "they are", "they're": "they are",
+    "ive": "i have", "i've": "i have", "youve": "you have", "you've": "you have", "weve": "we have", "we've": "we have", "theyve": "they have", "they've": "they have",
+    "id": "i would", "i'd": "i would", "youd": "you would", "you'd": "you would", "hed": "he would", "he'd": "he would", "shed": "she would", "she'd": "she would",
+    "itd": "it would", "it'd": "it would", "wed": "we would", "we'd": "we would", "theyd": "they would", "they'd": "they would",
+    "ill": "i will", "i'll": "i will", "youll": "you will", "you'll": "you will", "hell": "he will", "he'll": "he will", "shell": "she will", "she'll": "she will",
+    "itll": "it will", "it'll": "it will", "well": "we will", "we'll": "we will", "theyll": "they will", "they'll": "they will",
+    "thats": "that is", "that's": "that is", "thatll": "that will", "that'll": "that will", "whats": "what is", "what's": "what is",
+    "whos": "who is", "who's": "who is", "wheres": "where is", "where's": "where is", "hows": "how is", "how's": "how is", "lets": "let us", "let's": "let us",
+    "theres": "there is", "there's": "there is", "therell": "there will", "there'll": "there will", "wholl": "who will", "who'll": "who will", "yall": "you all", "y'all": "you all",
+    "mightve": "might have", "might've": "might have", "mustve": "must have", "must've": "must have", "shouldve": "should have", "should've": "should have",
+    "couldve": "could have", "could've": "could have", "wouldve": "would have", "would've": "would have", "wouldntve": "would not have", "wouldn't've": "would not have",
+    "shouldntve": "should not have", "shouldn't've": "should not have", "couldntve": "could not have", "couldn't've": "could not have"
 };
-
 let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0, fallos = 0;
 const audioObj = new Audio();
 const progressBar = document.getElementById("progressBar");
-
 function getFolderName() { return "[CARPETA]"; }
-
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
 let mediaRecorder, audioChunks = [], isRecording = false;
 const SpeechRecognition = window.Recognition || window.webkitSpeechRecognition || window.SpeechRecognition;
@@ -250,13 +175,10 @@ if (SpeechRecognition) {
     recognition.onend = () => { isListening = false; document.getElementById("sttBtn").classList.remove("listening"); };
     recognition.onresult = (event) => {
         let fullTranscript = "";
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-            fullTranscript += event.results[i][0].transcript + " ";
-        }
+        for (let i = event.resultIndex; i < event.results.length; i++) { fullTranscript += event.results[i][0].transcript + " "; }
         compareSentences(currentBlockData[pos].en, fullTranscript.trim());
     };
 }
-
 function normalizeText(text) {
     if (!text) return "";
     let clean = text.toLowerCase().replace(/[’‘]/g, "'");
@@ -267,8 +189,7 @@ function normalizeText(text) {
         return normalizationMap[word] || normalizationMap[key] || word;
     }).join(" ");
 }
-
- function compareSentences(original, spoken) {
+function compareSentences(original, spoken) {
     const feedbackDiv = document.getElementById("speechFeedback");
     const normOriginal = normalizeText(original);
     const normSpoken = normalizeText(spoken);
@@ -276,43 +197,26 @@ function normalizeText(text) {
     const normSpokenWords = normSpoken.split(/\s+/).filter(w => w.length > 0);
     const origWordsRaw = original.split(/\s+/).filter(w => w.length > 0);
     const spokenWordsRaw = spoken.split(/\s+/).filter(w => w.length > 0);
-    
-    let resultHTML = "";
-    let oIdx = 0; 
-    let sIdx = 0; 
-    let correctCount = 0;
-
+    let resultHTML = "", oIdx = 0, sIdx = 0, correctCount = 0;
     while (sIdx < normSpokenWords.length) {
         const spokenWord = normSpokenWords[sIdx];
         const rawSpoken = spokenWordsRaw[sIdx];
         if (oIdx < normOriginalWords.length && spokenWord === normOriginalWords[oIdx]) {
             resultHTML += `<span class="word-correct">${origWordsRaw[oIdx]}</span> `;
-            oIdx++;
-            sIdx++;
-            correctCount++;
+            oIdx++; sIdx++; correctCount++;
         } else if (oIdx < normOriginalWords.length && normSpokenWords.slice(sIdx + 1, sIdx + 4).includes(normOriginalWords[oIdx])) {
-            if (rawSpoken !== "undefined") {
-                resultHTML += `<span class="word-error">${rawSpoken}</span> `;
-            }
+            if (rawSpoken !== "undefined") { resultHTML += `<span class="word-error">${rawSpoken}</span> `; }
             sIdx++;
         } else if (oIdx < normOriginalWords.length) {
             resultHTML += `<span class="word-missing">${origWordsRaw[oIdx]}</span> `;
             oIdx++;
         } else {
-            if (rawSpoken !== "undefined") {
-                resultHTML += `<span class="word-error">${rawSpoken}</span> `;
-            }
+            if (rawSpoken !== "undefined") { resultHTML += `<span class="word-error">${rawSpoken}</span> `; }
             sIdx++;
         }
     }
-
-    while (oIdx < origWordsRaw.length) {
-        resultHTML += `<span class="word-missing">${origWordsRaw[oIdx]}</span> `;
-        oIdx++;
-    }
-
+    while (oIdx < origWordsRaw.length) { resultHTML += `<span class="word-missing">${origWordsRaw[oIdx]}</span> `; oIdx++; }
     feedbackDiv.innerHTML = resultHTML.trim();
-
     let score = (normOriginalWords.length > 0) ? (correctCount / normOriginalWords.length) : 0;
     if (score >= 0.99) {
         fallos = 0;
@@ -321,18 +225,14 @@ function normalizeText(text) {
         setTimeout(() => { if (typeof know === 'function') know(); }, 3000);
     } else {
         fallos++;
-        if (fallos >= 3) {
-            document.getElementById('btn-rescat').style.display = 'block';
-        }
+        if (fallos >= 3) { document.getElementById('btn-rescat').style.display = 'block'; }
     }
 }
-
 function rescueAction() {
     document.getElementById('btn-rescat').style.display = 'none';
     fallos = 0;
     if (window.executarAciertoFinal) window.executarAciertoFinal();
 }
-
 function toggleMic() {
     if (!recognition) { alert("Navegador no suportat."); return; }
     if (isListening) {
@@ -347,7 +247,6 @@ function toggleMic() {
         recognition.start();
     }
 }
-
 async function toggleRecord(targetBtnId) {
     const btn = document.getElementById(targetBtnId);
     if (!isRecording) {
@@ -372,10 +271,8 @@ async function toggleRecord(targetBtnId) {
         btn.classList.remove("recording");
     }
 }
-
 audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
 progressBar.oninput = () => { if (audioObj.duration) audioObj.currentTime = (progressBar.value / 100) * audioObj.duration; };
-
 function initBlocks() {
   const container = document.getElementById("blockContainer");
   const numBlocks = Math.ceil(items.length / 10);
@@ -396,13 +293,11 @@ function initBlocks() {
   if (savedBlock === "all") loadAll();
   else loadBlock((savedBlock !== null) ? parseInt(savedBlock) : 0);
 }
-
 function loadBlock(b) {
   currentBlockID = b;
   localStorage.setItem(getFolderName() + "_puntoLibro", b);
   let temp = [];
-  let start = b * 10;
-  let end = Math.min(start + 10, items.length);
+  let start = b * 10, end = Math.min(start + 10, items.length);
   for (let i = start; i < end; i++) temp.push({...items[i]});
   currentBlockData = temp;
   document.querySelectorAll(".block").forEach((btn, idx) => { btn.classList.toggle("active", idx === (b + 1)); });
@@ -411,26 +306,21 @@ function loadBlock(b) {
   document.getElementById('btn-rescat').style.display = 'none';
   update(true);
 }
-
 function loadAll() {
   currentBlockID = -1;
   localStorage.setItem(getFolderName() + "_puntoLibro", "all");
   currentBlockData = items.map(i => ({...i}));
   document.querySelectorAll(".block").forEach((btn, idx) => { btn.classList.toggle("active", idx === 0); });
-  pos = 0; learnedCount = 0;
-  fallos = 0;
+  pos = 0; learnedCount = 0; fallos = 0;
   document.getElementById("endMsg").classList.add("hidden");
   document.getElementById('btn-rescat').style.display = 'none';
   update(true);
 }
-
 let autoMicTimer;
-
 function startTimer() {
     clearTimeout(autoMicTimer);
     let timeLeft = 10;
     const feedback = document.getElementById("speechFeedback");
-    
     autoMicTimer = setInterval(() => {
         timeLeft--;
         feedback.innerHTML = `<span style="color:#64748b; font-size:14px;">Micro automàtic en ${timeLeft}s...</span>`;
@@ -441,7 +331,6 @@ function startTimer() {
         }
     }, 1000);
 }
-
 function update(fromAction = false) {
   document.querySelector('.audio-btn.pause').textContent = "⏸";
   clearTimeout(autoMicTimer);
@@ -455,12 +344,10 @@ function update(fromAction = false) {
   }
   progressBar.value = 0;
   const item = currentBlockData[pos];
-  
   document.getElementById("es").classList.add("hidden");
   document.getElementById("en").classList.add("hidden");
   document.getElementById("speechFeedback").innerHTML = "";
   document.getElementById("starBtn").classList.toggle("active", starredIds.includes(item.audio));
-
   if (mode === "EN") {
     document.getElementById("langLabel").textContent = "ANGLÈS";
     document.getElementById("en").innerHTML = item.en;
@@ -475,22 +362,15 @@ function update(fromAction = false) {
   }
   document.getElementById("counter").textContent = `${learnedCount} / ${currentBlockData.length + learnedCount}`;
 }
-
 function playAudio(audioFile, speed) {
   audioObj.src = audioFile; 
   audioObj.playbackRate = speed;
   audioObj.onended = () => {
-    if (mode === "EN") {
-        setTimeout(() => {
-          if (!isListening) toggleMic();
-        }, 1000);
-    }
+    if (mode === "EN") { setTimeout(() => { if (!isListening) toggleMic(); }, 1000); }
   };
   audioObj.play().catch(err => console.log("Error con audio:", audioFile));
 }
-
 function playCurrent(speed) { if (currentBlockData.length > 0) playAudio(currentBlockData[pos].audio, speed); }
-
 function pauseAudio() {
   const btn = document.querySelector('.audio-btn.pause');
   if (audioObj.paused) {
@@ -501,24 +381,16 @@ function pauseAudio() {
     btn.textContent = "▶️";
   }
 }
-
 function reveal() {
   if (currentBlockData.length === 0) return;
-  const esEl = document.getElementById("es");
-  const enEl = document.getElementById("en");
-  
+  const esEl = document.getElementById("es"), enEl = document.getElementById("en");
   if (mode === "EN") {
     if (enEl.classList.contains("hidden")) {
         enEl.classList.remove("hidden");
         esEl.classList.remove("hidden");
-    } else {
-        playCurrent(1.0);
-    }
-  } else {
-    enEl.classList.toggle("hidden");
-  }
+    } else { playCurrent(1.0); }
+  } else { enEl.classList.toggle("hidden"); }
 }
-
 function know() {
   if (currentBlockData.length === 0) return;
   learnedCount++;
@@ -528,7 +400,6 @@ function know() {
   document.getElementById('btn-rescat').style.display = 'none';
   update(true);
 }
-
 function nextOne() {
   if (currentBlockData.length === 0) return;
   pos = (pos + 1) % currentBlockData.length;
@@ -536,9 +407,7 @@ function nextOne() {
   document.getElementById('btn-rescat').style.display = 'none';
   update(true);
 }
-
 function setMode(m) { mode = m; update(true); }
-
 function toggleStar(forcedId = null) {
   const audio = forcedId || currentBlockData[pos].audio;
   if (starredIds.includes(audio)) starredIds = starredIds.filter(id => id !== audio);
@@ -547,22 +416,16 @@ function toggleStar(forcedId = null) {
   const starBtn = document.getElementById("starBtn");
   if(starBtn) starBtn.classList.toggle("active", starredIds.includes(currentBlockData[pos].audio));
 }
-
 function clearAllStars() {
   if (confirm("Vols eliminar totes les estrelles de la llista?")) {
     starredIds = [];
     localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
-    
     const starBtn = document.getElementById("starBtn");
     if(starBtn) starBtn.classList.remove("active");
-    
     const box = document.getElementById("listBox");
-    if (!box.classList.contains("hidden")) {
-      renderList(box.dataset.activeType);
-    }
+    if (!box.classList.contains("hidden")) { renderList(box.dataset.activeType); }
   }
 }
-
 function toggleList(type) {
   const box = document.getElementById("listBox");
   if (!box.classList.contains("hidden") && box.dataset.activeType === type) { box.classList.add("hidden"); return; }
@@ -570,87 +433,51 @@ function toggleList(type) {
   renderList(type);
   box.classList.remove("hidden");
 }
-
 function renderList(type) {
   const box = document.getElementById("listBox");
   if (type === 'stars') {
-    box.innerHTML = `
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-        <h3 style="margin:0;">Frases destacades (★):</h3>
-        <button onclick="clearAllStars()" style="background:#fee2e2; color:#dc2626; border:none; padding:4px 8px; border-radius:8px; font-size:10px; font-weight:800; cursor:pointer;">NETEJAR TOT 🗑️</button>
-      </div>`;
-  } else {
-    box.innerHTML = "";
-  }
-
+    box.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;"><h3 style="margin:0;">Frases destacades (★):</h3><button onclick="clearAllStars()" style="background:#fee2e2; color:#dc2626; border:none; padding:4px 8px; border-radius:8px; font-size:10px; font-weight:800; cursor:pointer;">NETEJAR TOT 🗑️</button></div>`;
+  } else { box.innerHTML = ""; }
   let listToRender = [];
   if (type === 'stars') listToRender = items.filter(i => starredIds.includes(i.audio));
   else listToRender = (currentBlockID === -1) ? items : items.slice(currentBlockID * 10, (currentBlockID + 1) * 10);
-  
-  if (listToRender.length === 0) { 
-    box.innerHTML += "<p style='padding:10px;'>Buit.</p>"; 
-    return;
-  }
-
+  if (listToRender.length === 0) { box.innerHTML += "<p style='padding:10px;'>Buit.</p>"; return; }
   listToRender.forEach((i, index) => {
-    const isStarred = starredIds.includes(i.audio);
-    const itemDiv = document.createElement("div");
+    const isStarred = starredIds.includes(i.audio), itemDiv = document.createElement("div");
     itemDiv.className = "list-item";
     const recId = `rec-list-${index}`;
-    itemDiv.innerHTML = `
-      <div class="list-controls-side">
-        <button class="star-btn-list ${isStarred ? 'active' : ''}" onclick="toggleStar('${i.audio}'); renderList('${type}')">★</button>
-        <button class="mini-btn btn-audio" onclick="playAudio('${i.audio}', 1.0)">🔊</button>
-        <button class="mini-btn btn-rec-mini" id="${recId}" onclick="toggleRecord('${recId}')">🎤</button>
-      </div>
-      <div class="list-texts">
-        <div style="color:#2563eb; font-weight:700;">${i.es}</div>
-        <div id="rev-${index}" class="blur" style="font-weight:800;" onclick="this.classList.toggle('revealed')">${i.en}</div>
-      </div>
-    `;
+    itemDiv.innerHTML = `<div class="list-controls-side"><button class="star-btn-list ${isStarred?'active':''}" onclick="toggleStar('${i.audio}'); renderList('${type}')">★</button><button class="mini-btn btn-audio" onclick="playAudio('${i.audio}', 1.0)">🔊</button><button class="mini-btn btn-rec-mini" id="${recId}" onclick="toggleRecord('${recId}')">🎤</button></div><div class="list-texts"><div style="color:#2563eb; font-weight:700;">${i.es}</div><div id="rev-${index}" class="blur" style="font-weight:800;" onclick="this.classList.toggle('revealed')">${i.en}</div></div>`;
     box.appendChild(itemDiv);
   });
 }
-
 function markAsDone(el) {
     localStorage.setItem(getFolderName(), new Date().toISOString());
     el.innerHTML = "✓"; el.classList.add('marked');
 }
-
 if (localStorage.getItem(getFolderName())) { 
     const mc = document.getElementById("mainCheck");
     if(mc) { mc.innerHTML = "✓"; mc.classList.add('marked'); }
 }
-
 (function() {
     let xp = parseInt(localStorage.getItem('global_xp')) || 0;
     const marcador = document.getElementById('val-puntos');
     if(marcador) marcador.textContent = xp;
-
     window.executarAciertoFinal = function() {
         xp += 10;
         localStorage.setItem('global_xp', xp);
         if(marcador) marcador.textContent = xp;
-
         const est = document.getElementById('estrella-animada');
-        est.style.display = "block";
-        est.style.transition = "none";
-        est.style.opacity = "0";
-        est.style.transform = "translate(-50%, -50%) scale(0)";
+        est.style.display = "block"; est.style.transition = "none";
+        est.style.opacity = "0"; est.style.transform = "translate(-50%, -50%) scale(0)";
         void est.offsetWidth; 
-        
         est.style.transition = "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
-        est.style.opacity = "1";
-        est.style.transform = "translate(-50%, -50%) scale(1.4)";
-        
+        est.style.opacity = "1"; est.style.transform = "translate(-50%, -50%) scale(1.4)";
         setTimeout(() => {
-            est.style.opacity = "0";
-            est.style.transform = "translate(-50%, -50%) scale(0)";
+            est.style.opacity = "0"; est.style.transform = "translate(-50%, -50%) scale(0)";
             setTimeout(() => { est.style.display = "none"; }, 500);
         }, 1000);
     };
 })();
-
 initBlocks();
 </script>
 </body>
