@@ -64,10 +64,13 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 .blur { filter: blur(5px); transition: filter 0.2s; cursor: pointer; user-select: none; }
 .blur.revealed { filter: blur(0); }
 
-#puntos-header { position: fixed; top: 45px; right: 15px; background: #fef3c7; color: #92400e; padding: 6px 16px; border-radius: 25px; font-weight: 900; border: 2px solid #f59e0b; z-index: 9999; display: flex; align-items: center; gap: 6px; font-size: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
 #estrella-animada { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); font-size: 100px; z-index: 10000; pointer-events: none; opacity: 0; display: none; }
-
 #btn-rescat { display: none; margin: 10px auto; padding: 6px 12px; background: #f8fafc; border: 1.5px solid #22c55e; border-radius: 12px; font-size: 11px; color: #16a34a; cursor: pointer; font-weight: 800; text-transform: uppercase; }
+
+/* Cabecera de estadísticas y tiempo */
+.stats-header { position: fixed; top: 45px; right: 15px; display: flex; gap: 8px; z-index: 9999; }
+.stat-pill { background: #fef3c7; color: #92400e; padding: 6px 14px; border-radius: 25px; font-weight: 900; border: 2px solid #f59e0b; font-size: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 6px; }
+#timer-pill { background: #dbeafe; color: #1e40af; border-color: #3b82f6; cursor: pointer; }
 </style>
 </head>
 <body>
@@ -114,8 +117,14 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
  <div id="endMsg" class="hidden" style="margin-top:16px; font-weight:800; color:#16a34a;">✔ Bloc completat!</div>
 </div>
 </main>
+
 <div id="listBox" class="list-box hidden"></div>
-<div id="puntos-header">⭐ <span id="val-puntos">0</span></div>
+
+<div class="stats-header">
+    <div id="timer-pill" class="stat-pill" onclick="resetTimer()">⏱️ <span id="val-timer">00:00</span></div>
+    <div id="puntos-pill" class="stat-pill">⭐ <span id="val-puntos">0</span></div>
+</div>
+
 <div id="estrella-animada">⭐</div>
 
 <script>
@@ -148,8 +157,39 @@ const items = [
 {"audio":"f026.mp3","es":"La raó per la qual estic practicant aquestes frases llargues és que vull millorar la meva fluïdesa per poder parlar amb parlants natius sense haver de parar cada dos segons per pensar en la gramàtica.","en":"The reason why I am practicing these long sentences is that I want to improve my fluency so that I can talk to native speakers without having to stop every 2 seconds to think about grammar."},
 ];
 
+// Lógica del Cronómetro (Horas y Minutos)
+// Lógica del Cronómetro Persistente (se guarda automáticamente)
+let totalMinutes = parseInt(localStorage.getItem('tiempo_total_estudio')) || 0;
+let timerInterval;
+function startGlobalTimer() {
+    updateTimerDisplay(); 
+    timerInterval = setInterval(() => {
+        totalMinutes++;
+        localStorage.setItem('tiempo_total_estudio', totalMinutes);
+        updateTimerDisplay();
+    }, 60000);
+}
+
+function updateTimerDisplay() {
+    const hrs = Math.floor(totalMinutes / 60);
+    const mins = totalMinutes % 60;
+    const el = document.getElementById('val-timer');
+    if (el) {
+        el.textContent = hrs.toString().padStart(2, '0') + ":" + mins.toString().padStart(2, '0');
+    }
+}
+function resetTimer() {
+    if (confirm("¿Quieres reiniciar el cronómetro global?")) {
+        totalMinutes = 0;
+        localStorage.setItem('tiempo_total_estudio', 0);
+        updateTimerDisplay(); 
+    }
+}
+
+startGlobalTimer();
+
+// ... (Resto del código original sin cambios)
 const normalizationMap = {
-    // Negaciones
     "dont": "do not", "don't": "do not",
     "doesnt": "does not", "doesn't": "does not",
     "didnt": "did not", "didn't": "did not",
@@ -172,7 +212,6 @@ const normalizationMap = {
     "oughtnt": "ought not", "oughtn't": "ought not",
     "darent": "dare not", "daren't": "dare not",
     "aint": "am not", "ain't": "am not",
-    // Pronombres + "to be"
     "im": "i am", "i'm": "i am",
     "youre": "you are", "you're": "you are",
     "hes": "he is", "he's": "he is",
@@ -180,12 +219,10 @@ const normalizationMap = {
     "its": "it is", "it's": "it is",
     "were": "we are", "we're": "we are",
     "theyre": "they are", "they're": "they are",
-    // Pronombres + "have"
     "ive": "i have", "i've": "i have",
     "youve": "you have", "you've": "you have",
     "weve": "we have", "we've": "we have",
     "theyve": "they have", "they've": "they have",
-    // Pronombres + "would" / "had"
     "id": "i would", "i'd": "i would",
     "youd": "you would", "you'd": "you would",
     "hed": "he would", "he'd": "he would",
@@ -193,7 +230,6 @@ const normalizationMap = {
     "itd": "it would", "it'd": "it would",
     "wed": "we would", "we'd": "we would",
     "theyd": "they would", "they'd": "they would",
-    // Pronombres + "will"
     "ill": "i will", "i'll": "i will",
     "youll": "you will", "you'll": "you will",
     "hell": "he will", "he'll": "he will",
@@ -201,7 +237,6 @@ const normalizationMap = {
     "itll": "it will", "it'll": "it will",
     "well": "we will", "we'll": "we will",
     "theyll": "they will", "they'll": "they will",
-    // Estructuras con "There", "That", "What", "How", etc.
     "thats": "that is", "that's": "that is",
     "thatll": "that will", "that'll": "that will",
     "whats": "what is", "what's": "what is",
@@ -213,13 +248,11 @@ const normalizationMap = {
     "therell": "there will", "there'll": "there will",
     "wholl": "who will", "who'll": "who will",
     "yall": "you all", "y'all": "you all",
-    // Auxiliares + "have" (Modales)
     "mightve": "might have", "might've": "might have",
     "mustve": "must have", "must've": "must have",
     "shouldve": "should have", "should've": "should have",
     "couldve": "could have", "could've": "could have",
     "wouldve": "would have", "would've": "would have",
-// Contracciones triples / complejas
     "wouldntve": "would not have", "wouldn't've": "would not have",
     "shouldntve": "should not have", "shouldn't've": "should not have",
     "couldntve": "could not have", "couldn't've": "could not have"
@@ -233,16 +266,13 @@ function getFolderName() { return "frases2b-fr-92-zP"; }
 
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
 let mediaRecorder, audioChunks = [], isRecording = false;
-
 const SpeechRecognition = window.Recognition || window.webkitSpeechRecognition || window.SpeechRecognition;
 let recognition, isListening = false;
-
 if (SpeechRecognition) {
     recognition = new SpeechRecognition();
     recognition.lang = 'en-US';
     recognition.interimResults = false;
     recognition.continuous = true;
-
     recognition.onstart = () => { isListening = true; document.getElementById("sttBtn").classList.add("listening"); };
     recognition.onend = () => { isListening = false; document.getElementById("sttBtn").classList.remove("listening"); };
     recognition.onresult = (event) => {
@@ -265,52 +295,57 @@ function normalizeText(text) {
     }).join(" ");
 }
 
-   function compareSentences(original, spoken) {
+ function compareSentences(original, spoken) {
     const feedbackDiv = document.getElementById("speechFeedback");
     const normOriginal = normalizeText(original);
     const normSpoken = normalizeText(spoken);
-    const normOriginalWords = normOriginal.split(/\s+/);
-    const normSpokenWords = normSpoken.split(/\s+/);
-    const origWordsRaw = original.split(/\s+/);
-    const spokenWordsRaw = spoken.split(/\s+/); // <--- Esto es lo que faltaba
+    const normOriginalWords = normOriginal.split(/\s+/).filter(w => w.length > 0);
+    const normSpokenWords = normSpoken.split(/\s+/).filter(w => w.length > 0);
+    const origWordsRaw = original.split(/\s+/).filter(w => w.length > 0);
+    const spokenWordsRaw = spoken.split(/\s+/).filter(w => w.length > 0);
     
     let resultHTML = "";
-    let sIdx = 0;
+    let oIdx = 0; 
+    let sIdx = 0; 
     let correctCount = 0;
 
-    normOriginalWords.forEach((normWord, index) => {
-        const originalWordRaw = origWordsRaw[index];
-        let matched = false;
-        
-        if (sIdx < normSpokenWords.length && normSpokenWords[sIdx] === normWord) {
-            resultHTML += `<span class="word-correct">${spokenWordsRaw[sIdx]}</span>`;
+    while (sIdx < normSpokenWords.length) {
+        const spokenWord = normSpokenWords[sIdx];
+        const rawSpoken = spokenWordsRaw[sIdx];
+        if (oIdx < normOriginalWords.length && spokenWord === normOriginalWords[oIdx]) {
+            resultHTML += `<span class="word-correct">${origWordsRaw[oIdx]}</span> `;
+            oIdx++;
             sIdx++;
-            matched = true;
             correctCount++;
-        } else {
-            for (let j = sIdx + 1; j < sIdx + 5 && j < normSpokenWords.length; j++) {
-                if (normSpokenWords[j] === normWord) {
-                    for (let k = sIdx; k < j; k++) {
-                        resultHTML += `<span class="word-error">${spokenWordsRaw[k]}</span>`;
-                    }
-                    resultHTML += `<span class="word-correct">${spokenWordsRaw[j]}</span>`;
-                    sIdx = j + 1;
-                    matched = true;
-                    correctCount++;
-                    break;
-                }
+        } else if (oIdx < normOriginalWords.length && normSpokenWords.slice(sIdx + 1, sIdx + 4).includes(normOriginalWords[oIdx])) {
+            if (rawSpoken !== "undefined") {
+                resultHTML += `<span class="word-error">${rawSpoken}</span> `;
             }
+            sIdx++;
+        } else if (oIdx < normOriginalWords.length) {
+            resultHTML += `<span class="word-missing">${origWordsRaw[oIdx]}</span> `;
+            oIdx++;
+        } else {
+            if (rawSpoken !== "undefined") {
+                resultHTML += `<span class="word-error">${rawSpoken}</span> `;
+            }
+            sIdx++;
         }
-        if (!matched) resultHTML += `<span class="word-missing">${originalWordRaw}</span>`;
-    });
-    feedbackDiv.innerHTML = resultHTML;
+    }
 
-    let score = correctCount / normOriginalWords.length;
+    while (oIdx < origWordsRaw.length) {
+        resultHTML += `<span class="word-missing">${origWordsRaw[oIdx]}</span> `;
+        oIdx++;
+    }
+
+    feedbackDiv.innerHTML = resultHTML.trim();
+
+    let score = (normOriginalWords.length > 0) ? (correctCount / normOriginalWords.length) : 0;
     if (score >= 0.99) {
         fallos = 0;
         document.getElementById('btn-rescat').style.display = 'none';
         if (window.executarAciertoFinal) window.executarAciertoFinal();
-        setTimeout(() => { know(); }, 3000);
+        setTimeout(() => { if (typeof know === 'function') know(); }, 3000);
     } else {
         fallos++;
         if (fallos >= 3) {
@@ -320,7 +355,6 @@ function normalizeText(text) {
 }
 
 function rescueAction() {
-    // Hemos eliminado la comprobación de starredIds y la llamada a toggleStar()
     document.getElementById('btn-rescat').style.display = 'none';
     fallos = 0;
     if (window.executarAciertoFinal) window.executarAciertoFinal();
@@ -410,7 +444,8 @@ function loadAll() {
   localStorage.setItem(getFolderName() + "_puntoLibro", "all");
   currentBlockData = items.map(i => ({...i}));
   document.querySelectorAll(".block").forEach((btn, idx) => { btn.classList.toggle("active", idx === 0); });
-  pos = 0; learnedCount = 0; fallos = 0;
+  pos = 0; learnedCount = 0;
+  fallos = 0;
   document.getElementById("endMsg").classList.add("hidden");
   document.getElementById('btn-rescat').style.display = 'none';
   update(true);
@@ -475,13 +510,14 @@ function playAudio(audioFile, speed) {
     if (mode === "EN") {
         setTimeout(() => {
           if (!isListening) toggleMic();
-        }, 1000); 
+        }, 1000);
     }
   };
   audioObj.play().catch(err => console.log("Error con audio:", audioFile));
 }
 
 function playCurrent(speed) { if (currentBlockData.length > 0) playAudio(currentBlockData[pos].audio, speed); }
+
 function pauseAudio() {
   const btn = document.querySelector('.audio-btn.pause');
   if (audioObj.paused) {
@@ -512,7 +548,7 @@ function reveal() {
 
 function know() {
   if (currentBlockData.length === 0) return;
-  learnedCount++; 
+  learnedCount++;
   currentBlockData.splice(pos, 1);
   if (pos >= currentBlockData.length) pos = 0;
   fallos = 0;
@@ -580,7 +616,7 @@ function renderList(type) {
   
   if (listToRender.length === 0) { 
     box.innerHTML += "<p style='padding:10px;'>Buit.</p>"; 
-    return; 
+    return;
   }
 
   listToRender.forEach((i, index) => {
