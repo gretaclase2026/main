@@ -181,13 +181,9 @@ if (SpeechRecognition) {
 }
 function normalizeText(text) {
     if (!text) return "";
-    let clean = text.toLowerCase().replace(/[’‘]/g, "'");
-    clean = clean.replace(/[.,?!"]/g, "").trim();
-    let words = clean.split(/\s+/);
-    return words.map(word => {
-        let key = word.replace("'", ""); 
-        return normalizationMap[word] || normalizationMap[key] || word;
-    }).join(" ");
+    return text.toLowerCase()
+               .replace(/[.,!?;:]/g, "")
+               .trim();
 }
 function compareSentences(original, spoken) {
     const feedbackDiv = document.getElementById("speechFeedback");
@@ -197,35 +193,67 @@ function compareSentences(original, spoken) {
     const normSpokenWords = normSpoken.split(/\s+/).filter(w => w.length > 0);
     const origWordsRaw = original.split(/\s+/).filter(w => w.length > 0);
     const spokenWordsRaw = spoken.split(/\s+/).filter(w => w.length > 0);
-    let resultHTML = "", oIdx = 0, sIdx = 0, correctCount = 0;
-    while (sIdx < normSpokenWords.length) {
+    
+    let resultHTML = "";
+    let oIdx = 0; 
+    let sIdx = 0; 
+    let correctCount = 0;
+
+     while (sIdx < normSpokenWords.length) {
         const spokenWord = normSpokenWords[sIdx];
         const rawSpoken = spokenWordsRaw[sIdx];
         if (oIdx < normOriginalWords.length && spokenWord === normOriginalWords[oIdx]) {
             resultHTML += `<span class="word-correct">${origWordsRaw[oIdx]}</span> `;
-            oIdx++; sIdx++; correctCount++;
+            oIdx++;
+            sIdx++;
+            correctCount++;
         } else if (oIdx < normOriginalWords.length && normSpokenWords.slice(sIdx + 1, sIdx + 4).includes(normOriginalWords[oIdx])) {
-            if (rawSpoken !== "undefined") { resultHTML += `<span class="word-error">${rawSpoken}</span> `; }
+            if (rawSpoken !== "undefined") {
+                resultHTML += `<span class="word-error">${rawSpoken}</span> `;
+            }
             sIdx++;
         } else if (oIdx < normOriginalWords.length) {
             resultHTML += `<span class="word-missing">${origWordsRaw[oIdx]}</span> `;
             oIdx++;
         } else {
-            if (rawSpoken !== "undefined") { resultHTML += `<span class="word-error">${rawSpoken}</span> `; }
+            if (rawSpoken !== "undefined") {
+                resultHTML += `<span class="word-error">${rawSpoken}</span> `;
+            }
             sIdx++;
         }
     }
-    while (oIdx < origWordsRaw.length) { resultHTML += `<span class="word-missing">${origWordsRaw[oIdx]}</span> `; oIdx++; }
+
+    while (oIdx < origWordsRaw.length) {
+        resultHTML += `<span class="word-missing">${origWordsRaw[oIdx]}</span> `;
+        oIdx++;
+    }
+
     feedbackDiv.innerHTML = resultHTML.trim();
+
     let score = (normOriginalWords.length > 0) ? (correctCount / normOriginalWords.length) : 0;
+    
     if (score >= 0.99) {
         fallos = 0;
-        document.getElementById('btn-rescat').style.display = 'none';
-        if (window.executarAciertoFinal) window.executarAciertoFinal();
-        setTimeout(() => { if (typeof know === 'function') know(); }, 3000);
+
+        if(document.getElementById('btn-rescat')) document.getElementById('btn-rescat').style.display = 'none';
+
+        addStarToCurrentFolder(); 
+
+        setTimeout(() => { 
+            feedbackDiv.innerHTML = "";
+            currentBlockPos++; 
+            if (currentBlockPos < currentBlockData.length) {
+                showBlock(); 
+            } else {
+                alert("¡Felicidades! Has completado este bloque.");
+            }
+        }, 3000); 
+
     } else {
         fallos++;
-        if (fallos >= 3) { document.getElementById('btn-rescat').style.display = 'block'; }
+        if (fallos >= 3) {
+            if(document.getElementById('btn-rescat')) document.getElementById('btn-rescat').style.display = 'block';
+        }
     }
 }
 function rescueAction() {
