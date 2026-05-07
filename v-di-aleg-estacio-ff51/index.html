@@ -196,5 +196,36 @@ function toggleList() {
 
 update();
 </script>
+<div style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; gap: 8px;">
+    <div id="timer-pill" class="stat-pill" style="background: #dbeafe; color: #1e40af; padding: 6px 14px; border-radius: 25px; font-weight: 900; border: 2px solid #3b82f6; font-size: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 6px; font-family: system-ui;">
+        ⏱️ <span id="val-timer-acumulado">00:00</span>
+    </div>
+</div>
+
+<script>
+(function() {
+   
+    let segundosTotales = parseInt(localStorage.getItem('tiempo_total_practica')) || 0;
+    const visor = document.getElementById('val-timer-acumulado');
+
+    function actualizarInterfaz() {
+        const hrs = Math.floor(segundosTotales / 3600);
+        const mins = Math.floor((segundosTotales % 3600) / 60);
+
+        let hh = hrs < 10 ? "0" + hrs : hrs;
+        let mm = mins < 10 ? "0" + mins : mins;
+        
+        visor.textContent = hh + ":" + mm;
+    }
+
+    actualizarInterfaz();
+   
+    setInterval(() => {
+        segundosTotales++;
+        localStorage.setItem('tiempo_total_practica', segundosTotales);
+        actualizarInterfaz();
+    }, 1000);
+})();
+</script>
 </body>
 </html>
