@@ -516,7 +516,7 @@ if (localStorage.getItem(getFolderName())) {
 }
 
 (function() {
-    // Usamos las mismas llaves que el "indexagregado" para que sumen lo mismo
+    // Estas son las llaves de memoria que comparten todas las unidades
     const CLAVE_GLOBAL = 'tiempo_total_estudio'; 
     const CLAVE_DIARIO = 'tiempo_estudio_diario';
 
@@ -533,9 +533,9 @@ if (localStorage.getItem(getFolderName())) {
         const global = parseInt(localStorage.getItem(CLAVE_GLOBAL)) || 0;
         const diario = parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0;
         
-        // El de ARRIBA muestra el total (tus 6 horas)
+        // El azul de arriba muestra el total de la memoria
         if(marcadorArriba) marcadorArriba.textContent = global;
-        // El VERDE de abajo muestra lo de hoy
+        // El verde de abajo muestra el diario de la memoria
         if(visorDiario) visorDiario.textContent = formatear(diario);
     }
 
@@ -552,6 +552,7 @@ if (localStorage.getItem(getFolderName())) {
         }
     };
 
+    // Tú decides cuándo reiniciar el verde
     window.resetDiario = function() {
         if (confirm("¿Reiniciar el tiempo de HOY?")) {
             localStorage.setItem(CLAVE_DIARIO, 0);
@@ -559,7 +560,7 @@ if (localStorage.getItem(getFolderName())) {
         }
     };
 
-    // Sumar 1 minuto cada 60 segundos
+    // Sumar 1 minuto cada 60 segundos en ambas cuentas
     setInterval(() => {
         let g = (parseInt(localStorage.getItem(CLAVE_GLOBAL)) || 0) + 1;
         let d = (parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0) + 1;
@@ -568,6 +569,7 @@ if (localStorage.getItem(getFolderName())) {
         actualizar();
     }, 60000);
 
+    // Esto es lo que faltaba: leer la memoria nada más entrar
     actualizar();
 })();
 </script>
