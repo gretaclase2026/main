@@ -139,30 +139,7 @@ const items = [
 {"audio":"f025.mp3","es":"El meu gos sempre s'emociona moltíssim quan plou, corrent pel fang i després entrant a casa abans que pugui netejar-li les potes, el que significa que haig de fregar tot el terra dues vegades al dia.","en":"My dog always gets extremely excited when it rains, running through the mud and then entering the house before I can clean his paws, which means I have to mop the entire floor twice a day."},
 {"audio":"f026.mp3","es":"La raó per la qual estic practicant aquestes frases llargues és que vull millorar la meva fluïdesa per poder parlar amb parlants natius sense haver de parar cada dos segons per pensar en la gramàtica.","en":"The reason why I am practicing these long sentences is that I want to improve my fluency so that I can talk to native speakers without having to stop every 2 seconds to think about grammar."},
 ];
-let totalMinutes = parseInt(localStorage.getItem('tiempo_total_estudio')) || 0;
-let timerInterval;
-function startGlobalTimer() {
-    updateTimerDisplay(); 
-    timerInterval = setInterval(() => {
-        totalMinutes++;
-        localStorage.setItem('tiempo_total_estudio', totalMinutes);
-        updateTimerDisplay();
-    }, 60000);
-}
-function updateTimerDisplay() {
-    const hrs = Math.floor(totalMinutes / 60);
-    const mins = totalMinutes % 60;
-    const el = document.getElementById('val-timer');
-    if (el) { el.textContent = hrs.toString().padStart(2, '0') + ":" + mins.toString().padStart(2, '0'); }
-}
-function resetTimer() {
-    if (confirm("¿Quieres reiniciar el cronómetro global?")) {
-        totalMinutes = 0;
-        localStorage.setItem('tiempo_total_estudio', 0);
-        updateTimerDisplay(); 
-    }
-}
-startGlobalTimer();
+
 const normalizationMap = {
     "dont": "do not", "don't": "do not", "doesnt": "does not", "doesn't": "does not", "didnt": "did not", "didn't": "did not",
     "isnt": "is not", "isn't": "is not", "arent": "are not", "aren't": "are not", "wasnt": "was not", "wasn't": "was not",
@@ -534,6 +511,53 @@ if (localStorage.getItem(getFolderName())) {
     };
 })();
 initBlocks();
+</script>
+<div style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
+    <div id="timer-diario" style="background: #dcfce7; color: #166534; padding: 6px 14px; border-radius: 25px; font-weight: 900; border: 2px solid #22c55e; font-size: 15px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-family: system-ui;" onclick="resetDiario()">
+        ☀️ <span id="val-timer-diario">00:00</span>
+    </div>
+</div>
+
+<script>
+(function() {
+    const CLAVE_GLOBAL = 'tiempo_total_estudio';
+    const CLAVE_DIARIO = 'tiempo_estudio_diario';
+    const marcadorArriba = document.getElementById('val-puntos');
+    const visorDiario = document.getElementById('val-timer-diario');
+
+    function formatear(minutos) {
+        const hrs = Math.floor(minutos / 60);
+        const mins = minutos % 60;
+        return hrs.toString().padStart(2, '0') + ":" + mins.toString().padStart(2, '0');
+    }
+
+    function actualizar() {
+        const global = parseInt(localStorage.getItem(CLAVE_GLOBAL)) || 0;
+        const diario = parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0;
+        
+        // Actualitza el número blau de dalt del header
+        if(marcadorArriba) marcadorArriba.textContent = global;
+        // Actualitza la pastilla verda de baix
+        if(visorDiario) visorDiario.textContent = formatear(diario);
+    }
+
+    window.resetDiario = function() {
+        if (confirm("¿Reiniciar el tiempo de HOY?")) {
+            localStorage.setItem(CLAVE_DIARIO, 0);
+            actualizar();
+        }
+    };
+
+    setInterval(() => {
+        let g = (parseInt(localStorage.getItem(CLAVE_GLOBAL)) || 0) + 1;
+        let d = (parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0) + 1;
+        localStorage.setItem(CLAVE_GLOBAL, g);
+        localStorage.setItem(CLAVE_DIARIO, d);
+        actualizar();
+    }, 60000);
+
+    actualizar();
+})();
 </script>
 </body>
 </html>
