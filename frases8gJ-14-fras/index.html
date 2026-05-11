@@ -649,37 +649,60 @@ initBlocks();
     }, 1000);
 })();
 </script>
-<div style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
-    <div id="timer-pill" class="stat-pill" style="background: #dbeafe; color: #1e40af; padding: 6px 14px; border-radius: 25px; font-weight: 900; border: 2px solid #3b82f6; font-size: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 6px; font-family: system-ui; cursor: pointer;" onclick="resetGlobalTimer()">
-        ⏱️ <span id="val-timer-acumulado">00:00</span>
+<div style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; gap: 10px;">
+    <div id="timer-diario" style="background: #dcfce7; color: #166534; padding: 6px 14px; border-radius: 25px; font-weight: 900; border: 2px solid #22c55e; font-size: 15px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-family: system-ui;" onclick="resetDiario()">
+        ☀️ <span id="val-timer-diario">00:00</span>
+    </div>
+    <div id="timer-global" style="background: #dbeafe; color: #1e40af; padding: 6px 14px; border-radius: 25px; font-weight: 900; border: 2px solid #3b82f6; font-size: 15px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-family: system-ui;" onclick="resetGlobal()">
+        🌎 <span id="val-timer-global">00:00</span>
     </div>
 </div>
 
 <script>
 (function() {
-    const CLAVE = 'tiempo_total_estudio';
-    const visor = document.getElementById('val-timer-acumulado');
+    const CLAVE_GLOBAL = 'tiempo_total_estudio';
+    const CLAVE_DIARIO = 'tiempo_estudio_diario';
 
-    function actualizarInterfaz() {
-        let totalMinutes = parseInt(localStorage.getItem(CLAVE)) || 0;
-        const hrs = Math.floor(totalMinutes / 60);
-        const mins = totalMinutes % 60;
-        visor.textContent = hrs.toString().padStart(2, '0') + ":" + mins.toString().padStart(2, '0');
+    function formatear(minutos) {
+        const hrs = Math.floor(minutos / 60);
+        const mins = minutos % 60;
+        return hrs.toString().padStart(2, '0') + ":" + mins.toString().padStart(2, '0');
     }
 
-    window.resetGlobalTimer = function() {
-        if (confirm("¿Quieres reiniciar el cronómetro global?")) {
-            localStorage.setItem(CLAVE, 0);
-            actualizarInterfaz();
+    function actualizar() {
+        const global = parseInt(localStorage.getItem(CLAVE_GLOBAL)) || 0;
+        const diario = parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0;
+        
+        document.getElementById('val-timer-global').textContent = formatear(global);
+        document.getElementById('val-timer-diario').textContent = formatear(diario);
+        
+        // Si tu index tiene el contador de puntos arriba, también se actualizará
+        const visorArriba = document.getElementById('val-puntos');
+        if(visorArriba) visorArriba.textContent = global;
+    }
+
+    window.resetGlobal = function() {
+        if (confirm("¿Reiniciar tiempo TOTAL acumulado?")) {
+            localStorage.setItem(CLAVE_GLOBAL, 0);
+            actualizar();
         }
     };
 
-    actualizarInterfaz();
+    window.resetDiario = function() {
+        if (confirm("¿Reiniciar tiempo de HOY?")) {
+            localStorage.setItem(CLAVE_DIARIO, 0);
+            actualizar();
+        }
+    };
+
+    actualizar();
 
     setInterval(() => {
-        let actual = parseInt(localStorage.getItem(CLAVE)) || 0;
-        localStorage.setItem(CLAVE, actual + 1);
-        actualizarInterfaz();
+        let g = (parseInt(localStorage.getItem(CLAVE_GLOBAL)) || 0) + 1;
+        let d = (parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0) + 1;
+        localStorage.setItem(CLAVE_GLOBAL, g);
+        localStorage.setItem(CLAVE_DIARIO, d);
+        actualizar();
     }, 60000); 
 })();
 </script>
