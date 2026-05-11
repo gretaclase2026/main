@@ -650,37 +650,37 @@ initBlocks();
 })();
 </script>
 <div style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; gap: 8px;">
-    <div id="timer-pill" class="stat-pill" style="background: #dbeafe; color: #1e40af; padding: 6px 14px; border-radius: 25px; font-weight: 900; border: 2px solid #3b82f6; font-size: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 6px; font-family: system-ui;">
+    <div id="timer-pill" class="stat-pill" style="background: #dbeafe; color: #1e40af; padding: 6px 14px; border-radius: 25px; font-weight: 900; border: 2px solid #3b82f6; font-size: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 6px; font-family: system-ui; cursor: pointer;" onclick="resetGlobalTimer()">
         ⏱️ <span id="val-timer-acumulado">00:00</span>
     </div>
 </div>
 
 <script>
 (function() {
-    // Usamos 'tiempo_total_practica' para sumar con tus otras lecciones 
-    let segundosTotales = parseInt(localStorage.getItem('tiempo_total_practica')) || 0;
+    let totalMinutes = parseInt(localStorage.getItem('tiempo_total_estudio')) || 0;
     const visor = document.getElementById('val-timer-acumulado');
 
     function actualizarInterfaz() {
-        const hrs = Math.floor(segundosTotales / 3600);
-        const mins = Math.floor((segundosTotales % 3600) / 60);
-
-        // Formato idéntico al tuyo: HH:MM 
-        let hh = hrs < 10 ? "0" + hrs : hrs;
-        let mm = mins < 10 ? "0" + mins : mins;
-        
-        visor.textContent = hh + ":" + mm;
+        const hrs = Math.floor(totalMinutes / 60);
+        const mins = totalMinutes % 60;
+        visor.textContent = hrs.toString().padStart(2, '0') + ":" + mins.toString().padStart(2, '0');
     }
 
-    // Dibujar el tiempo nada más entrar
+    window.resetGlobalTimer = function() {
+        if (confirm("¿Quieres reiniciar el cronómetro global?")) {
+            totalMinutes = 0;
+            localStorage.setItem('tiempo_total_estudio', 0);
+            actualizarInterfaz();
+        }
+    };
+
     actualizarInterfaz();
 
-    // El contador suma cada segundo internamente, pero el visor solo cambia al minuto [cite: 28]
     setInterval(() => {
-        segundosTotales++;
-        localStorage.setItem('tiempo_total_practica', segundosTotales);
+        totalMinutes++;
+        localStorage.setItem('tiempo_total_estudio', totalMinutes);
         actualizarInterfaz();
-    }, 1000);
+    }, 60000); 
 })();
 </script>
 </body>
