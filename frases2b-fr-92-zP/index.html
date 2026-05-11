@@ -520,8 +520,17 @@ initBlocks();
 
 <script>
 (function() {
-    const CLAVE_GLOBAL = 'tiempo_total_estudio';
+    // 1. RECUPERADOR: Busca tus 6 horas en cualquier "caja" donde puedan estar
+    let acumulado = parseInt(localStorage.getItem('tiempo_total_estudio')) || 
+                    parseInt(localStorage.getItem('tiempo_total_practica')) || 
+                    parseInt(localStorage.getItem('global_xp')) || 0;
+    
+    const CLAVE_UNICA = 'tiempo_total_estudio'; 
     const CLAVE_DIARIO = 'tiempo_estudio_diario';
+
+    // 2. UNIFICADOR: Guarda el tiempo recuperado en la caja que usaremos siempre
+    localStorage.setItem(CLAVE_UNICA, acumulado);
+
     const marcadorArriba = document.getElementById('val-puntos');
     const visorDiario = document.getElementById('val-timer-diario');
 
@@ -532,12 +541,12 @@ initBlocks();
     }
 
     function actualizar() {
-        const global = parseInt(localStorage.getItem(CLAVE_GLOBAL)) || 0;
+        const global = parseInt(localStorage.getItem(CLAVE_UNICA)) || 0;
         const diario = parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0;
         
-        // Actualitza el número blau de dalt del header
+        // Actualiza el número de arriba (el total en azul)
         if(marcadorArriba) marcadorArriba.textContent = global;
-        // Actualitza la pastilla verda de baix
+        // Actualiza la pastilla de abajo (hoy en verde)
         if(visorDiario) visorDiario.textContent = formatear(diario);
     }
 
@@ -548,10 +557,11 @@ initBlocks();
         }
     };
 
+    // Sumar un minuto cada 60 segundos
     setInterval(() => {
-        let g = (parseInt(localStorage.getItem(CLAVE_GLOBAL)) || 0) + 1;
+        let g = (parseInt(localStorage.getItem(CLAVE_UNICA)) || 0) + 1;
         let d = (parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0) + 1;
-        localStorage.setItem(CLAVE_GLOBAL, g);
+        localStorage.setItem(CLAVE_UNICA, g);
         localStorage.setItem(CLAVE_DIARIO, d);
         actualizar();
     }, 60000);
