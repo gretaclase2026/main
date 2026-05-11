@@ -491,24 +491,56 @@ if (localStorage.getItem(getFolderName())) {
     if(mc) { mc.innerHTML = "✓"; mc.classList.add('marked'); }
 }
 (function() {
-    let xp = parseInt(localStorage.getItem('global_xp')) || 0;
-    const marcador = document.getElementById('val-puntos');
-    if(marcador) marcador.textContent = xp;
+    // 1. EL RESCATADOR: Busca tus 6 horas en todas las "cajas" posibles
+    let acumulado = parseInt(localStorage.getItem('tiempo_total_estudio')) || 
+                    parseInt(localStorage.getItem('tiempo_total_practica')) || 
+                    parseInt(localStorage.getItem('global_xp')) || 0;
+    
+    const CLAVE_UNICA = 'tiempo_total_estudio'; 
+    const CLAVE_DIARIO = 'tiempo_estudio_diario';
+
+    // Guardamos el tiempo recuperado para que ya no se pierda
+    localStorage.setItem(CLAVE_UNICA, acumulado);
+
+    const marcadorArriba = document.getElementById('val-puntos');
+    const visorDiario = document.getElementById('val-timer-diario');
+
+    function formatear(minutos) {
+        const hrs = Math.floor(minutos / 60);
+        const mins = minutos % 60;
+        return hrs.toString().padStart(2, '0') + ":" + mins.toString().padStart(2, '0');
+    }
+
+    function actualizar() {
+        const global = parseInt(localStorage.getItem(CLAVE_UNICA)) || 0;
+        const diario = parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0;
+        if(marcadorArriba) marcadorArriba.textContent = global;
+        if(visorDiario) visorDiario.textContent = formatear(diario);
+    }
+
+    // 2. LA ESTRELLA: Mantenemos tu animación de siempre
     window.executarAciertoFinal = function() {
-        xp += 10;
-        localStorage.setItem('global_xp', xp);
-        if(marcador) marcador.textContent = xp;
         const est = document.getElementById('estrella-animada');
-        est.style.display = "block"; est.style.transition = "none";
-        est.style.opacity = "0"; est.style.transform = "translate(-50%, -50%) scale(0)";
-        void est.offsetWidth; 
-        est.style.transition = "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
-        est.style.opacity = "1"; est.style.transform = "translate(-50%, -50%) scale(1.4)";
-        setTimeout(() => {
-            est.style.opacity = "0"; est.style.transform = "translate(-50%, -50%) scale(0)";
-            setTimeout(() => { est.style.display = "none"; }, 500);
-        }, 1000);
+        if(est) {
+            est.style.display = "block";
+            est.style.opacity = "1";
+            est.style.transform = "translate(-50%, -50%) scale(1.5)";
+            setTimeout(() => {
+                est.style.opacity = "0";
+                est.style.transform = "translate(-50%, -50%) scale(0)";
+            }, 1000);
+        }
     };
+
+    setInterval(() => {
+        let g = (parseInt(localStorage.getItem(CLAVE_UNICA)) || 0) + 1;
+        let d = (parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0) + 1;
+        localStorage.setItem(CLAVE_UNICA, g);
+        localStorage.setItem(CLAVE_DIARIO, d);
+        actualizar();
+    }, 60000);
+
+    actualizar();
 })();
 initBlocks();
 </script>
