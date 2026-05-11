@@ -518,41 +518,21 @@ if (localStorage.getItem(getFolderName())) {
         if(visorDiario) visorDiario.textContent = formatear(diario);
     }
 
-    // 2. LA ESTRELLA: Mantenemos tu animación de siempre
-    window.executarAciertoFinal = function() {
-        const est = document.getElementById('estrella-animada');
-        if(est) {
-            est.style.display = "block";
-            est.style.opacity = "1";
-            est.style.transform = "translate(-50%, -50%) scale(1.5)";
-            setTimeout(() => {
-                est.style.opacity = "0";
-                est.style.transform = "translate(-50%, -50%) scale(0)";
-            }, 1000);
-        }
-    };
+  window.executarAciertoFinal = function() {
+    const est = document.getElementById('estrella-animada');
+    if (est) {
+        est.style.display = "block";
+        est.style.opacity = "1";
+        est.style.transform = "translate(-50%, -50%) scale(1.5)";
+        setTimeout(() => {
+            est.style.opacity = "0";
+            est.style.transform = "translate(-50%, -50%) scale(0)";
+        }, 1000);
+    }
+};
 
-    setInterval(() => {
-        let g = (parseInt(localStorage.getItem(CLAVE_UNICA)) || 0) + 1;
-        let d = (parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0) + 1;
-        localStorage.setItem(CLAVE_UNICA, g);
-        localStorage.setItem(CLAVE_DIARIO, d);
-        actualizar();
-    }, 60000);
-
-    actualizar();
-})();
-initBlocks();
-</script>
-<div style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
-    <div id="timer-diario" style="background: #dcfce7; color: #166534; padding: 6px 14px; border-radius: 25px; font-weight: 900; border: 2px solid #22c55e; font-size: 15px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-family: system-ui;" onclick="resetDiario()">
-        ☀️ <span id="val-timer-diario">00:00</span>
-    </div>
-</div>
-
-<script>
 (function() {
-    // 1. RECUPERADOR: Busca tus 6 horas en cualquier "caja" donde puedan estar
+    // ESTO ES LO QUE RECUPERA TUS 6 HORAS (360 minutos aprox)
     let acumulado = parseInt(localStorage.getItem('tiempo_total_estudio')) || 
                     parseInt(localStorage.getItem('tiempo_total_practica')) || 
                     parseInt(localStorage.getItem('global_xp')) || 0;
@@ -560,7 +540,6 @@ initBlocks();
     const CLAVE_UNICA = 'tiempo_total_estudio'; 
     const CLAVE_DIARIO = 'tiempo_estudio_diario';
 
-    // 2. UNIFICADOR: Guarda el tiempo recuperado en la caja que usaremos siempre
     localStorage.setItem(CLAVE_UNICA, acumulado);
 
     const marcadorArriba = document.getElementById('val-puntos');
@@ -575,10 +554,7 @@ initBlocks();
     function actualizar() {
         const global = parseInt(localStorage.getItem(CLAVE_UNICA)) || 0;
         const diario = parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0;
-        
-        // Actualiza el número de arriba (el total en azul)
         if(marcadorArriba) marcadorArriba.textContent = global;
-        // Actualiza la pastilla de abajo (hoy en verde)
         if(visorDiario) visorDiario.textContent = formatear(diario);
     }
 
@@ -589,7 +565,6 @@ initBlocks();
         }
     };
 
-    // Sumar un minuto cada 60 segundos
     setInterval(() => {
         let g = (parseInt(localStorage.getItem(CLAVE_UNICA)) || 0) + 1;
         let d = (parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0) + 1;
@@ -601,5 +576,11 @@ initBlocks();
     actualizar();
 })();
 </script>
+
+<div style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
+    <div id="timer-diario" style="background: #dcfce7; color: #166534; padding: 6px 14px; border-radius: 25px; font-weight: 900; border: 2px solid #22c55e; font-size: 15px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-family: system-ui;" onclick="resetDiario()">
+        ☀️ <span id="val-timer-diario">00:00</span>
+    </div>
+</div>
 </body>
 </html>
