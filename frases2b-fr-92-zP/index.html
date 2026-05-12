@@ -509,75 +509,31 @@ function markAsDone(el) {
     localStorage.setItem(getFolderName(), new Date().toISOString());
     el.innerHTML = "✓"; el.classList.add('marked');
 }
-
 if (localStorage.getItem(getFolderName())) { 
     const mc = document.getElementById("mainCheck");
     if(mc) { mc.innerHTML = "✓"; mc.classList.add('marked'); }
 }
-
 (function() {
-    // Estas llaves son las que comparten TODAS tus unidades
-    const CLAVE_GLOBAL = 'tiempo_total_estudio'; 
-    const CLAVE_DIARIO = 'tiempo_estudio_diario';
-
-    const marcadorArriba = document.getElementById('val-puntos');
-    const visorDiario = document.getElementById('val-timer-diario');
-
-    function formatear(minutos) {
-        const hrs = Math.floor(minutos / 60);
-        const mins = minutos % 60;
-        return hrs.toString().padStart(2, '0') + ":" + mins.toString().padStart(2, '0');
-    }
-
-    function actualizar() {
-        // LEER: Esto es lo que hace que el verde no empiece de cero
-        const global = parseInt(localStorage.getItem(CLAVE_GLOBAL)) || 0;
-        const diario = parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0;
-        
-        // El azul de arriba muestra el total acumulado
-        if(marcadorArriba) marcadorArriba.textContent = global;
-        // El verde de abajo muestra el acumulado de hoy
-        if(visorDiario) visorDiario.textContent = formatear(diario);
-    }
-
+    let xp = parseInt(localStorage.getItem('global_xp')) || 0;
+    const marcador = document.getElementById('val-puntos');
+    if(marcador) marcador.textContent = xp;
     window.executarAciertoFinal = function() {
+        xp += 10;
+        localStorage.setItem('global_xp', xp);
+        if(marcador) marcador.textContent = xp;
         const est = document.getElementById('estrella-animada');
-        if (est) {
-            est.style.display = "block";
-            est.style.opacity = "1";
-            est.style.transform = "translate(-50%, -50%) scale(1.5)";
-            setTimeout(() => {
-                est.style.opacity = "0";
-                est.style.transform = "translate(-50%, -50%) scale(0)";
-            }, 1000);
-        }
+        est.style.display = "block"; est.style.transition = "none";
+        est.style.opacity = "0"; est.style.transform = "translate(-50%, -50%) scale(0)";
+        void est.offsetWidth; 
+        est.style.transition = "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+        est.style.opacity = "1"; est.style.transform = "translate(-50%, -50%) scale(1.4)";
+        setTimeout(() => {
+            est.style.opacity = "0"; est.style.transform = "translate(-50%, -50%) scale(0)";
+            setTimeout(() => { est.style.display = "none"; }, 500);
+        }, 1000);
     };
-
-    window.resetDiario = function() {
-        if (confirm("¿Reiniciar el tiempo de HOY?")) {
-            localStorage.setItem(CLAVE_DIARIO, 0);
-            actualizar();
-        }
-    };
-
-    // SUMAR: Añade 1 minuto cada 60 segundos
-    setInterval(() => {
-        let g = (parseInt(localStorage.getItem(CLAVE_GLOBAL)) || 0) + 1;
-        let d = (parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0) + 1;
-        localStorage.setItem(CLAVE_GLOBAL, g);
-        localStorage.setItem(CLAVE_DIARIO, d);
-        actualizar();
-    }, 60000);
-
-    // INICIAR: Carga los datos nada más abrir la página
-    actualizar();
 })();
+initBlocks();
 </script>
-
-<div style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
-    <div id="timer-diario" style="background: #dcfce7; color: #166534; padding: 6px 14px; border-radius: 25px; font-weight: 900; border: 2px solid #22c55e; font-size: 15px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-family: system-ui;" onclick="resetDiario()">
-        ☀️ <span id="val-timer-diario">00:00</span>
-    </div>
-</div>
 </body>
 </html>
