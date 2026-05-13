@@ -626,7 +626,6 @@ initBlocks();
 
 <script>
 (function() {
-    // Lee el mismo dato que tus otras lecciones
     let segundosTotales = parseInt(localStorage.getItem('tiempo_total_practica')) || 0;
     const textoReloj = document.getElementById('tiempo-texto');
 
@@ -638,10 +637,8 @@ initBlocks();
         textoReloj.textContent = mm + ":" + ss;
     }
 
-    // Inicia mostrando lo que ya hay guardado
     actualizarInterfaz();
 
-    // Suma y guarda cada segundo
     setInterval(function() {
         segundosTotales++;
         localStorage.setItem('tiempo_total_practica', segundosTotales);
@@ -669,17 +666,13 @@ initBlocks();
         return hrs.toString().padStart(2, '0') + ":" + mins.toString().padStart(2, '0');
     }
 
-    function actualizar() {
-        const global = parseInt(localStorage.getItem(CLAVE_GLOBAL)) || 0;
-        const diario = parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0;
-        
-        document.getElementById('val-timer-global').textContent = formatear(global);
-        document.getElementById('val-timer-diario').textContent = formatear(diario);
-        
-        // Si tu index tiene el contador de puntos arriba, también se actualizará
-        const visorArriba = document.getElementById('val-puntos');
-        if(visorArriba) visorArriba.textContent = global;
-    }
+   function actualizar() {
+    const puntosReales = localStorage.getItem('global_xp') || 0;
+    const diario = parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0;
+   
+    if(marcadorArriba) marcadorArriba.textContent = puntosReales; 
+    if(visorDiario) visorDiario.textContent = formatear(diario);
+}
 
     window.resetGlobal = function() {
         if (confirm("¿Reiniciar tiempo TOTAL acumulado?")) {
