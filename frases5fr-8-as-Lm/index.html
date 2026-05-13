@@ -643,11 +643,14 @@ initBlocks();
     }
 
     function actualizar() {
-        const global = parseInt(localStorage.getItem(CLAVE_GLOBAL)) || 0;
-        const diario = parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0;
-        if(marcadorArriba) marcadorArriba.textContent = global;
-        if(visorDiario) visorDiario.textContent = formatear(diario);
-    }
+    // Recuperamos los puntos XP reales
+    const puntosReales = localStorage.getItem('global_xp') || 0;
+    const diario = parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0;
+    
+    // Mostramos los puntos (XP) arriba y el tiempo diario abajo
+    if(marcadorArriba) marcadorArriba.textContent = puntosReales; 
+    if(visorDiario) visorDiario.textContent = formatear(diario);
+}
 
     window.resetDiario = function() {
         if (confirm("¿Reiniciar el tiempo de HOY?")) {
