@@ -271,9 +271,14 @@ if (SpeechRecognition) {
 }
 function normalizeText(text) {
     if (!text) return "";
-    return text.toLowerCase()
+    
+    let cleanText = text.toLowerCase()
                .replace(/[.,!?;:]/g, "")
                .trim();
+
+    return cleanText.split(/\s+/).map(word => {
+        return normalizationMap[word] || word;
+    }).join(" ");
 }
 function compareSentences(original, spoken) {
     const feedbackDiv = document.getElementById("speechFeedback");
@@ -324,25 +329,21 @@ function compareSentences(original, spoken) {
     
     if (score >= 0.99) {
         fallos = 0;
+        document.getElementById('btn-rescat').style.display = 'none';
 
-        if(document.getElementById('btn-rescat')) document.getElementById('btn-rescat').style.display = 'none';
+        if (window.executarAciertoFinal) {
+            window.executarAciertoFinal();
+        }
 
-        addStarToCurrentFolder(); 
-
-        setTimeout(() => { 
-            feedbackDiv.innerHTML = "";
-            currentBlockPos++; 
-            if (currentBlockPos < currentBlockData.length) {
-                showBlock(); 
-            } else {
-                alert("¡Felicidades! Has completado este bloque.");
-            }
-        }, 3000); 
+        setTimeout(() => {
+            document.getElementById("speechFeedback").innerHTML = "";
+            know();
+        }, 3000);
 
     } else {
         fallos++;
         if (fallos >= 3) {
-            if(document.getElementById('btn-rescat')) document.getElementById('btn-rescat').style.display = 'block';
+            document.getElementById('btn-rescat').style.display = 'block';
         }
     }
 }
@@ -618,11 +619,9 @@ initBlocks();
     }
 
     function actualizar() {
-    // Recuperamos los puntos XP reales
     const puntosReales = localStorage.getItem('global_xp') || 0;
     const diario = parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0;
     
-    // Mostramos los puntos (XP) arriba y el tiempo diario abajo
     if(marcadorArriba) marcadorArriba.textContent = puntosReales; 
     if(visorDiario) visorDiario.textContent = formatear(diario);
 }
@@ -646,7 +645,6 @@ initBlocks();
 })();
 (function() {
     const bloc = document.getElementById('blocNotas');
-    // Usamos el nombre de la carpeta para que cada unidad tenga su propia nota
     const notaKey = 'notas_' + getFolderName();
 
     if (bloc) {
