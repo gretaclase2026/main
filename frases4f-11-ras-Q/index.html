@@ -563,10 +563,22 @@ function clearAllStars() {
 }
 function toggleList(type) {
   const box = document.getElementById("listBox");
-  if (!box.classList.contains("hidden") && box.dataset.activeType === type) { box.classList.add("hidden"); return; }
+  const btnToggle = document.getElementById("btn-toggle-blur-all");
+  
+  if (!box.classList.contains("hidden") && box.dataset.activeType === type) { 
+    box.classList.add("hidden"); 
+    if(btnToggle) btnToggle.style.display = "none";
+    return;
+  }
+  
   box.dataset.activeType = type;
   renderList(type);
   box.classList.remove("hidden");
+  
+  if(btnToggle) {
+      btnToggle.style.display = "flex";
+      btnToggle.querySelector("span").textContent = "Mostrar tot";
+  }
 }
 function renderList(type) {
   const box = document.getElementById("listBox");
@@ -581,7 +593,10 @@ function renderList(type) {
     const isStarred = starredIds.includes(i.audio), itemDiv = document.createElement("div");
     itemDiv.className = "list-item";
     const recId = `rec-list-${index}`;
-    itemDiv.innerHTML = `<div class="list-controls-side"><button class="star-btn-list ${isStarred?'active':''}" onclick="toggleStar('${i.audio}'); renderList('${type}')">★</button><button class="mini-btn btn-audio" onclick="playAudio('${i.audio}', 1.0)">🔊</button><button class="mini-btn btn-rec-mini" id="${recId}" onclick="toggleRecord('${recId}')">🎤</button></div><div class="list-texts"><div style="color:#2563eb; font-weight:700;">${i.es}</div><div id="rev-${index}" class="blur" style="font-weight:800;" onclick="this.classList.toggle('revealed')">${i.en}</div></div>`;
+    
+    const realNumber = items.findIndex(item => item.audio === i.audio) + 1;
+
+    itemDiv.innerHTML = `<div class="list-controls-side"><button class="star-btn-list ${isStarred?'active':''}" onclick="toggleStar('${i.audio}'); renderList('${type}')">★</button><button class="mini-btn btn-audio" onclick="playAudio('${i.audio}', 1.0)">🔊</button><button class="mini-btn btn-rec-mini" id="${recId}" onclick="toggleRecord('${recId}')">🎤</button></div><div class="list-texts"><div style="color:#2563eb; font-weight:700;"><span style="color:#64748b; margin-right:5px;">${realNumber}.</span>${i.es}</div><div id="rev-${index}" class="blur" style="font-weight:800;" onclick="this.classList.toggle('revealed')">${i.en}</div></div>`;
     box.appendChild(itemDiv);
   });
 }
@@ -616,9 +631,15 @@ if (localStorage.getItem(getFolderName())) {
 initBlocks();
 </script>
 <div style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
-    <div id="timer-diario" style="background: #dcfce7; color: #166534; padding: 6px 14px; border-radius: 25px; font-weight: 900; border: 2px solid #22c55e; font-size: 15px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-family: system-ui;" onclick="resetDiario()">
+   <div style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; gap: 8px; align-items: center;">
+    <button id="btn-toggle-blur-all" style="background: #e0f2fe; color: #0369a1; padding: 6px 14px; border-radius: 25px; font-weight: 900; border: 2px solid #38bdf8; font-size: 14px; cursor: pointer; display: none; align-items: center; gap: 6px; font-family: system-ui; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" onclick="toggleBlurAllList()">
+        👁️ <span>Mostrar tot</span>
+    </button>
+    
+    <div id="timer-diario" style="background: #dcfce7; color: #166534; padding: 6px 14px; border-radius: 25px; font-weight: 900; border: 2px solid #22c55e; font-size: 15px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-family: system-ui; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" onclick="resetDiario()">
         ☀️ <span id="val-timer-diario">00:00</span>
     </div>
+</div>
 </div>
 
 <script>
@@ -671,6 +692,29 @@ initBlocks();
         });
     }
 })();
+ 
+function toggleBlurAllList() {
+    const box = document.getElementById("listBox");
+    if (!box || box.classList.contains("hidden")) return;
+    
+    const elements = box.querySelectorAll(".blur");
+    const btnToggle = document.getElementById("btn-toggle-blur-all");
+    if (elements.length === 0) return;
+
+    const isFirstRevealed = elements[0].classList.contains("revealed");
+
+    elements.forEach(el => {
+        if (isFirstRevealed) {
+            el.classList.remove("revealed");
+        } else {
+            el.classList.add("revealed");
+        }
+    });
+
+    if (btnToggle) {
+        btnToggle.querySelector("span").textContent = isFirstRevealed ? "Mostrar tot" : "Amagar tot";
+    }
+}
 </script>
 </body>
 </html>
