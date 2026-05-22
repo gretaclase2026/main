@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Greta app - Phrasal</title>
+<title>[TITULO]</title>
 <style>
 body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
 header{padding:8px 4px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:center;align-items:center;gap:4px}
@@ -75,7 +75,7 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 <body>
 <header>
  <div class="mode-btns"><button class="mode-en" onclick="setMode('EN')">Anglès → Own</button></div>
- <div class="unit-number">Phrasal</div>
+ <div class="unit-number">[NUM_UNIDAD]</div>
  <div class="mode-btns"><button class="mode-es" onclick="setMode('ES')">Own → Anglès</button></div>
 </header>
 <main>
@@ -134,128 +134,7 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
         }
     };
 })();
-const items = [
-{audio:"f001.mp3", en:"I always get up at seven o'clock because I like to exercise.", es:"Siempre me levanto a las siete porque me gusta hacer ejercicio."},
-{audio:"f002.mp3", en:"Please, turn off the lights before you leave the house.", es:"Por favor, apaga las luces antes de salir de casa."},
-{audio:"f003.mp3", en:"Don't forget to put on your coat; it's very cold today.", es:"No olvides ponerte el abrigo; hace mucho frío hoy."},
-{audio:"f004.mp3", en:"I need to look for my keys; I can't find them anywhere.", es:"Necesito buscar mis llaves; no las encuentro por ninguna parte."},
-{audio:"f005.mp3", en:"Can you pick up the kids from school this afternoon?", es:"¿Puedes recoger a los niños del colegio esta tarde?"},
-{audio:"f006.mp3", en:"We should go out for dinner on Friday to celebrate.", es:"Deberíamos salir a cenar el viernes para celebrar."},
-{audio:"f007.mp3", en:"Please write down your phone number on this piece of paper.", es:"Por favor, anota tu número de teléfono en este trozo de papel."},
-{audio:"f008.mp3", en:"I have to clean up the kitchen after I cook dinner.", es:"Tengo que limpiar la cocina después de cocinar la cena."},
-{audio:"f009.mp3", en:"You should take off your shoes when you enter the house.", es:"Deberías quitarte los zapatos cuando entres en casa."},
-{audio:"f010.mp3", en:"I get along very well with my new neighbors.", es:"Me llevo muy bien con mis nuevos vecinos."},
-{audio:"f011.mp3", en:"Let's look up the meaning of this word in the dictionary.", es:"Vamos a buscar el significado de esta palabra en el diccionario."},
-{audio:"f012.mp3", en:"I need to fill out this form to get a new passport.", es:"Necesito rellenar este formulario para obtener un pasaporte nuevo."},
-{audio:"f013.mp3", en:"Don't give up learning English; you are doing great!", es:"No te rindas con el inglés; ¡lo estás haciendo genial!"},
-{audio:"f014.mp3", en:"My car broke down on the way to work this morning.", es:"Mi coche se averió de camino al trabajo esta mañana."},
-{audio:"f015.mp3", en:"I'll call you back as soon as I finish this meeting.", es:"Te devolveré la llamada tan pronto como termine esta reunión."},
-{audio:"f016.mp3", en:"We need to set up the table for twelve people.", es:"Necesitamos preparar la mesa para doce personas."},
-{audio:"f017.mp3", en:"I'm looking forward to seeing you at the party.", es:"Tengo muchas ganas de verte en la fiesta."},
-{audio:"f018.mp3", en:"Can you turn up the volume? I can't hear the news.", es:"¿Puedes subir el volumen? No oigo las noticias."},
-{audio:"f019.mp3", en:"Please sit down and make yourself comfortable.", es:"Por favor, siéntate y ponte cómodo."},
-{audio:"f020.mp3", en:"I want to try on this blue shirt in a medium size.", es:"Quiero probarme esta camisa azul en una talla mediana."},
-{audio:"f021.mp3", en:"My brother wakes up early but stays in bed for an hour.", es:"Mi hermano se despierta temprano pero se queda en la cama una hora."},
-{audio:"f022.mp3", en:"I need to find out what time the train leaves.", es:"Necesito averiguar a qué hora sale el tren."},
-{audio:"f023.mp3", en:"He decided to give away his old clothes to charity.", es:"Decidió regalar su ropa vieja a la caridad."},
-{audio:"f024.mp3", en:"Please put away your toys before you go to sleep.", es:"Por favor, guarda tus juguetes antes de irte a dormir."},
-{audio:"f025.mp3", en:"We ran out of milk, so I need to go to the shop.", es:"Nos quedamos sin leche, así que necesito ir a la tienda."},
-{audio:"f026.mp3", en:"I have to look after my sister's cat this weekend.", es:"Tengo que cuidar al gato de mi hermana este fin de semana."},
-{audio:"f027.mp3", en:"The plane will take off in about twenty minutes.", es:"El avión despegará en unos veinte minutos."},
-{audio:"f028.mp3", en:"You can throw away those old newspapers; I read them.", es:"Puedes tirar esos periódicos viejos; ya los leí."},
-{audio:"f029.mp3", en:"I need to brush up on my French before my trip to Paris.", es:"Necesito repasar mi francés antes de mi viaje a París."},
-{audio:"f030.mp3", en:"Don't hang up the phone yet; I have one more thing to say.", es:"No cuelgues el teléfono todavía; tengo una cosa más que decir."},
-{audio:"f031.mp3", en:"I'm trying to cut down on sugar to be healthier.", es:"Estoy intentando reducir el azúcar para estar más sano."},
-{audio:"f032.mp3", en:"My daughter wants to grow up to be a famous doctor.", es:"Mi hija quiere crecer para ser una doctora famosa."},
-{audio:"f033.mp3", en:"Can you help me out with this heavy suitcase?", es:"¿Puedes ayudarme con esta maleta pesada?"},
-{audio:"f034.mp3", en:"We should hurry up or we will miss the bus.", es:"Deberíamos darnos prisa o perderemos el autobús."},
-{audio:"f035.mp3", en:"I ran into an old friend at the supermarket yesterday.", es:"Me encontré con un viejo amigo en el supermercado ayer."},
-{audio:"f036.mp3", en:"Please keep on working until the bell rings.", es:"Por favor, continúa trabajando hasta que suene la campana."},
-{audio:"f037.mp3", en:"I need to log in to my email to check the message.", es:"Necesito iniciar sesión en mi correo para revisar el mensaje."},
-{audio:"f038.mp3", en:"My son made up a funny story about a green dragon.", es:"Mi hijo se inventó una historia divertida sobre un dragón verde."},
-{audio:"f039.mp3", en:"You should pay back the money I lent you last week.", es:"Deberías devolverme el dinero que te presté la semana pasada."},
-{audio:"f040.mp3", en:"I'll show you around the office on your first day.", es:"Te mostraré la oficina en tu primer día."},
-{audio:"f041.mp3", en:"We decided to take up tennis to stay active.", es:"Decidimos empezar a practicar tenis para mantenernos activos."},
-{audio:"f042.mp3", en:"I'm going to think it over before I make a decision.", es:"Voy a pensarlo bien antes de tomar una decisión."},
-{audio:"f043.mp3", en:"Please turn down the music; it's too loud for the baby.", es:"Por favor, baja la música; está muy fuerte para el bebé."},
-{audio:"f044.mp3", en:"I want to work out at the gym three times a week.", es:"Quiero hacer ejercicio en el gimnasio tres veces por semana."},
-{audio:"f045.mp3", en:"Don't back out of the deal at the last minute.", es:"No te eches atrás en el trato a último momento."},
-{audio:"f046.mp3", en:"I need to check out of the hotel before noon.", es:"Necesito dejar la habitación del hotel antes del mediodía."},
-{audio:"f047.mp3", en:"He came up with a great idea for the new project.", es:"Él propuso una gran idea para el nuevo proyecto."},
-{audio:"f048.mp3", en:"You can rely on me if you need any help.", es:"Puedes confiar en mí si necesitas ayuda."},
-{audio:"f049.mp3", en:"I have to deal with a lot of emails every morning.", es:"Tengo que lidiar con muchos correos cada mañana."},
-{audio:"f050.mp3", en:"Let's get together for a coffee sometime next week.", es:"Vamos a reunirnos para tomar un café la semana que viene."},
-{audio:"f051.mp3", en:"I dropped off the package at the post office today.", es:"Dejé el paquete en la oficina de correos hoy."},
-{audio:"f052.mp3", en:"The fire alarm went off in the middle of the night.", es:"La alarma de incendios sonó en mitad de la noche."},
-{audio:"f053.mp3", en:"Please hand out these photocopies to the students.", es:"Por favor, reparte estas fotocopias a los estudiantes."},
-{audio:"f054.mp3", en:"I need to hold on for a second while I find a pen.", es:"Necesito esperar un segundo mientras encuentro un bolígrafo."},
-{audio:"f055.mp3", en:"Don't let me down; I'm counting on your help.", es:"No me decepciones; cuento con tu ayuda."},
-{audio:"f056.mp3", en:"I'll point out the mistakes in your homework.", es:"Te señalaré los errores en tus deberes."},
-{audio:"f057.mp3", en:"We had to put off the meeting until next Tuesday.", es:"Tuvimos que posponer la reunión hasta el próximo martes."},
-{audio:"f058.mp3", en:"I used up all the ink in the printer yesterday.", es:"Gasté toda la tinta de la impresora ayer."},
-{audio:"f059.mp3", en:"You should watch out for cars when you cross the street.", es:"Deberías tener cuidado con los coches cuando cruces la calle."},
-{audio:"f060.mp3", en:"I'm going to wrap up the gift for my mother's birthday.", es:"Voy a envolver el regalo para el cumpleaños de mi madre."},
-{audio:"f061.mp3", en:"I need to go over my notes before the exam.", es:"Necesito revisar mis notas antes del examen."},
-{audio:"f062.mp3", en:"Could you speak up? I can't hear you well.", es:"¿Podrías hablar más alto? No te oigo bien."},
-{audio:"f063.mp3", en:"We had to call off the wedding due to the rain.", es:"Tuvimos que cancelar la boda debido a la lluvia."},
-{audio:"f064.mp3", en:"I stayed up late to finish reading this book.", es:"Me quedé despierto hasta tarde para terminar de leer este libro."},
-{audio:"f065.mp3", en:"It's hard to keep up with all the new technology.", es:"Es difícil mantenerse al día con toda la nueva tecnología."},
-{audio:"f066.mp3", en:"He's going to take over the company next month.", es:"Él va a hacerse cargo de la empresa el mes que viene."},
-{audio:"f067.mp3", en:"I hope everything turns out fine in the end.", es:"Espero que todo salga bien al final."},
-{audio:"f068.mp3", en:"She takes after her mother in many ways.", es:"Ella se parece a su madre en muchos aspectos."},
-{audio:"f069.mp3", en:"I'll pick you up at the airport at eight.", es:"Te recogeré en el aeropuerto a las ocho."},
-{audio:"f070.mp3", en:"Don't show off; nobody likes a person who brags.", es:"No presumas; a nadie le gusta una persona que alardea."},
-{audio:"f071.mp3", en:"I need to sort out this problem as soon as possible.", es:"Necesito solucionar este problema lo antes posible."},
-{audio:"f072.mp3", en:"The thief got away with the stolen jewelry.", es:"El ladrón escapó con las joyas robadas."},
-{audio:"f073.mp3", en:"We should carry on despite the difficulties.", es:"Deberíamos continuar a pesar de las dificultades."},
-{audio:"f074.mp3", en:"I came across an old photo in the attic.", es:"Me encontré con una foto antigua en el desván."},
-{audio:"f075.mp3", en:"Please pass on this information to your colleagues.", es:"Por favor, transmite esta información a tus colegas."},
-{audio:"f076.mp3", en:"He passed out because it was too hot in the room.", es:"Él se desmayó porque hacía demasiado calor en la habitación."},
-{audio:"f077.mp3", en:"I gave in and bought the expensive shoes.", es:"Cedí y compré los zapatos caros."},
-{audio:"f078.mp3", en:"The teacher handed out the exam papers.", es:"El profesor repartió las hojas del examen."},
-{audio:"f079.mp3", en:"I need to look into the causes of the accident.", es:"Necesito investigar las causas del accidente."},
-{audio:"f080.mp3", en:"They broke up after three years of dating.", es:"Ellos rompieron después de tres años de noviazgo."},
-{audio:"f081.mp3", en:"Can you fill me in on what happened yesterday?", es:"¿Puedes ponerme al tanto de lo que pasó ayer?"},
-{audio:"f082.mp3", en:"I need to cheer her up; she's very sad today.", es:"Necesito animarla; está muy triste hoy."},
-{audio:"f083.mp3", en:"The meeting dragged on for hours without a break.", es:"La reunión se prolongó durante horas sin un descanso."},
-{audio:"f084.mp3", en:"I ended up going home early because I was tired.", es:"Terminé yéndome a casa temprano porque estaba cansado."},
-{audio:"f085.mp3", en:"Try to get through the work before lunch.", es:"Intenta terminar el trabajo antes del almuerzo."},
-{audio:"f086.mp3", en:"He blew out the candles on his birthday cake.", es:"Él sopló las velas de su pastel de cumpleaños."},
-{audio:"f087.mp3", en:"We need to bring up this topic at the meeting.", es:"Necesitamos sacar este tema en la reunión."},
-{audio:"f088.mp3", en:"I fell for his lies and lost all my money.", es:"Caí en sus mentiras y perdí todo mi dinero."},
-{audio:"f089.mp3", en:"Please turn on the heater; it's freezing in here.", es:"Por favor, enciende la calefacción; hace un frío glacial aquí."},
-{audio:"f090.mp3", en:"I need to work on my pronunciation to be understood.", es:"Necesito trabajar en mi pronunciación para que me entiendan."},
-{audio:"f091.mp3", en:"The car pulled over to let the ambulance pass.", es:"El coche se detuvo a un lado para dejar pasar a la ambulancia."},
-{audio:"f092.mp3", en:"I ran out to buy some bread before the shop closed.", es:"Salí corriendo a comprar pan antes de que cerrara la tienda."},
-{audio:"f093.mp3", en:"She showed up two hours late for the party.", es:"Ella apareció dos horas tarde a la fiesta."},
-{audio:"f094.mp3", en:"I need to stand up for what I believe is right.", es:"Necesito defender lo que creo que es correcto."},
-{audio:"f095.mp3", en:"He takes back everything he said about you.", es:"Él se retracta de todo lo que dijo sobre ti."},
-{audio:"f096.mp3", en:"I thought up a new way to solve the puzzle.", es:"Se me ocurrió una nueva forma de resolver el acertijo."},
-{audio:"f097.mp3", en:"Please use up the milk before it goes bad.", es:"Por favor, consume toda la leche antes de que se estropee."},
-{audio:"f098.mp3", en:"I went through a lot of trouble to get these tickets.", es:"Pasé por muchos problemas para conseguir estas entradas."},
-{audio:"f099.mp3", en:"The medicine will wear off in a couple of hours.", es:"La medicina perderá su efecto en un par de horas."},
-{audio:"f100.mp3", en:"I need to write up the report by tomorrow morning.", es:"Necesito redactar el informe para mañana por la mañana."},
-{audio:"f101.mp3", en:"Don't back down now; you're very close to winning.", es:"No te eches atrás ahora; estás muy cerca de ganar."},
-{audio:"f102.mp3", en:"I blew up the balloons for the party.", es:"Inflé los globos para la fiesta."},
-{audio:"f103.mp3", en:"The factory brings in a lot of money for the town.", es:"La fábrica genera mucho dinero para el pueblo."},
-{audio:"f104.mp3", en:"I checked in at the airport dos horas antes.", es:"Facturé en el aeropuerto con dos horas de antelación."},
-{audio:"f105.mp3", en:"The clouds cleared up and the sun came out.", es:"Las nubes se despejaron y salió el sol."},
-{audio:"f106.mp3", en:"I cut out sugar from my diet entirely.", es:"Eliminé el azúcar de mi dieta por completo."},
-{audio:"f107.mp3", en:"The kids messed up the living room in minutes.", es:"Los niños desordenaron el salón en cuestión de minutos."},
-{audio:"f108.mp3", en:"I need to get back to work after my break.", es:"Necesito volver al trabajo después de mi descanso."},
-{audio:"f109.mp3", en:"He gave back the book he borrowed from me.", es:"Él devolvió el libro que me pidió prestado."},
-{audio:"f110.mp3", en:"I look up to my grandfather; he is very wise.", es:"Admiro a mi abuelo; es muy sabio."},
-{audio:"f111.mp3", en:"We moved in to our new apartment last week.", es:"Nos mudamos a nuestro nuevo apartamento la semana pasada."},
-{audio:"f112.mp3", en:"I put off going to the dentist for too long.", es:"Pospuse ir al dentista durante demasiado tiempo."},
-{audio:"f113.mp3", en:"The bus pulled away just as I reached the stop.", es:"El autobús se fue justo cuando llegué a la parada."},
-{audio:"f114.mp3", en:"I ran after the bus but I couldn't catch it.", es:"Corrí tras el autobús pero no pude alcanzarlo."},
-{audio:"f115.mp3", en:"She set off on a journey around the world.", es:"Ella partió en un viaje alrededor del mundo."},
-{audio:"f116.mp3", en:"I started up the car and drove away.", es:"Arranqué el coche y me fui conduciendo."},
-{audio:"f117.mp3", en:"I need to take out the trash before it smells.", es:"Necesito sacar la basura antes de que huela."},
-{audio:"f118.mp3", en:"He turned into a completely different person.", es:"Él se convirtió en una persona completamente diferente."},
-{audio:"f119.mp3", en:"I watch over my little brother on Saturdays.", es:"Cuido de mi hermano pequeño los sábados."},
-{audio:"f120.mp3", en:"I work out every morning to stay in shape.", es:"Hago ejercicio cada mañana para mantenerme en forma."},
-];
+[LISTA_ITEMS]
 let totalMinutes = parseInt(localStorage.getItem('tiempo_total_estudio')) || 0;
 let timerInterval;
 function startGlobalTimer() {
@@ -305,7 +184,7 @@ const normalizationMap = {
 let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0, fallos = 0;
 const audioObj = new Audio();
 const progressBar = document.getElementById("progressBar");
-function getFolderName() { return "verbs-phrasal-verbs-r6-w"; }
+function getFolderName() { return "[CARPETA]"; }
 let starredIds = JSON.parse(localStorage.getItem('stars_' + getFolderName())) || [];
 let mediaRecorder, audioChunks = [], isRecording = false;
 const SpeechRecognition = window.Recognition || window.webkitSpeechRecognition || window.SpeechRecognition;
@@ -717,7 +596,8 @@ initBlocks();
             localStorage.setItem(notaKey, bloc.value);
         });
     }
-})(); function toggleBlurAllList() {
+})(); 
+function toggleBlurAllList() {
     const box = document.getElementById("listBox");
     if (!box || box.classList.contains("hidden")) return;    
     const elements = box.querySelectorAll(".blur");

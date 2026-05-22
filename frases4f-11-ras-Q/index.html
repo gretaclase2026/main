@@ -81,7 +81,8 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 <main>
 <div class="card">
  <div class="counter" id="counter">0 / 0</div>
- <div class="check-box-manual" id="mainCheck" onclick="markAsDone(this)"></div>
+<div class="check-box-manual" id="mainCheck" onclick="markAsDone(this)"></div>
+ <div class="check-box-manual" id="reviewCheck" onclick="markReviewAsDone(this)" style="right: 54px; border-color: #f59e0b; color: #f59e0b; display: none;">🔔</div>
  <div id="langLabel" class="lang" style="margin-top: 10px;">ANGLÈS</div>
  <div id="blockContainer" class="blocks"></div>
  <div class="audio-container">
@@ -579,6 +580,44 @@ if (localStorage.getItem(getFolderName())) {
         }, 1000);
     };
 })();
+function checkStatus(folderName) {
+    const data = localStorage.getItem(folderName);
+    if (!data) return null;
+    const intervals = [1, 3, 7, 15, 30, 60, 90];
+    const completionDate = new Date(data);
+    const today = new Date();
+    today.setHours(0,0,0,0); completionDate.setHours(0,0,0,0);
+    const diffDays = Math.floor((today - completionDate) / (1000 * 60 * 60 * 24));
+    
+    let maxIntervalValue = intervals[intervals.length - 1];
+    if (diffDays > maxIntervalValue) return 'done';
+    
+    for (let i = 0; i < intervals.length; i++) {
+        if (diffDays >= intervals[i]) {
+            if (i === intervals.length - 1 || diffDays < intervals[i + 1]) {
+                return 'review';
+            }
+        }
+    }
+    return 'done';
+}
+
+function gestionarluzCampana() {
+    const rc = document.getElementById("reviewCheck");
+    if (rc && checkStatus(getFolderName()) === 'review') {
+        rc.style.display = "flex";
+    }
+}
+function markReviewAsDone(el) {
+    localStorage.setItem(getFolderName(), new Date().toISOString());
+    el.innerHTML = "✓";
+    el.style.background = "#f59e0b";
+    el.style.color = "white";
+    setTimeout(() => {
+        el.style.display = "none";
+    }, 1000);
+}
+gestionarluzCampana();
 initBlocks();
 </script>
 <div style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
@@ -592,35 +631,29 @@ initBlocks();
     </div>
 </div>
 </div>
-
 <script>
 (function() {
     const CLAVE_GLOBAL = 'tiempo_total_estudio';
     const CLAVE_DIARIO = 'tiempo_estudio_diario';
     const marcadorArriba = document.getElementById('val-puntos');
     const visorDiario = document.getElementById('val-timer-diario');
-
     function formatear(minutos) {
         const hrs = Math.floor(minutos / 60);
         const mins = minutos % 60;
         return hrs.toString().padStart(2, '0') + ":" + mins.toString().padStart(2, '0');
     }
-
     function actualizar() {
     const puntosReales = localStorage.getItem('global_xp') || 0;
-    const diario = parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0;
-    
+    const diario = parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0;    
     if(marcadorArriba) marcadorArriba.textContent = puntosReales; 
     if(visorDiario) visorDiario.textContent = formatear(diario);
 }
-
     window.resetDiario = function() {
         if (confirm("¿Reiniciar el tiempo de HOY?")) {
             localStorage.setItem(CLAVE_DIARIO, 0);
             actualizar();
         }
     };
-
     setInterval(() => {
         let g = (parseInt(localStorage.getItem(CLAVE_GLOBAL)) || 0) + 1;
         let d = (parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0) + 1;
@@ -628,13 +661,11 @@ initBlocks();
         localStorage.setItem(CLAVE_DIARIO, d);
         actualizar();
     }, 60000);
-
     actualizar();
 })();
 (function() {
     const bloc = document.getElementById('blocNotas');
     const notaKey = 'notas_' + getFolderName();
-
     if (bloc) {
         bloc.value = localStorage.getItem(notaKey) || "";
 
@@ -642,18 +673,13 @@ initBlocks();
             localStorage.setItem(notaKey, bloc.value);
         });
     }
-})();
- 
-function toggleBlurAllList() {
+})(); function toggleBlurAllList() {
     const box = document.getElementById("listBox");
-    if (!box || box.classList.contains("hidden")) return;
-    
+    if (!box || box.classList.contains("hidden")) return;    
     const elements = box.querySelectorAll(".blur");
     const btnToggle = document.getElementById("btn-toggle-blur-all");
     if (elements.length === 0) return;
-
     const isFirstRevealed = elements[0].classList.contains("revealed");
-
     elements.forEach(el => {
         if (isFirstRevealed) {
             el.classList.remove("revealed");
@@ -661,21 +687,17 @@ function toggleBlurAllList() {
             el.classList.add("revealed");
         }
     });
-
     if (btnToggle) {
         btnToggle.querySelector("span").textContent = isFirstRevealed ? "Mostrar tot" : "Amagar tot";
     }
 }
 let notasBloqueadas = false;
-
 function toggleBloqueoNotas() {
     const b = document.getElementById('blocNotas');
     const t = document.getElementById('btnBloqueoNotas');
-    if (!b || !t) return;
-    
+    if (!b || !t) return;    
     notasBloqueadas = !notasBloqueadas;
-    b.readOnly = notasBloqueadas;
-    
+    b.readOnly = notasBloqueadas;    
     if (notasBloqueadas) {
         t.classList.add('bloqueado');
         t.innerHTML = '🔒 <span>Bloquejat</span>';
