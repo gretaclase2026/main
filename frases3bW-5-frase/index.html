@@ -123,6 +123,16 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 </div>
 <div id="estrella-animada">⭐</div>
 <script>
+(function() {
+    const canal = new BroadcastChannel('control_pestanas_aplicacion');
+    canal.postMessage('pantalla_activa');
+    canal.onmessage = function(evento) {
+        if (evento.data === 'pantalla_activa') {
+            alert('Esta aplicación ya la tienes abierta en otra pestaña de Chrome.');
+            window.close();
+        }
+    };
+})();
 const items = [
 {"audio":"f001.mp3","es":"Aunque el pronostico del tiempo predecia lluvia intensa todo el fin de semana, decidimos ir de excursion porque ya habiamos empacado nuestro equipo y no queriamos desperdiciar la oportunidad.","en":"Even though the weather forecast predicted heavy rain all weekend, we decided to go hiking because we had already packed our gear and didn't want to waste the opportunity."},
 {"audio":"f002.mp3","es":"La empresa de la que te hable ayer esta buscando a un profesional que tenga amplia experiencia en marketing digital y que tambien este dispuesto a viajar al extranjero.","en":"The company that I told you about yesterday is looking for a professional who has extensive experience in digital marketing and who is also willing to travel abroad."},

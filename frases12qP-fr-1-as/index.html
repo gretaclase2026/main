@@ -123,6 +123,16 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 </div>
 <div id="estrella-animada">⭐</div>
 <script>
+(function() {
+    const canal = new BroadcastChannel('control_pestanas_aplicacion');
+    canal.postMessage('pantalla_activa');
+    canal.onmessage = function(evento) {
+        if (evento.data === 'pantalla_activa') {
+            alert('Esta aplicación ya la tienes abierta en otra pestaña de Chrome.');
+            window.close();
+        }
+    };
+})();
 const items = [
 {audio:"f001.mp3",en:"This morning I woke up a bit late because I went to bed very late last night, but I still tried to prepare a calm breakfast before starting work.",es:"Aquest matí m’he despertat una mica tard perquè ahir a la nit vaig anar a dormir molt tard, però tot i així he intentat preparar un esmorzar tranquil abans de començar a treballar."},
 {audio:"f002.mp3",en:"When I arrive home after a long day of work, I usually sit on the sofa for a few minutes and think about what I will cook for dinner.",es:"Quan arribo a casa després d’un dia llarg de feina, normalment sec al sofà uns minuts i pensar què faré per sopar."},

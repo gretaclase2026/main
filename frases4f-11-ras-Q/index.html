@@ -123,6 +123,16 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 </div>
 <div id="estrella-animada">⭐</div>
 <script>
+(function() {
+    const canal = new BroadcastChannel('control_pestanas_aplicacion');
+    canal.postMessage('pantalla_activa');
+    canal.onmessage = function(evento) {
+        if (evento.data === 'pantalla_activa') {
+            alert('Esta aplicación ya la tienes abierta en otra pestaña de Chrome.');
+            window.close();
+        }
+    };
+})();
 const items = [
 {audio:"f001.mp3",en:"It was so dark in the hallway that I had a lot of trouble finding the keyhole with my keys, and I spent several minutes trying to open the door.",es:"Estaba tan oscuro en el pasillo que tuve muchos problemas para encontrar la cerradura con las llaves y pasé varios minutos intentando abrir la puerta."},
 {audio:"f002.mp3",en:"I was walking through the living room in the middle of the night and I couldn't find the light switch, so I accidentally tripped over the dog's bed.",es:"Estaba caminando por el salón en mitad de la noche y no encontraba el interruptor de la luz, así que tropecé accidentalmente con la cama del perro."},

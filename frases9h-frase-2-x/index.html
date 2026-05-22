@@ -123,6 +123,16 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 </div>
 <div id="estrella-animada">⭐</div>
 <script>
+(function() {
+    const canal = new BroadcastChannel('control_pestanas_aplicacion');
+    canal.postMessage('pantalla_activa');
+    canal.onmessage = function(evento) {
+        if (evento.data === 'pantalla_activa') {
+            alert('Esta aplicación ya la tienes abierta en otra pestaña de Chrome.');
+            window.close();
+        }
+    };
+})();
 const items = [
 {audio:"frase1.mp3",en:"Don't forget to check the pressure on the boiler before winter starts, because if it's too low, the heating won't turn on when you need it most.", es: "No olvides revisar la presión de la caldera antes de que empiece el invierno, porque si está muy baja, la calefacción no se encenderá cuando más la necesites"},
 {audio:"frase2.mp3",en:"You should back up all your photos to the cloud tonight, since your phone's storage is almost full and you might lose them if the system crashes.", es: "Deberías hacer una copia de seguridad de todas tus fotos en la nube esta noche, ya que el almacenamiento de tu móvil está casi lleno y podrías perderlas si el sistema falla"},

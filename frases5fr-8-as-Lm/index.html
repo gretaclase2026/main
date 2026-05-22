@@ -123,6 +123,16 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 </div>
 <div id="estrella-animada">⭐</div>
 <script>
+(function() {
+    const canal = new BroadcastChannel('control_pestanas_aplicacion');
+    canal.postMessage('pantalla_activa');
+    canal.onmessage = function(evento) {
+        if (evento.data === 'pantalla_activa') {
+            alert('Esta aplicación ya la tienes abierta en otra pestaña de Chrome.');
+            window.close();
+        }
+    };
+})();
 const items = [
 {audio:"f001.mp3", en:"The doctor told me I had to stop smoking and start exercising.", es:"El metge em va dir que havia de deixar de fumar i començar a fer exercici."},
 {audio:"f002.mp3", en:"We went to the bank yesterday morning to open a savings account, but it was closed because it was a holiday.", es:"Vam anar al banc ahir al matí per obrir un compte d'estalvis, però estava tancat perquè era festiu."},

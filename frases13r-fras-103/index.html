@@ -123,6 +123,16 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 </div>
 <div id="estrella-animada">⭐</div>
 <script>
+(function() {
+    const canal = new BroadcastChannel('control_pestanas_aplicacion');
+    canal.postMessage('pantalla_activa');
+    canal.onmessage = function(evento) {
+        if (evento.data === 'pantalla_activa') {
+            alert('Esta aplicación ya la tienes abierta en otra pestaña de Chrome.');
+            window.close();
+        }
+    };
+})();
 const items = [
 {audio:"f001.mp3",en:"When I hang clothes on the balcony I always use many clothespins because if it starts to get windy the clothes can easily fall from the line.",es:"Quan estenc la roba al balcó sempre utilitzo moltes pinces perquè si comença a fer vent la roba pot caure fàcilment del fil."},
 {audio:"f002.mp3",en:"When I arrive home after work I usually hang my jacket on a hanger so it doesn't get wrinkled and it is easier to find the next day.",es:"Quan arribo a casa després de treballar normalment penjo la jaqueta en un penjador perquè no s’arrugui i sigui més fàcil trobar-la l’endemà."},

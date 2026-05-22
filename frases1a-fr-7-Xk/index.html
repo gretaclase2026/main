@@ -123,6 +123,16 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 </div>
 <div id="estrella-animada">⭐</div>
 <script>
+(function() {
+    const canal = new BroadcastChannel('control_pestanas_aplicacion');
+    canal.postMessage('pantalla_activa');
+    canal.onmessage = function(evento) {
+        if (evento.data === 'pantalla_activa') {
+            alert('Esta aplicación ya la tienes abierta en otra pestaña de Chrome.');
+            window.close();
+        }
+    };
+})();
 const items = [
 {"id":"001","key":"tricky","audio":"f001.mp3","es":"Crec que trobar un apartament barat al centre de la ciutat és força complicat perquè hi ha molta gent buscant el mateix ara mateix.","en":"I think that finding a cheap apartment in the center of the city is quite tricky because there are many people looking for the same thing right now."},
 {"id":"002","key":"broad","audio":"f002.mp3","es":"La vista des del cim de la muntanya era molt àmplia i podíem veure tots els pobles petits i el bosc verd a prop del riu.","en":"The view from the top of the mountain was very broad and we could see all the small villages and the green forest near the river."},

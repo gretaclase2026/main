@@ -123,6 +123,16 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 </div>
 <div id="estrella-animada">⭐</div>
 <script>
+(function() {
+    const canal = new BroadcastChannel('control_pestanas_aplicacion');
+    canal.postMessage('pantalla_activa');
+    canal.onmessage = function(evento) {
+        if (evento.data === 'pantalla_activa') {
+            alert('Esta aplicación ya la tienes abierta en otra pestaña de Chrome.');
+            window.close();
+        }
+    };
+})();
 const items = [
 {audio:"f077.mp3", en:"We need to get a move on if we want to catch the train.", es:"Tenemos que darnos prisa si queremos coger el tren."},
 {audio:"f078.mp3", en:"You need to get a grip and stop worrying about it.", es:"Tienes que controlarte y dejar de preocuparte por eso."},

@@ -123,6 +123,16 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 </div>
 <div id="estrella-animada">⭐</div>
 <script>
+(function() {
+    const canal = new BroadcastChannel('control_pestanas_aplicacion');
+    canal.postMessage('pantalla_activa');
+    canal.onmessage = function(evento) {
+        if (evento.data === 'pantalla_activa') {
+            alert('Esta aplicación ya la tienes abierta en otra pestaña de Chrome.');
+            window.close();
+        }
+    };
+})();
 const items = [
 {audio: "frase1.mp3", en: "I did it this way so she wouldn't have to walk back and forth all the time.", es: "Lo hice así para que ella no tuviera que ir y venir caminando todo el tiempo"},
 {audio: "frase2.mp3", en: "You ought to try and embrace new challenges if you want to improve your fluency.", es: "Deberías intentar aceptar nuevos retos si quieres mejorar tu fluidez"},

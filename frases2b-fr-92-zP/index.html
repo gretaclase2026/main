@@ -123,6 +123,16 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 </div>
 <div id="estrella-animada">⭐</div>
 <script>
+(function() {
+    const canal = new BroadcastChannel('control_pestanas_aplicacion');
+    canal.postMessage('pantalla_activa');
+    canal.onmessage = function(evento) {
+        if (evento.data === 'pantalla_activa') {
+            alert('Esta aplicación ya la tienes abierta en otra pestaña de Chrome.');
+            window.close();
+        }
+    };
+})();
 const items = [
 {"audio":"f001.mp3","es":"No vull posposar els meus deures d'anglès perquè és molt important per al meu futur; a més, tinc molt de temps lliure aquesta tarda i fa molt bon temps per estudiar.","en":"I do not want to put off my English homework because it is very important for my future, besides, I have a lot of free time this afternoon and the weather is very good for studying."},
 {"audio":"f002.mp3","es":"El meu nou telèfon intel·ligent és molt pràctic perquè puc utilitzar el GPS per trobar un restaurant, puc trucar a la meva mare cada dia, i també puc fer moltes fotos maques del meu gat al parc.","en":"My new smartphone is very handy because I can use the GPS to find a restaurant, I can call my mother every day, and I can also take many beautiful photos of my cat in the park."},

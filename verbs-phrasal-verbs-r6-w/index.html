@@ -123,6 +123,16 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 </div>
 <div id="estrella-animada">⭐</div>
 <script>
+(function() {
+    const canal = new BroadcastChannel('control_pestanas_aplicacion');
+    canal.postMessage('pantalla_activa');
+    canal.onmessage = function(evento) {
+        if (evento.data === 'pantalla_activa') {
+            alert('Esta aplicación ya la tienes abierta en otra pestaña de Chrome.');
+            window.close();
+        }
+    };
+})();
 const items = [
 {audio:"f001.mp3", en:"I always get up at seven o'clock because I like to exercise.", es:"Siempre me levanto a las siete porque me gusta hacer ejercicio."},
 {audio:"f002.mp3", en:"Please, turn off the lights before you leave the house.", es:"Por favor, apaga las luces antes de salir de casa."},
