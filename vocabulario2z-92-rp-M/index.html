@@ -69,7 +69,7 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
     width: 100%;
     height: 100px; 
     border-radius: 12px; 
-    border: 1.5px solid #2563eb; /* Azul igual que los números del reloj */
+    border: 1.5px solid #2563eb; 
     padding: 12px; 
     font-family: inherit; 
     resize: none; 
@@ -83,12 +83,15 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 .titulo-notas {
     font-size: 11px; 
     font-weight: 800; 
-    color: #2563eb; /* Azul igual que los números del reloj */
+    color: #2563eb;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin-top: 20px;
     display: block;
 }
+.barra-herramientas-notas{display:flex;justify-content:flex-end;align-items:center;margin:15px 0 5px 0}
+.boton-bloqueo{background:#f1f5f9;border:1px solid #cbd5e1;border-radius:6px;padding:4px 8px;font-size:12px;cursor:pointer;font-weight:700}
+.boton-bloqueo.bloqueado{background:#fee2e2;border-color:#fca5a5;color:#dc2626}
 </style>
 </head>
 <body>
@@ -127,9 +130,12 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
  </div>
 
  <div style="width: 100%; text-align: left;">
-  <label class="titulo-notas">Anotacions d'aquesta unitat:</label>
-  <textarea id="blocNotas" class="area-notas" placeholder="Escriu aquí les teves notes..."></textarea>
- </div>
+    <label class="titulo-notas">Anotacions d'aquesta unitat:</label>
+    <div class="barra-herramientas-notas">
+        <button id="btnBloqueoNotas" class="boton-bloqueo" onclick="toggleBloqueoNotas()">🔓 <span>Desbloquejat</span></button>
+    </div>
+    <textarea id="blocNotas" class="area-notas" placeholder="Escriu aquí les teves notes..."></textarea>
+</div>
  <div id="endMsg" class="hidden" style="margin-top:16px; font-weight:800; color:#16a34a;">✔ Bloc completat!</div>
 </div>
 </main>
@@ -412,8 +418,7 @@ async function toggleRecord(targetBtnId) {
         isRecording = false;
         btn.classList.remove("recording");
     }
-}
-audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
+}audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
 progressBar.oninput = () => { if (audioObj.duration) audioObj.currentTime = (progressBar.value / 100) * audioObj.duration; };
 function initBlocks() {
   const container = document.getElementById("blockContainer");
@@ -490,14 +495,18 @@ function update(fromAction = false) {
   document.getElementById("en").classList.add("hidden");
   document.getElementById("speechFeedback").innerHTML = "";
   document.getElementById("starBtn").classList.toggle("active", starredIds.includes(item.audio));
+  
+  // Calculamos el número real de la frase en toda la lista (empezando en 1)
+  const realNumber = items.findIndex(i => i.audio === item.audio) + 1;
+
   if (mode === "EN") {
     document.getElementById("langLabel").textContent = "ANGLÈS";
     document.getElementById("en").innerHTML = item.en;
-    document.getElementById("es").innerHTML = item.es;
+    document.getElementById("es").innerHTML = `<span style="color:#64748b; margin-right:5px;">${realNumber}.</span>` + item.es;
     if (fromAction) playAudio(item.audio, 1.0);
   } else {
     document.getElementById("langLabel").textContent = "OWN";
-    document.getElementById("es").innerHTML = item.es;
+    document.getElementById("es").innerHTML = `<span style="color:#64748b; margin-right:5px;">${realNumber}.</span>` + item.es;
     document.getElementById("en").innerHTML = item.en;
     document.getElementById("es").classList.remove("hidden");
     if (fromAction) startTimer();
@@ -720,6 +729,24 @@ function toggleBlurAllList() {
 
     if (btnToggle) {
         btnToggle.querySelector("span").textContent = isFirstRevealed ? "Mostrar tot" : "Amagar tot";
+    }
+}
+let notasBloqueadas = false;
+
+function toggleBloqueoNotas() {
+    const b = document.getElementById('blocNotas');
+    const t = document.getElementById('btnBloqueoNotas');
+    if (!b || !t) return;
+    
+    notasBloqueadas = !notasBloqueadas;
+    b.readOnly = notasBloqueadas;
+    
+    if (notasBloqueadas) {
+        t.classList.add('bloqueado');
+        t.innerHTML = '🔒 <span>Bloquejat</span>';
+    } else {
+        t.classList.remove('bloqueado');
+        t.innerHTML = '🔓 <span>Desbloquejat</span>';
     }
 }
 </script>
