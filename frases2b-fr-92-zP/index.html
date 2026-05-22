@@ -65,30 +65,8 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 .stats-header{position:fixed;top:45px;right:15px;display:flex;gap:8px;z-index:9999}
 .stat-pill{background:#fef3c7;color:#92400e;padding:6px 14px;border-radius:25px;font-weight:900;border:2px solid #f59e0b;font-size:15px;box-shadow:0 2px 8px rgba(0,0,0,0.1);display:flex;align-items:center;gap:6px}
 #timer-pill{background:#dbeafe;color:#1e40af;border-color:#3b82f6;cursor:pointer}
-.area-notas { 
-    width: 100%;
-    height: 100px; 
-    border-radius: 12px; 
-    border: 1.5px solid #2563eb; 
-    padding: 12px; 
-    font-family: inherit; 
-    resize: none; 
-    margin-top: 8px; 
-    box-sizing: border-box;
-    background: #ffffff;
-    color: #0f172a;
-    font-size: 14px;
-}
-
-.titulo-notas {
-    font-size: 11px; 
-    font-weight: 800; 
-    color: #2563eb;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-top: 20px;
-    display: block;
-}
+.area-notas { width: 100%; height: 100px; border-radius: 12px; border: 1.5px solid #2563eb; padding: 12px; font-family: inherit; resize: none; margin-top: 8px; box-sizing: border-box; background: #ffffff; color: #0f172a; font-size: 14px; }
+.titulo-notas { font-size: 11px; font-weight: 800; color: #2563eb; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 20px; display: block; }
 .barra-herramientas-notas{display:flex;justify-content:flex-end;align-items:center;margin:15px 0 5px 0}
 .boton-bloqueo{background:#f1f5f9;border:1px solid #cbd5e1;border-radius:6px;padding:4px 8px;font-size:12px;cursor:pointer;font-weight:700}
 .boton-bloqueo.bloqueado{background:#fee2e2;border-color:#fca5a5;color:#dc2626}
@@ -128,7 +106,6 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
   <button class="list-btn" onclick="toggleList('all')">Tota la llista</button>
   <button class="list-btn review-btn" onclick="toggleList('stars')">Repàs (★)</button>
  </div>
-
  <div style="width: 100%; text-align: left;">
     <label class="titulo-notas">Anotacions d'aquesta unitat:</label>
     <div class="barra-herramientas-notas">
@@ -253,71 +230,25 @@ function normalizeText(text) {
     }).join(" ");
 }
 function compareSentences(original, spoken) {
-    const feedbackDiv = document.getElementById("speechFeedback");
-    const normOriginal = normalizeText(original);
-    const normSpoken = normalizeText(spoken);
-    const normOriginalWords = normOriginal.split(/\s+/).filter(w => w.length > 0);
-    const normSpokenWords = normSpoken.split(/\s+/).filter(w => w.length > 0);
-    const origWordsRaw = original.split(/\s+/).filter(w => w.length > 0);
-    const spokenWordsRaw = spoken.split(/\s+/).filter(w => w.length > 0);
-    
-    let resultHTML = "";
-    let oIdx = 0; 
-    let sIdx = 0; 
-    let correctCount = 0;
-
-     while (sIdx < normSpokenWords.length) {
-        const spokenWord = normSpokenWords[sIdx];
-        const rawSpoken = spokenWordsRaw[sIdx];
-        if (oIdx < normOriginalWords.length && spokenWord === normOriginalWords[oIdx]) {
-            resultHTML += `<span class="word-correct">${origWordsRaw[oIdx]}</span> `;
-            oIdx++;
-            sIdx++;
-            correctCount++;
-        } else if (oIdx < normOriginalWords.length && normSpokenWords.slice(sIdx + 1, sIdx + 4).includes(normOriginalWords[oIdx])) {
-            if (rawSpoken !== "undefined") {
-                resultHTML += `<span class="word-error">${rawSpoken}</span> `;
-            }
-            sIdx++;
-        } else if (oIdx < normOriginalWords.length) {
-            resultHTML += `<span class="word-missing">${origWordsRaw[oIdx]}</span> `;
-            oIdx++;
-        } else {
-            if (rawSpoken !== "undefined") {
-                resultHTML += `<span class="word-error">${rawSpoken}</span> `;
-            }
-            sIdx++;
-        }
+    const feedbackDiv = document.getElementById("speechFeedback"), normOriginal = normalizeText(original), normSpoken = normalizeText(spoken);
+    const normOriginalWords = normOriginal.split(/\s+/).filter(w => w.length > 0), normSpokenWords = normSpoken.split(/\s+/).filter(w => w.length > 0);
+    const origWordsRaw = original.split(/\s+/).filter(w => w.length > 0), spokenWordsRaw = spoken.split(/\s+/).filter(w => w.length > 0);    
+    let resultHTML = "", oIdx = 0, sIdx = 0, correctCount = 0;
+    while (sIdx < normSpokenWords.length) {
+        const spokenWord = normSpokenWords[sIdx], rawSpoken = spokenWordsRaw[sIdx];
+        if (oIdx < normOriginalWords.length && spokenWord === normOriginalWords[oIdx]) { resultHTML += `<span class="word-correct">${origWordsRaw[oIdx]}</span> `; oIdx++; sIdx++; correctCount++; }
+        else if (oIdx < normOriginalWords.length && normSpokenWords.slice(sIdx + 1, sIdx + 4).includes(normOriginalWords[oIdx])) { if (rawSpoken !== "undefined") resultHTML += `<span class="word-error">${rawSpoken}</span> `; sIdx++; }
+        else if (oIdx < normOriginalWords.length) { resultHTML += `<span class="word-missing">${origWordsRaw[oIdx]}</span> `; oIdx++; }
+        else { if (rawSpoken !== "undefined") resultHTML += `<span class="word-error">${rawSpoken}</span> `; sIdx++; }
     }
-
-    while (oIdx < origWordsRaw.length) {
-        resultHTML += `<span class="word-missing">${origWordsRaw[oIdx]}</span> `;
-        oIdx++;
-    }
-
+    while (oIdx < origWordsRaw.length) { resultHTML += `<span class="word-missing">${origWordsRaw[oIdx]}</span> `; oIdx++; }
     feedbackDiv.innerHTML = resultHTML.trim();
-
-    let score = (normOriginalWords.length > 0) ? (correctCount / normOriginalWords.length) : 0;
-    
+    let score = (normOriginalWords.length > 0) ? (correctCount / normOriginalWords.length) : 0;   
     if (score >= 0.99) {
-        fallos = 0;
-        document.getElementById('btn-rescat').style.display = 'none';
-
-        if (window.executarAciertoFinal) {
-            window.executarAciertoFinal();
-        }
-
-        setTimeout(() => {
-            document.getElementById("speechFeedback").innerHTML = "";
-            know();
-        }, 3000);
-
-    } else {
-        fallos++;
-        if (fallos >= 3) {
-            document.getElementById('btn-rescat').style.display = 'block';
-        }
-    }
+        fallos = 0; document.getElementById('btn-rescat').style.display = 'none';
+        if (window.executarAciertoFinal) window.executarAciertoFinal();
+        setTimeout(() => { document.getElementById("speechFeedback").innerHTML = ""; know(); }, 3000);
+    } else { fallos++; if (fallos >= 3) document.getElementById('btn-rescat').style.display = 'block'; }
 }
 function rescueAction() {
     document.getElementById('btn-rescat').style.display = 'none';
@@ -361,7 +292,8 @@ async function toggleRecord(targetBtnId) {
         isRecording = false;
         btn.classList.remove("recording");
     }
-}audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
+}
+audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
 progressBar.oninput = () => { if (audioObj.duration) audioObj.currentTime = (progressBar.value / 100) * audioObj.duration; };
 function initBlocks() {
   const container = document.getElementById("blockContainer");
