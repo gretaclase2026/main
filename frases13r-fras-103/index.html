@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ca">
 <head>
 <meta charset="UTF-8">
@@ -65,30 +65,8 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 .stats-header{position:fixed;top:45px;right:15px;display:flex;gap:8px;z-index:9999}
 .stat-pill{background:#fef3c7;color:#92400e;padding:6px 14px;border-radius:25px;font-weight:900;border:2px solid #f59e0b;font-size:15px;box-shadow:0 2px 8px rgba(0,0,0,0.1);display:flex;align-items:center;gap:6px}
 #timer-pill{background:#dbeafe;color:#1e40af;border-color:#3b82f6;cursor:pointer}
-.area-notas { 
-    width: 100%;
-    height: 100px; 
-    border-radius: 12px; 
-    border: 1.5px solid #2563eb; 
-    padding: 12px; 
-    font-family: inherit; 
-    resize: none; 
-    margin-top: 8px; 
-    box-sizing: border-box;
-    background: #ffffff;
-    color: #0f172a;
-    font-size: 14px;
-}
-
-.titulo-notas {
-    font-size: 11px; 
-    font-weight: 800; 
-    color: #2563eb;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-top: 20px;
-    display: block;
-}
+.area-notas { width: 100%; height: 100px; border-radius: 12px; border: 1.5px solid #2563eb; padding: 12px; font-family: inherit; resize: none; margin-top: 8px; box-sizing: border-box; background: #ffffff; color: #0f172a; font-size: 14px; }
+.titulo-notas { font-size: 11px; font-weight: 800; color: #2563eb; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 20px; display: block; }
 .barra-herramientas-notas{display:flex;justify-content:flex-end;align-items:center;margin:15px 0 5px 0}
 .boton-bloqueo{background:#f1f5f9;border:1px solid #cbd5e1;border-radius:6px;padding:4px 8px;font-size:12px;cursor:pointer;font-weight:700}
 .boton-bloqueo.bloqueado{background:#fee2e2;border-color:#fca5a5;color:#dc2626}
@@ -118,26 +96,31 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
  <button id="btn-rescat" onclick="rescueAction()">IT IS OKAY ⭐</button>
  <div id="es" class="es hidden"></div>
  <div id="speechFeedback"></div>
- <div id="en" class="en hidden"></div>
- <div class="buttons">
+ <div id="en" class="en hidden"></div> 
+<div class="buttons">
   <button class="action reveal" onclick="reveal()">Veure</button>
   <button class="action know" onclick="know()">Ja la sé</button>
   <button class="action next" onclick="nextOne()">Següent</button>
  </div>
-<div class="list-controls">
+ <div class="list-controls">
   <button class="list-btn" onclick="toggleList('all')">Tota la llista</button>
   <button class="list-btn review-btn" onclick="toggleList('stars')">Repàs (★)</button>
  </div>
-
- <div style="width: 100%; text-align: left;">
+ <div style="width: 100%; text-align: left; margin-top: 20px;">
     <label class="titulo-notas">Anotacions d'aquesta unitat:</label>
-    <div class="barra-herramientas-notas">
+    <div class="barra-herramientas-notas" style="display: flex; gap: 6px; justify-content: space-between; align-items: center; margin: 10px 0 5px 0;">
+        <div style="display: flex; gap: 4px;">
+            <button onclick="formatoNota('bold')" style="font-weight:bold; padding:4px 8px; cursor:pointer; border-radius:4px; border:1px solid #cbd5e1; background:#fff;">B</button>
+            <button onclick="formatoNota('foreColor', '#dc2626')" style="color:#dc2626; font-weight:bold; padding:4px 8px; cursor:pointer; border-radius:4px; border:1px solid #cbd5e1; background:#fff;">A</button>
+            <button onclick="formatoNota('foreColor', '#2563eb')" style="color:#2563eb; font-weight:bold; padding:4px 8px; cursor:pointer; border-radius:4px; border:1px solid #cbd5e1; background:#fff;">A</button>
+            <button onclick="formatoNota('foreColor', '#16a34a')" style="color:#16a34a; font-weight:bold; padding:4px 8px; cursor:pointer; border-radius:4px; border:1px solid #cbd5e1; background:#fff;">A</button>
+            <button onclick="formatoNota('foreColor', '#0f172a')" style="color:#0f172a; font-weight:bold; padding:4px 8px; cursor:pointer; border-radius:4px; border:1px solid #cbd5e1; background:#fff;">❌</button>
+        </div>
         <button id="btnBloqueoNotas" class="boton-bloqueo" onclick="toggleBloqueoNotas()">🔓 <span>Desbloquejat</span></button>
     </div>
-    <textarea id="blocNotas" class="area-notas" placeholder="Escriu aquí les teves notes..."></textarea>
+    <div id="blocNotas" contenteditable="true" class="area-notas" style="overflow-y: auto;" placeholder="Escriu aquí les teves notes..."></div>
 </div>
- <div id="endMsg" class="hidden" style="margin-top:16px; font-weight:800; color:#16a34a;">✔ Bloc completat!</div>
-</div>
+
 </main>
 <div id="listBox" class="list-box hidden"></div>
 <div class="stats-header">
@@ -272,71 +255,25 @@ function normalizeText(text) {
     }).join(" ");
 }
 function compareSentences(original, spoken) {
-    const feedbackDiv = document.getElementById("speechFeedback");
-    const normOriginal = normalizeText(original);
-    const normSpoken = normalizeText(spoken);
-    const normOriginalWords = normOriginal.split(/\s+/).filter(w => w.length > 0);
-    const normSpokenWords = normSpoken.split(/\s+/).filter(w => w.length > 0);
-    const origWordsRaw = original.split(/\s+/).filter(w => w.length > 0);
-    const spokenWordsRaw = spoken.split(/\s+/).filter(w => w.length > 0);
-    
-    let resultHTML = "";
-    let oIdx = 0; 
-    let sIdx = 0; 
-    let correctCount = 0;
-
-     while (sIdx < normSpokenWords.length) {
-        const spokenWord = normSpokenWords[sIdx];
-        const rawSpoken = spokenWordsRaw[sIdx];
-        if (oIdx < normOriginalWords.length && spokenWord === normOriginalWords[oIdx]) {
-            resultHTML += `<span class="word-correct">${origWordsRaw[oIdx]}</span> `;
-            oIdx++;
-            sIdx++;
-            correctCount++;
-        } else if (oIdx < normOriginalWords.length && normSpokenWords.slice(sIdx + 1, sIdx + 4).includes(normOriginalWords[oIdx])) {
-            if (rawSpoken !== "undefined") {
-                resultHTML += `<span class="word-error">${rawSpoken}</span> `;
-            }
-            sIdx++;
-        } else if (oIdx < normOriginalWords.length) {
-            resultHTML += `<span class="word-missing">${origWordsRaw[oIdx]}</span> `;
-            oIdx++;
-        } else {
-            if (rawSpoken !== "undefined") {
-                resultHTML += `<span class="word-error">${rawSpoken}</span> `;
-            }
-            sIdx++;
-        }
+    const feedbackDiv = document.getElementById("speechFeedback"), normOriginal = normalizeText(original), normSpoken = normalizeText(spoken);
+    const normOriginalWords = normOriginal.split(/\s+/).filter(w => w.length > 0), normSpokenWords = normSpoken.split(/\s+/).filter(w => w.length > 0);
+    const origWordsRaw = original.split(/\s+/).filter(w => w.length > 0), spokenWordsRaw = spoken.split(/\s+/).filter(w => w.length > 0);    
+    let resultHTML = "", oIdx = 0, sIdx = 0, correctCount = 0;
+    while (sIdx < normSpokenWords.length) {
+        const spokenWord = normSpokenWords[sIdx], rawSpoken = spokenWordsRaw[sIdx];
+        if (oIdx < normOriginalWords.length && spokenWord === normOriginalWords[oIdx]) { resultHTML += `<span class="word-correct">${origWordsRaw[oIdx]}</span> `; oIdx++; sIdx++; correctCount++; }
+        else if (oIdx < normOriginalWords.length && normSpokenWords.slice(sIdx + 1, sIdx + 4).includes(normOriginalWords[oIdx])) { if (rawSpoken !== "undefined") resultHTML += `<span class="word-error">${rawSpoken}</span> `; sIdx++; }
+        else if (oIdx < normOriginalWords.length) { resultHTML += `<span class="word-missing">${origWordsRaw[oIdx]}</span> `; oIdx++; }
+        else { if (rawSpoken !== "undefined") resultHTML += `<span class="word-error">${rawSpoken}</span> `; sIdx++; }
     }
-
-    while (oIdx < origWordsRaw.length) {
-        resultHTML += `<span class="word-missing">${origWordsRaw[oIdx]}</span> `;
-        oIdx++;
-    }
-
+    while (oIdx < origWordsRaw.length) { resultHTML += `<span class="word-missing">${origWordsRaw[oIdx]}</span> `; oIdx++; }
     feedbackDiv.innerHTML = resultHTML.trim();
-
-    let score = (normOriginalWords.length > 0) ? (correctCount / normOriginalWords.length) : 0;
-    
+    let score = (normOriginalWords.length > 0) ? (correctCount / normOriginalWords.length) : 0;   
     if (score >= 0.99) {
-        fallos = 0;
-        document.getElementById('btn-rescat').style.display = 'none';
-
-        if (window.executarAciertoFinal) {
-            window.executarAciertoFinal();
-        }
-
-        setTimeout(() => {
-            document.getElementById("speechFeedback").innerHTML = "";
-            know();
-        }, 3000);
-
-    } else {
-        fallos++;
-        if (fallos >= 3) {
-            document.getElementById('btn-rescat').style.display = 'block';
-        }
-    }
+        fallos = 0; document.getElementById('btn-rescat').style.display = 'none';
+        if (window.executarAciertoFinal) window.executarAciertoFinal();
+        setTimeout(() => { document.getElementById("speechFeedback").innerHTML = ""; know(); }, 3000);
+    } else { fallos++; if (fallos >= 3) document.getElementById('btn-rescat').style.display = 'block'; }
 }
 function rescueAction() {
     document.getElementById('btn-rescat').style.display = 'none';
@@ -380,7 +317,8 @@ async function toggleRecord(targetBtnId) {
         isRecording = false;
         btn.classList.remove("recording");
     }
-}audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
+}
+audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
 progressBar.oninput = () => { if (audioObj.duration) audioObj.currentTime = (progressBar.value / 100) * audioObj.duration; };
 function initBlocks() {
   const container = document.getElementById("blockContainer");
@@ -457,10 +395,7 @@ function update(fromAction = false) {
   document.getElementById("en").classList.add("hidden");
   document.getElementById("speechFeedback").innerHTML = "";
   document.getElementById("starBtn").classList.toggle("active", starredIds.includes(item.audio));
-  
-  // Calculamos el número real de la frase en toda la lista (empezando en 1)
   const realNumber = items.findIndex(i => i.audio === item.audio) + 1;
-
   if (mode === "EN") {
     document.getElementById("langLabel").textContent = "ANGLÈS";
     document.getElementById("en").innerHTML = item.en;
@@ -547,13 +482,11 @@ function toggleList(type) {
     box.classList.add("hidden"); 
     if(btnToggle) btnToggle.style.display = "none";
     return;
-  }
-  
+  }  
   box.dataset.activeType = type;
   renderList(type);
   box.classList.remove("hidden");
-  
-  if(btnToggle) {
+    if(btnToggle) {
       btnToggle.style.display = "flex";
       btnToggle.querySelector("span").textContent = "Mostrar tot";
   }
@@ -571,9 +504,7 @@ function renderList(type) {
     const isStarred = starredIds.includes(i.audio), itemDiv = document.createElement("div");
     itemDiv.className = "list-item";
     const recId = `rec-list-${index}`;
-    
-    const realNumber = items.findIndex(item => item.audio === i.audio) + 1;
-
+        const realNumber = items.findIndex(item => item.audio === i.audio) + 1;
     itemDiv.innerHTML = `<div class="list-controls-side"><button class="star-btn-list ${isStarred?'active':''}" onclick="toggleStar('${i.audio}'); renderList('${type}')">★</button><button class="mini-btn btn-audio" onclick="playAudio('${i.audio}', 1.0)">🔊</button><button class="mini-btn btn-rec-mini" id="${recId}" onclick="toggleRecord('${recId}')">🎤</button></div><div class="list-texts"><div style="color:#2563eb; font-weight:700;"><span style="color:#64748b; margin-right:5px;">${realNumber}.</span>${i.es}</div><div id="rev-${index}" class="blur" style="font-weight:800;" onclick="this.classList.toggle('revealed')">${i.en}</div></div>`;
     box.appendChild(itemDiv);
   });
@@ -613,41 +544,34 @@ initBlocks();
     <button id="btn-toggle-blur-all" style="background: #e0f2fe; color: #0369a1; padding: 6px 14px; border-radius: 25px; font-weight: 900; border: 2px solid #38bdf8; font-size: 14px; cursor: pointer; display: none; align-items: center; gap: 6px; font-family: system-ui; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" onclick="toggleBlurAllList()">
         👁️ <span>Mostrar tot</span>
     </button>
-    
-    <div id="timer-diario" style="background: #dcfce7; color: #166534; padding: 6px 14px; border-radius: 25px; font-weight: 900; border: 2px solid #22c55e; font-size: 15px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-family: system-ui; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" onclick="resetDiario()">
+        <div id="timer-diario" style="background: #dcfce7; color: #166534; padding: 6px 14px; border-radius: 25px; font-weight: 900; border: 2px solid #22c55e; font-size: 15px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-family: system-ui; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" onclick="resetDiario()">
         ☀️ <span id="val-timer-diario">00:00</span>
     </div>
 </div>
 </div>
-
 <script>
 (function() {
     const CLAVE_GLOBAL = 'tiempo_total_estudio';
     const CLAVE_DIARIO = 'tiempo_estudio_diario';
     const marcadorArriba = document.getElementById('val-puntos');
     const visorDiario = document.getElementById('val-timer-diario');
-
     function formatear(minutos) {
         const hrs = Math.floor(minutos / 60);
         const mins = minutos % 60;
         return hrs.toString().padStart(2, '0') + ":" + mins.toString().padStart(2, '0');
     }
-
     function actualizar() {
     const puntosReales = localStorage.getItem('global_xp') || 0;
     const diario = parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0;
-    
-    if(marcadorArriba) marcadorArriba.textContent = puntosReales; 
+        if(marcadorArriba) marcadorArriba.textContent = puntosReales; 
     if(visorDiario) visorDiario.textContent = formatear(diario);
 }
-
     window.resetDiario = function() {
         if (confirm("¿Reiniciar el tiempo de HOY?")) {
             localStorage.setItem(CLAVE_DIARIO, 0);
             actualizar();
         }
     };
-
     setInterval(() => {
         let g = (parseInt(localStorage.getItem(CLAVE_GLOBAL)) || 0) + 1;
         let d = (parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0) + 1;
@@ -655,32 +579,29 @@ initBlocks();
         localStorage.setItem(CLAVE_DIARIO, d);
         actualizar();
     }, 60000);
-
     actualizar();
 })();
 (function() {
     const bloc = document.getElementById('blocNotas');
     const notaKey = 'notas_' + getFolderName();
-
     if (bloc) {
-        bloc.value = localStorage.getItem(notaKey) || "";
-
-                bloc.addEventListener('input', () => {
-            localStorage.setItem(notaKey, bloc.value);
+               bloc.innerHTML = localStorage.getItem(notaKey) || "";
+        bloc.addEventListener('input', () => {
+            localStorage.setItem(notaKey, bloc.innerHTML);
         });
-    }
-})();
- 
-function toggleBlurAllList() {
+    }    
+    window.formatoNota = function(comando, valor = null) {
+        if (notasBloqueadas) return;
+        document.execCommand(comando, false, valor);
+        if (bloc) localStorage.setItem(notaKey, bloc.innerHTML);
+    };
+})();function toggleBlurAllList() {
     const box = document.getElementById("listBox");
     if (!box || box.classList.contains("hidden")) return;
-    
-    const elements = box.querySelectorAll(".blur");
+        const elements = box.querySelectorAll(".blur");
     const btnToggle = document.getElementById("btn-toggle-blur-all");
     if (elements.length === 0) return;
-
     const isFirstRevealed = elements[0].classList.contains("revealed");
-
     elements.forEach(el => {
         if (isFirstRevealed) {
             el.classList.remove("revealed");
@@ -688,22 +609,18 @@ function toggleBlurAllList() {
             el.classList.add("revealed");
         }
     });
-
     if (btnToggle) {
         btnToggle.querySelector("span").textContent = isFirstRevealed ? "Mostrar tot" : "Amagar tot";
     }
 }
 let notasBloqueadas = false;
-
 function toggleBloqueoNotas() {
     const b = document.getElementById('blocNotas');
     const t = document.getElementById('btnBloqueoNotas');
-    if (!b || !t) return;
-    
-    notasBloqueadas = !notasBloqueadas;
-    b.readOnly = notasBloqueadas;
-    
-    if (notasBloqueadas) {
+    if (!b || !t) return;    
+    notasBloqueadas = !notasBloqueadas;   
+    b.contentEditable = !notasBloqueadas;
+        if (notasBloqueadas) {
         t.classList.add('bloqueado');
         t.innerHTML = '🔒 <span>Bloquejat</span>';
     } else {
