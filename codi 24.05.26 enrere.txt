@@ -83,8 +83,10 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 </header>
 <main>
 <div class="card">
-<button class="back-btn" onclick="previousOne()" title="Enrere">←</button>
-<div class="counter" id="counter">0 / 0</div>
+<div class="counter-container">
+  <button class="back-btn" onclick="previousOne()" title="Enrere">←</button>
+  <div class="counter" id="counter">0 / 0</div>
+</div>
 <div class="check-box-manual" id="mainCheck" onclick="markAsDone(this)"></div>
  <div class="check-box-manual" id="reviewCheck" onclick="markReviewAsDone(this)" style="right: 54px; border-color: #f59e0b; color: #f59e0b; display: none;">🔔</div>
  <div id="langLabel" class="lang" style="margin-top: 10px;">ANGLÈS</div>

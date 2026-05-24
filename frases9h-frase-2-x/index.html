@@ -13,7 +13,10 @@ header{padding:8px 4px;background:#fff;border-bottom:1px solid #e5e7eb;display:f
 .mode-es{background:#fde68a}
 main{display:flex;justify-content:center;padding:24px}
 .card{position:relative;width:100%;max-width:560px;background:#ffffff;border-radius:28px;padding:32px;box-shadow:0 10px 24px rgba(0,0,0,0.06);text-align:center}
-.counter{position:absolute;top:18px;left:22px;font-weight:800;color:#2563eb}
+.counter-container{position:absolute;top:18px;left:22px;display:flex;align-items:center;gap:6px}
+.counter{font-weight:800;color:#2563eb}
+.back-btn{background:#f3e8ff;border:none;border-radius:8px;width:24px;height:24px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;font-weight:bold;color:#6b21a8;transition:0.2s}
+.back-btn:hover{background:#e9d5ff}
 .check-box-manual{position:absolute;top:18px;right:22px;width:24px;height:24px;background:#fff;border:1.5px solid #22c55e;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;font-size:14px}
 .check-box-manual.marked{background:#22c55e!important;color:white!important}
 .lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
@@ -80,7 +83,10 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 </header>
 <main>
 <div class="card">
- <div class="counter" id="counter">0 / 0</div>
+<div class="counter-container">
+  <button class="back-btn" onclick="previousOne()" title="Enrere">←</button>
+  <div class="counter" id="counter">0 / 0</div>
+</div>
 <div class="check-box-manual" id="mainCheck" onclick="markAsDone(this)"></div>
  <div class="check-box-manual" id="reviewCheck" onclick="markReviewAsDone(this)" style="right: 54px; border-color: #f59e0b; color: #f59e0b; display: none;">🔔</div>
  <div id="langLabel" class="lang" style="margin-top: 10px;">ANGLÈS</div>
@@ -251,6 +257,7 @@ const normalizationMap = {
     "shouldntve": "should not have", "shouldn't've": "should not have", "couldntve": "could not have", "couldn't've": "could not have"
 };
 let currentBlockData = [], pos = 0, mode = "EN", learnedCount = 0, currentBlockID = 0, fallos = 0;
+let historyLearned = [];
 const audioObj = new Audio();
 const progressBar = document.getElementById("progressBar");
 function getFolderName() { return "frases9h-frase-2-x"; }
@@ -384,7 +391,7 @@ function loadBlock(b, elegirMecanismo = true) {
   for (let i = start; i < end; i++) temp.push({...items[i]});
   currentBlockData = temp;
   document.querySelectorAll(".block").forEach((btn, idx) => { btn.classList.toggle("active", idx === (b + 1)); });
-  pos = 0; learnedCount = 0; fallos = 0;
+  pos = 0; learnedCount = 0; fallos = 0; historyLearned = [];
   document.getElementById("endMsg").classList.add("hidden");
   document.getElementById('btn-rescat').style.display = 'none';
   update(elegirMecanismo);
@@ -395,7 +402,7 @@ function loadAll(elegirMecanismo = true) {
   localStorage.setItem(getFolderName() + "_puntoLibro", "all");
   currentBlockData = items.map(i => ({...i}));
   document.querySelectorAll(".block").forEach((btn, idx) => { btn.classList.toggle("active", idx === 0); });
-  pos = 0; learnedCount = 0; fallos = 0;
+ pos = 0; learnedCount = 0; fallos = 0; historyLearned = [];
   document.getElementById("endMsg").classList.add("hidden");
   document.getElementById('btn-rescat').style.display = 'none';
   update(elegirMecanismo);
@@ -493,6 +500,12 @@ function pauseAudio() {
 }
 function know() {
   if (currentBlockData.length === 0) return;
+  
+  historyLearned.push({
+    item: {...currentBlockData[pos]},
+    insertAt: pos
+  });
+
   learnedCount++;
   currentBlockData.splice(pos, 1);
   if (pos >= currentBlockData.length) pos = 0;
@@ -504,6 +517,20 @@ function nextOne() {
   if (currentBlockData.length === 0) return;
   pos = (pos + 1) % currentBlockData.length;
   fallos = 0;
+  document.getElementById('btn-rescat').style.display = 'none';
+  update(true);
+}
+function previousOne() {
+  if (historyLearned.length === 0) return;
+  
+  const lastRescued = historyLearned.pop();
+  currentBlockData.splice(lastRescued.insertAt, 0, lastRescued.item);
+  
+  pos = lastRescued.insertAt;
+  learnedCount = Math.max(0, learnedCount - 1);
+  fallos = 0;
+  
+  document.getElementById("endMsg").classList.add("hidden");
   document.getElementById('btn-rescat').style.display = 'none';
   update(true);
 }
