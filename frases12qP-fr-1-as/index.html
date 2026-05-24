@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ca">
 <head>
 <meta charset="UTF-8">
@@ -166,30 +166,48 @@ const items = [
 {audio:"f29.mp3", en:"I want to learn English because I need to sleep more. I decide to leave early and I hope to visit soon. I expect to win the match, so I plan to travel this summer. I'm learning to play the guitar. She offered to help me and promised to call me. They refused to pay, so we agreed to meet at 7. I can't afford to buy a new car. Don't forget to lock the door. She managed to finish on time. I aim to win.", es:"Vull aprendre anglès perquè necessito dormir més. Decideixo marxar d'hora i espero visitar-vos aviat. Espero guanyar el partit, així que tinc previst viatjar aquest estiu. Estic aprenent a tocar la guitarra. Ella es va oferir a ajudar-me i va prometre trucar-me. Es van negar a pagar, així que vam acordar quedar a les 7. No em puc permetre comprar un cotxe nou. No oblidis tancar la porta amb clau. Ella va aconseguir acabar a temps. Tinc l'objectiu de guanyar."},
 {audio:"f30.mp3", en:"I enjoy reading at night but I avoid driving in big cities. Do you mind waiting a moment? We finished cleaning the house. He suggested going to the cinema and I'm considering moving abroad. They keep talking during class. I miss seeing my old friends. She denied stealing the money. Can you imagine living there? He practices speaking every day. I recommend taking a break. You risk losing everything. He admitted cheating on the test.", es:"Gaudeixo llegint a la nit però evito conduir en ciutats grans. Et fa res esperar un moment? Hem acabat de netejar la casa. Ell va suggerir anar al cinema i estic considerant marxar a viure a l'estranger. Ells continuen parlant durant la classe. Trobo a faltar veure els meus vells amics. Ella va negar haver robat els diners. Et pots imaginar viure allí? Ell practica parlar cada dia. Recomano fer un descans. Corres el risc de perdre-ho tot. Ell va admetre haver copiat a l'examen."},
 ];
-let totalMinutes = parseInt(localStorage.getItem('tiempo_total_estudio')) || 0;
-let timerInterval;
-function startGlobalTimer() {
-    updateTimerDisplay(); 
-    timerInterval = setInterval(() => {
-        totalMinutes++;
-        localStorage.setItem('tiempo_total_estudio', totalMinutes);
-        updateTimerDisplay();
-    }, 60000);
+const CLAVE_GLOBAL = 'tiempo_total_estudio';
+const CLAVE_DIARIO = 'tiempo_estudio_diario';
+let ultimoAcceso = Date.now();
+
+function formatear(minutos) {
+    const hrs = Math.floor(minutos / 60);
+    const mins = minutos % 60;
+    return hrs.toString().padStart(2, '0') + ":" + mins.toString().padStart(2, '0');
 }
-function updateTimerDisplay() {
-    const hrs = Math.floor(totalMinutes / 60);
-    const mins = totalMinutes % 60;
-    const el = document.getElementById('val-timer');
-    if (el) { el.textContent = hrs.toString().padStart(2, '0') + ":" + mins.toString().padStart(2, '0'); }
+
+function actualizarVisores() {
+    const total = parseInt(localStorage.getItem(CLAVE_GLOBAL)) || 0;
+    const diario = parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0;
+    const elGlobal = document.getElementById('val-timer');
+    const elDiario = document.getElementById('val-timer-diario');
+    const marcadorArriba = document.getElementById('val-puntos');
+    const puntosReales = localStorage.getItem('global_xp') || 0;
+    if (elGlobal) elGlobal.textContent = formatear(total);
+    if (elDiario) elDiario.textContent = formatear(diario);
+    if (marcadorArriba) marcadorArriba.textContent = puntosReales;
 }
+
+setInterval(() => {
+    const ahora = Date.now();
+    const diferenciaMs = ahora - ultimoAcceso;
+    if (diferenciaMs >= 60000) {
+        const minutosPasados = Math.floor(diferenciaMs / 60000);
+        let g = (parseInt(localStorage.getItem(CLAVE_GLOBAL)) || 0) + minutosPasados;
+        let d = (parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0) + minutosPasados;
+        localStorage.setItem(CLAVE_GLOBAL, g);
+        localStorage.setItem(CLAVE_DIARIO, d);
+        ultimoAcceso += minutosPasados * 60000;
+        actualizarVisores();
+    }
+}, 1000);
+
 function resetTimer() {
     if (confirm("¿Quieres reiniciar el cronómetro global?")) {
-        totalMinutes = 0;
-        localStorage.setItem('tiempo_total_estudio', 0);
-        updateTimerDisplay(); 
+        localStorage.setItem(CLAVE_GLOBAL, 0);
+        actualizarVisores(); 
     }
 }
-startGlobalTimer();
 const normalizationMap = {
     "dont": "do not", "don't": "do not", "doesnt": "does not", "doesn't": "does not", "didnt": "did not", "didn't": "did not",
     "isnt": "is not", "isn't": "is not", "arent": "are not", "aren't": "are not", "wasnt": "was not", "wasn't": "was not",
@@ -585,37 +603,14 @@ initBlocks();
 </div>
 </div>
 <script>
-(function() {
-    const CLAVE_GLOBAL = 'tiempo_total_estudio';
-    const CLAVE_DIARIO = 'tiempo_estudio_diario';
-    const marcadorArriba = document.getElementById('val-puntos');
-    const visorDiario = document.getElementById('val-timer-diario');
-    function formatear(minutos) {
-        const hrs = Math.floor(minutos / 60);
-        const mins = minutos % 60;
-        return hrs.toString().padStart(2, '0') + ":" + mins.toString().padStart(2, '0');
+function resetDiario() {
+    if (confirm("¿Reiniciar el tiempo de HOY?")) {
+        localStorage.setItem(CLAVE_DIARIO, 0);
+        actualizarVisores();
     }
-    function actualizar() {
-    const puntosReales = localStorage.getItem('global_xp') || 0;
-    const diario = parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0;    
-    if(marcadorArriba) marcadorArriba.textContent = puntosReales; 
-    if(visorDiario) visorDiario.textContent = formatear(diario);
 }
-    window.resetDiario = function() {
-        if (confirm("¿Reiniciar el tiempo de HOY?")) {
-            localStorage.setItem(CLAVE_DIARIO, 0);
-            actualizar();
-        }
-    };
-    setInterval(() => {
-        let g = (parseInt(localStorage.getItem(CLAVE_GLOBAL)) || 0) + 1;
-        let d = (parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0) + 1;
-        localStorage.setItem(CLAVE_GLOBAL, g);
-        localStorage.setItem(CLAVE_DIARIO, d);
-        actualizar();
-    }, 60000);
-    actualizar();
-})();
+
+actualizarVisores();
 let notasBloqueadas = false;
 
 (function() {

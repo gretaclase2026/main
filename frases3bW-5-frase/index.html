@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ca">
 <head>
 <meta charset="UTF-8">
@@ -166,30 +166,48 @@ const items = [
 {"audio":"f029.mp3","es":"Compraremos el coche nuevo el mes que viene siempre que el banco nos dé el dinero que necesitamos para el primer pago.","en":"We're going to buy the new car next month provided that the bank gives us the money we need for the first payment."},
 {"audio":"f030.mp3","es":"El examen fue muy difícil y largo, pero me siento contenta porque estudié mucho y creo que respondí todas las preguntas correctamente.","en":"The exam was very tough and long, but I feel happy because I studied a lot and I think I answered all questions correctly."},
 ];
-let totalMinutes = parseInt(localStorage.getItem('tiempo_total_estudio')) || 0;
-let timerInterval;
-function startGlobalTimer() {
-    updateTimerDisplay(); 
-    timerInterval = setInterval(() => {
-        totalMinutes++;
-        localStorage.setItem('tiempo_total_estudio', totalMinutes);
-        updateTimerDisplay();
-    }, 60000);
+const CLAVE_GLOBAL = 'tiempo_total_estudio';
+const CLAVE_DIARIO = 'tiempo_estudio_diario';
+let ultimoAcceso = Date.now();
+
+function formatear(minutos) {
+    const hrs = Math.floor(minutos / 60);
+    const mins = minutos % 60;
+    return hrs.toString().padStart(2, '0') + ":" + mins.toString().padStart(2, '0');
 }
-function updateTimerDisplay() {
-    const hrs = Math.floor(totalMinutes / 60);
-    const mins = totalMinutes % 60;
-    const el = document.getElementById('val-timer');
-    if (el) { el.textContent = hrs.toString().padStart(2, '0') + ":" + mins.toString().padStart(2, '0'); }
+
+function actualizarVisores() {
+    const total = parseInt(localStorage.getItem(CLAVE_GLOBAL)) || 0;
+    const diario = parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0;
+    const elGlobal = document.getElementById('val-timer');
+    const elDiario = document.getElementById('val-timer-diario');
+    const marcadorArriba = document.getElementById('val-puntos');
+    const puntosReales = localStorage.getItem('global_xp') || 0;
+    if (elGlobal) elGlobal.textContent = formatear(total);
+    if (elDiario) elDiario.textContent = formatear(diario);
+    if (marcadorArriba) marcadorArriba.textContent = puntosReales;
 }
+
+setInterval(() => {
+    const ahora = Date.now();
+    const diferenciaMs = ahora - ultimoAcceso;
+    if (diferenciaMs >= 60000) {
+        const minutosPasados = Math.floor(diferenciaMs / 60000);
+        let g = (parseInt(localStorage.getItem(CLAVE_GLOBAL)) || 0) + minutosPasados;
+        let d = (parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0) + minutosPasados;
+        localStorage.setItem(CLAVE_GLOBAL, g);
+        localStorage.setItem(CLAVE_DIARIO, d);
+        ultimoAcceso += minutosPasados * 60000;
+        actualizarVisores();
+    }
+}, 1000);
+
 function resetTimer() {
     if (confirm("¿Quieres reiniciar el cronómetro global?")) {
-        totalMinutes = 0;
-        localStorage.setItem('tiempo_total_estudio', 0);
-        updateTimerDisplay(); 
+        localStorage.setItem(CLAVE_GLOBAL, 0);
+        actualizarVisores(); 
     }
 }
-startGlobalTimer();
 const normalizationMap = {
     "dont": "do not", "don't": "do not", "doesnt": "does not", "doesn't": "does not", "didnt": "did not", "didn't": "did not",
     "isnt": "is not", "isn't": "is not", "arent": "are not", "aren't": "are not", "wasnt": "was not", "wasn't": "was not",
@@ -585,37 +603,14 @@ initBlocks();
 </div>
 </div>
 <script>
-(function() {
-    const CLAVE_GLOBAL = 'tiempo_total_estudio';
-    const CLAVE_DIARIO = 'tiempo_estudio_diario';
-    const marcadorArriba = document.getElementById('val-puntos');
-    const visorDiario = document.getElementById('val-timer-diario');
-    function formatear(minutos) {
-        const hrs = Math.floor(minutos / 60);
-        const mins = minutos % 60;
-        return hrs.toString().padStart(2, '0') + ":" + mins.toString().padStart(2, '0');
+function resetDiario() {
+    if (confirm("¿Reiniciar el tiempo de HOY?")) {
+        localStorage.setItem(CLAVE_DIARIO, 0);
+        actualizarVisores();
     }
-    function actualizar() {
-    const puntosReales = localStorage.getItem('global_xp') || 0;
-    const diario = parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0;    
-    if(marcadorArriba) marcadorArriba.textContent = puntosReales; 
-    if(visorDiario) visorDiario.textContent = formatear(diario);
 }
-    window.resetDiario = function() {
-        if (confirm("¿Reiniciar el tiempo de HOY?")) {
-            localStorage.setItem(CLAVE_DIARIO, 0);
-            actualizar();
-        }
-    };
-    setInterval(() => {
-        let g = (parseInt(localStorage.getItem(CLAVE_GLOBAL)) || 0) + 1;
-        let d = (parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0) + 1;
-        localStorage.setItem(CLAVE_GLOBAL, g);
-        localStorage.setItem(CLAVE_DIARIO, d);
-        actualizar();
-    }, 60000);
-    actualizar();
-})();
+
+actualizarVisores();
 let notasBloqueadas = false;
 
 (function() {
