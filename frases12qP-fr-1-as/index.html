@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ca">
 <head>
 <meta charset="UTF-8">
@@ -353,9 +353,10 @@ function initBlocks() {
     btn.onclick = () => loadBlock(i);
     container.appendChild(btn);
   }
-  if (savedBlock === "all") loadAll();
-  else loadBlock((savedBlock !== null) ? parseInt(savedBlock) : 0);
-}function loadBlock(b) {
+  if (savedBlock === "all") loadAll(false);
+  else loadBlock((savedBlock !== null) ? parseInt(savedBlock) : 0, false);
+}
+function loadBlock(b, elegirMecanismo = true) {
   currentBlockID = b;
   localStorage.setItem(getFolderName() + "_puntoLibro", b);
   let temp = [];
@@ -366,9 +367,10 @@ function initBlocks() {
   pos = 0; learnedCount = 0; fallos = 0;
   document.getElementById("endMsg").classList.add("hidden");
   document.getElementById('btn-rescat').style.display = 'none';
-  update(true);
+  update(elegirMecanismo);
 }
-function loadAll() {
+
+function loadAll(elegirMecanismo = true) {
   currentBlockID = -1;
   localStorage.setItem(getFolderName() + "_puntoLibro", "all");
   currentBlockData = items.map(i => ({...i}));
@@ -376,7 +378,7 @@ function loadAll() {
   pos = 0; learnedCount = 0; fallos = 0;
   document.getElementById("endMsg").classList.add("hidden");
   document.getElementById('btn-rescat').style.display = 'none';
-  update(true);
+  update(elegirMecanismo);
 }
 let autoMicTimer;
 function startTimer() {
@@ -393,7 +395,7 @@ function startTimer() {
         }
     }, 1000);
 }
-function update(fromAction = false) {
+function update(debeDisparar = true) {
   document.querySelector('.audio-btn.pause').textContent = "⏸";
   clearTimeout(autoMicTimer);
   if (currentBlockData.length === 0) {
@@ -411,18 +413,25 @@ function update(fromAction = false) {
   document.getElementById("speechFeedback").innerHTML = "";
   document.getElementById("starBtn").classList.toggle("active", starredIds.includes(item.audio));
   const realNumber = items.findIndex(i => i.audio === item.audio) + 1;
-
   if (mode === "EN") {
     document.getElementById("langLabel").textContent = "ANGLÈS";
     document.getElementById("en").innerHTML = item.en;
     document.getElementById("es").innerHTML = `<span style="color:#64748b; margin-right:5px;">${realNumber}.</span>` + item.es;
-    if (fromAction) playAudio(item.audio, 1.0);
+    if (debeDisparar) {
+        playAudio(item.audio, 1.0);
+    } else {
+        document.getElementById("speechFeedback").innerHTML = `<span style="color:#2563eb; font-size:14px; font-weight:800;">SELECCIONA MODE>`;
+    }
   } else {
     document.getElementById("langLabel").textContent = "OWN";
     document.getElementById("es").innerHTML = `<span style="color:#64748b; margin-right:5px;">${realNumber}.</span>` + item.es;
     document.getElementById("en").innerHTML = item.en;
     document.getElementById("es").classList.remove("hidden");
-    if (fromAction) startTimer();
+    if (debeDisparar) {
+        startTimer();
+    } else {
+        document.getElementById("speechFeedback").innerHTML = `<span style="color:#2563eb; font-size:14px; font-weight:800;">Toca un mode a dalt o el botó de veure/reproduir per començar</span>`;
+    }
   }
   document.getElementById("counter").textContent = `${learnedCount} / ${currentBlockData.length + learnedCount}`;
 }
@@ -444,8 +453,7 @@ function pauseAudio() {
     audioObj.pause();
     btn.textContent = "▶️";
   }
-}
-function reveal() {
+}function reveal() {
   if (currentBlockData.length === 0) return;
   const esEl = document.getElementById("es"), enEl = document.getElementById("en");
   if (mode === "EN") {
