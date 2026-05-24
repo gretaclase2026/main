@@ -222,13 +222,21 @@ if (SpeechRecognition) {
 }
 function normalizeText(text) {
     if (!text) return "";
-    
     let cleanText = text.toLowerCase()
                .replace(/[.,!?;:]/g, "")
                .trim();
 
+    const numToWords = {
+        "0": "zero", "1": "one", "2": "two", "3": "three", "4": "four", 
+        "5": "five", "6": "six", "7": "seven", "8": "eight", "9": "nine", "10": "ten",
+        "11": "eleven", "12": "twelve", "13": "thirteen", "14": "fourteen", "15": "fifteen",
+        "16": "sixteen", "17": "seventeen", "18": "eighteen", "19": "nineteen", "20": "twenty",
+        "50": "fifty", "80": "eighty"
+    };
+
     return cleanText.split(/\s+/).map(word => {
-        return normalizationMap[word] || word;
+        let normalWord = normalizationMap[word] || word;
+        return numToWords[normalWord] || normalWord;
     }).join(" ");
 }
 function compareSentences(original, spoken) {
@@ -372,8 +380,6 @@ function update(fromAction = false) {
   document.getElementById("en").classList.add("hidden");
   document.getElementById("speechFeedback").innerHTML = "";
   document.getElementById("starBtn").classList.toggle("active", starredIds.includes(item.audio));
-  
-  // Calculamos el número real de la frase en toda la lista (empezando en 1)
   const realNumber = items.findIndex(i => i.audio === item.audio) + 1;
 
   if (mode === "EN") {
