@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ca">
 <head>
 <meta charset="UTF-8">
@@ -615,8 +615,7 @@ function toggleList(type) {
       btnToggle.style.display = "flex";
       btnToggle.querySelector("span").textContent = "Mostrar tot";
   }
-}
-function renderList(type) {
+}function renderList(type) {
   const box = document.getElementById("listBox");
   if (type === 'stars') {
     box.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;"><h3 style="margin:0;">Frases destacades (★):</h3><button onclick="clearAllStars()" style="background:#fee2e2; color:#dc2626; border:none; padding:4px 8px; border-radius:8px; font-size:10px; font-weight:800; cursor:pointer;">NETEJAR TOT 🗑️</button></div>`;
@@ -747,17 +746,34 @@ initBlocks();
     }, 60000);
     actualizar();
 })();
+let notasBloqueadas = false;
+
 (function() {
     const bloc = document.getElementById('blocNotas');
     const notaKey = 'notas_' + getFolderName();
+    const bloqueoKey = 'notas_bloqueadas_' + getFolderName();
+    
     if (bloc) {
         bloc.value = localStorage.getItem(notaKey) || "";
 
-                bloc.addEventListener('input', () => {
+        bloc.addEventListener('input', () => {
             localStorage.setItem(notaKey, bloc.value);
         });
+        
+        const guardadoBloqueado = localStorage.getItem(bloqueoKey) === 'true';
+        if (guardadoBloqueado) {
+            notasBloqueadas = true;
+            bloc.readOnly = true;
+            const t = document.getElementById('btnBloqueoNotas');
+            if (t) {
+                t.classList.add('bloqueado');
+                t.innerHTML = '🔒 <span>Bloquejat</span>';
+            }
+        }
     }
-})(); function toggleBlurAllList() {
+})();
+
+function toggleBlurAllList() {
     const box = document.getElementById("listBox");
     if (!box || box.classList.contains("hidden")) return;    
     const elements = box.querySelectorAll(".blur");
@@ -775,13 +791,17 @@ initBlocks();
         btnToggle.querySelector("span").textContent = isFirstRevealed ? "Mostrar tot" : "Amagar tot";
     }
 }
-let notasBloqueadas = false;
+
 function toggleBloqueoNotas() {
     const b = document.getElementById('blocNotas');
     const t = document.getElementById('btnBloqueoNotas');
     if (!b || !t) return;    
+    
     notasBloqueadas = !notasBloqueadas;
-    b.readOnly = notasBloqueadas;    
+    b.readOnly = notasBloqueadas;
+    
+    localStorage.setItem('notas_bloqueadas_' + getFolderName(), notasBloqueadas);
+    
     if (notasBloqueadas) {
         t.classList.add('bloqueado');
         t.innerHTML = '🔒 <span>Bloquejat</span>';

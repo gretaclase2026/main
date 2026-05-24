@@ -586,17 +586,33 @@ initBlocks();
     }, 60000);
     actualizar();
 })();
+let notasBloqueadas = false;
+
 (function() {
     const bloc = document.getElementById('blocNotas');
     const notaKey = 'notas_' + getFolderName();
+    const bloqueoKey = 'notas_bloqueadas_' + getFolderName();
+    
     if (bloc) {
         bloc.value = localStorage.getItem(notaKey) || "";
 
-                bloc.addEventListener('input', () => {
+        bloc.addEventListener('input', () => {
             localStorage.setItem(notaKey, bloc.value);
         });
+        
+        const guardadoBloqueado = localStorage.getItem(bloqueoKey) === 'true';
+        if (guardadoBloqueado) {
+            notasBloqueadas = true;
+            bloc.readOnly = true;
+            const t = document.getElementById('btnBloqueoNotas');
+            if (t) {
+                t.classList.add('bloqueado');
+                t.innerHTML = '🔒 <span>Bloquejat</span>';
+            }
+        }
     }
-})(); 
+})();
+
 function toggleBlurAllList() {
     const box = document.getElementById("listBox");
     if (!box || box.classList.contains("hidden")) return;    
@@ -615,13 +631,17 @@ function toggleBlurAllList() {
         btnToggle.querySelector("span").textContent = isFirstRevealed ? "Mostrar tot" : "Amagar tot";
     }
 }
-let notasBloqueadas = false;
+
 function toggleBloqueoNotas() {
     const b = document.getElementById('blocNotas');
     const t = document.getElementById('btnBloqueoNotas');
     if (!b || !t) return;    
+    
     notasBloqueadas = !notasBloqueadas;
-    b.readOnly = notasBloqueadas;    
+    b.readOnly = notasBloqueadas;
+    
+    localStorage.setItem('notas_bloqueadas_' + getFolderName(), notasBloqueadas);
+    
     if (notasBloqueadas) {
         t.classList.add('bloqueado');
         t.innerHTML = '🔒 <span>Bloquejat</span>';
