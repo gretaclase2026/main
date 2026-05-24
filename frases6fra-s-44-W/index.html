@@ -434,7 +434,15 @@ function playAudio(audioFile, speed) {
   };
   audioObj.play().catch(err => console.log("Error con audio:", audioFile));
 }
-function playCurrent(speed) { if (currentBlockData.length > 0) playAudio(currentBlockData[pos].audio, speed); }
+function playCurrent(speed) { 
+  if (currentBlockData.length > 0) {
+    playAudio(currentBlockData[pos].audio, speed);
+    const btnRescat = document.getElementById('btn-rescat');
+    if (speed === 0.75 && btnRescat && btnRescat.style.display === 'block') {
+      rescueAction();
+    }
+  }
+}
 function pauseAudio() {
   const btn = document.querySelector('.audio-btn.pause');
   if (audioObj.paused) {
