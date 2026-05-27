@@ -1135,6 +1135,10 @@ function toggleBloqueoNotas() {
         t.innerHTML = '🔓 <span>Desbloquejat</span>';
     }
 }
+const folderName = getFolderName(); 
+if (folderName) {
+    localStorage.setItem(folderName, new Date().toISOString());
+}
 </script>
 </body>
 </html>
