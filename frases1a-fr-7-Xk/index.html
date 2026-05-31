@@ -174,19 +174,38 @@ function actualizarVisores() {
     if (marcadorArriba) marcadorArriba.textContent = puntosReales;
 }
 
+let contadorActivo = true;
+
+// Detectar cambios de visibilidad
+document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+        contadorActivo = false;
+        ultimoAcceso = Date.now(); // Resetear al volver para no contar el tiempo fuera
+    } else {
+        contadorActivo = true;
+        ultimoAcceso = Date.now();
+    }
+});
+
 setInterval(() => {
+    // Solo contar si la página está activa
+    if (!contadorActivo) return;
+
     const ahora = Date.now();
     const diferenciaMs = ahora - ultimoAcceso;
+    
     if (diferenciaMs >= 60000) {
         const minutosPasados = Math.floor(diferenciaMs / 60000);
         let g = (parseInt(localStorage.getItem(CLAVE_GLOBAL)) || 0) + minutosPasados;
         let d = (parseInt(localStorage.getItem(CLAVE_DIARIO)) || 0) + minutosPasados;
+        
         localStorage.setItem(CLAVE_GLOBAL, g);
         localStorage.setItem(CLAVE_DIARIO, d);
         ultimoAcceso += minutosPasados * 60000;
+        
         actualizarVisores();
     }
-}, 1000);
+}, 1000););
 
 function resetTimer() {
     if (confirm("¿Quieres reiniciar el cronómetro global?")) {
@@ -381,8 +400,7 @@ function startTimer() {
             if (!isListening) toggleMic();
         }
     }, 1000);
-}
-function update(debeDisparar = true) {
+}function update(debeDisparar = true) {
   document.querySelector('.audio-btn.pause').textContent = "⏸";
   clearTimeout(autoMicTimer);
   if (currentBlockData.length === 0) {
@@ -448,7 +466,8 @@ function pauseAudio() {
     audioObj.pause();
     btn.textContent = "▶️";
   }
-}function reveal() {
+}
+function reveal() {
   if (currentBlockData.length === 0) return;
   const esEl = document.getElementById("es"), enEl = document.getElementById("en");
   if (mode === "EN") {
