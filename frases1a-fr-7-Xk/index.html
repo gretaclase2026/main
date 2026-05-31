@@ -174,22 +174,18 @@ function actualizarVisores() {
     if (marcadorArriba) marcadorArriba.textContent = puntosReales;
 }
 
-let contadorActivo = true;
+// PÓN ESTO EN SU LUGAR
+let paginaActiva = true;
 
-// Detectar cambios de visibilidad
 document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
-        contadorActivo = false;
-        ultimoAcceso = Date.now(); // Resetear al volver para no contar el tiempo fuera
-    } else {
-        contadorActivo = true;
+    paginaActiva = !document.hidden;
+    if (paginaActiva) {
         ultimoAcceso = Date.now();
     }
 });
 
 setInterval(() => {
-    // Solo contar si la página está activa
-    if (!contadorActivo) return;
+    if (!paginaActiva) return;
 
     const ahora = Date.now();
     const diferenciaMs = ahora - ultimoAcceso;
@@ -201,11 +197,11 @@ setInterval(() => {
         
         localStorage.setItem(CLAVE_GLOBAL, g);
         localStorage.setItem(CLAVE_DIARIO, d);
-        ultimoAcceso += minutosPasados * 60000;
         
+        ultimoAcceso = ahora;
         actualizarVisores();
     }
-}, 1000););
+}, 1000);
 
 function resetTimer() {
     if (confirm("¿Quieres reiniciar el cronómetro global?")) {
@@ -400,7 +396,8 @@ function startTimer() {
             if (!isListening) toggleMic();
         }
     }, 1000);
-}function update(debeDisparar = true) {
+}
+function update(debeDisparar = true) {
   document.querySelector('.audio-btn.pause').textContent = "⏸";
   clearTimeout(autoMicTimer);
   if (currentBlockData.length === 0) {
@@ -619,9 +616,7 @@ function checkStatus(folderName) {
         }
     }
     return 'done';
-}
-
-function gestionarluzCampana() {
+}function gestionarluzCampana() {
     const rc = document.getElementById("reviewCheck");
     if (rc && checkStatus(getFolderName()) === 'review') {
         rc.style.display = "flex";
