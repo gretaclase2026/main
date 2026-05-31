@@ -408,8 +408,28 @@ function reiniciarFrase() {
   update(false);
 }
 
-function setMode(m) { mode = m; reiniciarFrase(); }
+function setMode(m) {
+    mode = m;
+   
+    fallos = 0;
+    fraseCompletada = false;
+    document.getElementById('btn-rescat').style.display = 'none';
+    document.getElementById("endMsg").classList.add("hidden");
+    document.getElementById("speechFeedback").innerHTML = "";
+   
+    update(true);
+}
 
+function reiniciarFrase() {
+    fallos = 0;
+    fraseCompletada = false;
+    document.getElementById('btn-rescat').style.display = 'none';
+    document.getElementById("endMsg").classList.add("hidden");
+    document.getElementById("speechFeedback").innerHTML = "";
+    
+    document.getElementById('welcomeScreen').style.display = 'flex';
+    update(false);
+}
 function ejecutarAciertoFinal() {
     let xp = parseInt(localStorage.getItem('global_xp')) || 0;
     xp += 10;
