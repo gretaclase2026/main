@@ -20,10 +20,8 @@ main{display:flex;justify-content:center;padding:24px}
 .audio-btn.pause{background:#fee2e2;color:inherit}
 .audio-btn.play{background:#dcfce7;color:inherit}
 
-/* Micros con fondos pastel y iconos de color */
-.audio-btn.rec{background:#fce7f3;color:#db2777;border:1px solid #fbcfe8} /* Fondo rosa pastel */
-.audio-btn.stt{background:#dbeafe;color:#2563eb;border:1px solid #bfdbfe;font-size:22px} /* Fondo azul pastel */
-
+.audio-btn.rec{background:#fce7f3;color:#db2777;border:1px solid #fbcfe8} 
+.audio-btn.stt{background:#dbeafe;color:#2563eb;border:1px solid #bfdbfe;font-size:22px} 
 @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
 .listening{animation:pulse 1.5s infinite;background:#bfdbfe!important;border-color:#93c5fd!important}
 .recording{animation:pulse 1.5s infinite;background:#fbcfe8!important;border-color:#f9a8d4!important}
@@ -64,17 +62,20 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
   <h2>Instrucciones de Práctica</h2>
   <ol>
    <li><span style="background:#dbeafe; color:#1e40af; padding:2px 6px; border-radius:6px; font-weight:700; font-size:13px;">Modo Inglés</span> Repetir la frase que oyes cuando se activa el micro azul.</li>
-   <li><span style="background:#fde68a; color:#854d0e; padding:2px 6px; border-radius:6px; font-weight:700; font-size:13px;">Modo Castellano</span> Traducir al inglés cuando se activa el micro azul.</li>
+   <li><span style="background:#fde68a; color:#854d0e; padding:2px 6px; border-radius:6px; font-weight:700; font-size:13px;">Modo Castellano</span> Traducir al inglés la frase que ves, cuando se activa el micro azul.</li>
+   
   </ol>
-  <hr style="border:0; border-top:1px solid #e5e7eb; margin:16px 0;">
-  <ul style="list-style-type:none; padding-left:0;">
+ <ul style="list-style-type:none; padding-left:0;">
    <li style="margin-bottom:16px; display:flex; align-items:center; gap:8px;">
      <span style="width:32px; height:32px; border-radius:50%; background:#fce7f3; color:#db2777; display:flex; align-items:center; justify-content:center; border:1px solid #fbcfe8; font-size:16px;">🎤</span> 
      <span><strong style="color:#db2777;">Micro rosa:</strong> Practicar la frase pausadamente para escucharte después.</span>
    </li>
-   <li style="display:flex; align-items:center; gap:8px;">
+   <li style="margin-bottom:16px; display:flex; align-items:center; gap:8px;">
      <span style="width:32px; height:32px; border-radius:50%; background:#dbeafe; color:#2563eb; display:flex; align-items:center; justify-content:center; border:1px solid #bfdbfe; font-size:16px;">🎤</span>
      <span><strong style="color:#2563eb;">Micro azul:</strong> Decir la frase fluidamente para evaluar tu pronunciación.</span>
+   </li>
+   <li style="color:#2563eb; font-weight:700; font-size:15px; text-align:center;">
+     Reto: Decir la frase completa en inglés, de forma fluida y sin leerla, y consigue estrellas.
    </li>
   </ul>
   <button class="btn-start" onclick="iniciarAplicacion()">EMPEZAR ⭐</button>
