@@ -28,7 +28,7 @@ main{display:flex;justify-content:center;padding:24px}
 .audio-btn{width:52px;height:52px;border-radius:50%;border:none;background:#dcfce7;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s}
 .audio-btn.slow{background:#fef08a}
 .audio-btn.pause{background:#fee2e2;color:inherit}
-.audio-btn.rec{background:#fca5a5;color:white}
+.audio-btn.rec{background:#fbcfe8;color:white}
 .audio-btn.stt{background:#dbeafe;font-size:22px}
 @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
 .listening{animation:pulse 1.5s infinite;background:#90caf9!important;color:#0f172a!important}
@@ -575,7 +575,7 @@ function loadAll(elegirMecanismo = true) {
 let autoMicTimer;
 function startTimer() {
     clearTimeout(autoMicTimer);
-    let timeLeft = 2;
+    let timeLeft = 0;
     const feedback = document.getElementById("speechFeedback");
     autoMicTimer = setInterval(() => {
         timeLeft--;

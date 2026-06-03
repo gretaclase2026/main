@@ -28,7 +28,7 @@ main{display:flex;justify-content:center;padding:24px}
 .audio-btn{width:52px;height:52px;border-radius:50%;border:none;background:#dcfce7;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.1s}
 .audio-btn.slow{background:#fef08a}
 .audio-btn.pause{background:#fee2e2;color:inherit}
-.audio-btn.rec{background:#fca5a5;color:white}
+.audio-btn.rec{background:#fbcfe8;color:white}
 .audio-btn.stt{background:#dbeafe;font-size:22px}
 @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
 .listening{animation:pulse 1.5s infinite;background:#90caf9!important;color:#0f172a!important}
@@ -225,7 +225,7 @@ const items = [
 {audio:"f082.mp3", en:"My father told me he'd help me fix the garage door this weekend, but he ended up not coming.", es:"El meu pare em va dir que m'ajudaria a arreglar la porta del garatge aquest cap de setmana, però al final no va poder venir."},
 {audio:"f083.mp3", en:"I didn't know you'd lost your house keys, so I waited for you at the door until you arrived.", es:"No sabia que ja havies perdut les claus de casa, així que et vaig esperar a la porta fins que vas arribar."},
 { "audio": "Historia_Futuro_TO.mp3", "en": "I want to learn English because I need to find a better job. I aim to be the best, so I decide to study every day. I hope to travel to London and I expect to arrive in June. I plan to stay for a year. I'm learning to speak like a native. My teacher offered to help me and promised to give me books. I agreed to study hard and I managed to pass all exams. I refuse to give up because I afford to pay for the course and I never forget to do my homework.", "es": "Quiero aprender inglés porque necesito encontrar un trabajo mejor. Aspiro a ser el mejor, así que decido estudiar todos los días. Espero viajar a Londres y cuento con llegar en junio. Planeo quedarme durante un año. Estoy aprendiendo a hablar como un nativo. Mi profesor se ofreció a ayudarme y prometió darme libros. Acepté estudiar duro y logré aprobar todos los exámenes. Me niego a rendirme porque puedo permitirme pagar el curso y nunca me olvido de hacer los deberes." },
-{" audio": "Historia_Rutina_ING.mp3", "en": "I enjoy reading at night and I avoid driving in the rain. Sometimes I imagine living on a beach. I miss seeing my old friends, but I keep talking to them online. Last week, I finished cleaning my house and I considered moving to a new one. My brother suggested going to the beach, and I recommended taking a picnic. He admitted cheating at cards once, but he denied stealing my chocolate. I don't mind waiting for him, but I practice being patient. I wouldn't risk losing his friendship.", "es": "Disfruto leyendo por la noche y evito conducir bajo la lluvia. A veces imagino vivir en una playa. Echo de menos ver a mis viejos amigos, pero sigo hablando con ellos por internet. La semana pasada terminé de limpiar mi casa y consideré mudarme a una nueva. Mi hermano sugirió ir a la playa y yo recomendé llevar un picnic. Él admitió haber hecho trampas a las cartas una vez, pero negó haber robado mi chocolate. No me importa esperarle, pero practico ser paciente. No me arriesgaría a perder su amistad." },
+{"audio": "Historia_Rutina_ING.mp3", "en": "I enjoy reading at night and I avoid driving in the rain. Sometimes I imagine living on a beach. I miss seeing my old friends, but I keep talking to them online. Last week, I finished cleaning my house and I considered moving to a new one. My brother suggested going to the beach, and I recommended taking a picnic. He admitted cheating at cards once, but he denied stealing my chocolate. I don't mind waiting for him, but I practice being patient. I wouldn't risk losing his friendship.", "es": "Disfruto leyendo por la noche y evito conducir bajo la lluvia. A veces imagino vivir en una playa. Echo de menos ver a mis viejos amigos, pero sigo hablando con ellos por internet. La semana pasada terminé de limpiar mi casa y consideré mudarme a una nueva. Mi hermano sugirió ir a la playa y yo recomendé llevar un picnic. Él admitió haber hecho trampas a las cartas una vez, pero negó haber robado mi chocolate. No me importa esperarle, pero practico ser paciente. No me arriesgaría a perder su amistad." },
 ];
 const CLAVE_GLOBAL = 'tiempo_total_estudio';
 const CLAVE_DIARIO = 'tiempo_estudio_diario';
@@ -460,7 +460,7 @@ function loadAll(elegirMecanismo = true) {
 let autoMicTimer;
 function startTimer() {
     clearTimeout(autoMicTimer);
-    let timeLeft = 2;
+    let timeLeft = 0;
     const feedback = document.getElementById("speechFeedback");
     autoMicTimer = setInterval(() => {
         timeLeft--;
