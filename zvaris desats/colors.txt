@@ -1,0 +1,5 @@
+ Veure  	#0369a1
+Ja la sé	#15803d
+Següent 	#9d174d
+Tota la llista	#6b21a8
+Repàs (★)	#92400e
