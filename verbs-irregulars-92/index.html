@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ca">
 <head>
 <meta charset="UTF-8">
@@ -15,11 +15,11 @@ main{display:flex;justify-content:center;padding:24px}
 .card{position:relative;width:100%;max-width:560px;background:#ffffff;border-radius:28px;padding:32px;box-shadow:0 10px 24px rgba(0,0,0,0.06);text-align:center}
 .counter-container{position:absolute;top:18px;left:22px;display:flex;align-items:center;gap:6px}
 .counter{font-weight:800;color:#2563eb}
-.back-btn{background:#f3e8ff;border:none;border-radius:8px;width:24px;height:24px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;font-weight:bold;color:#6b21a8;transition:0.2s}
+.back-btn{background:#f3e8ff;border:none;border-radius:8px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;font-weight:bold;color:#6b21a8;transition:0.2s}
 .back-btn:hover{background:#e9d5ff}
 .check-box-manual{position:absolute;top:18px;right:22px;width:24px;height:24px;background:#fff;border:1.5px solid #22c55e;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;font-size:14px}
 .check-box-manual.marked{background:#22c55e!important;color:white!important}
-.lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b;margin-bottom:6px}
+.lang{font-size:14px;font-weight:800;letter-spacing:1px;color:#64748b}
 .blocks{display:flex;flex-wrap:nowrap;gap:6px;justify-content:flex-start;margin:15px 0 20px;overflow-x:auto;padding:5px 0 5px 10px}
 .block{flex:0 0 auto;width:32px;height:32px;border-radius:50%;border:none;background:#f1f5f9;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.2s}
 .block.active{background:#2563eb!important;color:#fff!important;transform:scale(1.1)}
@@ -89,7 +89,12 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 </div>
 <div class="check-box-manual" id="mainCheck" onclick="markAsDone(this)"></div>
  <div class="check-box-manual" id="reviewCheck" onclick="markReviewAsDone(this)" style="right: 54px; border-color: #f59e0b; color: #f59e0b; display: none;">🔔</div>
- <div id="langLabel" class="lang" style="margin-top: 10px;">ANGLÈS</div>
+ 
+ <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px;">
+   <div id="langLabel" class="lang">ANGLÈS</div>
+   <button id="autoplayBtn" onclick="toggleAutoplay()" style="background:#dbeafe; border:none; border-radius:12px; padding:4px 10px; font-weight:700; cursor:pointer; font-size:12px;">🔁 Auto</button>
+ </div>
+
  <div id="blockContainer" class="blocks"></div>
  <div class="audio-container">
   <button class="star-btn" id="starBtn" onclick="toggleStar()">★</button>
@@ -605,7 +610,6 @@ function actualizarVisores() {
     if (marcadorArriba) marcadorArriba.textContent = puntosReales;
 }
 
-// PÓN ESTO EN SU LUGAR
 let paginaActiva = true;
 
 document.addEventListener("visibilitychange", () => {
@@ -875,7 +879,16 @@ function playAudio(audioFile, speed) {
   audioObj.src = audioFile; 
   audioObj.playbackRate = speed;
   audioObj.onended = () => {
-    if (mode === "EN") { setTimeout(() => { if (!isListening) toggleMic(); }, 1000); }
+    if (isAutoplayActive) {
+      if (pos < currentBlockData.length - 1) {
+        pos++;
+        update(true);
+      } else {
+        stopAutoplay();
+      }
+    } else if (mode === "EN") {
+      setTimeout(() => { if (!isListening) toggleMic(); }, 1000);
+    }
   };
   audioObj.play().catch(err => console.log("Error con audio:", audioFile));
 }
@@ -952,8 +965,7 @@ function toggleStar(forcedId = null) {
   localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
   const starBtn = document.getElementById("starBtn");
   if(starBtn) starBtn.classList.toggle("active", starredIds.includes(currentBlockData[pos].audio));
-}
-function clearAllStars() {
+}function clearAllStars() {
   if (confirm("Vols eliminar totes les estrelles de la llista?")) {
     starredIds = [];
     localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
@@ -1029,7 +1041,45 @@ if (localStorage.getItem(getFolderName())) {
             setTimeout(() => { est.style.display = "none"; }, 500);
         }, 1000);
     };
-})();function checkStatus(folderName) {
+})();
+
+let isAutoplayActive = false;
+
+function toggleAutoplay() {
+  if (isAutoplayActive) {
+    stopAutoplay();
+  } else {
+    startAutoplay();
+  }
+}
+
+function startAutoplay() {
+  if (currentBlockData.length === 0) return;
+  isAutoplayActive = true;
+  const btn = document.getElementById("autoplayBtn");
+  if (btn) btn.style.background = "#86efac";
+  playCurrent(1.0);
+}
+
+function stopAutoplay() {
+  isAutoplayActive = false;
+  const btn = document.getElementById("autoplayBtn");
+  if (btn) btn.style.background = "#dbeafe";
+}
+</script>
+<div style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
+   <div style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; gap: 8px; align-items: center;">
+    <button id="btn-toggle-blur-all" style="background: #e0f2fe; color: #0369a1; padding: 6px 14px; border-radius: 25px; font-weight: 900; border: 2px solid #38bdf8; font-size: 14px; cursor: pointer; display: none; align-items: center; gap: 6px; font-family: system-ui; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" onclick="toggleBlurAllList()">
+        👁️ <span>Mostrar tot</span>
+    </button>
+    
+    <div id="timer-diario" style="background: #dcfce7; color: #166534; padding: 6px 14px; border-radius: 25px; font-weight: 900; border: 2px solid #22c55e; font-size: 15px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-family: system-ui; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" onclick="resetDiario()">
+        ⏱️ <span id="val-timer-diario">00:00</span>
+    </div>
+</div>
+</div>
+<script>
+function checkStatus(folderName) {
     const data = localStorage.getItem(folderName);
     if (!data) return null;
     const intervals = [1, 3, 7, 15, 30, 60, 90];
@@ -1067,19 +1117,7 @@ function markReviewAsDone(el) {
 }
 gestionarluzCampana();
 initBlocks();
-</script>
-<div style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
-   <div style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; gap: 8px; align-items: center;">
-    <button id="btn-toggle-blur-all" style="background: #e0f2fe; color: #0369a1; padding: 6px 14px; border-radius: 25px; font-weight: 900; border: 2px solid #38bdf8; font-size: 14px; cursor: pointer; display: none; align-items: center; gap: 6px; font-family: system-ui; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" onclick="toggleBlurAllList()">
-        👁️ <span>Mostrar tot</span>
-    </button>
-    
-    <div id="timer-diario" style="background: #dcfce7; color: #166534; padding: 6px 14px; border-radius: 25px; font-weight: 900; border: 2px solid #22c55e; font-size: 15px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-family: system-ui; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" onclick="resetDiario()">
-        ⏱️ <span id="val-timer-diario">00:00</span>
-    </div>
-</div>
-</div>
-<script>
+
 function resetDiario() {
     if (confirm("¿Reiniciar el tiempo de HOY?")) {
         localStorage.setItem(CLAVE_DIARIO, 0);
