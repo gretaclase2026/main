@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ca">
 <head>
 <meta charset="UTF-8">
@@ -347,7 +347,20 @@ function compareSentences(original, spoken) {
     if (score >= 0.99) {
         fallos = 0; document.getElementById('btn-rescat').style.display = 'none';
         if (window.executarAciertoFinal) window.executarAciertoFinal();
-        setTimeout(() => { document.getElementById("speechFeedback").innerHTML = ""; know(); }, 3000);
+        
+        // Reproduce el audio a velocidad 0.75 (tortuga) y pasa a la siguiente frase cuando termina
+        setTimeout(() => {
+            audioObj.src = currentBlockData[pos].audio;
+            audioObj.playbackRate = 0.75;
+            audioObj.onended = () => {
+                document.getElementById("speechFeedback").innerHTML = "";
+                know();
+            };
+            audioObj.play().catch(err => {
+                document.getElementById("speechFeedback").innerHTML = "";
+                know();
+            });
+        }, 800);
     } else { fallos++; if (fallos >= 3) document.getElementById('btn-rescat').style.display = 'block'; }
 }
 function rescueAction() {
@@ -414,8 +427,7 @@ function initBlocks() {
   }
   if (savedBlock === "all") loadAll(false);
   else loadBlock((savedBlock !== null) ? parseInt(savedBlock) : 0, false);
-}
-function loadBlock(b, elegirMecanismo = true) {
+}function loadBlock(b, elegirMecanismo = true) {
   currentBlockID = b;
   localStorage.setItem(getFolderName() + "_puntoLibro", b);
   let temp = [];
@@ -584,7 +596,8 @@ function toggleStar(forcedId = null) {
   localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
   const starBtn = document.getElementById("starBtn");
   if(starBtn) starBtn.classList.toggle("active", starredIds.includes(currentBlockData[pos].audio));
-}function clearAllStars() {
+}
+function clearAllStars() {
   if (confirm("Vols eliminar totes les estrelles de la llista?")) {
     starredIds = [];
     localStorage.setItem('stars_' + getFolderName(), JSON.stringify(starredIds));
