@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Text-to-Speech SSML Downloader</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            padding: 20px;
+            max-width: 600px;
+            margin: 40px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        #status {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info-box {
+            background-color: #e8f4f8;
+            border-left: 4px solid #3498db;
+            padding: 10px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Descarga de Audios - Pronunciación (Does vs Thus)</h1>
+    
+    <div class="info-box">
+        Se descargarán 2 archivos con pausas SSML:
+        <ul>
+            <li><strong>does_thus_us_male.mp3</strong> (EE.UU. Voz Masculina - Studio)</li>
+            <li><strong>does_thus_uk_female.mp3</strong> (Reino Unido Voz Femenina - Neural2)</li>
+        </ul>
+    </div>
+
+    <div class="form-group">
+        <label for="apiKey">Introduce tu API Key de Google Cloud:</label>
+        <input type="text" id="apiKey" placeholder="AIzaSy...">
+    </div>
+
+    <button id="btnDownload" onclick="startDownload()">Generar y Descargar Audios</button>
+
+    <div id="status"></div>
+
+    <script>
+        const ssmlText = `<speak>
+  Listen carefully to the difference.
+  <break time="1s"/>
+  
+  Does... <break time="1.5s"/> does... <break time="1.5s"/> does.
+  <break time="2s"/>
+  
+  And now...
+  <break time="1s"/>
+  
+  Thus... <break time="1.5s"/> thus... <break time="1.5s"/> thus.
+  <break time="2s"/>
+  
+  Now, let's alternate them.
+  <break time="1s"/>
+  
+  Does... <break time="1.5s"/> thus... <break time="1.5s"/> does... <break time="1.5s"/> thus.
+  <break time="2s"/>
+  
+  One more time.
+  <break time="1s"/>
+  
+  Does... <break time="1.5s"/> thus... <break time="1.5s"/> does... <break time="1.5s"/> thus.
+</speak>`;
+
+        const audioConfigs = [
+            {
+                languageCode: "en-US",
+                voiceName: "en-US-Studio-Q",
+                filename: "does_thus_us_male.mp3"
+            },
+            {
+                languageCode: "en-GB",
+                voiceName: "en-GB-Neural2-F",
+                filename: "does_thus_uk_female.mp3"
+            }
+        ];
+
+        async function startDownload() {
+            const apiKey = document.getElementById('apiKey').value.trim();
+            const btn = document.getElementById('btnDownload');
+
+            if (!apiKey) {
+                showStatus("Por favor, introduce una API Key válida.", "error");
+                return;
+            }
+
+            btn.disabled = true;
+            showStatus("Generando audios con Google Cloud...", "success");
+
+            try {
+                for (const config of audioConfigs) {
+                    await downloadAudio(apiKey, ssmlText, config);
+                }
+                showStatus("¡Descargas completadas con éxito!", "success");
+            } catch (error) {
+                showStatus("Error: " + error.message, "error");
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        async function downloadAudio(apiKey, ssml, config) {
+            const url = `https://texttospeech.googleapis.com/v1/text:synthesize?key=${apiKey}`;
+            
+            const payload = {
+                input: { ssml: ssml },
+                voice: {
+                    languageCode: config.languageCode,
+                    name: config.voiceName
+                },
+                audioConfig: {
+                    audioEncoding: "MP3"
+                }
+            };
+
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                const errData = await response.json();
+                throw new Error(errData.error?.message || "Error en la API de Google Cloud");
+            }
+
+            const data = await response.json();
+            const audioContent = data.audioContent;
+
+            const linkSource = `data:audio/mp3;base64,${audioContent}`;
+            const downloadLink = document.createElement("a");
+            downloadLink.href = linkSource;
+            downloadLink.download = config.filename;
+            downloadLink.click();
+        }
+
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerText = message;
+            statusDiv.className = type;
+            statusDiv.style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>
