@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ca">
 <head>
 <meta charset="UTF-8">
@@ -408,10 +408,10 @@ function initBlocks() {
   allBtn.textContent = "T";
   allBtn.onclick = () => loadAll();
   container.appendChild(allBtn);
-  for (let i = 0; i < numBlocks; i++) {
+ for (let i = 0; i < numBlocks; i++) {
     const btn = document.createElement("button");
     btn.className = "block";
-    btn.textContent = i + 1;
+    btn.textContent = i;
     btn.onclick = () => loadBlock(i);
     container.appendChild(btn);
   }
