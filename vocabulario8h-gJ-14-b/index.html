@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ca">
 <head>
 <meta charset="UTF-8">
@@ -93,6 +93,7 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
  <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px;">
    <div id="langLabel" class="lang">ANGLÈS</div>
    <button id="autoplayBtn" onclick="toggleAutoplay()" style="background:#dbeafe; border:none; border-radius:12px; padding:4px 10px; font-weight:700; cursor:pointer; font-size:12px;">🔁 Auto</button>
+   <button onclick="resetMic()" style="background:#fed7aa; border:none; border-radius:12px; padding:4px 10px; font-weight:700; cursor:pointer; font-size:12px;" title="Reiniciar micro azul">🔄️ Micro</button>
  </div>
 
  <div id="blockContainer" class="blocks"></div>
@@ -606,6 +607,43 @@ function toggleMic() {
         recognition.start();
     }
 }
+function resetMic() {
+    try {
+        if (recognition) {
+            recognition.abort(); // Fuerza la detención inmediata sin esperar eventos pendientes
+        }
+    } catch (e) {
+        console.log("Error al abortar reconocimiento:", e);
+    }
+    
+    // Reseteamos estados visuales y variables de control
+    isListening = false;
+    const sttBtn = document.getElementById("sttBtn");
+    if (sttBtn) sttBtn.classList.remove("listening");
+    
+    // Recreamos la instancia de reconocimiento por si se había corrompido el objeto
+    if (SpeechRecognition) {
+        recognition = new SpeechRecognition();
+        recognition.lang = 'en-US';
+        recognition.interimResults = false;
+        recognition.continuous = false;
+        recognition.onstart = () => { isListening = true; document.getElementById("sttBtn").classList.add("listening"); };
+        recognition.onend = () => { isListening = false; document.getElementById("sttBtn").classList.remove("listening"); };
+        recognition.onresult = (event) => {
+            let fullTranscript = "";
+            for (let i = event.resultIndex; i < event.results.length; i++) { fullTranscript += event.results[i][0].transcript + " "; }
+            compareSentences(currentBlockData[pos].en, fullTranscript.trim());
+        };
+    }
+    
+    document.getElementById("speechFeedback").innerHTML = `<span style="color:#d97706; font-size:14px; font-weight:800;">Micro reiniciat correctament 🔄️</span>`;
+    setTimeout(() => {
+        const feedback = document.getElementById("speechFeedback");
+        if (feedback && feedback.innerHTML.includes("Micro reiniciat")) {
+            feedback.innerHTML = "";
+        }
+    }, 2000);
+}
 async function toggleRecord(targetBtnId) {
     const btn = document.getElementById(targetBtnId);
     if (!isRecording) {
@@ -642,10 +680,10 @@ function initBlocks() {
   allBtn.textContent = "T";
   allBtn.onclick = () => loadAll();
   container.appendChild(allBtn);
- for (let i = 0; i < numBlocks; i++) {
+  for (let i = 0; i < numBlocks; i++) {
     const btn = document.createElement("button");
     btn.className = "block";
-    btn.textContent = i;
+    btn.textContent = i + 1;
     btn.onclick = () => loadBlock(i);
     container.appendChild(btn);
   }
