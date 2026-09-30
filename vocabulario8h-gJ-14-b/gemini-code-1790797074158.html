@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Text-to-Speech Dual Downloader</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            padding: 20px;
+            max-width: 600px;
+            margin: 40px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        #status {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Descarga de Audios Duales (US Studio Q + UK Studio C)</h1>
+    
+    <div class="form-group">
+        <label for="apiKey">Introduce tu API Key de Google Cloud:</label>
+        <input type="text" id="apiKey" placeholder="AIzaSy...">
+    </div>
+
+    <button id="btnDownload" onclick="startDownload()">Iniciar Descarga de Todos los Audios</button>
+
+    <div id="status"></div>
+
+    <script>
+        const phrases = [
+            { text: "staged", filename: "f285.mp3" },
+            { text: "fainted", filename: "f286.mp3" },
+            { text: "drag", filename: "f287.mp3" },
+            { text: "burden", filename: "f288.mp3" },
+            { text: "punched", filename: "f289.mp3" },
+            { text: "cutie", filename: "f290.mp3" },
+            { text: "bother", filename: "f291.mp3" },
+            { text: "kind-hearted", filename: "f292.mp3" },
+            { text: "target", filename: "f293.mp3" },
+            { text: "fool", filename: "f294.mp3" },
+            { text: "drowned", filename: "f295.mp3" },
+            { text: "dropped", filename: "f296.mp3" },
+            { text: "bullet", filename: "f297.mp3" },
+            { text: "gutter", filename: "f298.mp3" },
+            { text: "liability", filename: "f299.mp3" },
+            { text: "board", filename: "f300.mp3" },
+            { text: "gauze", filename: "f301.mp3" },
+            { text: "steady", filename: "f302.mp3" },
+            { text: "whining", filename: "f303.mp3" },
+            { text: "shade", filename: "f304.mp3" },
+            { text: "stubborn", filename: "f305.mp3" },
+            { text: "raining", filename: "f306.mp3" },
+            { text: "yesterday", filename: "f307.mp3" },
+            { text: "call", filename: "f308.mp3" },
+            { text: "provided", filename: "f309.mp3" },
+            { text: "step", filename: "f310.mp3" },
+            { text: "out", filename: "f311.mp3" },
+            { text: "back", filename: "f312.mp3" },
+            { text: "up", filename: "f313.mp3" },
+            { text: "performance", filename: "f314.mp3" },
+            { text: "master", filename: "f315.mp3" },
+            { text: "resolve", filename: "f316.mp3" },
+            { text: "furious", filename: "f317.mp3" },
+            { text: "tied", filename: "f318.mp3" },
+            { text: "swamped", filename: "f319.mp3" },
+            { text: "plate", filename: "f320.mp3" },
+            { text: "slammed", filename: "f321.mp3" },
+            { text: "limescale", filename: "f322.mp3" },
+            { text: "grime", filename: "f323.mp3" },
+            { text: "superior", filename: "f324.mp3" },
+            { text: "however", filename: "f325.mp3" },
+            { text: "nevertheless", filename: "f326.mp3" },
+            { text: "conversely", filename: "f327.mp3" },
+            { text: "whereas", filename: "f328.mp3" },
+            { text: "other", filename: "f329.mp3" },
+            { text: "contrast", filename: "f330.mp3" },
+            { text: "furthermore", filename: "f331.mp3" },
+            { text: "moreover", filename: "f332.mp3" },
+            { text: "more", filename: "f333.mp3" },
+            { text: "that", filename: "f334.mp3" },
+            { text: "addition", filename: "f335.mp3" },
+            { text: "otherwise", filename: "f336.mp3" },
+            { text: "that", filename: "f337.mp3" },
+            { text: "long", filename: "f338.mp3" },
+            { text: "due", filename: "f339.mp3" },
+            { text: "circumstances", filename: "f340.mp3" },
+            { text: "Overall", filename: "f341.mp3" },
+            { text: "conclusion", filename: "f342.mp3" },
+            { text: "consequence", filename: "f343.mp3" },
+            { text: "thus", filename: "f344.mp3" },
+            { text: "hence", filename: "f345.mp3" },
+            { text: "said", filename: "f346.mp3" },
+            { text: "all", filename: "f347.mp3" },
+            { text: "scope", filename: "f348.mp3" },
+            { text: "criteria", filename: "f349.mp3" },
+            { text: "dropout", filename: "f350.mp3" },
+            { text: "enroll", filename: "f351.mp3" },
+            { text: "questionnaire", filename: "f352.mp3" },
+            { text: "leak", filename: "f353.mp3" },
+            { text: "chandelier", filename: "f354.mp3" },
+            { text: "dizziness", filename: "f355.mp3" },
+            { text: "runny", filename: "f356.mp3" },
+            { text: "sprain", filename: "f357.mp3" },
+            { text: "vaccination", filename: "f358.mp3" },
+            { text: "ashamed", filename: "f359.mp3" },
+            { text: "grateful", filename: "f360.mp3" },
+            { text: "overwhelmed", filename: "f361.mp3" },
+            { text: "somewhat", filename: "f362.mp3" },
+            { text: "annoyed", filename: "f363.mp3" },
+            { text: "utterly", filename: "f364.mp3" },
+            { text: "drastically", filename: "f365.mp3" },
+            { text: "caught", filename: "f366.mp3" },
+            { text: "froze", filename: "f367.mp3" },
+            { text: "moody", filename: "f368.mp3" },
+            { text: "duper", filename: "f369.mp3" },
+            { text: "hanky", filename: "f370.mp3" },
+            { text: "lovey", filename: "f371.mp3" },
+            { text: "hocus", filename: "f372.mp3" },
+            { text: "Okey", filename: "f373.mp3" },
+            { text: "tiny", filename: "f374.mp3" },
+            { text: "bitsy", filename: "f375.mp3" },
+            { text: "washy", filename: "f376.mp3" },
+            { text: "dilly", filename: "f377.mp3" },
+            { text: "hush", filename: "f378.mp3" },
+            { text: "chit", filename: "f379.mp3" },
+            { text: "bargy", filename: "f380.mp3" },
+            { text: "humdrum", filename: "f381.mp3" },
+            { text: "peasy", filename: "f382.mp3" },
+            { text: "crush", filename: "f383.mp3" },
+            { text: "husband", filename: "f384.mp3" },
+            { text: "snatched", filename: "f385.mp3" },
+            { text: "wrong", filename: "f386.mp3" },
+            { text: "over", filename: "f387.mp3" },
+            { text: "face", filename: "f388.mp3" },
+            { text: "world", filename: "f389.mp3" },
+            { text: "apart", filename: "f390.mp3" },
+            { text: "cornered", filename: "f391.mp3" },
+            { text: "bruised", filename: "f392.mp3" },
+            { text: "hatred", filename: "f393.mp3" },
+            { text: "blade", filename: "f394.mp3" },
+            { text: "shattered", filename: "f395.mp3" },
+            { text: "path", filename: "f396.mp3" },
+            { text: "path", filename: "f397.mp3" },
+            { text: "trusted", filename: "f398.mp3" },
+            { text: "shout", filename: "f399.mp3" },
+            { text: "scold", filename: "f400.mp3" },
+            { text: "scolded", filename: "f401.mp3" },
+            { text: "even", filename: "f402.mp3" },
+            { text: "trapped", filename: "f403.mp3" },
+            { text: "well-wisher", filename: "f404.mp3" },
+            { text: "tear", filename: "f405.mp3" },
+            { text: "divorced", filename: "f406.mp3" },
+            { text: "seal", filename: "f407.mp3" },
+            { text: "closer", filename: "f408.mp3" },
+            { text: "Better", filename: "f409.mp3" },
+            { text: "Beloved", filename: "f410.mp3" },
+            { text: "lousy", filename: "f411.mp3" },
+            { text: "digger", filename: "f412.mp3" },
+            { text: "date", filename: "f413.mp3" },
+            { text: "grief", filename: "f414.mp3" },
+            { text: "chains", filename: "f415.mp3" },
+            { text: "hell", filename: "f416.mp3" },
+            { text: "Clenched", filename: "f417.mp3" },
+            { text: "spell", filename: "f418.mp3" },
+            { text: "dungeons", filename: "f419.mp3" },
+            { text: "shimmering", filename: "f420.mp3" },
+            { text: "Father", filename: "f421.mp3" },
+            { text: "glowing", filename: "f422.mp3" },
+            { text: "sly", filename: "f423.mp3" },
+            { text: "creepy", filename: "f424.mp3" },
+            { text: "emitting", filename: "f425.mp3" },
+            { text: "fae", filename: "f426.mp3" },
+            { text: "unmatched", filename: "f427.mp3" },
+            { text: "bow", filename: "f428.mp3" },
+            { text: "oath", filename: "f429.mp3" },
+            { text: "curse", filename: "f430.mp3" },
+            { text: "taming", filename: "f431.mp3" },
+            { text: "Obey", filename: "f432.mp3" },
+            { text: "baby", filename: "f433.mp3" },
+            { text: "dumps", filename: "f434.mp3" },
+            { text: "shrug", filename: "f435.mp3" },
+            { text: "tipsy", filename: "f436.mp3" },
+            { text: "grounded", filename: "f437.mp3" },
+            { text: "beat", filename: "f438.mp3" },
+            { text: "unmatched", filename: "f439.mp3" },
+            { text: "henpecked", filename: "f440.mp3" },
+            { text: "clumsy", filename: "f441.mp3" },
+            { text: "arrogant", filename: "f442.mp3" },
+            { text: "pity", filename: "f443.mp3" },
+            { text: "boils", filename: "f444.mp3" },
+            { text: "self", filename: "f445.mp3" },
+            { text: "mouth", filename: "f446.mp3" },
+            { text: "stubborn", filename: "f447.mp3" },
+            { text: "stubborn", filename: "f448.mp3" },
+            { text: "hyper", filename: "f449.mp3" },
+            { text: "psycho", filename: "f450.mp3" },
+            { text: "snapped", filename: "f451.mp3" },
+            { text: "madding", filename: "f452.mp3" },
+            { text: "careless", filename: "f453.mp3" },
+            { text: "afar", filename: "f454.mp3" },
+            { text: "harshly", filename: "f455.mp3" },
+            { text: "wiser", filename: "f456.mp3" },
+            { text: "feisty", filename: "f457.mp3" },
+            { text: "humble", filename: "f458.mp3" },
+            { text: "wisdom", filename: "f459.mp3" },
+            { text: "wisely", filename: "f460.mp3" },
+            { text: "ally", filename: "f461.mp3" },
+            { text: "capable", filename: "f462.mp3" },
+            { text: "misjudge", filename: "f463.mp3" },
+            { text: "misbehave", filename: "f464.mp3" },
+            { text: "branded", filename: "f465.mp3" },
+            { text: "priceless", filename: "f466.mp3" },
+            { text: "discharged", filename: "f467.mp3" },
+            { text: "Minor", filename: "f468.mp3" },
+            { text: "pain", filename: "f469.mp3" },
+            { text: "diaper", filename: "f470.mp3" },
+            { text: "topic", filename: "f471.mp3" },
+            { text: "change", filename: "f472.mp3" },
+            { text: "scams", filename: "f473.mp3" },
+            { text: "house", filename: "f474.mp3" },
+            { text: "warehouse", filename: "f475.mp3" },
+            { text: "kitchen", filename: "f476.mp3" },
+            { text: "filthy", filename: "f477.mp3" },
+            { text: "hedges", filename: "f478.mp3" },
+            { text: "dawn", filename: "f479.mp3" },
+            { text: "roaming", filename: "f480.mp3" },
+            { text: "minor", filename: "f481.mp3" },
+            { text: "smoothly", filename: "f482.mp3" },
+            { text: "drumstick", filename: "f483.mp3" },
+            { text: "tip", filename: "f484.mp3" },
+            { text: "there", filename: "f485.mp3" },
+            { text: "yummy", filename: "f486.mp3" },
+            { text: "healed", filename: "f487.mp3" },
+            { text: "meadow", filename: "f488.mp3" },
+            { text: "junkyard", filename: "f489.mp3" },
+            { text: "urchins", filename: "f490.mp3" },
+            { text: "rubbish", filename: "f491.mp3" },
+            { text: "berth", filename: "f492.mp3" },
+            { text: "gracefully", filename: "f493.mp3" },
+            { text: "dock", filename: "f494.mp3" },
+            { text: "crowfoot", filename: "f495.mp3" },
+            { text: "grime", filename: "f496.mp3" },
+            { text: "Unbeknownst", filename: "f497.mp3" },
+            { text: "bred", filename: "f498.mp3" },
+            { text: "wages", filename: "f499.mp3" },
+            { text: "ewe", filename: "f500.mp3" },
+            { text: "background", filename: "f501.mp3" },
+            { text: "dawn", filename: "f502.mp3" },
+            { text: "ingredients", filename: "f503.mp3" },
+            { text: "neatly", filename: "f504.mp3" },
+            { text: "shabby", filename: "f505.mp3" },
+            { text: "store", filename: "f506.mp3" },
+            { text: "drumsticks", filename: "f507.mp3" },
+            { text: "city", filename: "f508.mp3" },
+            { text: "spare", filename: "f509.mp3" },
+            { text: "chasing", filename: "f510.mp3" },
+            { text: "spare", filename: "f511.mp3" },
+            { text: "guard", filename: "f512.mp3" },
+            { text: "to", filename: "f513.mp3" },
+            { text: "Fetch", filename: "f514.mp3" },
+            { text: "Whatever", filename: "f515.mp3" },
+            { text: "mud", filename: "f516.mp3" },
+            { text: "Destiny", filename: "f517.mp3" },
+            { text: "bars", filename: "f518.mp3" },
+            { text: "report", filename: "f519.mp3" },
+            { text: "statement", filename: "f520.mp3" },
+            { text: "rubbish", filename: "f521.mp3" },
+            { text: "granted", filename: "f522.mp3" },
+            { text: "Mark", filename: "f523.mp3" },
+            { text: "urge", filename: "f524.mp3" },
+            { text: "hurt", filename: "f525.mp3" },
+            { text: "showpiece", filename: "f526.mp3" },
+            { text: "mind", filename: "f527.mp3" },
+            { text: "being", filename: "f528.mp3" },
+            { text: "fame", filename: "f529.mp3" },
+            { text: "Threatening", filename: "f530.mp3" },
+            { text: "Stop", filename: "f531.mp3" },
+            { text: "fluke", filename: "f532.mp3" },
+            { text: "worship", filename: "f533.mp3" },
+            { text: "sip", filename: "f534.mp3" },
+            { text: "letting", filename: "f535.mp3" },
+            { text: "startled", filename: "f536.mp3" },
+            { text: "now", filename: "f537.mp3" },
+            { text: "better", filename: "f538.mp3" },
+            { text: "Mind", filename: "f539.mp3" },
+            { text: "spiked", filename: "f540.mp3" },
+            { text: "push", filename: "f541.mp3" },
+            { text: "owe", filename: "f542.mp3" },
+            { text: "Embarrass", filename: "f543.mp3" },
+            { text: "Withdraw", filename: "f544.mp3" },
+            { text: "capable", filename: "f545.mp3" },
+            { text: "Figure", filename: "f546.mp3" },
+            { text: "sake", filename: "f547.mp3" },
+            { text: "speeches", filename: "f548.mp3" },
+            { text: "deceived", filename: "f549.mp3" },
+            { text: "tired", filename: "f550.mp3" },
+            { text: "healed", filename: "f551.mp3" },
+            { text: "astray", filename: "f552.mp3" },
+            { text: "spot", filename: "f553.mp3" },
+            { text: "it", filename: "f554.mp3" },
+            { text: "gone", filename: "f555.mp3" },
+            { text: "more", filename: "f556.mp3" },
+            { text: "request", filename: "f557.mp3" },
+            { text: "down", filename: "f558.mp3" },
+            { text: "ran", filename: "f559.mp3" },
+            { text: "Gobble", filename: "f560.mp3" },
+            { text: "shield", filename: "f561.mp3" },
+            { text: "Heal", filename: "f562.mp3" },
+            { text: "rid", filename: "f563.mp3" },
+            { text: "smoothly", filename: "f564.mp3" },
+            { text: "bystander", filename: "f565.mp3" },
+            { text: "scoffed", filename: "f566.mp3" },
+            { text: "harsh", filename: "f567.mp3" },
+            { text: "cliffhanger", filename: "f568.mp3" }
+        ];
+
+        async function startDownload() {
+            const apiKey = document.getElementById('apiKey').value.trim();
+            const btn = document.getElementById('btnDownload');
+
+            if (!apiKey) {
+                showStatus("Por favor, introduce una API Key válida.", "error");
+                return;
+            }
+
+            btn.disabled = true;
+            showStatus("Procesando descargas...", "success");
+
+            try {
+                for (let i = 0; i < phrases.length; i++) {
+                    const item = phrases[i];
+                    showStatus(`Procesando (${i + 1}/${phrases.length}): ${item.filename} - ${item.text}`, "success");
+                    await generateAndDownloadDualAudio(apiKey, item.text, item.filename);
+                    await new Promise(resolve => setTimeout(resolve, 400));
+                }
+                showStatus("¡Todas las descargas se han completado con éxito!", "success");
+            } catch (error) {
+                showStatus("Error: " + error.message, "error");
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        async function synthesizePart(apiKey, text, languageCode, voiceName) {
+            const url = `https://texttospeech.googleapis.com/v1/text:synthesize?key=${apiKey}`;
+            const payload = {
+                input: { text: text },
+                voice: {
+                    languageCode: languageCode,
+                    name: voiceName
+                },
+                audioConfig: {
+                    audioEncoding: "LINEAR16"
+                }
+            };
+
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                const errData = await response.json();
+                throw new Error(errData.error?.message || "Error en la API de Google Cloud");
+            }
+
+            const data = await response.json();
+            return base64ToArrayBuffer(data.audioContent);
+        }
+
+        async function generateAndDownloadDualAudio(apiKey, text, filename) {
+            const buffer1 = await synthesizePart(apiKey, text, "en-US", "en-US-Studio-Q");
+            const buffer2 = await synthesizePart(apiKey, text, "en-GB", "en-GB-Studio-C");
+
+            const sampleRate = 24000; 
+            const silenceDurationSec = 0.5; 
+            const silenceNumSamples = Math.floor(sampleRate * silenceDurationSec);
+            const silenceBuffer = new ArrayBuffer(silenceNumSamples * 2);
+
+            const combinedPCM = appendBuffer(appendBuffer(buffer1, silenceBuffer), buffer2);
+            const wavBuffer = createWavFile(combinedPCM, sampleRate);
+
+            const blob = new Blob([wavBuffer], { type: 'audio/wav' });
+            const linkSource = URL.createObjectURL(blob);
+            const downloadLink = document.createElement("a");
+            downloadLink.href = linkSource;
+            downloadLink.download = filename;
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+            URL.revokeObjectURL(linkSource);
+        }
+
+        function base64ToArrayBuffer(base64) {
+            const binaryString = window.atob(base64);
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            return bytes.buffer;
+        }
+
+        function appendBuffer(buffer1, buffer2) {
+            const tmp = new Uint8Array(buffer1.byteLength + buffer2.byteLength);
+            tmp.set(new Uint8Array(buffer1), 0);
+            tmp.set(new Uint8Array(buffer2), buffer1.byteLength);
+            return tmp.buffer;
+        }
+
+        function createWavFile(pcmBuffer, sampleRate) {
+            const numChannels = 1;
+            const bitsPerSample = 16;
+            const byteRate = sampleRate * numChannels * (bitsPerSample / 8);
+            const blockAlign = numChannels * (bitsPerSample / 8);
+            const dataSize = pcmBuffer.byteLength;
+            const chunkSize = 36 + dataSize;
+
+            const headerBuffer = new ArrayBuffer(44);
+            const view = new DataView(headerBuffer);
+
+            writeString(view, 0, 'RIFF');
+            view.setUint32(4, chunkSize, true);
+            writeString(view, 8, 'WAVE');
+
+            writeString(view, 12, 'fmt ');
+            view.setUint32(16, 16, true);
+            view.setUint16(20, 1, true);
+            view.setUint16(22, numChannels, true);
+            view.setUint32(24, sampleRate, true);
+            view.setUint32(28, byteRate, true);
+            view.setUint16(32, blockAlign, true);
+            view.setUint16(34, bitsPerSample, true);
+
+            writeString(view, 36, 'data');
+            view.setUint32(40, dataSize, true);
+
+            return appendBuffer(headerBuffer, pcmBuffer);
+        }
+
+        function writeString(view, offset, string) {
+            for (let i = 0; i < string.length; i++) {
+                view.setUint8(offset + i, string.charCodeAt(i));
+            }
+        }
+
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerText = message;
+            statusDiv.className = type;
+            statusDiv.style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>
