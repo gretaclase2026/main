@@ -893,7 +893,7 @@ function initBlocks() {
   for (let i = 0; i < numBlocks; i++) {
     const btn = document.createElement("button");
     btn.className = "block";
-    btn.textContent = i + 1;
+    btn.textContent = i;
     btn.onclick = () => loadBlock(i);
     container.appendChild(btn);
   }
@@ -912,9 +912,7 @@ function loadBlock(b, elegirMecanismo = true) {
   document.getElementById("endMsg").classList.add("hidden");
   document.getElementById('btn-rescat').style.display = 'none';
   update(elegirMecanismo);
-}
-
-function loadAll(elegirMecanismo = true) {
+}function loadAll(elegirMecanismo = true) {
   currentBlockID = -1;
   localStorage.setItem(getFolderName() + "_puntoLibro", "all");
   currentBlockData = items.map(i => ({...i}));
@@ -1016,7 +1014,8 @@ function pauseAudio() {
     audioObj.pause();
     btn.textContent = "▶️";
   }
-}function reveal() {
+}
+function reveal() {
   if (currentBlockData.length === 0) return;
   const esEl = document.getElementById("es"), enEl = document.getElementById("en");
   if (mode === "EN") {
