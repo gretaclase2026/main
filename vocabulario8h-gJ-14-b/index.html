@@ -316,7 +316,7 @@ const items = [
 {"audio": "f171.mp3", "en": "Maybe I spoke too harshly.", "es": "Quizás fui demasiado duro con mis palabras."},
 {"audio": "f172.mp3", "en": "He became a wiser man with time.", "es": "El se convirtió en un hombre más sabio con el tiempo."},
 {"audio": "f173.mp3", "en": "She is a feisty girl who never gives up.", "es": "Ella es una chica peleona que nunca se rinde."},
-{"audio": "f174.mp3", "en": "Despite his success, he remains humble.", "es": "A pesar de su éxito, sigue siendo humilde."},
+{"audio": "f174.mp3", "en": "Despite his success, he remains humble.", "es": "A pesar de su(el) éxito, sigue siendo humilde."},
 {"audio": "f175.mp3", "en": "You should use your wisdom to decide.", "es": "Deberías usar tu sabiduría para decidir."},
 {"audio": "f176.mp3", "en": "She chose wisely and won the debate.", "es": "Ella eligió sabiamente y ganó el debate."},
 {"audio": "f177.mp3", "en": "He proved to be a worthy ally.", "es": "Demostró ser un aliado digno."},
@@ -421,7 +421,7 @@ const items = [
 {"audio": "f276.mp3", "en": "Gobble them up.", "es": "Devóralos."},
 {"audio": "f277.mp3", "en": "I can no longer shield you from the storms.", "es": "Ya no puedo protegerte de las tormentas."},
 {"audio": "f278.mp3", "en": "Heal from the storms.", "es": "Sanar de las tormentas."},
-{"audio": "f279.mp3", "en": "You must get rid of those old shoes.", "es": "Tienes que deshacerte de esos zapatos viejos."},
+{"audio": "f279.mp3", "en": "You must get rid of those old shoes.", "es": "Debes deshacerte de esos zapatos viejos."},
 {"audio": "f280.mp3", "en": "Everything was going smoothly until the rain started.", "es": "Todo iba sin problemas hasta que empezó a llover."},
 {"audio": "f281.mp3", "en": "He was merely a bystander in the argument.", "es": "El era simplemente un espectador en la discusión."},
 {"audio": "f282.mp3", "en": "He scoffed at my proposal.", "es": "El se burló de mi propuesta."},
@@ -748,6 +748,7 @@ if (SpeechRecognition) {
 function normalizeText(text) {
     if (!text) return "";
     let cleanText = text.toLowerCase()
+               .replace(/\(.*?\)/g, "")
                .replace(/[.,!?;:]/g, "")
                .trim();
 
@@ -912,7 +913,9 @@ function loadBlock(b, elegirMecanismo = true) {
   document.getElementById("endMsg").classList.add("hidden");
   document.getElementById('btn-rescat').style.display = 'none';
   update(elegirMecanismo);
-}function loadAll(elegirMecanismo = true) {
+}
+
+function loadAll(elegirMecanismo = true) {
   currentBlockID = -1;
   localStorage.setItem(getFolderName() + "_puntoLibro", "all");
   currentBlockData = items.map(i => ({...i}));
@@ -1014,8 +1017,7 @@ function pauseAudio() {
     audioObj.pause();
     btn.textContent = "▶️";
   }
-}
-function reveal() {
+}function reveal() {
   if (currentBlockData.length === 0) return;
   const esEl = document.getElementById("es"), enEl = document.getElementById("en");
   if (mode === "EN") {
