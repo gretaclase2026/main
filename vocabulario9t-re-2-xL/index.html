@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ca">
 <head>
 <meta charset="UTF-8">
@@ -78,7 +78,7 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 <body>
 <header>
  <div class="mode-btns"><button class="mode-en" onclick="setMode('EN')">Anglès → Own</button></div>
- <div class="unit-number">Frases </div>
+ <div class="unit-number">Frases 9</div>
  <div class="mode-btns"><button class="mode-es" onclick="setMode('ES')">Own → Anglès</button></div>
 </header>
 <main>
@@ -93,6 +93,7 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
  <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px;">
    <div id="langLabel" class="lang">ANGLÈS</div>
    <button id="autoplayBtn" onclick="toggleAutoplay()" style="background:#dbeafe; border:none; border-radius:12px; padding:4px 10px; font-weight:700; cursor:pointer; font-size:12px;">🔁 Auto</button>
+   <button onclick="resetMic()" style="background:#fed7aa; border:none; border-radius:12px; padding:4px 10px; font-weight:700; cursor:pointer; font-size:12px;" title="Reiniciar micro azul">🔄️ Micro</button>
  </div>
 
  <div id="blockContainer" class="blocks"></div>
@@ -146,166 +147,148 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
     };
 })();
 const items = [
-{ "audio": "f001.mp3", "en": "Basement", "es": "Sótano", "cat": "Soterrani", "ex": "" },
-{ "audio": "f002.mp3", "en": "Attic", "es": "Desván", "cat": "Golfes", "ex": "" },
-{ "audio": "f003.mp3", "en": "Pantry", "es": "Despensa", "cat": "Despensa", "ex": "" },
-{ "audio": "f004.mp3", "en": "Driveway", "es": "Entrada coche", "cat": "Entrada cotxes", "ex": "" },
-{ "audio": "f005.mp3", "en": "Hallway", "es": "Pasillo", "cat": "Passadís", "ex": "" },
-{ "audio": "f006.mp3", "en": "Landing", "es": "Rellano", "cat": "Replà", "ex": "" },
-{ "audio": "f007.mp3", "en": "Backyard", "es": "Patio trasero", "cat": "Pati darrere", "ex": "" },
-{ "audio": "f008.mp3", "en": "Porch", "es": "Porche", "cat": "Porxo", "ex": "" },
-{ "audio": "f009.mp3", "en": "Utility room", "es": "Lavadero", "cat": "Safareig", "ex": "" },
-{ "audio": "f010.mp3", "en": "Roof", "es": "Tejado", "cat": "Teulada", "ex": "" },
-{ "audio": "f011.mp3", "en": "Pine", "es": "Pino", "cat": "Pi", "ex": "" },
-{ "audio": "f012.mp3", "en": "Oak", "es": "Roble", "cat": "Roure", "ex": "" },
-{ "audio": "f013.mp3", "en": "Olive tree", "es": "Olivo", "cat": "Olivera", "ex": "" },
-{ "audio": "f014.mp3", "en": "Palm tree", "es": "Palmera", "cat": "Palmera", "ex": "" },
-{ "audio": "f015.mp3", "en": "Cypress", "es": "Ciprés", "cat": "Xiprer", "ex": "" },
-{ "audio": "f016.mp3", "en": "Fig tree", "es": "Higuera", "cat": "Figuera", "ex": "" },
-{ "audio": "f017.mp3", "en": "Almond tree", "es": "Almendro", "cat": "Ametller", "ex": "" },
-{ "audio": "f018.mp3", "en": "Lemon tree", "es": "Limonero", "cat": "Llimoner", "ex": "" },
-{ "audio": "f019.mp3", "en": "Orange tree", "es": "Naranjo", "cat": "Taronger", "ex": "" },
-{ "audio": "f020.mp3", "en": "Poplar", "es": "Álamo", "cat": "Pollancre", "ex": "" },
-{ "audio": "f021.mp3", "en": "Dog / Puppy", "es": "Perro / Cachorro", "cat": "Gos / Gosset", "ex": "" },
-{ "audio": "f022.mp3", "en": "Cat / Kitten", "es": "Gato / Gatito", "cat": "Gat / Gatet", "ex": "" },
-{ "audio": "f023.mp3", "en": "Cow / Calf", "es": "Vaca / Ternero", "cat": "Vaca / Vedell", "ex": "" },
-{ "audio": "f024.mp3", "en": "Horse / Foal", "es": "Caballo / Potro", "cat": "Cavall / Poltre", "ex": "" },
-{ "audio": "f025.mp3", "en": "Hen / Chick", "es": "Gallina / Pollito", "cat": "Gallina / Pollet", "ex": "" },
-{ "audio": "f026.mp3", "en": "Sheep / Lamb", "es": "Oveja / Cordero", "cat": "Ovelha / Xai", "ex": "" },
-{ "audio": "f027.mp3", "en": "Pig / Piglet", "es": "Cerdo / Lechón", "cat": "Porc / Porquet", "ex": "" },
-{ "audio": "f028.mp3", "en": "Lion / Cub", "es": "León / Cachorro", "cat": "Lleó / Cadell", "ex": "" },
-{ "audio": "f029.mp3", "en": "Goat / Kid", "es": "Cabra / Cabrito", "cat": "Cabra / Cabrit", "ex": "" },
-{ "audio": "f030.mp3", "en": "Duck / Duckling", "es": "Pato / Patito", "cat": "Ànec / Ànec petit", "ex": "" },
-{ "audio": "f031.mp3", "en": "Blueberry", "es": "Arándano", "cat": "Nabiu", "ex": "" },
-{ "audio": "f032.mp3", "en": "Raspberry", "es": "Frambuesa", "cat": "Gerd", "ex": "" },
-{ "audio": "f033.mp3", "en": "Blackberry", "es": "Mora", "cat": "Mora", "ex": "" },
-{ "audio": "f034.mp3", "en": "Strawberry", "es": "Fresa", "cat": "Maduixa", "ex": "" },
-{ "audio": "f035.mp3", "en": "Currant", "es": "Grosella", "cat": "Grosella", "ex": "" },
-{ "audio": "f036.mp3", "en": "Mango", "es": "Mango", "cat": "Mango", "ex": "" },
-{ "audio": "f037.mp3", "en": "Papaya", "es": "Papaya", "cat": "Papaya", "ex": "" },
-{ "audio": "f038.mp3", "en": "Avocado", "es": "Aguacate", "cat": "Alvocat", "ex": "" },
-{ "audio": "f039.mp3", "en": "Pomegranate", "es": "Granada", "cat": "Magrana", "ex": "" },
-{ "audio": "f040.mp3", "en": "Dragon fruit", "es": "Fruta dragón", "cat": "Pitahaya", "ex": "" },
-{ "audio": "f041.mp3", "en": "Get to the point", "es": "Ve al grano", "cat": "Ves al gra", "ex": "" },
-{ "audio": "f042.mp3", "en": "Cut to the chase", "es": "Ir directo", "cat": "Anar directe", "ex": "" },
-{ "audio": "f043.mp3", "en": "Stop beating around the bush", "es": "No des rodeos", "cat": "No donis voltes", "ex": "" },
-{ "audio": "f044.mp3", "en": "Get down to business", "es": "Ir por faena", "cat": "Anar per feina", "ex": "" },
-{ "audio": "f045.mp3", "en": "The bottom line is...", "es": "La conclusión es", "cat": "La conclusió és", "ex": "" },
-{ "audio": "f046.mp3", "en": "Let's stay on track", "es": "No nos desviemos", "cat": "No ens desviem", "ex": "" },
-{ "audio": "f047.mp3", "en": "Cut the crap", "es": "Déjate de tonterías", "cat": "Fora conyàries", "ex": "" },
-{ "audio": "f048.mp3", "en": "In a nutshell", "es": "En pocas palabras", "cat": "En resum", "ex": "" },
-{ "audio": "f049.mp3", "en": "To make a long story short", "es": "En resumen", "cat": "Per no allargar", "ex": "" },
-{ "audio": "f050.mp3", "en": "Straight away", "es": "De inmediato", "cat": "De seguida", "ex": "" },
-{ "audio": "f051.mp3", "en": "Acquaintance", "es": "Conocido", "cat": "Conegut", "ex": "" },
-{ "audio": "f052.mp3", "en": "Engagement", "es": "Compromiso", "cat": "Compromís", "ex": "" },
-{ "audio": "f053.mp3", "en": "Wedding", "es": "Boda", "cat": "Casament", "ex": "" },
-{ "audio": "f054.mp3", "en": "Pregnancy", "es": "Embarazo", "cat": "Embaràs", "ex": "" },
-{ "audio": "f055.mp3", "en": "Honeymoon", "es": "Luna de miel", "cat": "Lluna de mel", "ex": "" },
-{ "audio": "f056.mp3", "en": "Childbirth", "es": "Parto", "cat": "Part", "ex": "" },
-{ "audio": "f057.mp3", "en": "Quarrel", "es": "Pelea", "cat": "Baralla", "ex": "" },
-{ "audio": "f058.mp3", "en": "Adultery", "es": "Adulterio", "cat": "Adulteri", "ex": "" },
-{ "audio": "f059.mp3", "en": "Divorce", "es": "Divorcio", "cat": "Divorci", "ex": "" },
-{ "audio": "f060.mp3", "en": "Fling", "es": "Aventura", "cat": "Aventura", "ex": "" },
-{ "audio": "f061.mp3", "en": "Syringe", "es": "Jeringuilla", "cat": "Xeringa", "ex": "" },
-{ "audio": "f062.mp3", "en": "Patch", "es": "Tirita", "cat": "Tirita", "ex": "" },
-{ "audio": "f063.mp3", "en": "Bandage", "es": "Venda", "cat": "Venda", "ex": "" },
-{ "audio": "f064.mp3", "en": "Thermometer", "es": "Termómetro", "cat": "Termòmetre", "ex": "" },
-{ "audio": "f065.mp3", "en": "Pill", "es": "Pastilla", "cat": "Píndola", "ex": "" },
-{ "audio": "f066.mp3", "en": "Glucose meter", "es": "Glucómetro", "cat": "Glucòmetre", "ex": "" },
-{ "audio": "f067.mp3", "en": "Spray", "es": "Espray", "cat": "Esprai", "ex": "" },
-{ "audio": "f068.mp3", "en": "Eye drops", "es": "Colirio", "cat": "Col·liri", "ex": "" },
-{ "audio": "f069.mp3", "en": "Cough syrup", "es": "Jarabe tos", "cat": "Jarop tos", "ex": "" },
-{ "audio": "f070.mp3", "en": "Ointment", "es": "Pomada", "cat": "Pomada", "ex": "" },
-{ "audio": "f071.mp3", "en": "Curly", "es": "Rizado", "cat": "Arrissat", "ex": "" },
-{ "audio": "f072.mp3", "en": "Dreadlocks", "es": "Rastas", "cat": "Rastes", "ex": "" },
-{ "audio": "f073.mp3", "en": "Bob", "es": "Corte Bob", "cat": "Tall Bob", "ex": "" },
-{ "audio": "f074.mp3", "en": "Wavy", "es": "Ondulado", "cat": "Ondulat", "ex": "" },
-{ "audio": "f075.mp3", "en": "Pigtails", "es": "Coletas", "cat": "Cues", "ex": "" },
-{ "audio": "f076.mp3", "en": "Ponytail", "es": "Coleta única", "cat": "Cua", "ex": "" },
-{ "audio": "f077.mp3", "en": "Bun", "es": "Moño", "cat": "Moixó", "ex": "" },
-{ "audio": "f078.mp3", "en": "Braid", "es": "Trenza", "cat": "Trena", "ex": "" },
-{ "audio": "f079.mp3", "en": "Shoulder-length", "es": "Media melena", "cat": "Cabell espatlles", "ex": "" },
-{ "audio": "f080.mp3", "en": "Bald", "es": "Calvo", "cat": "Calb", "ex": "" },
-{ "audio": "f081.mp3", "en": "Plant trees", "es": "Plantar árboles", "cat": "Plantar arbres", "ex": "" },
-{ "audio": "f082.mp3", "en": "Oil spill", "es": "Derrame petróleo", "cat": "Vessament petroli", "ex": "" },
-{ "audio": "f083.mp3", "en": "Landfill", "es": "Vertedero", "cat": "Abocador", "ex": "" },
-{ "audio": "f084.mp3", "en": "Separate garbage", "es": "Separar basura", "cat": "Separar escombraria", "ex": "" },
-{ "audio": "f085.mp3", "en": "Pollution", "es": "Contaminación", "cat": "Contaminació", "ex": "" },
-{ "audio": "f086.mp3", "en": "Reusable bag", "es": "Bolsa reutilizable", "cat": "Bossa reutilitzable", "ex": "" },
-{ "audio": "f087.mp3", "en": "Recycle", "es": "Reciclar", "cat": "Reciclar", "ex": "" },
-{ "audio": "f088.mp3", "en": "Exhaust fumes", "es": "Humo escape", "cat": "Fums escapament", "ex": "" },
-{ "audio": "f089.mp3", "en": "Solar panel", "es": "Panel solar", "cat": "Panell solar", "ex": "" },
-{ "audio": "f090.mp3", "en": "Wind turbine", "es": "Aerogenerador", "cat": "Aerogenerador", "ex": "" },
-{ "audio": "f091.mp3", "en": "Bulletproof vest", "es": "Chaleco antibalas", "cat": "Armilla antibales", "ex": "" },
-{ "audio": "f092.mp3", "en": "Warrant card", "es": "Placa policía", "cat": "Placa policia", "ex": "" },
-{ "audio": "f093.mp3", "en": "Handcuffs", "es": "Esposas", "cat": "Esposes", "ex": "" },
-{ "audio": "f094.mp3", "en": "Prison", "es": "Prisión", "cat": "Presó", "ex": "" },
-{ "audio": "f095.mp3", "en": "Bullhorn", "es": "Megáfono", "cat": "Megàfon", "ex": "" },
-{ "audio": "f096.mp3", "en": "Gun", "es": "Pistola", "cat": "Pistola", "ex": "" },
-{ "audio": "f097.mp3", "en": "Bullet", "es": "Bala", "cat": "Bala", "ex": "" },
-{ "audio": "f098.mp3", "en": "Walkie-talkie", "es": "Walkie", "cat": "Walkie", "ex": "" },
-{ "audio": "f099.mp3", "en": "Magnifying glass", "es": "Lupa", "cat": "Lupa", "ex": "" },
-{ "audio": "f100.mp3", "en": "Police car", "es": "Coche policía", "cat": "Cotxe policia", "ex": "" },
-{ "audio": "f101.mp3", "en": "Around", "es": "Alrededor", "cat": "Al voltant", "ex": "" },
-{ "audio": "f102.mp3", "en": "Under", "es": "Debajo", "cat": "Sota", "ex": "" },
-{ "audio": "f103.mp3", "en": "Through", "es": "A través", "cat": "A través", "ex": "" },
-{ "audio": "f104.mp3", "en": "Behind", "es": "Detrás", "cat": "Darrere", "ex": "" },
-{ "audio": "f105.mp3", "en": "Among", "es": "Entre (varios)", "cat": "Entre", "ex": "" },
-{ "audio": "f106.mp3", "en": "Opposite", "es": "Enfrente", "cat": "Davant per davant", "ex": "" },
-{ "audio": "f107.mp3", "en": "Towards", "es": "Hacia", "cat": "Cap a", "ex": "" },
-{ "audio": "f108.mp3", "en": "Across", "es": "Cruzando", "cat": "A través de", "ex": "" },
-{ "audio": "f109.mp3", "en": "Into", "es": "Hacia dentro", "cat": "Cap a dins", "ex": "" },
-{ "audio": "f110.mp3", "en": "Between", "es": "Entre (dos)", "cat": "Entre", "ex": "" },
-{ "audio": "f111.mp3", "en": "Over", "es": "Por encima", "cat": "Per sobre", "ex": "" },
-{ "audio": "f112.mp3", "en": "In front of", "es": "Delante", "cat": "Davant de", "ex": "" },
-{ "audio": "f113.mp3", "en": "Next to", "es": "Al lado", "cat": "Al costat", "ex": "" },
-{ "audio": "f114.mp3", "en": "Above", "es": "Arriba", "cat": "Per damunt", "ex": "" },
-{ "audio": "f115.mp3", "en": "Below", "es": "Abajo", "cat": "Per sota", "ex": "" },
-{ "audio": "f116.mp3", "en": "Out of", "es": "Fuera de", "cat": "Fora de", "ex": "" },
-{ "audio": "f117.mp3", "en": "Up", "es": "Hacia arriba", "cat": "Cap amunt", "ex": "" },
-{ "audio": "f118.mp3", "en": "Down", "es": "Hacia abajo", "cat": "Cap avall", "ex": "" },
-{ "audio": "f119.mp3", "en": "Off", "es": "Fuera", "cat": "Fora de", "ex": "" },
-{ "audio": "f120.mp3", "en": "On", "es": "Encima (tocando)", "cat": "Sobre", "ex": "" },
-{ "audio": "f121.mp3", "en": "Ant", "es": "Hormiga", "cat": "Formiga", "ex": "" },
-{ "audio": "f122.mp3", "en": "Bee", "es": "Abeja", "cat": "Abella", "ex": "" },
-{ "audio": "f123.mp3", "en": "Butterfly", "es": "Mariposa", "cat": "Papallona", "ex": "" },
-{ "audio": "f124.mp3", "en": "Caterpillar", "es": "Oruga", "cat": "Eruga", "ex": "" },
-{ "audio": "f125.mp3", "en": "Cockroach", "es": "Cucaracha", "cat": "Cucaracha", "ex": "" },
-{ "audio": "f126.mp3", "en": "Dragonfly", "es": "Libélula", "cat": "Espiadimonis", "ex": "" },
-{ "audio": "f127.mp3", "en": "Fly", "es": "Mosca", "cat": "Mosca", "ex": "" },
-{ "audio": "f128.mp3", "en": "Grasshopper", "es": "Saltamontes", "cat": "Saltamartí", "ex": "" },
-{ "audio": "f129.mp3", "en": "Ladybug", "es": "Mariquita", "cat": "Marieta", "ex": "" },
-{ "audio": "f130.mp3", "en": "Mosquito", "es": "Mosquito", "cat": "Mosquit", "ex": "" },
-{ "audio": "f131.mp3", "en": "Crab", "es": "Cangrejo", "cat": "Cranc", "ex": "" },
-{ "audio": "f132.mp3", "en": "Lobster", "es": "Langosta", "cat": "Llagosta", "ex": "" },
-{ "audio": "f133.mp3", "en": "Shrimp", "es": "Gamba", "cat": "Gamba", "ex": "" },
-{ "audio": "f134.mp3", "en": "Mussels", "es": "Musclos", "cat": "Musclos", "ex": "" },
-{ "audio": "f135.mp3", "en": "Oyster", "es": "Ostra", "cat": "Ostra", "ex": "" },
-{ "audio": "f136.mp3", "en": "Squid", "es": "Calamar", "cat": "Calamar", "ex": "" },
-{ "audio": "f137.mp3", "en": "Octopus", "es": "Pop", "cat": "Pop", "ex": "" },
-{ "audio": "f138.mp3", "en": "Salmon", "es": "Salmón", "cat": "Salmó", "ex": "" },
-{ "audio": "f139.mp3", "en": "Tuna", "es": "Atún", "cat": "Tonyina", "ex": "" },
-{ "audio": "f140.mp3", "en": "Cod", "es": "Bacalao", "cat": "Bacallà", "ex": "" },
-{ "audio": "f141.mp3", "en": "Earthquake", "es": "Terremoto", "cat": "Terratrèmol", "ex": "" },
-{ "audio": "f142.mp3", "en": "Flood", "es": "Inundación", "cat": "Inundació", "ex": "" },
-{ "audio": "f143.mp3", "en": "Tsunami", "es": "Tsunami", "cat": "Tsunami", "ex": "" },
-{ "audio": "f144.mp3", "en": "Wildfire", "es": "Incendio", "cat": "Incendi", "ex": "" },
-{ "audio": "f145.mp3", "en": "Drought", "es": "Sequía", "cat": "Sequera", "ex": "" },
-{ "audio": "f146.mp3", "en": "Tornado", "es": "Tornado", "cat": "Tornado", "ex": "" },
-{ "audio": "f147.mp3", "en": "Hurricane", "es": "Huracán", "cat": "Huracà", "ex": "" },
-{ "audio": "f148.mp3", "en": "Volcanic eruption", "es": "Erupción", "cat": "Erupció", "ex": "" },
-{ "audio": "f149.mp3", "en": "Avalanche", "es": "Alud", "cat": "Allau", "ex": "" },
-{ "audio": "f150.mp3", "en": "Landslide", "es": "Desprendimiento", "cat": "Despreniment", "ex": "" },
-{ "audio": "f151.mp3", "en": "Chop", "es": "Picar", "cat": "Trinxar", "ex": "" },
-{ "audio": "f152.mp3", "en": "Peel", "es": "Pelar", "cat": "Pelar", "ex": "" },
-{ "audio": "f153.mp3", "en": "Slice", "es": "Rodajas", "cat": "Rodanxes", "ex": "" },
-{ "audio": "f154.mp3", "en": "Squeeze", "es": "Exprimir", "cat": "Exprèmer", "ex": "" },
-{ "audio": "f155.mp3", "en": "Squish", "es": "Aixafar", "cat": "Aixafar", "ex": "" },
-{ "audio": "f156.mp3", "en": "Grate", "es": "Rallar", "cat": "Ratllar", "ex": "" },
-{ "audio": "f157.mp3", "en": "Simmer", "es": "Fuego lento", "cat": "Fer xup-xup", "ex": "" },
-{ "audio": "f158.mp3", "en": "Season", "es": "Sazonar", "cat": "Salpebrar", "ex": "" },
-{ "audio": "f159.mp3", "en": "Bake", "es": "Hornear", "cat": "Forn", "ex": "" },
-{ "audio": "f160.mp3", "en": "Stir", "es": "Remover", "cat": "Remenar", "ex": "" },
+{audio:"f001.mp3", en:"Beware of fake friends; they are backstabbers.", es:"Cuidado con los falsos amigos, son traidores."},
+{audio:"f002.mp3", en:"The old house looked bewitched at night.", es:"La casa vieja parecía embrujada de noche."},
+{audio:"f003.mp3", en:"The village lies beyond those mountains.", es:"El pueblo está más allá de esas montañas."},
+{audio:"f004.mp3", en:"Hot broth is good for a cold day.", es:"El caldo caliente es bueno para un dia frío."},
+{audio:"f005.mp3", en:"They made a pot out of red clay.", es:"Hicieron una vasija de arcilla roja."},
+{audio:"f006.mp3", en:"Rain helps the crops grow fast.", es:"La lluvia ayuda a que los cultivos crezcan rápido."},
+{audio:"f007.mp3", en:"He was deaf to all their warnings.", es:"Él estuvo sordo a todas sus advertencias."},
+{audio:"f008.mp3", en:"She looked at the trash with disgust.", es:"Miro la basura con asco."},
+{audio:"f009.mp3", en:"The long drought ruined the harvest.", es:"La larga sequía arruinó la cosecha."},
+{audio:"f010.mp3", en:"They dumped the old sofa in the yard.", es:"Arrojaron el sofá viejo en el patio."},
+{audio:"f011.mp3", en:"The tale features seven helpful dwarfs.", es:"El cuento presenta a siete enanos serviciales."},
+{audio:"f012.mp3", en:"Spread the sauce evenly on the dough.", es:"Extiende la salsa uniformemente en la masa."},
+{audio:"f013.mp3", en:"No one can escape their own fate.", es:"Nadie puede escapar de su propio destino."},
+{audio:"f014.mp3", en:"They prepared a great feast for the king.", es:"Prepararon un gran banquete para el rey."},
+{audio:"f015.mp3", en:"He wants to fulfill his lifelong dream.", es:"Él quiere cumplir el sueño de toda su vida."},
+{audio:"f016.mp3", en:"I caught a brief glimpse of the car.", es:"Eché un breve vistazo al coche."},
+{audio:"f017.mp3", en:"The room was dark and gloomy.", es:"La habitación era oscura y sombría."},
+{audio:"f018.mp3", en:"She wore a elegant silk gown.", es:"Llevaba un elegante vestido de seda."},
+{audio:"f019.mp3", en:"I go for a quick jog every morning.", es:"Salgo a trotar un poco cada mañana."},
+{audio:"f020.mp3", en:"Please fill the glass jug with water.", es:"Por favor, llena la jarra de cristal con agua."},
+{audio:"f021.mp3", en:"The coat has a warm inner lining.", es:"El abrigo tiene un forro interior cálido."},
+{audio:"f022.mp3", en:"The mighty oak tree stood for centuries.", es:"El poderoso roble permaneció en pie siglos."},
+{audio:"f023.mp3", en:"Give him a nudge so he wakes up.", es:"Dale un empujón suave para que despierte."},
+{audio:"f024.mp3", en:"He overstepped his authority at work.", es:"Él se excedió en su autoridad en el trabajo."},
+{audio:"f025.mp3", en:"Hot porridge is eaten for breakfast.", es:"Las gachas calientes se comen de desayuno."},
+{audio:"f026.mp3", en:"Reckless driving causes accidents.", es:"La conducción imprudente causa accidentes."},
+{audio:"f027.mp3", en:"The speech was a resounding success.", es:"El discurso fue un éxito rotundo."},
+{audio:"f028.mp3", en:"We walked along the mountain ridge.", es:"Caminamos a lo largo de la cresta de la montaña."},
+{audio:"f029.mp3", en:"A little robin sang on the branch.", es:"Un pequeño petirrojo cantó en la rama."},
+{audio:"f030.mp3", en:"They found shelter from the rain.", es:"Encontraron refugio de la lluvia."},
+{audio:"f031.mp3", en:"The cold wind made her shiver.", es:"El viento frío la hizo temblar."},
+{audio:"f032.mp3", en:"Everyone makes mistakes, no one is a sinner.", es:"Todos cometen errores, nadie es un pecador."},
+{audio:"f033.mp3", en:"History tells the stories of freed slaves.", es:"La historia cuenta historias de esclavos libres."},
+{audio:"f034.mp3", en:"They skied down the snowy slopes.", es:"Esquiaron por las laderas nevadas."},
+{audio:"f035.mp3", en:"We will manage to fix this somehow.", es:"Lograremos arreglar esto de alguna manera."},
+{audio:"f036.mp3", en:"A single spark can start a fire.", es:"Una sola chispa puede iniciar un fuego."},
+{audio:"f037.mp3", en:"She has a striking blue gaze.", es:"Ella tiene una mirada azul llamativa."},
+{audio:"f038.mp3", en:"Watch out or you will stumble.", es:"Ten cuidado o vas a tropezar."},
+{audio:"f039.mp3", en:"A tear rolled down her cheek.", es:"Una lágrima rodó por su mejilla."},
+{audio:"f040.mp3", en:"He likes to brag about his car.", es:"A él le gusta presumir de su coche."},
+{audio:"f041.mp3", en:"I need to trim my hair today.", es:"Necesito recortarme el pelo hoy."},
+{audio:"f042.mp3", en:"He took a nasty tumble down the stairs.", es:"Sufrió una mala caida por las escaleras."},
+{audio:"f043.mp3", en:"Magicians make things vanish.", es:"Los magos hacen desaparecer las cosas."},
+{audio:"f044.mp3", en:"I need to withdraw cash from the bank.", es:"Necesito retirar efectivo del banco."},
+{audio:"f045.mp3", en:"Grandparents offer deep wisdom.", es:"Los abuelos ofrecen una profunda sabiduría."},
+{audio:"f046.mp3", en:"They witnessed the entire event live.", es:"Presenciaron todo el evento en directo."},
+{audio:"f047.mp3", en:"The police interviewed two witnesses.", es:"La policia entrevistó a dos testigos."},
+{audio:"f048.mp3", en:"You won't last another month.", es:"No durarás ni un mes más."},
+{audio:"f049.mp3", en:"You will blackmail him and his family.", es:"Lo chantajearás a él y a su familia."},
+{audio:"f050.mp3", en:"My boss sacked me.", es:"Mi jefe me despidió."},
+{audio:"f051.mp3", en:"I will not spare you.", es:"No te perdonarė."},
+{audio:"f052.mp3", en:"It is a matter of life and death.", es:"Es una cuestión de vida o muerte."},
+{audio:"f053.mp3", en:"Don't step on me.", es:"No me pises."},
+{audio:"f054.mp3", en:"She cannot harm me.", es:"Ella no puede hacerme daño."},
+{audio:"f055.mp3", en:"I will loot his money.", es:"Le robaré el dinero."},
+{audio:"f056.mp3", en:"Are they blackmailing my daughter?", es:"¿Están chantajeando a mi hija?"},
+{audio:"f057.mp3", en:"Leave before the feast or be carried out of it.", es:"Salgan antes del banquete o serán sacados a la fuerza."},
+{audio:"f058.mp3", en:"Don't embarrass the house.", es:"No dejes mal a la casa / No nos dejes en vergüenza."},
+{audio:"f059.mp3", en:"But he can't bear your death.", es:"Pero él no puede soportar tu muerte."},
+{audio:"f060.mp3", en:"Her sister is handicapped.", es:"Su hermana tiene una discapacidad."},
+{audio:"f061.mp3", en:"She helps needy people.", es:"Ella ayuda a las personas necesitadas."},
+{audio:"f062.mp3", en:"You always take her side.", es:"Siempre te pones de su lado."},
+{audio:"f063.mp3", en:"Your mom went through a lot.", es:"Tu madre pasó por mucho."},
+{audio:"f064.mp3", en:"He is teasing our daughter.", es:"Se está burlando de nuestra hija."},
+{audio:"f065.mp3", en:"We will call child protective services.", es:"Informaremos a los servicios de protección infantil."},
+{audio:"f066.mp3", en:"You pour your heart out.", es:"Te desahogas."},
+{audio:"f067.mp3", en:"I know you shoved her.", es:"Sé que la empujaste."},
+{audio:"f068.mp3", en:"Nobody ask me questions without hooks on them.", es:"Que nadie me haga preguntas con segundas intenciones."},
+{audio:"f069.mp3", en:"You can't fool us.", es:"No puedes engañarnos."},
+{audio:"f070.mp3", en:"Stop clinging to me.", es:"Deja de aferrarte a mí."},
+{audio:"f071.mp3", en:"You did not flinch from my anger.", es:"No te inmutaste ante mi ira."},
+{audio:"f072.mp3", en:"Don't speak to me in riddles.", es:"No me hables con acertijos."},
+{audio:"f073.mp3", en:"You are so choppy.", es:"Eres muy irregular / entrecortado."},
+{audio:"f074.mp3", en:"I am almost done.", es:"Ya casi termino."},
+{audio:"f075.mp3", en:"He is a couch potato.", es:"Es un vago que pasa mucho tiempo en el sofá."},
+{audio:"f076.mp3", en:"I was throwing up.", es:"Estaba vomitando."},
+{audio:"f077.mp3", en:"He's restless.", es:"Está inquieto."},
+{audio:"f078.mp3", en:"We are broke.", es:"Estamos en bancarrota."},
+{audio:"f079.mp3", en:"He is in a lockup.", es:"Está en la cárcel."},
+{audio:"f080.mp3", en:"You are a couch potato.", es:"Eres un vago que pasa el día en el sofá."},
+{audio:"f081.mp3", en:"I am chilling here.", es:"Estoy aquí relajándome."},
+{audio:"f082.mp3", en:"He's slowing.", es:"Está disminuyendo la velocidad."},
+{audio:"f083.mp3", en:"You are such a pain in the neck.", es:"Eres un verdadero fastidio."},
+{audio:"f084.mp3", en:"You are shivering.", es:"Estás temblando."},
+{audio:"f085.mp3", en:"I am blushing.", es:"Me estoy sonrojando."},
+{audio:"f086.mp3", en:"I am helpless.", es:"Estoy indefenso."},
+{audio:"f087.mp3", en:"He walked with a limp.", es:"Caminaba cojeando."},
+{audio:"f088.mp3", en:"Your hat is crooked.", es:"Tienes el sombrero torcido."},
+{audio:"f089.mp3", en:"He's very shifty.", es:"Es muy escurridizo/poco confiable."},
+{audio:"f090.mp3", en:"I am thorough.", es:"Soy minucioso."},
+{audio:"f091.mp3", en:"Isolates himself for days.", es:"Se aísla durante días."},
+{audio:"f092.mp3", en:"You are relentless.", es:"Eres implacable."},
+{audio:"f093.mp3", en:"I got a second wind.", es:"Recuperé las fuerzas / Tomé un segundo aire."},
+{audio:"f094.mp3", en:"The pain is fading.", es:"El dolor está desapareciendo."},
+{audio:"f095.mp3", en:"Fair enough.", es:"Me parece bien / De acuerdo."},
+{audio:"f096.mp3", en:"He wants the money up front.", es:"Quiere el dinero por adelantado."},
+{audio:"f097.mp3", en:"I wish I could go there.", es:"Ojalá pudiera ir alli."},
+{audio:"f098.mp3", en:"I need a bridal dress.", es:"Necesito un vestido de novia."},
+{audio:"f099.mp3", en:"May you live long.", es:"Que vivas mucho tiempo."},
+{audio:"f100.mp3", en:"I don't see any harm in that.", es:"No le veo ningún inconveniente."},
+{audio:"f101.mp3", en:"You hum at breakfast.", es:"Tarareas durante el desayuno."},
+{audio:"f102.mp3", en:"Ran out.", es:"Se agotó / Se acabó."},
+{audio:"f103.mp3", en:"If you spend your life comparing yourself with others...", es:"Si pasas la vida comparándote con los demás..."},
+{audio:"f104.mp3", en:"I figured it out.", es:"Lo averigüé / Ya lo entendí."},
+{audio:"f105.mp3", en:"I'll figure it out.", es:"Ya veré cómo hacerlo / Ya lo resolveré."},
+{audio:"f106.mp3", en:"Not a life of scrutiny and scorn.", es:"No una vida de escrutinio y desprecio."},
+{audio:"f107.mp3", en:"A filthy common maid.", es:"Una sucia y vulgar criada."},
+{audio:"f108.mp3", en:"Her feminine wiles.", es:"Sus artimañas femeninas."},
+{audio:"f109.mp3", en:"Forgive my bluntness.", es:"Disculpa mi franqueza."},
+{audio:"f110.mp3", en:"One more moment of glance.", es:"Un instante más de mirada."},
+{audio:"f111.mp3", en:"You summoned.", es:"Usted llamó."},
+{audio:"f112.mp3", en:"I may have inquired.", es:"Puede que haya preguntado / indagado."},
+{audio:"f113.mp3", en:"I will work after my delivery.", es:"Trabajaré después del parto."},
+{audio:"f114.mp3", en:"Ebony dark cloud has a silver lining.", es:"Hasta la nube más oscura tiene un lado positivo."},
+{audio:"f115.mp3", en:"This baby is a jackpot.", es:"Este bebé es un premio gordo."},
+{audio:"f116.mp3", en:"I got my property back because of them.", es:"Recuperé mi propiedad gracias a ellos."},
+{audio:"f117.mp3", en:"That is a cage for me.", es:"Eso es una jaula para mí."},
+{audio:"f118.mp3", en:"I have a spare key.", es:"Tengo una llave de repuesto."},
+{audio:"f119.mp3", en:"The water is flowing this way.", es:"El agua fluye en esta dirección."},
+{audio:"f120.mp3", en:"Greed is a curse.", es:"La codicia es una maldición."},
+{audio:"f121.mp3", en:"The flower had started to wither.", es:"La flor había comenzado a marchitarse."},
+{audio:"f122.mp3", en:"All the better to see you with, my dear.", es:"Para verte mejor, querida."},
+{audio:"f123.mp3", en:"So I can eat you more easily.", es:"Así podré comerte más fácilmente."},
+{audio:"f124.mp3", en:"Soft gray fur.", es:"Suave pelaje gris."},
+{audio:"f125.mp3", en:"He never once done what he said he wouldn't.", es:"Jamás hizo lo que dijo que no haria."},
+{audio:"f126.mp3", en:"Mighty crash.", es:"Estruendoso choque."},
+{audio:"f127.mp3", en:"In swept.", es:"Entró de golpe / Arrasó al entrar."},
+{audio:"f128.mp3", en:"He grew wheat.", es:"Cultivaba trigo."},
+{audio:"f129.mp3", en:"He no longer notices.", es:"Ya no se da cuenta.."},
+{audio:"f130.mp3", en:"She carried a wooden walking stick.", es:"Llevaba un bastón de madera."},
+{audio:"f131.mp3", en:"The richest person is not the one who owns...", es:"La persona más rica no es la que más posee..."},
+{audio:"f132.mp3", en:"It had been waiting inside my own home all along.", es:"Había estado esperando dentro de mi propia casa todo el tiempo."},
+{audio:"f133.mp3", en:"I poured her wine as commanded.", es:"Le serví el vino como me indicó."},
+{audio:"f134.mp3", en:"Rushed stitch.", es:"Puntada apresurada."},
+{audio:"f135.mp3", en:"He bowed.", es:"Hizo una reverencia."},
+{audio:"f136.mp3", en:"I hope the mountain roads aren't so dreadful...", es:"Espero que las carreteras de montaña no sean..."},
+{audio:"f137.mp3", en:"Bathroom is sealed.", es:"El baño está sellado."},
+{audio:"f138.mp3", en:"Sneaky fox.", es:"Zorro astuto / taimado."},
+{audio:"f139.mp3", en:"They disappeared without a trace.", es:"Desaparecían sin dejar ni rastro."},
+{audio:"f140.mp3", en:"A strong and wise king.", es:"Un rey fuerte y sabio."},
+{audio:"f141.mp3", en:"She harbored a hidden fear.", es:"Albergaba un miedo oculto."},
+{audio:"f142.mp3", en:"She saw a small hut made of wood.", es:"Vio una pequeña cabaña de madera."},
 ];
 const CLAVE_GLOBAL = 'tiempo_total_estudio';
 const CLAVE_DIARIO = 'tiempo_estudio_diario';
@@ -413,6 +396,7 @@ if (SpeechRecognition) {
 function normalizeText(text) {
     if (!text) return "";
     let cleanText = text.toLowerCase()
+               .replace(/\(.*?\)/g, "")
                .replace(/[.,!?;:]/g, "")
                .trim();
 
@@ -482,6 +466,43 @@ function toggleMic() {
         recognition.start();
     }
 }
+function resetMic() {
+    try {
+        if (recognition) {
+            recognition.abort(); // Fuerza la detención inmediata sin esperar eventos pendientes
+        }
+    } catch (e) {
+        console.log("Error al abortar reconocimiento:", e);
+    }
+    
+    // Reseteamos estados visuales y variables de control
+    isListening = false;
+    const sttBtn = document.getElementById("sttBtn");
+    if (sttBtn) sttBtn.classList.remove("listening");
+    
+    // Recreamos la instancia de reconocimiento por si se había corrompido el objeto
+    if (SpeechRecognition) {
+        recognition = new SpeechRecognition();
+        recognition.lang = 'en-US';
+        recognition.interimResults = false;
+        recognition.continuous = false;
+        recognition.onstart = () => { isListening = true; document.getElementById("sttBtn").classList.add("listening"); };
+        recognition.onend = () => { isListening = false; document.getElementById("sttBtn").classList.remove("listening"); };
+        recognition.onresult = (event) => {
+            let fullTranscript = "";
+            for (let i = event.resultIndex; i < event.results.length; i++) { fullTranscript += event.results[i][0].transcript + " "; }
+            compareSentences(currentBlockData[pos].en, fullTranscript.trim());
+        };
+    }
+    
+    document.getElementById("speechFeedback").innerHTML = `<span style="color:#d97706; font-size:14px; font-weight:800;">Micro reiniciat correctament 🔄️</span>`;
+    setTimeout(() => {
+        const feedback = document.getElementById("speechFeedback");
+        if (feedback && feedback.innerHTML.includes("Micro reiniciat")) {
+            feedback.innerHTML = "";
+        }
+    }, 2000);
+}
 async function toggleRecord(targetBtnId) {
     const btn = document.getElementById(targetBtnId);
     if (!isRecording) {
@@ -518,7 +539,7 @@ function initBlocks() {
   allBtn.textContent = "T";
   allBtn.onclick = () => loadAll();
   container.appendChild(allBtn);
- for (let i = 0; i < numBlocks; i++) {
+  for (let i = 0; i < numBlocks; i++) {
     const btn = document.createElement("button");
     btn.className = "block";
     btn.textContent = i;
