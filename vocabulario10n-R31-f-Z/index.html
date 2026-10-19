@@ -507,8 +507,7 @@ function initBlocks() {
   }
   if (savedBlock === "all") loadAll(false);
   else loadBlock((savedBlock !== null) ? parseInt(savedBlock) : 0, false);
-}
-function loadBlock(b, elegirMecanismo = true) {
+}function loadBlock(b, elegirMecanismo = true) {
   currentBlockID = b;
   localStorage.setItem(getFolderName() + "_puntoLibro", b);
   let temp = [];
@@ -624,7 +623,8 @@ function pauseAudio() {
     audioObj.pause();
     btn.textContent = "▶️";
   }
-}function reveal() {
+}
+function reveal() {
   if (currentBlockData.length === 0) return;
   const esEl = document.getElementById("es"), enEl = document.getElementById("en");
   if (mode === "EN") {

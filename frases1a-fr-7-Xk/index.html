@@ -276,6 +276,7 @@ if (SpeechRecognition) {
 function normalizeText(text) {
     if (!text) return "";
     let cleanText = text.toLowerCase()
+               .replace(/\(.*?\)/g, "")
                .replace(/[.,!?;:]/g, "")
                .trim();
 
@@ -427,8 +428,7 @@ function initBlocks() {
   }
   if (savedBlock === "all") loadAll(false);
   else loadBlock((savedBlock !== null) ? parseInt(savedBlock) : 0, false);
-}
-function loadBlock(b, elegirMecanismo = true) {
+}function loadBlock(b, elegirMecanismo = true) {
   currentBlockID = b;
   localStorage.setItem(getFolderName() + "_puntoLibro", b);
   let temp = [];
@@ -440,7 +440,9 @@ function loadBlock(b, elegirMecanismo = true) {
   document.getElementById("endMsg").classList.add("hidden");
   document.getElementById('btn-rescat').style.display = 'none';
   update(elegirMecanismo);
-}function loadAll(elegirMecanismo = true) {
+}
+
+function loadAll(elegirMecanismo = true) {
   currentBlockID = -1;
   localStorage.setItem(getFolderName() + "_puntoLibro", "all");
   currentBlockData = items.map(i => ({...i}));

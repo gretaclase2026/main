@@ -217,7 +217,7 @@ const items = [
 {audio:"f069.mp3",en:"The dishwasher broke down due to a major leak.",es:"El lavavajillas se estropeó debido a una fuga importante."},
 {audio:"f070.mp3",en:"A luxury chandelier hung in the center of the dining room.",es:"Una lámpara de araña de lujo colgaba en el centro del comedor."},
 {audio:"f071.mp3",en:"I felt severe dizziness and requested a prescription from the doctor.",es:"Sentí un mareo intenso y pedí una receta médica al médico."},
-{audio:"f072.mp3",en:"He developed a sore throat and a runny nose.8nous)",es:"Él desarrolló dolor de garganta y goteo nasal."},
+{audio:"f072.mp3",en:"He developed a sore throat and a runny nose.(nous)",es:"Él desarrolló dolor de garganta y goteo nasal."},
 {audio:"f073.mp3",en:"An ankle sprain required immediate medical attention.",es:"Un esguince de tobillo requirió atención médica inmediata."},
 {audio:"f074.mp3",en:"Annual vaccination protects against severe seasonal illnesses.(vaxaneishon)",es:"La vacuna anual protege contra enfermedades estacionales graves."},
 {audio:"f075.mp3",en:"She felt guilty and ashamed after making that mistake.",es:"Ella se sintió culpable y avergonzada tras cometer ese error."},
@@ -227,7 +227,7 @@ const items = [
 {audio:"f079.mp3",en:"She was mildly annoyed by the delay.",es:"Ella estaba levemente molesta por el retraso."},
 {audio:"f080.mp3",en:"The entire operation was an utterly brilliant success.",es:"Toda la operación fue un éxito totalmente brillante."},
 {audio:"f081.mp3",en:"I bet he will cut the cost down drastically.(cot)",es:"Apuesto que él cortará el coste drásticamente."},
-{audio:"f082.mp3",en:"She brought a gift and caught the morning train.",es:"Ella trajo un regalo y atrapó el tren de la mañana."},
+{audio:"f082.mp3",en:"She brought a gift and caught the morning train (kot).",es:"Ella trajo un regalo y atrapó el tren de la mañana."},
 {audio:"f083.mp3",en:"He drove carefully on the roads that froze overnight.",es:"Condujo con cuidado por las carreteras que se congelaron durante la noche."},
 {audio:"f084.mp3",en:"He is so moody that he gets angry and changes his attitude for no reason.",es:"Es tan malhumorado que se enfada y cambia de actitud sin motivo."},
 {audio:"f085.mp3",en:"This new game is super duper, everyone loves it.",es:"Este nuevo juego es buenísimo, a todo el mundo le encanta."},
@@ -427,6 +427,7 @@ const items = [
 {"audio": "f283.mp3", "en": "The winter was harsh and freezing.", "es": "El invierno fue duro y helado."},
 {"audio": "f284.mp3", "en": "The season finale ended on a huge cliffhanger.(hiuch)", "es": "El final de temporada acabó con un gran suspenso."},
 {"audio": "f285.mp3", "en": "staged (steichd)", "es": "preparado"},
+{"audio": "f024.mp3", "en": "A wiser man uses his wisdom wisely", "es": "Un hombre sabio usa su sabiduria sabiamente"},
 {"audio": "f286.mp3", "en": "fainted (fé-in-tid)", "es": "desmayó"},
 {"audio": "f287.mp3", "en": "drag (drág)", "es": "llevar a rastras"},
 {"audio": "f288.mp3", "en": "burden (bér-den)", "es": "carga"},
@@ -636,6 +637,10 @@ const items = [
 {"audio": "f572.mp3", "en": "hateful (jeitful)", "es": "odioso"},
 {"audio": "f573.mp3", "en": "drawer (dror  dro-er)", "es": "calaix"},
 {"audio": "f574.mp3", "en": "wardrobe (uordrob)", "es": "armario"},
+{audio:"f575.mp3",en:"spiked (spaict)",es:"alterar drogar"},
+{audio:"f576.mp3",en:"urge (ersh)",es:"impulsar, incitar"},
+{audio:"f577.mp3",en:"shrug (shrog)",es:"encogerse de hombros"},
+{audio:"f578.mp3",en:"leak (liik)",es:"fuga"},
 ];
 const CLAVE_GLOBAL = 'tiempo_total_estudio';
 const CLAVE_DIARIO = 'tiempo_estudio_diario';
@@ -895,8 +900,7 @@ function initBlocks() {
   }
   if (savedBlock === "all") loadAll(false);
   else loadBlock((savedBlock !== null) ? parseInt(savedBlock) : 0, false);
-}
-function loadBlock(b, elegirMecanismo = true) {
+}function loadBlock(b, elegirMecanismo = true) {
   currentBlockID = b;
   localStorage.setItem(getFolderName() + "_puntoLibro", b);
   let temp = [];
@@ -1012,7 +1016,8 @@ function pauseAudio() {
     audioObj.pause();
     btn.textContent = "▶️";
   }
-}function reveal() {
+}
+function reveal() {
   if (currentBlockData.length === 0) return;
   const esEl = document.getElementById("es"), enEl = document.getElementById("en");
   if (mode === "EN") {
