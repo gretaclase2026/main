@@ -465,7 +465,8 @@ function toggleMic() {
         document.getElementById("speechFeedback").innerHTML = "";
         recognition.start();
     }
-}function resetMic() {
+}
+function resetMic() {
     try {
         if (recognition) {
             recognition.abort(); // Fuerza la detención inmediata sin esperar eventos pendientes
@@ -525,8 +526,7 @@ async function toggleRecord(targetBtnId) {
         isRecording = false;
         btn.classList.remove("recording");
     }
-}
-audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
+}audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
 progressBar.oninput = () => { if (audioObj.duration) audioObj.currentTime = (progressBar.value / 100) * audioObj.duration; };
 function initBlocks() {
   const container = document.getElementById("blockContainer");
@@ -945,6 +945,19 @@ function toggleBloqueoNotas() {
         t.innerHTML = '🔓 <span>Desbloquejat</span>';
     }
 }
+function traducirSeleccionGrande() {
+    const textoSeleccionado = window.getSelection().toString().trim();
+    
+    if (textoSeleccionado) {
+        const url = `https://translate.google.com/?sl=auto&tl=es&text=${encodeURIComponent(textoSeleccionado)}&op=translate`;
+        window.open(url, '_blank');
+    } else {
+        alert("Por favor, marca o selecciona primero una palabra o letras en la lección.");
+    }
+}
 </script>
+<button onclick="traducirSeleccionGrande()" style="position: fixed; bottom: 85px; right: 20px; z-index: 9999; background: #2563eb; color: white; border: none; border-radius: 25px; padding: 8px 14px; font-weight: 900; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(37,99,235,0.3); font-family: system-ui;">
+    <span>🔍 Traducir palabra</span>
+</button>
 </body>
 </html>
