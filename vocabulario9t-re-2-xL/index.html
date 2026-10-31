@@ -945,29 +945,5 @@ function toggleBloqueoNotas() {
         t.innerHTML = '🔓 <span>Desbloquejat</span>';
     }
 }
-function traducirSeleccionGrande() {
-    const seleccion = window.getSelection();
-    let textoSeleccionado = "";
-    
-    if (seleccion.rangeCount > 0) {
-        textoSeleccionado = seleccion.toString().trim();
-    }
-    
-    if (!textoSeleccionado && document.activeElement && (document.activeElement.tagName === "INPUT" || document.activeElement.tagName === "TEXTAREA")) {
-        const el = document.activeElement;
-        textoSeleccionado = el.value.substring(el.selectionStart, el.selectionEnd).trim();
-    }
-    
-    if (textoSeleccionado) {
-        const url = `https://translate.google.com/?sl=auto&tl=es&text=${encodeURIComponent(textoSeleccionado)}&op=translate`;
-        window.open(url, '_blank');
-    } else {
-        alert("Por favor, marca o selecciona primero una palabra o letras en la lección.");
-    }
-}
 </script>
-<button onclick="traducirSeleccionGrande()" style="position: fixed; bottom: 85px; right: 20px; z-index: 9999; background: #2563eb; color: white; border: none; border-radius: 25px; padding: 8px 14px; font-weight: 900; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(37,99,235,0.3); font-family: system-ui;">
-    <span>🔍 Traducir palabra</span>
-</button>
 </body>
-</html>
