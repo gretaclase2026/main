@@ -946,7 +946,17 @@ function toggleBloqueoNotas() {
     }
 }
 function traducirSeleccionGrande() {
-    const textoSeleccionado = window.getSelection().toString().trim();
+    const seleccion = window.getSelection();
+    let textoSeleccionado = "";
+    
+    if (seleccion.rangeCount > 0) {
+        textoSeleccionado = seleccion.toString().trim();
+    }
+    
+    if (!textoSeleccionado && document.activeElement && (document.activeElement.tagName === "INPUT" || document.activeElement.tagName === "TEXTAREA")) {
+        const el = document.activeElement;
+        textoSeleccionado = el.value.substring(el.selectionStart, el.selectionEnd).trim();
+    }
     
     if (textoSeleccionado) {
         const url = `https://translate.google.com/?sl=auto&tl=es&text=${encodeURIComponent(textoSeleccionado)}&op=translate`;
