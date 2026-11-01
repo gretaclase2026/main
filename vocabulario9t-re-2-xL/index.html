@@ -946,4 +946,37 @@ function toggleBloqueoNotas() {
     }
 }
 </script>
+<!-- BOTONES DE TRADUCCIÓN Y LÓGICA -->
+<div style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; gap: 8px; align-items: center;">
+  <button id="btnGuardar" style="padding: 10px 14px; background: #34a853; color: white; border: none; border-radius: 25px; font-weight: bold; font-family: system-ui; font-size: 13px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); cursor: pointer;">
+    1. Save 📌
+  </button>
+  <button id="btnAbrir" style="padding: 10px 14px; background: #1a73e8; color: white; border: none; border-radius: 25px; font-weight: bold; font-family: system-ui; font-size: 13px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); cursor: pointer;">
+    2. Translate 🌐
+  </button>
+</div>
+
+<script>
+let palabraGuardada = "";
+
+document.getElementById("btnGuardar").addEventListener("click", function() {
+  const seleccion = window.getSelection().toString().trim();
+  if (seleccion.length > 0) {
+    palabraGuardada = seleccion;
+    alert("Saved: " + palabraGuardada);
+  } else {
+    alert("No text selected.");
+  }
+});
+
+document.getElementById("btnAbrir").addEventListener("click", function() {
+  if (palabraGuardada) {
+    const url = `https://translate.google.com/?sl=auto&tl=es&text=${encodeURIComponent(palabraGuardada)}&op=translate`;
+    window.open(url, '_blank');
+  } else {
+    alert("Save a word first.");
+  }
+});
+</script>
 </body>
+</html>
