@@ -424,7 +424,8 @@ function toggleMic() {
         document.getElementById("speechFeedback").innerHTML = "";
         recognition.start();
     }
-}function resetMic() {
+}
+function resetMic() {
     try {
         if (recognition) {
             recognition.abort(); // Fuerza la detención inmediata sin esperar eventos pendientes
@@ -484,8 +485,7 @@ async function toggleRecord(targetBtnId) {
         isRecording = false;
         btn.classList.remove("recording");
     }
-}
-audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
+}audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
 progressBar.oninput = () => { if (audioObj.duration) audioObj.currentTime = (progressBar.value / 100) * audioObj.duration; };
 function initBlocks() {
   const container = document.getElementById("blockContainer");
@@ -904,6 +904,27 @@ function toggleBloqueoNotas() {
         t.innerHTML = '🔓 <span>Desbloquejat</span>';
     }
 }
+</script>
+<div style="position: fixed; bottom: 65px; right: 20px; z-index: 9999;">
+  <button id="btnAbrirTranslate" style="padding: 12px 18px; background: #1a73e8; color: white; border: none; border-radius: 25px; font-weight: bold; font-family: system-ui; font-size: 14px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); cursor: pointer;">
+    Translate 🌐
+  </button>
+</div>
+
+<script>
+document.getElementById("btnAbrirTranslate").addEventListener("click", async function() {
+  try {
+    const textoCopiado = await navigator.clipboard.readText();
+    if (textoCopiado.trim()) {
+      const url = `https://translate.google.com/?sl=auto&tl=es&text=${encodeURIComponent(textoCopiado.trim())}&op=translate`;
+      window.open(url, '_blank');
+    } else {
+      alert("Copia la palabra primero con el menú del móvil.");
+    }
+  } catch (err) {
+    alert("Copia la palabra primero manteniendo pulsado y dándole a 'Copiar'.");
+  }
+});
 </script>
 </body>
 </html>
