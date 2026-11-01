@@ -946,35 +946,21 @@ function toggleBloqueoNotas() {
     }
 }
 </script>
-<div style="position: fixed; bottom: 65px; right: 20px; z-index: 9999; display: flex; gap: 8px; align-items: center;">
-  <button id="btnGuardar" style="padding: 10px 14px; background: #34a853; color: white; border: none; border-radius: 25px; font-weight: bold; font-family: system-ui; font-size: 13px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); cursor: pointer;">
-    1. Save 📌
-  </button>
-  <button id="btnAbrir" style="padding: 10px 14px; background: #1a73e8; color: white; border: none; border-radius: 25px; font-weight: bold; font-family: system-ui; font-size: 13px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); cursor: pointer;">
-    2. Translate 🌐
+<div style="position: fixed; bottom: 65px; right: 20px; z-index: 9999;">
+  <button id="btnAbrirTranslate" style="padding: 4px 8px; background: #ffff66; color: #000; border: none; border-radius: 50%; font-size: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); cursor: pointer; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
+    🌐
   </button>
 </div>
 
 <script>
-let palabraGuardada = "";
-
-document.addEventListener("selectionchange", function() {
-  const sel = window.getSelection().toString().trim();
-  if (sel.length > 0) {
-    palabraGuardada = sel;
-  }
-});
-
-document.getElementById("btnGuardar").addEventListener("click", function() {
-  const sel = window.getSelection().toString().trim();
-  if (sel.length > 0) palabraGuardada = sel;
-});
-
-document.getElementById("btnAbrir").addEventListener("click", function() {
-  if (palabraGuardada) {
-    const url = `https://translate.google.com/?sl=auto&tl=es&text=${encodeURIComponent(palabraGuardada)}&op=translate`;
-    window.open(url, '_blank');
-  }
+document.getElementById("btnAbrirTranslate").addEventListener("click", async function() {
+  try {
+    const textoCopiado = await navigator.clipboard.readText();
+    if (textoCopiado.trim()) {
+      const url = `https://translate.google.com/?sl=auto&tl=es&text=${encodeURIComponent(textoCopiado.trim())}&op=translate`;
+      window.open(url, '_blank');
+    }
+  } catch (err) {}
 });
 </script>
 </body>
