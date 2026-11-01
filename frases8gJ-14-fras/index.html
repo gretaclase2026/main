@@ -54,7 +54,8 @@ button.action{padding:16px 0;border:none;border-radius:16px;font-weight:800;curs
 .review-btn{background:#fef3c7;color:#92400e}
 .list-box{max-width:560px;margin:16px auto;background:#fff;border-radius:20px;border:1px solid #e5e7eb;padding:16px;text-align:left}
 .list-item{display:flex;align-items:center;gap:12px;padding:15px 0;border-bottom:1px solid #eee}
-.list-controls-side{display:flex;flex-direction:row;gap:6px;align-items:center;flex-shrink:0}.list-texts{flex-grow:1;display:flex;flex-direction:column;gap:6px}
+.list-controls-side{display:flex;flex-direction:row;gap:6px;align-items:center;flex-shrink:0}
+.list-texts{flex-grow:1;display:flex;flex-direction:column;gap:6px}
 .mini-btn{border:none;border-radius:50%;width:38px;height:38px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:0.2s}
 .btn-audio{background:#dcfce7}
 .btn-rec-mini{background:#fbcfe8}
@@ -433,8 +434,7 @@ async function toggleRecord(targetBtnId) {
         isRecording = false;
         btn.classList.remove("recording");
     }
-}
-audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
+}audioObj.ontimeupdate = () => { if (audioObj.duration) progressBar.value = (audioObj.currentTime / audioObj.duration) * 100; };
 progressBar.oninput = () => { if (audioObj.duration) audioObj.currentTime = (progressBar.value / 100) * audioObj.duration; };
 function initBlocks() {
   const container = document.getElementById("blockContainer");
@@ -455,7 +455,8 @@ function initBlocks() {
   }
   if (savedBlock === "all") loadAll(false);
   else loadBlock((savedBlock !== null) ? parseInt(savedBlock) : 0, false);
-}function loadBlock(b, elegirMecanismo = true) {
+}
+function loadBlock(b, elegirMecanismo = true) {
   currentBlockID = b;
   localStorage.setItem(getFolderName() + "_puntoLibro", b);
   let temp = [];
@@ -852,6 +853,23 @@ function toggleBloqueoNotas() {
         t.innerHTML = '🔓 <span>Desbloquejat</span>';
     }
 }
+</script>
+<div style="position: fixed; bottom: 65px; right: 20px; z-index: 9999;">
+  <button id="btnAbrirTranslate" style="padding: 4px 8px; background: #ffff66; color: #000; border: none; border-radius: 50%; font-size: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); cursor: pointer; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
+    🌐
+  </button>
+</div>
+
+<script>
+document.getElementById("btnAbrirTranslate").addEventListener("click", async function() {
+  try {
+    const textoCopiado = await navigator.clipboard.readText();
+    if (textoCopiado.trim()) {
+      const url = `https://translate.google.com/?sl=auto&tl=es&text=${encodeURIComponent(textoCopiado.trim())}&op=translate`;
+      window.open(url, '_blank');
+    }
+  } catch (err) {}
+});
 </script>
 </body>
 </html>
